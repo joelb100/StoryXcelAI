@@ -42,9 +42,94 @@ const getStatusText = (status: string) => {
 };
 
 export default function RightSidebar() {
+  // Mock friends data for demo
+  const mockFriends: FriendWithUser[] = [
+    {
+      id: 1,
+      userId: "demo-user",
+      friendId: "friend-1",
+      status: "accepted",
+      createdAt: new Date(),
+      friend: {
+        id: "friend-1",
+        email: "sarah@example.com",
+        firstName: "Sarah",
+        lastName: "Penny",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    },
+    {
+      id: 2,
+      userId: "demo-user", 
+      friendId: "friend-2",
+      status: "accepted",
+      createdAt: new Date(),
+      friend: {
+        id: "friend-2",
+        email: "joel@example.com",
+        firstName: "Joel",
+        lastName: "Calloway",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    },
+    {
+      id: 3,
+      userId: "demo-user",
+      friendId: "friend-3", 
+      status: "accepted",
+      createdAt: new Date(),
+      friend: {
+        id: "friend-3",
+        email: "cole@example.com",
+        firstName: "Cole",
+        lastName: "Downing",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    },
+    {
+      id: 4,
+      userId: "demo-user",
+      friendId: "friend-4",
+      status: "accepted", 
+      createdAt: new Date(),
+      friend: {
+        id: "friend-4",
+        email: "steve@example.com",
+        firstName: "Steve",
+        lastName: "Grady",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    },
+    {
+      id: 5,
+      userId: "demo-user",
+      friendId: "friend-5",
+      status: "accepted",
+      createdAt: new Date(), 
+      friend: {
+        id: "friend-5",
+        email: "brooke@example.com",
+        firstName: "Brooke",
+        lastName: "McGraw",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }
+  ];
+
   const { data: friends, isLoading: friendsLoading } = useQuery<FriendWithUser[]>({
     queryKey: ["/api/friends"],
     retry: false,
+    placeholderData: mockFriends,
   });
 
   // Mock online status for demo (in production, this would come from real-time data)

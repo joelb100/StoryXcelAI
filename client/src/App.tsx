@@ -10,18 +10,12 @@ import Dashboard from "@/pages/dashboard";
 import Builder from "@/pages/builder";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
-
+  // Skip authentication for now - go directly to dashboard
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Dashboard} />
-          <Route path="/builder/:type" component={Builder} />
-        </>
-      )}
+      <Route path="/login" component={Landing} />
+      <Route path="/" component={Dashboard} />
+      <Route path="/builder/:type" component={Builder} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -17,10 +17,19 @@ export default function Header() {
   const { user } = useAuth();
   const [location, navigate] = useLocation();
 
+  // Demo user for when not authenticated
+  const demoUser = {
+    firstName: "Demo",
+    lastName: "User",
+    profileImageUrl: null
+  };
+
+  const currentUser = user || demoUser;
+
   const getInitials = (firstName?: string, lastName?: string) => {
     const first = firstName?.[0] || '';
     const last = lastName?.[0] || '';
-    return (first + last).toUpperCase() || 'U';
+    return (first + last).toUpperCase() || 'DU';
   };
 
   return (
@@ -60,18 +69,18 @@ export default function Header() {
           
           <div className="flex items-center space-x-2">
             <Avatar className="w-8 h-8">
-              <AvatarImage src={user?.profileImageUrl} />
+              <AvatarImage src={currentUser?.profileImageUrl} />
               <AvatarFallback className="bg-accent text-white text-sm font-semibold">
-                {getInitials(user?.firstName, user?.lastName)}
+                {getInitials(currentUser?.firstName, currentUser?.lastName)}
               </AvatarFallback>
             </Avatar>
             <Button 
               variant="ghost" 
               size="sm"
-              onClick={() => window.location.href = "/api/logout"}
+              onClick={() => navigate("/login")}
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              Logout
+              Login
             </Button>
           </div>
         </div>

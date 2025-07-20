@@ -15,8 +15,65 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
+  // Mock data for demo purposes when not authenticated
+  const mockProjects: ProjectWithOwner[] = [
+    {
+      id: 1,
+      name: "Gun Smoke",
+      description: "Drifting into the dying glow of their hollow bounty hunter Eli Grantis is hunting the ruthless outlaw Silas Kane. But the town is abandoned by everyone but Kane, who secretly prances the shadows with a young girl accused of arson along with a military archive and a poker that with a violent past. It not about bringing Kane to Sheriff Ben's jail grim smiths, where only his fastest draw will decide who walks away alive.",
+      status: "in_progress",
+      heroImageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080",
+      ownerId: "demo-user",
+      budget: 15000,
+      timeEstimate: 120,
+      actualTime: 0,
+      actualCost: 0,
+      tags: ["western", "bounty hunter", "action"],
+      isPublic: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      owner: {
+        id: "demo-user",
+        email: "demo@example.com",
+        firstName: "Demo",
+        lastName: "User",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    },
+    {
+      id: 2,
+      name: "Project #2",
+      description: "Second demo project",
+      status: "planning",
+      heroImageUrl: null,
+      ownerId: "demo-user",
+      budget: null,
+      timeEstimate: null,
+      actualTime: 0,
+      actualCost: 0,
+      tags: [],
+      isPublic: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      owner: {
+        id: "demo-user",
+        email: "demo@example.com",
+        firstName: "Demo",
+        lastName: "User",
+        profileImageUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }
+  ];
+
   const { data: projects, isLoading: projectsLoading } = useQuery<ProjectWithOwner[]>({
     queryKey: ["/api/projects"],
+    retry: false,
+    // Use mock data if query fails (no auth)
+    placeholderData: mockProjects,
   });
 
   const featuredProject = projects?.find(p => p.status === "in_progress") || projects?.[0];
@@ -90,7 +147,7 @@ export default function Dashboard() {
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-charcoal mb-2">DASHBOARD</h1>
               <p className="text-muted-foreground">
-                Welcome back, {user?.firstName || 'Creator'}! Here's what's happening with your projects.
+                Welcome back, Creator! Here's what's happening with your projects.
               </p>
             </div>
 

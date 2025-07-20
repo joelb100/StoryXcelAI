@@ -116,7 +116,7 @@ export default function Landing() {
 
           {/* Sign Up Button */}
           <Button 
-            onClick={() => window.location.href = "/api/login"}
+            onClick={() => window.location.href = "/"}
             className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-semibold py-3 rounded-lg transition-all duration-200"
           >
             Sign Up
@@ -126,7 +126,7 @@ export default function Landing() {
           <p className="text-center text-sm text-gray-600">
             Already have an account? 
             <button 
-              onClick={() => window.location.href = "/api/login"}
+              onClick={() => window.location.href = "/"}
               className="ml-1 text-blue-500 hover:text-blue-600 font-medium"
             >
               Sign in →
