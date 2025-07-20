@@ -144,7 +144,7 @@ export class DatabaseStorage implements IStorage {
           eq(projects.ownerId, userId)
         )
       );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   // Collaboration operations
@@ -178,7 +178,7 @@ export class DatabaseStorage implements IStorage {
           eq(projectCollaborators.userId, userId)
         )
       );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   // Friend operations
@@ -218,7 +218,7 @@ export class DatabaseStorage implements IStorage {
           eq(friends.friendId, friendId)
         )
       );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   // Asset operations
@@ -247,7 +247,7 @@ export class DatabaseStorage implements IStorage {
           eq(projectAssets.createdBy, userId)
         )
       );
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 }
 

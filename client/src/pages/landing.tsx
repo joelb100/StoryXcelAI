@@ -1,317 +1,146 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Layers, 
-  Users, 
-  Zap, 
-  BookOpen, 
-  Film, 
-  FileText, 
-  Package, 
-  Presentation,
-  ArrowRight,
-  Play,
-  Star,
-  CheckCircle
-} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
+import { Layers } from "lucide-react";
 
 export default function Landing() {
-  const features = [
-    {
-      icon: BookOpen,
-      title: "Story Builder",
-      description: "Craft compelling narratives with AI-powered story development tools"
-    },
-    {
-      icon: Film,
-      title: "Production Builder", 
-      description: "Manage production schedules, budgets, and resource allocation"
-    },
-    {
-      icon: Package,
-      title: "Asset Builder",
-      description: "Organize and manage all your creative assets in one place"
-    },
-    {
-      icon: FileText,
-      title: "Script Builder",
-      description: "Write, format, and collaborate on scripts with industry-standard tools"
-    },
-    {
-      icon: Presentation,
-      title: "Deck Builder",
-      description: "Create stunning pitch decks and presentations"
-    },
-    {
-      icon: Layers,
-      title: "World Builder",
-      description: "Develop rich, detailed worlds for your creative projects"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Chen",
-      role: "Film Producer",
-      content: "StoryXcel AI transformed how we manage our creative projects. The collaboration features are incredible.",
-      rating: 5
-    },
-    {
-      name: "Marcus Rivera",
-      role: "Screenwriter",
-      content: "The script builder tools are exactly what I needed. Professional formatting made easy.",
-      rating: 5
-    },
-    {
-      name: "Emma Thompson",
-      role: "Creative Director",
-      content: "Finally, a platform that understands the creative workflow. Game-changing for our team.",
-      rating: 5
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <Layers className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-2xl font-bold text-charcoal">StoryXcel AI</h1>
-            </div>
-            <Button 
-              onClick={() => window.location.href = "/api/login"}
-              className="bg-primary hover:bg-primary/90"
-            >
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto text-center">
-          <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary border-primary/20">
-            <Zap className="w-3 h-3 mr-1" />
-            AI-Powered Creative Platform
-          </Badge>
+    <div className="min-h-screen flex">
+      {/* Left Side - Logo and Background */}
+      <div className="flex-1 relative bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-700 flex items-center justify-center overflow-hidden">
+        {/* Geometric Background Pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-white/20 rotate-45 transform"></div>
+          <div className="absolute top-1/3 right-1/4 w-24 h-24 border-2 border-white/20 rotate-12 transform"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-16 h-16 border-2 border-white/20 rotate-45 transform"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-20 h-20 border-2 border-white/20 rotate-12 transform"></div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-charcoal via-primary to-secondary bg-clip-text text-transparent">
-            Create. Collaborate. Excel.
-          </h1>
-          
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            The comprehensive creative project management platform that serves as your expert assistant 
-            for developing, organizing, and producing story-driven projects across all creative phases.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button 
-              size="lg" 
-              onClick={() => window.location.href = "/api/login"}
-              className="bg-primary hover:bg-primary/90 text-lg px-8 py-4"
-            >
-              <Play className="w-5 h-5 mr-2" />
-              Start Creating Free
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4">
-              <Film className="w-5 h-5 mr-2" />
-              Watch Demo
-            </Button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2 text-success" />
-              Free to start
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2 text-success" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2 text-success" />
-              Collaborate with teams
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-6 bg-white/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Six Specialized Builder Modules</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to bring your creative vision to life, from initial concept to final presentation.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-                <CardHeader>
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                    <feature.icon className="w-6 h-6 text-primary group-hover:text-white" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Collaboration Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge variant="outline" className="mb-4">
-                <Users className="w-3 h-3 mr-1" />
-                Team Collaboration
-              </Badge>
-              
-              <h2 className="text-4xl font-bold mb-6">
-                Work Together, Create Better
-              </h2>
-              
-              <p className="text-lg text-muted-foreground mb-8">
-                Invite team members, share projects, and collaborate in real-time. 
-                Track progress, manage resources, and keep everyone aligned on your creative vision.
-              </p>
-              
-              <ul className="space-y-4">
-                {[
-                  "Real-time collaboration tools",
-                  "Project sharing and permissions",
-                  "Resource and budget tracking", 
-                  "Milestone management",
-                  "Team communication features"
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-success mr-3" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
+          {/* Abstract triangular shapes */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="relative">
-              <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8">
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { name: "Sarah", status: "online", avatar: "S" },
-                    { name: "Marcus", status: "away", avatar: "M" },
-                    { name: "Emma", status: "online", avatar: "E" },
-                    { name: "Alex", status: "offline", avatar: "A" }
-                  ].map((user, index) => (
-                    <div key={index} className="bg-white rounded-lg p-4 shadow-sm">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
-                          {user.avatar}
-                        </div>
-                        <div>
-                          <div className="font-semibold">{user.name}</div>
-                          <div className="text-sm text-muted-foreground flex items-center">
-                            <div className={`w-2 h-2 rounded-full mr-1 ${
-                              user.status === 'online' ? 'bg-success' : 
-                              user.status === 'away' ? 'bg-accent' : 'bg-gray-300'
-                            }`} />
-                            {user.status}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="w-0 h-0 border-l-[50px] border-r-[50px] border-b-[70px] border-l-transparent border-r-transparent border-b-white/10 absolute -top-10 -left-10"></div>
+              <div className="w-0 h-0 border-l-[30px] border-r-[30px] border-b-[40px] border-l-transparent border-r-transparent border-b-white/15 absolute top-20 right-20"></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 px-6 bg-white/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Loved by Creators Worldwide</h2>
-            <p className="text-xl text-muted-foreground">
-              See what our community has to say about StoryXcel AI
-            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-2 hover:border-primary/20 transition-all">
-                <CardContent className="pt-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-4 italic">
-                    "{testimonial.content}"
-                  </p>
-                  <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {/* Glowing effects */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 via-transparent to-blue-300/20"></div>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-primary to-secondary">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Transform Your Creative Process?
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of creators who are already using StoryXcel AI to bring their visions to life.
-          </p>
-          <Button 
-            size="lg" 
-            onClick={() => window.location.href = "/api/login"}
-            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4"
-          >
-            Start Your Project Today
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 px-6 bg-charcoal text-white">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Layers className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold">StoryXcel AI</span>
+        
+        {/* StoryXcel Logo */}
+        <div className="relative z-10 text-center">
+          <div className="mb-8">
+            <div className="w-32 h-32 mx-auto mb-6 bg-white rounded-2xl flex items-center justify-center shadow-2xl">
+              <span className="text-6xl font-black text-cyan-500">X</span>
             </div>
-            <p className="text-white/70">
-              © 2024 StoryXcel AI. Empowering creators worldwide.
+          </div>
+          
+          <div className="text-white">
+            <h1 className="text-6xl font-black mb-2 tracking-wider">
+              STORY<span className="text-cyan-200">X</span>CEL
+            </h1>
+            <p className="text-xl font-medium tracking-wide opacity-90">
+              Creative Project Management
             </p>
           </div>
         </div>
-      </footer>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="w-96 bg-white flex flex-col justify-center px-8 py-12">
+        <div className="mb-8">
+          {/* Small Logo */}
+          <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center mb-6">
+            <span className="text-2xl font-black text-white">X</span>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to StoryXcel</h2>
+          <p className="text-gray-600">Sign in to start creating amazing projects</p>
+        </div>
+
+        <div className="space-y-6">
+          {/* Login Form */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                First Name
+              </label>
+              <Input 
+                type="text"
+                placeholder="Enter your first name"
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Last Name
+              </label>
+              <Input 
+                type="text"
+                placeholder="Enter your last name"
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <Input 
+                type="email"
+                placeholder="Enter your email"
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <Input 
+                type="password"
+                placeholder="Create a password"
+                className="w-full"
+              />
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" />
+              <label htmlFor="terms" className="text-sm text-gray-600">
+                I agree to terms and opt-ins unless chosen others
+              </label>
+            </div>
+          </div>
+
+          {/* Sign Up Button */}
+          <Button 
+            onClick={() => window.location.href = "/api/login"}
+            className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-semibold py-3 rounded-lg transition-all duration-200"
+          >
+            Sign Up
+          </Button>
+
+          {/* Already have account */}
+          <p className="text-center text-sm text-gray-600">
+            Already have an account? 
+            <button 
+              onClick={() => window.location.href = "/api/login"}
+              className="ml-1 text-blue-500 hover:text-blue-600 font-medium"
+            >
+              Sign in →
+            </button>
+          </p>
+        </div>
+
+        {/* Footer note */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <p className="text-xs text-gray-500 text-center">
+            By signing up, you agree to our Terms of Service and Privacy Policy
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
