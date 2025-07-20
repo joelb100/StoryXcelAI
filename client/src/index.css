@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 98%);
+  --foreground: hsl(222, 84%, 5%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 5%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 5%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --primary: hsl(239, 84%, 67%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(250, 60%, 65%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(43, 96%, 56%);
+  --accent-foreground: hsl(222, 84%, 5%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(222, 84%, 5%);
+  --radius: 0.75rem;
+  --success: hsl(142, 76%, 36%);
+  --success-foreground: hsl(355, 7%, 97%);
+  --charcoal: hsl(222, 84%, 5%);
+}
+
+.dark {
+  --background: hsl(222, 84%, 5%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 32%, 17%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --popover: hsl(222, 84%, 5%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 5%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 32%, 17%);
+  --input: hsl(217, 32%, 17%);
+  --primary: hsl(239, 84%, 67%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(217, 32%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217, 32%, 17%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(212, 12%, 87%);
+  --success: hsl(142, 76%, 36%);
+  --success-foreground: hsl(355, 7%, 97%);
+  --charcoal: hsl(210, 40%, 98%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Status badge styles */
+.status-active {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.status-planning {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.status-completed {
+  @apply bg-green-100 text-green-700;
+}
+
+/* Project status indicators */
+.project-status-in_progress {
+  @apply bg-blue-500;
+}
+
+.project-status-planning {
+  @apply bg-amber-500;
+}
+
+.project-status-completed {
+  @apply bg-emerald-500;
+}
+
+/* Friend status indicators */
+.friend-status-online {
+  @apply bg-emerald-500;
+}
+
+.friend-status-offline {
+  @apply bg-gray-300;
+}
+
+.friend-status-away {
+  @apply bg-amber-400;
+}
+
+.friend-status-busy {
+  @apply bg-red-400;
+}
+
+/* Hero background overlay */
+.hero-overlay {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+}
+
+/* Featured module gradient backgrounds */
+.module-store {
+  background: linear-gradient(135deg, hsl(221, 83%, 53%), hsl(221, 83%, 43%));
+}
+
+.module-assets {
+  background: linear-gradient(135deg, hsl(220, 13%, 40%), hsl(220, 13%, 30%));
+}
+
+.module-credits {
+  background: linear-gradient(135deg, hsl(43, 96%, 56%), hsl(43, 96%, 46%));
+}
+
+.module-library {
+  background: linear-gradient(135deg, hsl(231, 48%, 48%), hsl(231, 48%, 38%));
+}
+
+.module-trending {
+  background: linear-gradient(135deg, hsl(0, 84%, 60%), hsl(0, 84%, 50%));
+}
+
+.module-photos {
+  background: linear-gradient(135deg, hsl(142, 71%, 45%), hsl(142, 71%, 35%));
+}
+
+.module-audio {
+  background: linear-gradient(135deg, hsl(271, 81%, 56%), hsl(271, 81%, 46%));
+}
+
+.module-fonts {
+  background: linear-gradient(135deg, hsl(220, 13%, 18%), hsl(220, 13%, 8%));
+}
