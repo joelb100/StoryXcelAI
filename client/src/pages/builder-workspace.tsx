@@ -442,57 +442,59 @@ export default function BuilderWorkspace() {
                   </Button>
                 </div>
 
-                {/* SECTION 2: Right Side Panel - Friends + Quick Links */}
-                <div className="space-y-4">
-                  {/* Friends/Collaborators */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">Friends List</h3>
-                      <Button variant="ghost" size="sm">
-                        <UserPlus className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    
-                    {/* Search bar */}
-                    <div className="relative mb-4">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        placeholder="Search friends..."
-                        value={friendsSearch}
-                        onChange={(e) => setFriendsSearch(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
-                    
-                    {/* Friends list */}
-                    <div className="space-y-2 max-h-40 overflow-y-auto">
-                      {dashboardData.social.friends.filter(friend => 
-                        friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
-                      ).map(friend => (
-                        <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
-                          <div className="relative">
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
-                              {friend.avatar}
-                            </div>
-                            <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
-                              friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                            }`}></div>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
-                            <p className="text-xs text-gray-500">{friend.status}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <Button variant="outline" className="w-full mt-4" size="sm">
-                      Add Friends +
+                {/* SECTION 2: Friends/Collaborators Panel */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Friends List</h3>
+                    <Button variant="ghost" size="sm">
+                      <UserPlus className="w-4 h-4" />
                     </Button>
                   </div>
+                  
+                  {/* Search bar */}
+                  <div className="relative mb-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Search friends..."
+                      value={friendsSearch}
+                      onChange={(e) => setFriendsSearch(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  {/* Friends list */}
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {dashboardData.social.friends.filter(friend => 
+                      friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
+                    ).map(friend => (
+                      <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
+                        <div className="relative">
+                          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
+                            {friend.avatar}
+                          </div>
+                          <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
+                            friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
+                          }`}></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
+                          <p className="text-xs text-gray-500">{friend.status}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <Button variant="outline" className="w-full mt-4" size="sm">
+                    Add Friends +
+                  </Button>
+                </div>
+              </div>
 
-                  {/* Quick Links */}
-                  <div className="bg-gray-50 rounded-lg p-4">
+              {/* Bottom Row: Quick Links + Feature Videos - Full Width Combined */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
+                  {/* SECTION 3: Quick Links - Left Side */}
+                  <div>
                     <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {dashboardData.tools.quickLinks.map(link => (
@@ -511,46 +513,43 @@ export default function BuilderWorkspace() {
                       Add Link
                     </Button>
                   </div>
-                </div>
-              </div>
 
-              {/* Bottom Row: YouTube Reference Videos - Full Width */}
-              <div className="w-full">
-                {/* SECTION 4: YouTube Reference Videos */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Feature Video</h3>
-                    <Button variant="ghost" size="sm">
-                      <Plus className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <div className="flex space-x-4 overflow-x-auto pb-2">
-                    {dashboardData.media.referenceVideos.map(video => (
-                      <div 
-                        key={video.id} 
-                        className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
-                        onClick={() => window.open(video.url, '_blank')}
-                        title={`Watch "${video.title}" on YouTube`}
-                      >
-                        <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3 group">
-                          <span className="text-3xl">{video.thumbnail}</span>
-                          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
-                            {video.duration}
+                  {/* SECTION 4: YouTube Reference Videos - Right Side */}
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">Feature Video</h3>
+                      <Button variant="ghost" size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="flex space-x-4 overflow-x-auto pb-2">
+                      {dashboardData.media.referenceVideos.map(video => (
+                        <div 
+                          key={video.id} 
+                          className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                          onClick={() => window.open(video.url, '_blank')}
+                          title={`Watch "${video.title}" on YouTube`}
+                        >
+                          <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3 group">
+                            <span className="text-3xl">{video.thumbnail}</span>
+                            <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
+                              {video.duration}
+                            </div>
+                            <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                              <Play className="w-8 h-8 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                            </div>
                           </div>
-                          <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                            <Play className="w-8 h-8 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                          <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
+                          <p className="text-xs text-gray-600">{video.creator}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-gray-500">{video.views} views</p>
+                            <span className="text-xs text-gray-400">
+                              {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
+                            </span>
                           </div>
                         </div>
-                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
-                        <p className="text-xs text-gray-600">{video.creator}</p>
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs text-gray-500">{video.views} views</p>
-                          <span className="text-xs text-gray-400">
-                            {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
