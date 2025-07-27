@@ -3,29 +3,42 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Layers } from "lucide-react";
+import animatedBgGif from "@assets/animatedBG_1753651803819.gif";
 
 export default function Landing() {
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Logo and Background */}
-      <div className="flex-1 relative bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-700 flex items-center justify-center overflow-hidden">
-        {/* Geometric Background Pattern */}
+      {/* Left Side - Logo and Animated Background */}
+      <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-white/20 rotate-45 transform"></div>
-          <div className="absolute top-1/3 right-1/4 w-24 h-24 border-2 border-white/20 rotate-12 transform"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-16 h-16 border-2 border-white/20 rotate-45 transform"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-20 h-20 border-2 border-white/20 rotate-12 transform"></div>
+          <img 
+            src={animatedBgGif}
+            alt="StoryXcel Animated Background"
+            className="w-full h-full object-cover"
+            style={{ 
+              imageRendering: 'auto',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)'
+            }}
+            onError={(e) => {
+              // Fallback to gradient background if GIF fails to load
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent) {
+                parent.className += ' bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-700';
+              }
+            }}
+          />
           
-          {/* Abstract triangular shapes */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="relative">
-              <div className="w-0 h-0 border-l-[50px] border-r-[50px] border-b-[70px] border-l-transparent border-r-transparent border-b-white/10 absolute -top-10 -left-10"></div>
-              <div className="w-0 h-0 border-l-[30px] border-r-[30px] border-b-[40px] border-l-transparent border-r-transparent border-b-white/15 absolute top-20 right-20"></div>
-            </div>
-          </div>
+          {/* Fallback gradient overlay for browsers that don't support the GIF */}
+          <noscript>
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-700"></div>
+          </noscript>
           
-          {/* Glowing effects */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 via-transparent to-blue-300/20"></div>
+          {/* Subtle overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-black/10"></div>
         </div>
         
         {/* StoryXcel Logo */}
