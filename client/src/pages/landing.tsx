@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Layers } from "lucide-react";
 import animatedBgGif from "@assets/animatedBG_1753651803819.gif";
+import customXLogo from "@assets/x_1753652746787.png";
 
 export default function Landing() {
   return (
@@ -44,18 +45,14 @@ export default function Landing() {
         {/* StoryXcel Logo */}
         <div className="relative z-10 text-center">
           <div className="mb-8">
-            <div className="w-32 h-32 mx-auto mb-6 bg-white rounded-2xl flex items-center justify-center shadow-2xl">
-              <span className="text-6xl font-black text-cyan-500">X</span>
-            </div>
-          </div>
-          
-          <div className="text-white">
-            <h1 className="text-6xl font-black mb-2 tracking-wider">
-              STORY<span className="text-cyan-200">X</span>CEL
-            </h1>
-            <p className="text-xl font-medium tracking-wide opacity-90">
-              Creative Project Management
-            </p>
+            <img 
+              src={customXLogo}
+              alt="StoryXcel Logo"
+              className="w-48 h-48 mx-auto mb-6 object-contain drop-shadow-2xl"
+              style={{ 
+                filter: 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15))'
+              }}
+            />
           </div>
         </div>
       </div>
