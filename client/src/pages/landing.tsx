@@ -62,7 +62,7 @@ export default function Landing() {
           <img 
             src={storyXcelVectorLogo}
             alt="StoryXcel Logo"
-            className="w-48 h-48 mx-auto mb-6 object-contain"
+            className="w-96 h-96 mx-auto mb-6 object-contain"
           />
         </div>
 
