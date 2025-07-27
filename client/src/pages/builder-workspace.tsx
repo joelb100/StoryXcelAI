@@ -92,7 +92,7 @@ export default function BuilderWorkspace() {
                   index < builderTabs.length - 1 ? 'border-r border-[#3B4A5F]' : ''
                 } ${
                   activeTab === tab.id
-                    ? "text-[#00d8ff] animate-pulse"
+                    ? "text-[#00d8ff] animate-slow-pulse"
                     : "text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
                 }`}
                 style={
