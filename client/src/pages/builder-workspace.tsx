@@ -88,13 +88,20 @@ export default function BuilderWorkspace() {
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`flex-1 h-full text-sm font-medium transition-colors ${
+                className={`flex-1 h-full text-sm font-medium transition-all duration-300 ${
                   index < builderTabs.length - 1 ? 'border-r border-[#3B4A5F]' : ''
                 } ${
                   activeTab === tab.id
-                    ? "bg-[#3B4A5F] text-white"
+                    ? "text-[#00d8ff] animate-pulse"
                     : "text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
                 }`}
+                style={
+                  activeTab === tab.id
+                    ? {
+                        textShadow: '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff'
+                      }
+                    : {}
+                }
               >
                 {tab.name}
               </button>
