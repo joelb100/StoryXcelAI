@@ -82,13 +82,15 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Builder Tab Navigation */}
-        <div className="flex items-center bg-[#2E3A4F]">
-          <nav className="flex h-full">
-            {builderTabs.map((tab) => (
+        <div className="flex items-center bg-[#2E3A4F] w-full">
+          <nav className="flex h-full w-full">
+            {builderTabs.map((tab, index) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`px-8 h-full text-sm font-medium transition-colors border-r border-[#3B4A5F] ${
+                className={`flex-1 h-full text-sm font-medium transition-colors ${
+                  index < builderTabs.length - 1 ? 'border-r border-[#3B4A5F]' : ''
+                } ${
                   activeTab === tab.id
                     ? "bg-[#3B4A5F] text-white"
                     : "text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
