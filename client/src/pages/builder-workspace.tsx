@@ -196,7 +196,18 @@ export default function BuilderWorkspace() {
         <div className="bg-[#4A5B72] border-r border-[#3B4A5F] overflow-hidden">
           <div className="p-4 border-b border-[#3B4A5F]">
             <h3 className="text-sm font-semibold text-white mb-2">
-              {activeTab === "dashboard" ? "Projects" : "Asset Overview"}
+              {(() => {
+                switch(activeTab) {
+                  case "dashboard": return "Projects";
+                  case "world": return "Asset Overview";
+                  case "production": return "Production Overview";
+                  case "asset": return "Asset Overview";
+                  case "story": return "Story Overview";
+                  case "script": return "Script Overview";
+                  case "deck": return "Deck Overview";
+                  default: return "Asset Overview";
+                }
+              })()}
             </h3>
             <p className="text-xs text-slate-300">
               {activeTab === "dashboard" 
