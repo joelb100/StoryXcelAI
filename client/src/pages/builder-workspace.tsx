@@ -14,7 +14,11 @@ import {
   BarChart3,
   Brain,
   Link,
-  MessageCircle
+  MessageCircle,
+  User,
+  Info,
+  Upload,
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -130,18 +134,62 @@ export default function BuilderWorkspace() {
             ))}
           </div>
           
-          {/* Logout button at bottom */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-10 h-10 p-0 text-slate-300 hover:text-red-400 hover:bg-[#3B4A5F]"
-            onClick={() => navigate("/login")}
-            title="Logout"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-          </Button>
+          {/* Bottom action icons */}
+          <div className="flex flex-col items-center space-y-2">
+            {/* Import Icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
+              title="Import"
+            >
+              <Upload className="w-5 h-5" />
+            </Button>
+            
+            {/* Export Icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
+              title="Export"
+            >
+              <Download className="w-5 h-5" />
+            </Button>
+            
+            {/* Info Icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
+              title="Information"
+            >
+              <Info className="w-5 h-5" />
+            </Button>
+            
+            {/* Profile Icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
+              title="Profile"
+              onClick={() => navigate("/profile")}
+            >
+              <User className="w-5 h-5" />
+            </Button>
+            
+            {/* Logout button at bottom */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-red-400 hover:bg-[#3B4A5F]"
+              onClick={() => navigate("/login")}
+              title="Logout"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </Button>
+          </div>
         </div>
 
         {/* Left Scroll Column - Projects - Fixed 240px width */}
