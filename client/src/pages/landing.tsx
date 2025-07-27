@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Layers } from "lucide-react";
 import animatedBgGif from "@assets/animatedBG_1753651803819.gif";
 import customXLogo from "@assets/x_1753652746787.png";
+import storyXcelVectorLogo from "@assets/StoryXcel_Logo_Vectorial_Final_1753653663470.jpg";
 
 export default function Landing() {
   return (
@@ -57,13 +58,12 @@ export default function Landing() {
       {/* Right Side - Login Form */}
       <div className="w-96 bg-white flex flex-col justify-center px-8 py-12">
         <div className="mb-8">
-          {/* Small Logo */}
-          <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center mb-6">
-            <span className="text-2xl font-black text-white">X</span>
-          </div>
-          
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to StoryXcel</h2>
-          <p className="text-gray-600">Sign in to start creating amazing projects</p>
+          {/* StoryXcel Vectorial Logo */}
+          <img 
+            src={storyXcelVectorLogo}
+            alt="StoryXcel Logo"
+            className="w-48 h-48 mx-auto mb-6 object-contain"
+          />
         </div>
 
         <div className="space-y-6">
