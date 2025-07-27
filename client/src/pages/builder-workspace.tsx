@@ -78,46 +78,102 @@ export default function BuilderWorkspace() {
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
   const [friendsSearch, setFriendsSearch] = useState("");
 
-  // Dashboard sample data
-  const projectSlides = [
-    {
-      id: 1,
-      title: "PROJECT GUN SMOKE",
-      description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won't come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive."
+  // Dynamic content management - structured for future backend integration
+  const [dashboardData, setDashboardData] = useState({
+    projects: {
+      active: [
+        {
+          id: 1,
+          title: "PROJECT GUN SMOKE",
+          description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won't come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive.",
+          type: "story",
+          lastModified: "2024-01-20",
+          collaborators: ["alex", "sarah"]
+        },
+        {
+          id: 2,
+          title: "EPIC FANTASY CHRONICLES",
+          description: "In the mystical realm of Aethermoor, ancient magic awakens as darkness threatens to consume the land. Follow the journey of unlikely heroes as they discover their true powers and unite against an ancient evil that seeks to reshape the world.",
+          type: "world",
+          lastModified: "2024-01-19",
+          collaborators: ["marcus"]
+        },
+        {
+          id: 3,
+          title: "SCI-FI ADVENTURE SERIES",
+          description: "Set in the year 2387, humanity has colonized the outer rim of the galaxy. When a mysterious signal from deep space threatens the fragile peace between worlds, a crew of rebels must uncover the truth behind an interstellar conspiracy.",
+          type: "script",
+          lastModified: "2024-01-18",
+          collaborators: ["emma", "david"]
+        }
+      ]
     },
-    {
-      id: 2,
-      title: "EPIC FANTASY CHRONICLES",
-      description: "In the mystical realm of Aethermoor, ancient magic awakens as darkness threatens to consume the land. Follow the journey of unlikely heroes as they discover their true powers and unite against an ancient evil that seeks to reshape the world."
+    social: {
+      friends: [
+        { id: "alex", name: "Alex Rivera", status: "online", avatar: "👤", projectAccess: ["gun-smoke"] },
+        { id: "sarah", name: "Sarah Chen", status: "online", avatar: "👤", projectAccess: ["gun-smoke"] },
+        { id: "marcus", name: "Marcus Johnson", status: "offline", avatar: "👤", projectAccess: ["fantasy"] },
+        { id: "emma", name: "Emma Wilson", status: "online", avatar: "👤", projectAccess: ["sci-fi"] },
+        { id: "david", name: "David Park", status: "offline", avatar: "👤", projectAccess: ["sci-fi"] }
+      ]
     },
-    {
-      id: 3,
-      title: "SCI-FI ADVENTURE SERIES",
-      description: "Set in the year 2387, humanity has colonized the outer rim of the galaxy. When a mysterious signal from deep space threatens the fragile peace between worlds, a crew of rebels must uncover the truth behind an interstellar conspiracy."
+    tools: {
+      quickLinks: [
+        { id: 1, name: "Adobe", icon: "🎨", url: "https://adobe.com", scope: "global" },
+        { id: 2, name: "Figma", icon: "🎯", url: "https://figma.com", scope: "global" },
+        { id: 3, name: "GitHub", icon: "🐙", url: "https://github.com", scope: "global" },
+        { id: 4, name: "Notion", icon: "📝", url: "https://notion.so", scope: "global" }
+      ]
+    },
+    media: {
+      referenceVideos: [
+        { 
+          id: 1, 
+          title: "How to Draw Western Characters", 
+          creator: "Art Pro", 
+          views: "1.2M", 
+          duration: "23:35", 
+          thumbnail: "🎬",
+          scope: "project",
+          projectId: 1,
+          url: "https://youtube.com/watch?v=example1"
+        },
+        { 
+          id: 2, 
+          title: "Screenwriting Tips for Action Scenes", 
+          creator: "Script Master", 
+          views: "856K", 
+          duration: "18:42", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example2"
+        },
+        { 
+          id: 3, 
+          title: "Character Development Masterclass", 
+          creator: "Story Guru", 
+          views: "2.1M", 
+          duration: "31:15", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example3"
+        },
+        { 
+          id: 4, 
+          title: "Western Film Analysis", 
+          creator: "Film Study", 
+          views: "654K", 
+          duration: "27:08", 
+          thumbnail: "🎬",
+          scope: "project",
+          projectId: 1,
+          url: "https://youtube.com/watch?v=example4"
+        }
+      ]
     }
-  ];
-
-  const friends = [
-    { id: 1, name: "Alex Rivera", status: "online", avatar: "👤" },
-    { id: 2, name: "Sarah Chen", status: "online", avatar: "👤" },
-    { id: 3, name: "Marcus Johnson", status: "offline", avatar: "👤" },
-    { id: 4, name: "Emma Wilson", status: "online", avatar: "👤" },
-    { id: 5, name: "David Park", status: "offline", avatar: "👤" }
-  ];
-
-  const quickLinks = [
-    { id: 1, name: "Adobe", icon: "🎨", url: "https://adobe.com" },
-    { id: 2, name: "Figma", icon: "🎯", url: "https://figma.com" },
-    { id: 3, name: "GitHub", icon: "🐙", url: "https://github.com" },
-    { id: 4, name: "Notion", icon: "📝", url: "https://notion.so" }
-  ];
-
-  const referenceVideos = [
-    { id: 1, title: "How to Draw Western Characters", creator: "Art Pro", views: "1.2M", duration: "23:35", thumbnail: "🎬" },
-    { id: 2, title: "Screenwriting Tips for Action Scenes", creator: "Script Master", views: "856K", duration: "18:42", thumbnail: "🎬" },
-    { id: 3, title: "Character Development Masterclass", creator: "Story Guru", views: "2.1M", duration: "31:15", thumbnail: "🎬" },
-    { id: 4, title: "Western Film Analysis", creator: "Film Study", views: "654K", duration: "27:08", thumbnail: "🎬" }
-  ];
+  });
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
@@ -322,19 +378,19 @@ export default function BuilderWorkspace() {
         <div className="bg-white relative overflow-auto">
           {activeTab === "dashboard" ? (
             /* DASHBOARD TEMPLATE */
-            <div className="h-full p-6 grid grid-rows-[2fr_1fr] gap-6">
+            <div className="h-full p-3 md:p-6 grid grid-rows-[2fr_1fr] gap-3 md:gap-6">
               {/* Top Row: Project Carousel + Friends Panel */}
-              <div className="grid grid-cols-[2fr_1fr] gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-3 md:gap-6">
                 {/* SECTION 1: Project Carousel */}
-                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden">
+                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden min-h-[300px] lg:min-h-[400px]">
                   <div className="absolute inset-0 bg-black/40"></div>
-                  <div className="relative h-full p-8 flex items-center">
-                    <div className="text-white max-w-lg">
-                      <h1 className="text-4xl font-black mb-4 tracking-wider">
-                        {projectSlides[currentProjectSlide].title}
+                  <div className="relative h-full p-4 md:p-8 flex items-center">
+                    <div className="text-white max-w-lg w-full">
+                      <h1 className="text-2xl md:text-4xl font-black mb-4 tracking-wider">
+                        {dashboardData.projects.active[currentProjectSlide].title}
                       </h1>
-                      <p className="text-sm leading-relaxed mb-6 opacity-90">
-                        {projectSlides[currentProjectSlide].description}
+                      <p className="text-xs md:text-sm leading-relaxed mb-6 opacity-90 line-clamp-4 md:line-clamp-6">
+                        {dashboardData.projects.active[currentProjectSlide].description}
                       </p>
                       <Button 
                         className="bg-white text-black hover:bg-gray-100"
@@ -350,7 +406,7 @@ export default function BuilderWorkspace() {
                     variant="ghost"
                     size="sm"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                    onClick={() => setCurrentProjectSlide(prev => prev === 0 ? projectSlides.length - 1 : prev - 1)}
+                    onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </Button>
@@ -358,14 +414,14 @@ export default function BuilderWorkspace() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                    onClick={() => setCurrentProjectSlide(prev => prev === projectSlides.length - 1 ? 0 : prev + 1)}
+                    onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
                   >
                     <ChevronRight className="w-6 h-6" />
                   </Button>
                   
                   {/* Slide indicators */}
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {projectSlides.map((_, index) => (
+                    {dashboardData.projects.active.map((_, index) => (
                       <button
                         key={index}
                         className={`w-3 h-3 rounded-full transition-colors ${
@@ -408,7 +464,7 @@ export default function BuilderWorkspace() {
                   
                   {/* Friends list */}
                   <div className="space-y-2 max-h-60 overflow-y-auto">
-                    {friends.filter(friend => 
+                    {dashboardData.social.friends.filter(friend => 
                       friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
                     ).map(friend => (
                       <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
@@ -435,12 +491,12 @@ export default function BuilderWorkspace() {
               </div>
 
               {/* Bottom Row: Quick Links + Reference Videos */}
-              <div className="grid grid-cols-[1fr_2fr] gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-3 md:gap-6">
                 {/* SECTION 3: Quick Link Shortcuts */}
                 <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
                   <div className="grid grid-cols-2 gap-3">
-                    {quickLinks.map(link => (
+                    {dashboardData.tools.quickLinks.map(link => (
                       <button
                         key={link.id}
                         className="flex flex-col items-center p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors"
@@ -465,21 +521,31 @@ export default function BuilderWorkspace() {
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex space-x-4 overflow-x-auto">
-                    {referenceVideos.map(video => (
-                      <div key={video.id} className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow">
-                        <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3">
+                  <div className="flex space-x-4 overflow-x-auto pb-2">
+                    {dashboardData.media.referenceVideos.map(video => (
+                      <div 
+                        key={video.id} 
+                        className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                        onClick={() => window.open(video.url, '_blank')}
+                        title={`Watch "${video.title}" on YouTube`}
+                      >
+                        <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3 group">
                           <span className="text-3xl">{video.thumbnail}</span>
                           <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
                             {video.duration}
                           </div>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <Play className="w-8 h-8 text-white/80" />
+                          <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                            <Play className="w-8 h-8 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
                           </div>
                         </div>
                         <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
                         <p className="text-xs text-gray-600">{video.creator}</p>
-                        <p className="text-xs text-gray-500">{video.views} views</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-500">{video.views} views</p>
+                          <span className="text-xs text-gray-400">
+                            {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
