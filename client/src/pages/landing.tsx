@@ -48,7 +48,7 @@ export default function Landing() {
             <img 
               src={customXLogo}
               alt="StoryXcel Logo"
-              className="w-72 h-72 mx-auto mb-6 object-contain drop-shadow-2xl animate-slow-pulse"
+              className="w-[576px] h-[576px] mx-auto mb-6 object-contain drop-shadow-2xl animate-slow-pulse"
               style={{ 
                 filter: 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3))'
               }}
