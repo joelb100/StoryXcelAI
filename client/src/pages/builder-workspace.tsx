@@ -24,6 +24,7 @@ import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 
 // Builder tabs configuration
 const builderTabs = [
+  { id: "dashboard", name: "Dashboard", color: "bg-gray-600" },
   { id: "world", name: "World Builder", color: "bg-purple-600" },
   { id: "production", name: "Production Builder", color: "bg-blue-600" },
   { id: "asset", name: "Asset Builder", color: "bg-green-600" },
@@ -56,7 +57,7 @@ const rightSidebarItems = [
 export default function BuilderWorkspace() {
   const params = useParams<{ type?: string }>();
   const [, navigate] = useLocation();
-  const [activeTab, setActiveTab] = useState(params.type || "world");
+  const [activeTab, setActiveTab] = useState(params.type || "dashboard");
   const [chatMessage, setChatMessage] = useState("");
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
