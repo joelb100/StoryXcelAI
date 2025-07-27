@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753647459400.png";
+import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649212076.png";
 
 // Builder tabs configuration
 const builderTabs = [
@@ -69,12 +69,12 @@ export default function BuilderWorkspace() {
   const currentBuilder = builderTabs.find(tab => tab.id === activeTab);
 
   return (
-    <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#3B4D66] flex flex-col overflow-hidden">
       {/* Header with Logo and Builder Tabs */}
-      <header className="bg-slate-900 border-b border-slate-700">
+      <header className="bg-[#2D3A4D] border-b border-[#4A5A70]">
         <div className="flex items-center h-16">
           {/* Logo Area */}
-          <div className="w-64 px-6 bg-purple-700 h-full flex items-center">
+          <div className="w-64 px-6 bg-[#2D3A4D] h-full flex items-center">
             <img 
               src={storyXcelLogo} 
               alt="StoryXcel" 
@@ -83,7 +83,7 @@ export default function BuilderWorkspace() {
           </div>
 
           {/* Builder Tab Navigation */}
-          <div className="flex-1 flex items-center bg-slate-800">
+          <div className="flex-1 flex items-center bg-[#3B4D66]">
             <nav className="flex">
               {builderTabs.map((tab) => (
                 <button
@@ -106,7 +106,7 @@ export default function BuilderWorkspace() {
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Navigation Icons */}
-        <div className="w-16 bg-slate-900 border-r border-slate-700 flex flex-col items-center py-4 space-y-4">
+        <div className="w-16 bg-[#2D3A4D] border-r border-[#4A5A70] flex flex-col items-center py-4 space-y-4">
           {leftSidebarItems.map((item, index) => (
             <Button
               key={index}
@@ -121,10 +121,10 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Left Scroll Column - Asset Overview */}
-        <div className={`bg-slate-800 border-r border-slate-700 transition-all duration-300 ${
+        <div className={`bg-[#3B4D66] border-r border-[#4A5A70] transition-all duration-300 ${
           leftSidebarOpen ? "w-80" : "w-64"
         }`}>
-          <div className="p-4 border-b border-slate-700">
+          <div className="p-4 border-b border-[#4A5A70]">
             <h3 className="text-sm font-semibold text-white mb-2">Asset Overview</h3>
             <p className="text-xs text-slate-400">
               {currentBuilder?.name} assets and resources
@@ -133,7 +133,7 @@ export default function BuilderWorkspace() {
           <div className="p-4 space-y-3 overflow-y-auto h-full">
             {/* Asset items would go here - showing placeholder */}
             {[1, 2, 3, 4, 5].map((item) => (
-              <Card key={item} className="p-3 bg-slate-700 border-slate-600">
+              <Card key={item} className="p-3 bg-[#4A5A70] border-[#5A6B82]">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-slate-600 rounded flex items-center justify-center">
                     <FileText className="w-4 h-4 text-slate-400" />
@@ -175,7 +175,7 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Right Sidebar - Action Tools */}
-        <div className={`bg-slate-900 border-l border-slate-700 transition-all duration-300 ${
+        <div className={`bg-[#2D3A4D] border-l border-[#4A5A70] transition-all duration-300 ${
           rightSidebarOpen ? "w-16" : "w-0"
         }`}>
           <div className="w-16 flex flex-col items-center py-4 space-y-4">
@@ -184,7 +184,7 @@ export default function BuilderWorkspace() {
                 key={index}
                 variant="ghost"
                 size="sm"
-                className="w-10 h-10 p-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                className="w-10 h-10 p-0 text-slate-400 hover:text-white hover:bg-[#4A5A70]"
                 title={item.label}
               >
                 <item.icon className="w-5 h-5" />
@@ -195,7 +195,7 @@ export default function BuilderWorkspace() {
       </div>
 
       {/* Bottom Panel - AI Chat Assistant */}
-      <div className="bg-slate-900 border-t border-slate-700 p-4">
+      <div className="bg-[#2D3A4D] border-t border-[#4A5A70] p-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -210,7 +210,7 @@ export default function BuilderWorkspace() {
                   placeholder="Describe the story you want to create..."
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
-                  className="w-full bg-slate-800 border-slate-600 text-white placeholder-slate-400 resize-none"
+                  className="w-full bg-[#3B4D66] border-[#4A5A70] text-white placeholder-slate-400 resize-none"
                   rows={1}
                 />
                 <div className="absolute right-2 bottom-2 flex space-x-1">
