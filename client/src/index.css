@@ -82,6 +82,19 @@
   animation: slow-pulse 3s ease-in-out infinite;
 }
 
+@keyframes intense-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 80px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 120px rgba(255, 255, 255, 0.4));
+  }
+}
+
+.animate-intense-glow-pulse {
+  animation: intense-glow-pulse 3s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
