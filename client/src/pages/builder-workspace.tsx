@@ -442,77 +442,80 @@ export default function BuilderWorkspace() {
                   </Button>
                 </div>
 
-                {/* SECTION 2: Friends/Collaborators Panel */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Friends List</h3>
-                    <Button variant="ghost" size="sm">
-                      <UserPlus className="w-4 h-4" />
+                {/* SECTION 2: Right Side Panel - Friends + Quick Links */}
+                <div className="space-y-4">
+                  {/* Friends/Collaborators */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">Friends List</h3>
+                      <Button variant="ghost" size="sm">
+                        <UserPlus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    
+                    {/* Search bar */}
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        placeholder="Search friends..."
+                        value={friendsSearch}
+                        onChange={(e) => setFriendsSearch(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
+                    
+                    {/* Friends list */}
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {dashboardData.social.friends.filter(friend => 
+                        friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
+                      ).map(friend => (
+                        <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
+                          <div className="relative">
+                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
+                              {friend.avatar}
+                            </div>
+                            <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
+                              friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
+                            }`}></div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
+                            <p className="text-xs text-gray-500">{friend.status}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <Button variant="outline" className="w-full mt-4" size="sm">
+                      Add Friends +
                     </Button>
                   </div>
-                  
-                  {/* Search bar */}
-                  <div className="relative mb-4">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input
-                      placeholder="Search friends..."
-                      value={friendsSearch}
-                      onChange={(e) => setFriendsSearch(e.target.value)}
-                      className="pl-10"
-                    />
+
+                  {/* Quick Links */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {dashboardData.tools.quickLinks.map(link => (
+                        <button
+                          key={link.id}
+                          className="flex flex-col items-center p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors"
+                          onClick={() => window.open(link.url, '_blank')}
+                        >
+                          <span className="text-2xl mb-1">{link.icon}</span>
+                          <span className="text-xs font-medium text-gray-700">{link.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <Button variant="outline" className="w-full mt-4" size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Link
+                    </Button>
                   </div>
-                  
-                  {/* Friends list */}
-                  <div className="space-y-2 max-h-60 overflow-y-auto">
-                    {dashboardData.social.friends.filter(friend => 
-                      friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
-                    ).map(friend => (
-                      <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
-                        <div className="relative">
-                          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
-                            {friend.avatar}
-                          </div>
-                          <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
-                            friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                          }`}></div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
-                          <p className="text-xs text-gray-500">{friend.status}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <Button variant="outline" className="w-full mt-4" size="sm">
-                    Add Friends +
-                  </Button>
                 </div>
               </div>
 
-              {/* Bottom Row: Quick Links + Reference Videos */}
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-3 md:gap-6">
-                {/* SECTION 3: Quick Link Shortcuts */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {dashboardData.tools.quickLinks.map(link => (
-                      <button
-                        key={link.id}
-                        className="flex flex-col items-center p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors"
-                        onClick={() => window.open(link.url, '_blank')}
-                      >
-                        <span className="text-2xl mb-1">{link.icon}</span>
-                        <span className="text-xs font-medium text-gray-700">{link.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                  <Button variant="outline" className="w-full mt-4" size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Link
-                  </Button>
-                </div>
-
+              {/* Bottom Row: YouTube Reference Videos - Full Width */}
+              <div className="w-full">
                 {/* SECTION 4: YouTube Reference Videos */}
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-4">
