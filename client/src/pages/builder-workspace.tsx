@@ -610,21 +610,21 @@ export default function BuilderWorkspace() {
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
-                <div className="flex space-x-4 overflow-x-auto pb-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
                   {dashboardData.media.referenceVideos.map(video => (
                     <div 
                       key={video.id} 
-                      className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                      className="bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
                       onClick={() => window.open(video.url, '_blank')}
                       title={`Watch "${video.title}" on YouTube`}
                     >
-                      <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3 group">
-                        <span className="text-3xl">{video.thumbnail}</span>
-                        <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
+                      <div className="relative bg-gray-800 rounded-lg h-24 flex items-center justify-center mb-2 group">
+                        <span className="text-2xl">{video.thumbnail}</span>
+                        <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
                           {video.duration}
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                          <Play className="w-8 h-8 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                          <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
                         </div>
                       </div>
                       <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
