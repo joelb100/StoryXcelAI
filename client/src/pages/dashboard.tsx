@@ -145,10 +145,20 @@ export default function Dashboard() {
           <div className="max-w-4xl">
             {/* Dashboard Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-charcoal mb-2">DASHBOARD</h1>
-              <p className="text-muted-foreground">
-                Welcome back, Creator! Here's what's happening with your projects.
-              </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold text-charcoal mb-2">DASHBOARD</h1>
+                  <p className="text-muted-foreground">
+                    Welcome back, Creator! Here's what's happening with your projects.
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => window.location.href = "/builder"}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                >
+                  Enter Builder Workspace
+                </Button>
+              </div>
             </div>
 
             {/* Featured Project Showcase */}
