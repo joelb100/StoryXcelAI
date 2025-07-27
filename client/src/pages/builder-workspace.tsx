@@ -463,7 +463,7 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Main Workspace - White Center Panel - Flexible width */}
-        <div className="bg-white relative overflow-auto">
+        <div className="bg-white relative overflow-hidden">
           {activeTab === "dashboard" ? (
             /* DASHBOARD TEMPLATE */
             <div className="h-full p-3 md:p-6 grid grid-rows-[2fr_1fr] gap-3 md:gap-6">
@@ -553,7 +553,7 @@ export default function BuilderWorkspace() {
                     </div>
                     
                     {/* Friends list */}
-                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                    <div className="space-y-2 max-h-32 overflow-y-auto">
                       {dashboardData.social.friends.filter(friend => 
                         friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
                       ).map(friend => (
@@ -603,40 +603,42 @@ export default function BuilderWorkspace() {
               </div>
 
               {/* Bottom Row: Feature Videos - Full Width */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-gray-50 rounded-lg p-4 flex flex-col h-full">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-gray-800">Feature Video</h3>
                   <Button variant="ghost" size="sm">
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-                  {dashboardData.media.referenceVideos.map(video => (
-                    <div 
-                      key={video.id} 
-                      className="bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
-                      onClick={() => window.open(video.url, '_blank')}
-                      title={`Watch "${video.title}" on YouTube`}
-                    >
-                      <div className="relative bg-gray-800 rounded-lg h-24 flex items-center justify-center mb-2 group">
-                        <span className="text-2xl">{video.thumbnail}</span>
-                        <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
-                          {video.duration}
+                <div className="flex-1 overflow-y-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                    {dashboardData.media.referenceVideos.map(video => (
+                      <div 
+                        key={video.id} 
+                        className="bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                        onClick={() => window.open(video.url, '_blank')}
+                        title={`Watch "${video.title}" on YouTube`}
+                      >
+                        <div className="relative bg-gray-800 rounded-lg h-24 flex items-center justify-center mb-2 group">
+                          <span className="text-2xl">{video.thumbnail}</span>
+                          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+                            {video.duration}
+                          </div>
+                          <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                            <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                          </div>
                         </div>
-                        <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                          <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
+                        <p className="text-xs text-gray-600">{video.creator}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-500">{video.views} views</p>
+                          <span className="text-xs text-gray-400">
+                            {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
+                          </span>
                         </div>
                       </div>
-                      <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
-                      <p className="text-xs text-gray-600">{video.creator}</p>
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs text-gray-500">{video.views} views</p>
-                        <span className="text-xs text-gray-400">
-                          {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
