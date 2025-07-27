@@ -1,0 +1,57 @@
+Replit Developer Request Prompt (Explanation Template)
+
+    Purpose
+
+    I am building a web app called StoryXcel, a modular AI-driven storytelling and production tool. Below are key notes about the current layout, how it's supposed to function, and what is incorrect in the current implementation vs. the intended design.
+
+    Please review the design intent, then help me implement/fix the layout as described.
+
+🧩 Key Visual References
+
+    Pic #1 – Current layout in Replit preview
+
+        This is what I'm currently seeing in my live preview inside Replit.
+
+    Pic #2 – Intended layout and spacing background
+
+        This image shows the correct layout structure and proportions I want across the screen.
+
+    Pic #3 – Correct button/icon placement overlay
+
+        This image shows the proper positioning of all Builder tabs, sidebars, chat box, etc.
+
+    Pic #4 – Correct logo file (transparent)
+
+        Please use this as the logo in the top-left header instead of any placeholder. The X is custom styled and part of the identity.
+
+❓ Questions I Need Answered to Proceed
+
+    Scaling/Layout
+
+        How do I lock the spacing and proportions of the left sidebar, top Builder bar, and chat input area to match pic 2 and 3?
+
+        Should I use CSS grid, flexbox, or absolute positioning to ensure the Builder tab bar doesn't shift or collapse?
+
+    Sidebar Functionality
+
+        What's the best way to dynamically show/hide the right and left sidebars depending on the active page/tab?
+
+        Can I define the functionality of each right sidebar icon later without breaking layout logic?
+
+    Builder Tab Navigation
+
+        Can we highlight tabs and change the center white panel without refreshing the entire layout?
+
+        Should I use React Router, or should this be built as a SPA with conditional rendering?
+
+    Persistent AI Chat Box
+
+        How do I make the chat box stay fixed at the bottom, regardless of the page scroll or content height?
+
+        Should I use a component hook or absolute positioning with z-index for this?
+
+    Visual Styling / Font / Icons
+
+        What is the best way to lock the UI color scheme across pages? Should I create a shared style sheet or use Tailwind classes?
+
+        Can I preload and map the icons used in pic 3 to functional buttons even if the logic isn’t hooked up yet?

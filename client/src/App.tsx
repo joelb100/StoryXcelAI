@@ -14,9 +14,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/login" component={Landing} />
-      <Route path="/" component={Dashboard} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/builder/:type" component={BuilderWorkspace} />
       <Route path="/builder" component={BuilderWorkspace} />
+      <Route path="/" component={BuilderWorkspace} />
       <Route component={NotFound} />
     </Switch>
   );

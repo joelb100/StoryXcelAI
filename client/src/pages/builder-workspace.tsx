@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649212076.png";
+import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 
 // Builder tabs configuration
 const builderTabs = [
@@ -69,50 +69,48 @@ export default function BuilderWorkspace() {
   const currentBuilder = builderTabs.find(tab => tab.id === activeTab);
 
   return (
-    <div className="h-screen bg-[#3B4D66] flex flex-col overflow-hidden">
-      {/* Header with Logo and Builder Tabs */}
-      <header className="bg-[#2D3A4D] border-b border-[#4A5A70]">
-        <div className="flex items-center h-16">
-          {/* Logo Area */}
-          <div className="w-64 px-6 bg-[#2D3A4D] h-full flex items-center">
-            <img 
-              src={storyXcelLogo} 
-              alt="StoryXcel" 
-              className="h-8 w-auto"
-            />
-          </div>
+    <div className="h-screen bg-[#3B4D66] grid grid-rows-[64px_1fr_80px] overflow-hidden">
+      {/* Header with Logo and Builder Tabs - Fixed 64px height */}
+      <header className="bg-[#2D3A4D] border-b border-[#4A5A70] grid grid-cols-[240px_1fr]">
+        {/* Logo Area - Fixed 240px width */}
+        <div className="px-6 bg-purple-600 flex items-center">
+          <img 
+            src={storyXcelLogo} 
+            alt="StoryXcel" 
+            className="h-8 w-auto"
+          />
+        </div>
 
-          {/* Builder Tab Navigation */}
-          <div className="flex-1 flex items-center bg-[#3B4D66]">
-            <nav className="flex">
-              {builderTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`px-6 py-4 text-sm font-medium transition-colors border-r border-slate-600 ${
-                    activeTab === tab.id
-                      ? "bg-slate-700 text-white border-b-2 border-cyan-400"
-                      : "text-slate-400 hover:text-white hover:bg-slate-700"
-                  }`}
-                >
-                  {tab.name}
-                </button>
-              ))}
-            </nav>
-          </div>
+        {/* Builder Tab Navigation */}
+        <div className="flex items-center bg-red-600">
+          <nav className="flex h-full">
+            {builderTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabChange(tab.id)}
+                className={`px-8 h-full text-sm font-medium transition-colors border-r border-[#4A5A70] ${
+                  activeTab === tab.id
+                    ? "bg-[#4A5A70] text-white"
+                    : "text-slate-300 hover:text-white hover:bg-[#4A5A70]"
+                }`}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </nav>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar - Navigation Icons */}
-        <div className="w-16 bg-[#2D3A4D] border-r border-[#4A5A70] flex flex-col items-center py-4 space-y-4">
+      {/* Main Content Area - Grid with fixed sidebar widths */}
+      <div className="grid grid-cols-[64px_240px_1fr_64px] overflow-hidden">
+        {/* Left Sidebar - Navigation Icons - Fixed 64px width */}
+        <div className="bg-yellow-500 flex flex-col items-center py-4 space-y-4 border-r border-[#4A5A70]">
           {leftSidebarItems.map((item, index) => (
             <Button
               key={index}
               variant="ghost"
               size="sm"
-              className="w-10 h-10 p-0 text-slate-400 hover:text-white hover:bg-slate-700"
+              className="w-10 h-10 p-0 text-slate-700 hover:text-white hover:bg-[#4A5A70]"
               onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
             >
               <item.icon className="w-5 h-5" />
@@ -120,18 +118,15 @@ export default function BuilderWorkspace() {
           ))}
         </div>
 
-        {/* Left Scroll Column - Asset Overview */}
-        <div className={`bg-[#3B4D66] border-r border-[#4A5A70] transition-all duration-300 ${
-          leftSidebarOpen ? "w-80" : "w-64"
-        }`}>
+        {/* Left Scroll Column - Asset Overview - Fixed 240px width */}
+        <div className="bg-orange-500 border-r border-[#4A5A70] overflow-hidden">
           <div className="p-4 border-b border-[#4A5A70]">
             <h3 className="text-sm font-semibold text-white mb-2">Asset Overview</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-200">
               {currentBuilder?.name} assets and resources
             </p>
           </div>
           <div className="p-4 space-y-3 overflow-y-auto h-full">
-            {/* Asset items would go here - showing placeholder */}
             {[1, 2, 3, 4, 5].map((item) => (
               <Card key={item} className="p-3 bg-[#4A5A70] border-[#5A6B82]">
                 <div className="flex items-center space-x-3">
@@ -152,8 +147,8 @@ export default function BuilderWorkspace() {
           </div>
         </div>
 
-        {/* Main Workspace - White Center Panel */}
-        <div className="flex-1 bg-white relative">
+        {/* Main Workspace - White Center Panel - Flexible width */}
+        <div className="bg-white relative overflow-auto">
           <div className="h-full p-8">
             <div className="h-full flex items-center justify-center">
               <div className="text-center max-w-2xl">
@@ -174,56 +169,50 @@ export default function BuilderWorkspace() {
           </div>
         </div>
 
-        {/* Right Sidebar - Action Tools */}
-        <div className={`bg-[#2D3A4D] border-l border-[#4A5A70] transition-all duration-300 ${
-          rightSidebarOpen ? "w-16" : "w-0"
-        }`}>
-          <div className="w-16 flex flex-col items-center py-4 space-y-4">
-            {rightSidebarItems.map((item, index) => (
-              <Button
-                key={index}
-                variant="ghost"
-                size="sm"
-                className="w-10 h-10 p-0 text-slate-400 hover:text-white hover:bg-[#4A5A70]"
-                title={item.label}
-              >
-                <item.icon className="w-5 h-5" />
-              </Button>
-            ))}
-          </div>
+        {/* Right Sidebar - Action Tools - Fixed 64px width */}
+        <div className="bg-green-500 border-l border-[#4A5A70] flex flex-col items-center py-4 space-y-3">
+          {rightSidebarItems.map((item, index) => (
+            <Button
+              key={index}
+              variant="ghost"
+              size="sm"
+              className="w-10 h-10 p-0 text-slate-700 hover:text-white hover:bg-[#4A5A70]"
+              title={item.label}
+            >
+              <item.icon className="w-5 h-5" />
+            </Button>
+          ))}
         </div>
       </div>
 
-      {/* Bottom Panel - AI Chat Assistant */}
-      <div className="bg-[#2D3A4D] border-t border-[#4A5A70] p-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <MessageCircle className="w-5 h-5 text-cyan-400" />
-              <span className="text-sm font-medium text-white">
-                AI Assistant - {currentBuilder?.name} Mode
-              </span>
-            </div>
-            <div className="flex-1">
-              <div className="relative">
-                <Textarea
-                  placeholder="Describe the story you want to create..."
-                  value={chatMessage}
-                  onChange={(e) => setChatMessage(e.target.value)}
-                  className="w-full bg-[#3B4D66] border-[#4A5A70] text-white placeholder-slate-400 resize-none"
-                  rows={1}
-                />
-                <div className="absolute right-2 bottom-2 flex space-x-1">
-                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0">
-                    📎
-                  </Button>
-                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0">
-                    🎤
-                  </Button>
-                  <Button size="sm" variant="ghost" className="w-8 h-8 p-0">
-                    ➤
-                  </Button>
-                </div>
+      {/* Bottom Panel - AI Chat Assistant - Fixed 80px height */}
+      <div className="bg-blue-600 border-t border-[#4A5A70] p-4 flex items-center">
+        <div className="w-full max-w-6xl mx-auto flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <MessageCircle className="w-5 h-5 text-cyan-300" />
+            <span className="text-sm font-medium text-white">
+              AI Assistant - {currentBuilder?.name} Mode
+            </span>
+          </div>
+          <div className="flex-1">
+            <div className="relative">
+              <Textarea
+                placeholder="Describe the story you want to create..."
+                value={chatMessage}
+                onChange={(e) => setChatMessage(e.target.value)}
+                className="w-full bg-[#3B4D66] border-[#4A5A70] text-white placeholder-slate-400 resize-none h-12"
+                rows={1}
+              />
+              <div className="absolute right-2 top-2 flex space-x-1">
+                <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-slate-300">
+                  📎
+                </Button>
+                <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-slate-300">
+                  🎤
+                </Button>
+                <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-slate-300">
+                  ➤
+                </Button>
               </div>
             </div>
           </div>
