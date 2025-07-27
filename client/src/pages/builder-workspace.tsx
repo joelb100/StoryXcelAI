@@ -144,32 +144,65 @@ export default function BuilderWorkspace() {
           </Button>
         </div>
 
-        {/* Left Scroll Column - Asset Overview - Fixed 240px width */}
+        {/* Left Scroll Column - Projects - Fixed 240px width */}
         <div className="bg-[#4A5B72] border-r border-[#3B4A5F] overflow-hidden">
           <div className="p-4 border-b border-[#3B4A5F]">
-            <h3 className="text-sm font-semibold text-white mb-2">Asset Overview</h3>
+            <h3 className="text-sm font-semibold text-white mb-2">
+              {activeTab === "dashboard" ? "Projects" : "Asset Overview"}
+            </h3>
             <p className="text-xs text-slate-300">
-              {currentBuilder?.name} assets and resources
+              {activeTab === "dashboard" 
+                ? "Your active projects" 
+                : `${currentBuilder?.name} assets and resources`
+              }
             </p>
           </div>
           <div className="p-4 space-y-3 overflow-y-auto h-full">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-slate-300" />
+            {activeTab === "dashboard" ? (
+              // Dashboard Projects List
+              [
+                "Epic Fantasy Chronicles",
+                "Sci-Fi Adventure Series", 
+                "Mystery Detective Story",
+                "Romance Novel Draft",
+                "Documentary Project"
+              ].map((projectName, index) => (
+                <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                      <BookOpen className="w-4 h-4 text-slate-300" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-white truncate">
+                        {projectName}
+                      </p>
+                      <p className="text-xs text-slate-300">
+                        Active project
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">
-                      Asset {item}
-                    </p>
-                    <p className="text-xs text-slate-300">
-                      {currentBuilder?.name} resource
-                    </p>
+                </Card>
+              ))
+            ) : (
+              // Other Builders Asset List
+              [1, 2, 3, 4, 5].map((item) => (
+                <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                      <FileText className="w-4 h-4 text-slate-300" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-white truncate">
+                        Asset {item}
+                      </p>
+                      <p className="text-xs text-slate-300">
+                        {currentBuilder?.name} resource
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            )}
           </div>
         </div>
 
