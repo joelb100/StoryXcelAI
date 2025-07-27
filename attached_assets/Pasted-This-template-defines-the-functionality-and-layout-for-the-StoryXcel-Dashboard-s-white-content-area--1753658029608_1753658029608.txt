@@ -1,0 +1,40 @@
+This template defines the functionality and layout for the StoryXcel Dashboard's white content area, as shown in the reference image. It consists of four primary panels, each with clear interactivity and layout intent. The rest of the UI (sidebars, top bar, AI assistant) is excluded from this scope.
+🔴 SECTION 1: Project Carousel (Main Area – "Gun Smoke" Example)
+Element	Description
+Purpose	Visual carousel of active story projects
+Interactivity	- Click to go to that project’s full Builder workspace
+- Swipe (mobile) or arrow click (desktop) navigation
+- Clicking dots at bottom also navigates slides
+UI	One large panel with background image per project; include overlayed project name, description, and visual
+Extras	Include a “+ Create New Project” button either:
+→ On the first card
+→ Or near the project tabs on the left panel
+🔴 SECTION 2: Friends / Collaborators Panel (Top Right List)
+Element	Description
+Purpose	Display team members or collaborators linked to the user or project
+Interactivity	- Each profile photo or name is clickable
+→ Click opens either:
+  • Profile view
+  • Quick chat window
+- Online/offline dot indicators beside each user
+UI Features	- Scrollable list
+- Include a search/filter bar above the list
+Optional	“Add Friends” button at the bottom of list
+🔴 SECTION 3: Quick Link Shortcuts (Below Friends)
+Element	Description
+Purpose	Custom buttons for external sites/tools user frequently uses
+Interactivity	- User can add/remove links from this panel
+- Each icon should be user-defined (custom icon URL or preset gallery)
+UI Behavior	- Dynamic layout (grid or vertical stack)
+- No hardcoded/fixed buttons
+Technical Note	Store link data as user-defined object (e.g. { name, iconURL, linkURL }) either globally or per-user in DB
+🔴 SECTION 4: YouTube Reference Video Links (Bottom Scroll Panel)
+Element	Description
+Purpose	Quick reference videos related to creative process or inspiration
+Interactivity	- Clickable thumbnail opens the video in YouTube (external tab)
+- Users can add, edit, or remove entries manually
+Storage Scope	On add, system should prompt:
+
+“Would you like to save this video for just this project or across all projects?”
+Then store appropriately.
+| UI Behavior | - Horizontal scroll carousel<br>- Show video title, creator, and view count if possible |

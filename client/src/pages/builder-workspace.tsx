@@ -18,7 +18,15 @@ import {
   User,
   Info,
   Upload,
-  Download
+  Download,
+  Plus,
+  Search,
+  UserPlus,
+  ChevronLeft,
+  ChevronRight,
+  Circle,
+  ExternalLink,
+  Play
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -65,6 +73,51 @@ export default function BuilderWorkspace() {
   const [chatMessage, setChatMessage] = useState("");
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  
+  // Dashboard state
+  const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
+  const [friendsSearch, setFriendsSearch] = useState("");
+
+  // Dashboard sample data
+  const projectSlides = [
+    {
+      id: 1,
+      title: "PROJECT GUN SMOKE",
+      description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won't come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive."
+    },
+    {
+      id: 2,
+      title: "EPIC FANTASY CHRONICLES",
+      description: "In the mystical realm of Aethermoor, ancient magic awakens as darkness threatens to consume the land. Follow the journey of unlikely heroes as they discover their true powers and unite against an ancient evil that seeks to reshape the world."
+    },
+    {
+      id: 3,
+      title: "SCI-FI ADVENTURE SERIES",
+      description: "Set in the year 2387, humanity has colonized the outer rim of the galaxy. When a mysterious signal from deep space threatens the fragile peace between worlds, a crew of rebels must uncover the truth behind an interstellar conspiracy."
+    }
+  ];
+
+  const friends = [
+    { id: 1, name: "Alex Rivera", status: "online", avatar: "👤" },
+    { id: 2, name: "Sarah Chen", status: "online", avatar: "👤" },
+    { id: 3, name: "Marcus Johnson", status: "offline", avatar: "👤" },
+    { id: 4, name: "Emma Wilson", status: "online", avatar: "👤" },
+    { id: 5, name: "David Park", status: "offline", avatar: "👤" }
+  ];
+
+  const quickLinks = [
+    { id: 1, name: "Adobe", icon: "🎨", url: "https://adobe.com" },
+    { id: 2, name: "Figma", icon: "🎯", url: "https://figma.com" },
+    { id: 3, name: "GitHub", icon: "🐙", url: "https://github.com" },
+    { id: 4, name: "Notion", icon: "📝", url: "https://notion.so" }
+  ];
+
+  const referenceVideos = [
+    { id: 1, title: "How to Draw Western Characters", creator: "Art Pro", views: "1.2M", duration: "23:35", thumbnail: "🎬" },
+    { id: 2, title: "Screenwriting Tips for Action Scenes", creator: "Script Master", views: "856K", duration: "18:42", thumbnail: "🎬" },
+    { id: 3, title: "Character Development Masterclass", creator: "Story Guru", views: "2.1M", duration: "31:15", thumbnail: "🎬" },
+    { id: 4, title: "Western Film Analysis", creator: "Film Study", views: "654K", duration: "27:08", thumbnail: "🎬" }
+  ];
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
@@ -267,24 +320,193 @@ export default function BuilderWorkspace() {
 
         {/* Main Workspace - White Center Panel - Flexible width */}
         <div className="bg-white relative overflow-auto">
-          <div className="h-full p-8">
-            <div className="h-full flex items-center justify-center">
-              <div className="text-center max-w-2xl">
-                <h1 className="text-3xl font-bold text-slate-800 mb-4">
-                  {currentBuilder?.name}
-                </h1>
-                <p className="text-slate-600 mb-8">
-                  Welcome to the {currentBuilder?.name}. This workspace will contain all the tools and interfaces specific to this builder type.
-                </p>
-                <div className="bg-slate-100 rounded-lg p-8">
-                  <p className="text-slate-500 text-sm">
-                    Builder interface will be customized based on the selected tab above.
-                    Each builder will have its own unique toolset and layout.
-                  </p>
+          {activeTab === "dashboard" ? (
+            /* DASHBOARD TEMPLATE */
+            <div className="h-full p-6 grid grid-rows-[2fr_1fr] gap-6">
+              {/* Top Row: Project Carousel + Friends Panel */}
+              <div className="grid grid-cols-[2fr_1fr] gap-6">
+                {/* SECTION 1: Project Carousel */}
+                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden">
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="relative h-full p-8 flex items-center">
+                    <div className="text-white max-w-lg">
+                      <h1 className="text-4xl font-black mb-4 tracking-wider">
+                        {projectSlides[currentProjectSlide].title}
+                      </h1>
+                      <p className="text-sm leading-relaxed mb-6 opacity-90">
+                        {projectSlides[currentProjectSlide].description}
+                      </p>
+                      <Button 
+                        className="bg-white text-black hover:bg-gray-100"
+                        onClick={() => navigate(`/builder/story`)}
+                      >
+                        Open Project
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Navigation arrows */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                    onClick={() => setCurrentProjectSlide(prev => prev === 0 ? projectSlides.length - 1 : prev - 1)}
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                    onClick={() => setCurrentProjectSlide(prev => prev === projectSlides.length - 1 ? 0 : prev + 1)}
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </Button>
+                  
+                  {/* Slide indicators */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                    {projectSlides.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-3 h-3 rounded-full transition-colors ${
+                          index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
+                        }`}
+                        onClick={() => setCurrentProjectSlide(index)}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Create New Project Button */}
+                  <Button
+                    variant="outline"
+                    className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create New Project
+                  </Button>
+                </div>
+
+                {/* SECTION 2: Friends/Collaborators Panel */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Friends List</h3>
+                    <Button variant="ghost" size="sm">
+                      <UserPlus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  {/* Search bar */}
+                  <div className="relative mb-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      placeholder="Search friends..."
+                      value={friendsSearch}
+                      onChange={(e) => setFriendsSearch(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  {/* Friends list */}
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {friends.filter(friend => 
+                      friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
+                    ).map(friend => (
+                      <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
+                        <div className="relative">
+                          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
+                            {friend.avatar}
+                          </div>
+                          <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
+                            friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
+                          }`}></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
+                          <p className="text-xs text-gray-500">{friend.status}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <Button variant="outline" className="w-full mt-4" size="sm">
+                    Add Friends +
+                  </Button>
+                </div>
+              </div>
+
+              {/* Bottom Row: Quick Links + Reference Videos */}
+              <div className="grid grid-cols-[1fr_2fr] gap-6">
+                {/* SECTION 3: Quick Link Shortcuts */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {quickLinks.map(link => (
+                      <button
+                        key={link.id}
+                        className="flex flex-col items-center p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors"
+                        onClick={() => window.open(link.url, '_blank')}
+                      >
+                        <span className="text-2xl mb-1">{link.icon}</span>
+                        <span className="text-xs font-medium text-gray-700">{link.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full mt-4" size="sm">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Link
+                  </Button>
+                </div>
+
+                {/* SECTION 4: YouTube Reference Videos */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Feature Video</h3>
+                    <Button variant="ghost" size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex space-x-4 overflow-x-auto">
+                    {referenceVideos.map(video => (
+                      <div key={video.id} className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow">
+                        <div className="relative bg-gray-800 rounded-lg h-28 flex items-center justify-center mb-3">
+                          <span className="text-3xl">{video.thumbnail}</span>
+                          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1 rounded">
+                            {video.duration}
+                          </div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Play className="w-8 h-8 text-white/80" />
+                          </div>
+                        </div>
+                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
+                        <p className="text-xs text-gray-600">{video.creator}</p>
+                        <p className="text-xs text-gray-500">{video.views} views</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            /* OTHER BUILDERS CONTENT */
+            <div className="h-full p-8">
+              <div className="h-full flex items-center justify-center">
+                <div className="text-center max-w-2xl">
+                  <h1 className="text-3xl font-bold text-slate-800 mb-4">
+                    {currentBuilder?.name}
+                  </h1>
+                  <p className="text-slate-600 mb-8">
+                    Welcome to the {currentBuilder?.name}. This workspace will contain all the tools and interfaces specific to this builder type.
+                  </p>
+                  <div className="bg-slate-100 rounded-lg p-8">
+                    <p className="text-slate-500 text-sm">
+                      Builder interface will be customized based on the selected tab above.
+                      Each builder will have its own unique toolset and layout.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Sidebar - Action Tools - Fixed 64px width */}
