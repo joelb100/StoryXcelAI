@@ -170,6 +170,94 @@ export default function BuilderWorkspace() {
           scope: "project",
           projectId: 1,
           url: "https://youtube.com/watch?v=example4"
+        },
+        { 
+          id: 5, 
+          title: "How to Draw Western Characters", 
+          creator: "Art Pro", 
+          views: "1.7M", 
+          duration: "23:35", 
+          thumbnail: "🎬",
+          scope: "project",
+          projectId: 1,
+          url: "https://youtube.com/watch?v=example5"
+        },
+        { 
+          id: 6, 
+          title: "Screenwriting Tips for Action Scenes", 
+          creator: "Script Master", 
+          views: "892K", 
+          duration: "18:42", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example6"
+        },
+        { 
+          id: 7, 
+          title: "Character Development Masterclass", 
+          creator: "Story Guru", 
+          views: "2.7M", 
+          duration: "31:15", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example7"
+        },
+        { 
+          id: 8, 
+          title: "Western Film Analysis", 
+          creator: "Film Study", 
+          views: "743K", 
+          duration: "27:08", 
+          thumbnail: "🎬",
+          scope: "project",
+          projectId: 1,
+          url: "https://youtube.com/watch?v=example8"
+        },
+        { 
+          id: 9, 
+          title: "Cinematic Storytelling Techniques", 
+          creator: "Cinema Craft", 
+          views: "1.4M", 
+          duration: "29:42", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example9"
+        },
+        { 
+          id: 10, 
+          title: "Building Tension in Scripts", 
+          creator: "WriteWell", 
+          views: "567K", 
+          duration: "22:18", 
+          thumbnail: "🎬",
+          scope: "project",
+          projectId: 1,
+          url: "https://youtube.com/watch?v=example10"
+        },
+        { 
+          id: 11, 
+          title: "Color Theory for Film", 
+          creator: "Visual Academy", 
+          views: "981K", 
+          duration: "35:27", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example11"
+        },
+        { 
+          id: 12, 
+          title: "Sound Design Fundamentals", 
+          creator: "Audio Master", 
+          views: "1.1M", 
+          duration: "41:33", 
+          thumbnail: "🎬",
+          scope: "global",
+          projectId: null,
+          url: "https://youtube.com/watch?v=example12"
         }
       ]
     }
