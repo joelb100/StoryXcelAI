@@ -113,18 +113,34 @@ export default function BuilderWorkspace() {
       {/* Main Content Area - Grid with fixed sidebar widths */}
       <div className="grid grid-cols-[64px_240px_1fr_64px] overflow-hidden">
         {/* Left Sidebar - Navigation Icons - Fixed 64px width */}
-        <div className="bg-[#4A5B72] flex flex-col items-center py-4 space-y-4 border-r border-[#3B4A5F]">
-          {leftSidebarItems.map((item, index) => (
-            <Button
-              key={index}
-              variant="ghost"
-              size="sm"
-              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
-              onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
-            >
-              <item.icon className="w-5 h-5" />
-            </Button>
-          ))}
+        <div className="bg-[#4A5B72] flex flex-col justify-between items-center py-4 border-r border-[#3B4A5F]">
+          {/* Top navigation icons */}
+          <div className="flex flex-col items-center space-y-4">
+            {leftSidebarItems.map((item, index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="sm"
+                className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
+                onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
+              >
+                <item.icon className="w-5 h-5" />
+              </Button>
+            ))}
+          </div>
+          
+          {/* Logout button at bottom */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-red-400 hover:bg-[#3B4A5F]"
+            onClick={() => navigate("/login")}
+            title="Logout"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </Button>
         </div>
 
         {/* Left Scroll Column - Asset Overview - Fixed 240px width */}
