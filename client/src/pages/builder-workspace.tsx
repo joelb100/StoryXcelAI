@@ -69,11 +69,11 @@ export default function BuilderWorkspace() {
   const currentBuilder = builderTabs.find(tab => tab.id === activeTab);
 
   return (
-    <div className="h-screen bg-[#3B4D66] grid grid-rows-[64px_1fr_80px] overflow-hidden">
+    <div className="h-screen bg-[#4A5B72] grid grid-rows-[64px_1fr_80px] overflow-hidden">
       {/* Header with Logo and Builder Tabs - Fixed 64px height */}
-      <header className="bg-[#2D3A4D] border-b border-[#4A5A70] grid grid-cols-[240px_1fr]">
+      <header className="bg-[#2E3A4F] border-b border-[#3B4A5F] grid grid-cols-[240px_1fr]">
         {/* Logo Area - Fixed 240px width */}
-        <div className="px-6 bg-purple-600 flex items-center">
+        <div className="px-6 bg-[#2E3A4F] flex items-center">
           <img 
             src={storyXcelLogo} 
             alt="StoryXcel" 
@@ -82,16 +82,16 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Builder Tab Navigation */}
-        <div className="flex items-center bg-red-600">
+        <div className="flex items-center bg-[#2E3A4F]">
           <nav className="flex h-full">
             {builderTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`px-8 h-full text-sm font-medium transition-colors border-r border-[#4A5A70] ${
+                className={`px-8 h-full text-sm font-medium transition-colors border-r border-[#3B4A5F] ${
                   activeTab === tab.id
-                    ? "bg-[#4A5A70] text-white"
-                    : "text-slate-300 hover:text-white hover:bg-[#4A5A70]"
+                    ? "bg-[#3B4A5F] text-white"
+                    : "text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
                 }`}
               >
                 {tab.name}
@@ -104,13 +104,13 @@ export default function BuilderWorkspace() {
       {/* Main Content Area - Grid with fixed sidebar widths */}
       <div className="grid grid-cols-[64px_240px_1fr_64px] overflow-hidden">
         {/* Left Sidebar - Navigation Icons - Fixed 64px width */}
-        <div className="bg-yellow-500 flex flex-col items-center py-4 space-y-4 border-r border-[#4A5A70]">
+        <div className="bg-[#4A5B72] flex flex-col items-center py-4 space-y-4 border-r border-[#3B4A5F]">
           {leftSidebarItems.map((item, index) => (
             <Button
               key={index}
               variant="ghost"
               size="sm"
-              className="w-10 h-10 p-0 text-slate-700 hover:text-white hover:bg-[#4A5A70]"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
               onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
             >
               <item.icon className="w-5 h-5" />
@@ -119,25 +119,25 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Left Scroll Column - Asset Overview - Fixed 240px width */}
-        <div className="bg-orange-500 border-r border-[#4A5A70] overflow-hidden">
-          <div className="p-4 border-b border-[#4A5A70]">
+        <div className="bg-[#4A5B72] border-r border-[#3B4A5F] overflow-hidden">
+          <div className="p-4 border-b border-[#3B4A5F]">
             <h3 className="text-sm font-semibold text-white mb-2">Asset Overview</h3>
-            <p className="text-xs text-slate-200">
+            <p className="text-xs text-slate-300">
               {currentBuilder?.name} assets and resources
             </p>
           </div>
           <div className="p-4 space-y-3 overflow-y-auto h-full">
             {[1, 2, 3, 4, 5].map((item) => (
-              <Card key={item} className="p-3 bg-[#4A5A70] border-[#5A6B82]">
+              <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-slate-600 rounded flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-slate-400" />
+                  <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                    <FileText className="w-4 h-4 text-slate-300" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white truncate">
                       Asset {item}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-300">
                       {currentBuilder?.name} resource
                     </p>
                   </div>
@@ -170,13 +170,13 @@ export default function BuilderWorkspace() {
         </div>
 
         {/* Right Sidebar - Action Tools - Fixed 64px width */}
-        <div className="bg-green-500 border-l border-[#4A5A70] flex flex-col items-center py-4 space-y-3">
+        <div className="bg-[#4A5B72] border-l border-[#3B4A5F] flex flex-col items-center py-4 space-y-3">
           {rightSidebarItems.map((item, index) => (
             <Button
               key={index}
               variant="ghost"
               size="sm"
-              className="w-10 h-10 p-0 text-slate-700 hover:text-white hover:bg-[#4A5A70]"
+              className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-[#3B4A5F]"
               title={item.label}
             >
               <item.icon className="w-5 h-5" />
@@ -186,10 +186,10 @@ export default function BuilderWorkspace() {
       </div>
 
       {/* Bottom Panel - AI Chat Assistant - Fixed 80px height */}
-      <div className="bg-blue-600 border-t border-[#4A5A70] p-4 flex items-center">
+      <div className="bg-[#2E3A4F] border-t border-[#3B4A5F] p-4 flex items-center">
         <div className="w-full max-w-6xl mx-auto flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <MessageCircle className="w-5 h-5 text-cyan-300" />
+            <MessageCircle className="w-5 h-5 text-slate-300" />
             <span className="text-sm font-medium text-white">
               AI Assistant - {currentBuilder?.name} Mode
             </span>
@@ -200,7 +200,7 @@ export default function BuilderWorkspace() {
                 placeholder="Describe the story you want to create..."
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
-                className="w-full bg-[#3B4D66] border-[#4A5A70] text-white placeholder-slate-400 resize-none h-12"
+                className="w-full bg-[#4A5B72] border-[#56677D] text-white placeholder-slate-400 resize-none h-12"
                 rows={1}
               />
               <div className="absolute right-2 top-2 flex space-x-1">
