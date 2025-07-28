@@ -611,29 +611,29 @@ export default function BuilderWorkspace() {
                   </Button>
                 </div>
                 <div className="flex-1 overflow-x-auto overflow-y-hidden">
-                  <div className="flex space-x-4 pb-2 min-w-max">
+                  <div className="flex space-x-3 pb-2 min-w-max">
                     {dashboardData.media.referenceVideos.map(video => (
                       <div 
                         key={video.id} 
-                        className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                        className="flex-none w-36 bg-white rounded-lg p-2 cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => window.open(video.url, '_blank')}
                         title={`Watch "${video.title}" on YouTube`}
                       >
-                        <div className="relative bg-gray-800 rounded-lg h-24 flex items-center justify-center mb-2 group">
-                          <span className="text-2xl">{video.thumbnail}</span>
+                        <div className="relative bg-gray-800 rounded-lg h-20 flex items-center justify-center mb-2 group">
+                          <span className="text-xl">{video.thumbnail}</span>
                           <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
                             {video.duration}
                           </div>
                           <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                            <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                            <Play className="w-5 h-5 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
                           </div>
                         </div>
-                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
-                        <p className="text-xs text-gray-600">{video.creator}</p>
+                        <h4 className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{video.title}</h4>
+                        <p className="text-xs text-gray-600 truncate">{video.creator}</p>
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-gray-500">{video.views} views</p>
+                          <p className="text-xs text-gray-500 truncate">{video.views} views</p>
                           <span className="text-xs text-gray-400">
-                            {video.scope === 'project' ? '🎯 Project' : '🌐 Global'}
+                            {video.scope === 'project' ? '🎯' : '🌐'}
                           </span>
                         </div>
                       </div>
