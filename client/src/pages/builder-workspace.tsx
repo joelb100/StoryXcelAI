@@ -480,7 +480,7 @@ export default function BuilderWorkspace() {
           </div>
           <div className="flex flex-col h-full">
             {/* Projects Section */}
-            <div className="p-4 space-y-3 overflow-y-auto flex-1">
+            <div className="p-4 space-y-3 overflow-y-auto" style={{height: '70%'}}>
               {activeTab === "dashboard" ? (
                 // Dashboard Projects List
                 [
