@@ -10,14 +10,14 @@ import Dashboard from "@/pages/dashboard";
 import BuilderWorkspace from "@/pages/builder-workspace";
 
 function Router() {
-  // Skip authentication for now - go directly to dashboard
+  // Start on login page
   return (
     <Switch>
       <Route path="/login" component={Landing} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/builder/:type" component={BuilderWorkspace} />
       <Route path="/builder" component={BuilderWorkspace} />
-      <Route path="/" component={BuilderWorkspace} />
+      <Route path="/" component={Landing} />
       <Route component={NotFound} />
     </Switch>
   );
