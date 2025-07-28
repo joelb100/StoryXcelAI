@@ -469,8 +469,8 @@ export default function BuilderWorkspace() {
             <div className="h-full p-6">
               {/* Top Row: Project Carousel + Right Sidebar */}
               <div className="flex flex-col lg:flex-row gap-6 mb-8">
-                {/* SECTION 1: Project Carousel - 65% width */}
-                <div className="flex-1 lg:flex-[0_0_65%]">
+                {/* SECTION 1: Project Carousel - Match Quick Links width */}
+                <div className="flex-1 lg:flex-[0_0_68%]">
                 {/* Project Carousel */}
                 <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden min-h-[300px] lg:min-h-[400px]">
                   <div className="absolute inset-0 bg-black/40"></div>
@@ -533,8 +533,8 @@ export default function BuilderWorkspace() {
                 </div>
                 </div>
 
-                {/* SECTION 2: Right Side Panel - Friends + Quick Links - 30% width */}
-                <div className="flex-1 lg:flex-[0_0_30%] space-y-6">
+                {/* SECTION 2: Right Side Panel - Friends + Quick Links - 27% width */}
+                <div className="flex-1 lg:flex-[0_0_27%] space-y-6">
                   {/* Friends/Collaborators */}
                   <div className="bg-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-4">
@@ -607,7 +607,7 @@ export default function BuilderWorkspace() {
 
               {/* Bottom Section: Feature Videos - Left-aligned to match carousel width */}
               <div className="mt-8">
-                <div className="bg-gray-200 rounded-lg p-4 w-full lg:w-[65%]">
+                <div className="bg-gray-200 rounded-lg p-4 w-full lg:w-[68%]">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-800">Feature Video</h3>
                     <Button variant="ghost" size="sm">
