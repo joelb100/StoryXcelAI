@@ -78,6 +78,25 @@ export default function BuilderWorkspace() {
   // Dashboard state
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
   const [friendsSearch, setFriendsSearch] = useState("");
+  
+  // Chat messages state
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 1,
+      type: 'ai',
+      content: "Hello! I'm your StoryXcel AI assistant. I can help you with character development, plot structure, and creative writing suggestions for your western project."
+    },
+    {
+      id: 2,
+      type: 'user',
+      content: "Can you help me develop the backstory for Eli Graves?"
+    },
+    {
+      id: 3,
+      type: 'ai',
+      content: "Absolutely! For Eli Graves' backstory, let's explore his motivation for hunting Kane's gang. Consider these elements:\n\n• Personal loss that drives his vendetta\n• His skills as a bounty hunter\n• The moral complexity of his methods"
+    }
+  ]);
 
   // Dynamic content management - structured for future backend integration
   const [dashboardData, setDashboardData] = useState({
@@ -267,6 +286,51 @@ export default function BuilderWorkspace() {
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
     navigate(`/builder/${tabId}`);
+  };
+
+  const handleSendMessage = () => {
+    if (chatMessage.trim()) {
+      // Add user message
+      const userMessage = {
+        id: chatMessages.length + 1,
+        type: 'user',
+        content: chatMessage.trim()
+      };
+      
+      // Generate AI response (simplified for demo)
+      const aiResponse = {
+        id: chatMessages.length + 2,
+        type: 'ai',
+        content: generateAIResponse(chatMessage.trim())
+      };
+      
+      setChatMessages(prev => [...prev, userMessage, aiResponse]);
+      setChatMessage("");
+    }
+  };
+
+  const generateAIResponse = (userInput: string): string => {
+    // Simple AI response generator based on keywords
+    const input = userInput.toLowerCase();
+    
+    if (input.includes('character') || input.includes('eli graves')) {
+      return "Great question about character development! For character depth, consider exploring their backstory, motivations, flaws, and growth arc. What specific aspect of the character would you like to develop further?";
+    } else if (input.includes('plot') || input.includes('story')) {
+      return "Story structure is crucial for engaging narratives. Consider the three-act structure: setup, confrontation, and resolution. What's the central conflict in your story?";
+    } else if (input.includes('western') || input.includes('cowboy')) {
+      return "Western stories often explore themes of frontier justice, moral ambiguity, and civilization vs. wilderness. What western elements are you incorporating into your narrative?";
+    } else if (input.includes('scene') || input.includes('dialogue')) {
+      return "Effective scenes need clear objectives, conflict, and consequences. For dialogue, focus on subtext and character voice. What scene are you working on?";
+    } else {
+      return "I'm here to help with your creative project! I can assist with character development, plot structure, dialogue, world building, and more. What specific aspect would you like to explore?";
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
   const currentBuilder = builderTabs.find(tab => tab.id === activeTab);
@@ -661,36 +725,19 @@ export default function BuilderWorkspace() {
                     {/* Chat Messages */}
                     <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-scroll min-h-[200px] max-h-[250px]" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
                       <div className="space-y-3">
-                        {/* AI Message */}
-                        <div className="flex">
-                          <div className="bg-blue-100 rounded-lg p-3 max-w-[85%]">
-                            <p className="text-sm text-gray-800">
-                              Hello! I'm your StoryXcel AI assistant. I can help you with character development, plot structure, and creative writing suggestions for your western project.
-                            </p>
+                        {chatMessages.map((message) => (
+                          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
+                            <div className={`rounded-lg p-3 max-w-[85%] ${
+                              message.type === 'ai' 
+                                ? 'bg-blue-100' 
+                                : 'bg-gray-100'
+                            }`}>
+                              <p className="text-sm text-gray-800 whitespace-pre-line">
+                                {message.content}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        
-                        {/* User Message */}
-                        <div className="flex justify-end">
-                          <div className="bg-gray-100 rounded-lg p-3 max-w-[85%]">
-                            <p className="text-sm text-gray-800">
-                              Can you help me develop the backstory for Eli Graves?
-                            </p>
-                          </div>
-                        </div>
-                        
-                        {/* AI Response */}
-                        <div className="flex">
-                          <div className="bg-blue-100 rounded-lg p-3 max-w-[85%]">
-                            <p className="text-sm text-gray-800">
-                              Absolutely! For Eli Graves' backstory, let's explore his motivation for hunting Kane's gang. Consider these elements:
-                              <br/><br/>
-                              • Personal loss that drives his vendetta<br/>
-                              • His skills as a bounty hunter<br/>
-                              • The moral complexity of his methods
-                            </p>
-                          </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -751,6 +798,7 @@ export default function BuilderWorkspace() {
                 placeholder="Describe the story you want to create..."
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full bg-[#4A5B72] border-[#56677D] text-white placeholder-slate-400 resize-none h-12"
                 rows={1}
               />
@@ -761,7 +809,13 @@ export default function BuilderWorkspace() {
                 <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-slate-300">
                   🎤
                 </Button>
-                <Button size="sm" variant="ghost" className="w-8 h-8 p-0 text-slate-300">
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="w-8 h-8 p-0 text-slate-300 hover:text-white" 
+                  onClick={handleSendMessage}
+                  disabled={!chatMessage.trim()}
+                >
                   ➤
                 </Button>
               </div>
