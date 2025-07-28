@@ -605,38 +605,38 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* Bottom Section: Feature Videos - Centered & Reduced Width */}
-              <div className="flex justify-center mt-8">
-                <div className="bg-gray-200 rounded-lg p-4 w-full lg:w-[65%] lg:max-w-[65%]">
+              {/* Bottom Section: Feature Videos - Left-aligned to match carousel width */}
+              <div className="mt-8">
+                <div className="bg-gray-200 rounded-lg p-4 w-full lg:w-[65%]">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-800">Feature Video</h3>
                     <Button variant="ghost" size="sm">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex-1 overflow-x-auto overflow-y-hidden">
-                    <div className="flex space-x-2 pb-2 min-w-max">
+                  <div className="overflow-x-auto overflow-y-hidden">
+                    <div className="flex space-x-4 pb-2 min-w-max">
                     {dashboardData.media.referenceVideos.map(video => (
                       <div 
                         key={video.id} 
-                        className="flex-none w-28 bg-gray-100 rounded-lg p-1.5 cursor-pointer hover:shadow-md transition-shadow"
+                        className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => window.open(video.url, '_blank')}
                         title={`Watch "${video.title}" on YouTube`}
                       >
-                        <div className="relative bg-gray-800 rounded-lg h-16 flex items-center justify-center mb-1.5 group">
-                          <span className="text-lg">{video.thumbnail}</span>
-                          <div className="absolute bottom-0.5 right-0.5 bg-black/80 text-white text-xs px-1 rounded text-xs">
+                        <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
+                          <span className="text-2xl">{video.thumbnail}</span>
+                          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
                             {video.duration}
                           </div>
                           <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                            <Play className="w-4 h-4 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                            <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
                           </div>
                         </div>
-                        <h4 className="text-xs font-medium text-gray-900 mb-0.5 line-clamp-2 leading-tight">{video.title}</h4>
-                        <p className="text-xs text-gray-600 truncate text-xs">{video.creator}</p>
+                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
+                        <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-gray-500 truncate">{video.views} views</p>
-                          <span className="text-xs text-gray-400">
+                          <p className="text-sm text-gray-500">{video.views} views</p>
+                          <span className="text-sm text-gray-400">
                             {video.scope === 'project' ? '🎯' : '🌐'}
                           </span>
                         </div>
