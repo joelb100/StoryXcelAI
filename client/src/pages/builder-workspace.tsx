@@ -26,7 +26,8 @@ import {
   ChevronRight,
   Circle,
   ExternalLink,
-  Play
+  Play,
+  Send
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -605,43 +606,104 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* Bottom Section: Feature Videos - Match carousel width */}
-              <div className="mt-8 w-full lg:w-[68%]">
-                <div className="bg-gray-200 rounded-lg p-4 w-full">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Feature Video</h3>
-                    <Button variant="ghost" size="sm">
-                      <Plus className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <div className="overflow-x-auto overflow-y-hidden">
-                    <div className="flex space-x-4 pb-2 min-w-max">
-                    {dashboardData.media.referenceVideos.map(video => (
-                      <div 
-                        key={video.id} 
-                        className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
-                        onClick={() => window.open(video.url, '_blank')}
-                        title={`Watch "${video.title}" on YouTube`}
-                      >
-                        <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
-                          <span className="text-2xl">{video.thumbnail}</span>
-                          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
-                            {video.duration}
+              {/* Bottom Section: Feature Videos and AI Assistant */}
+              <div className="flex flex-col lg:flex-row gap-6 mt-8">
+                {/* Feature Videos - Left side matching carousel width */}
+                <div className="w-full lg:w-[68%]">
+                  <div className="bg-gray-200 rounded-lg p-4 w-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">Feature Video</h3>
+                      <Button variant="ghost" size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="overflow-x-auto overflow-y-hidden">
+                      <div className="flex space-x-4 pb-2 min-w-max">
+                      {dashboardData.media.referenceVideos.map(video => (
+                        <div 
+                          key={video.id} 
+                          className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                          onClick={() => window.open(video.url, '_blank')}
+                          title={`Watch "${video.title}" on YouTube`}
+                        >
+                          <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
+                            <span className="text-2xl">{video.thumbnail}</span>
+                            <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
+                              {video.duration}
+                            </div>
+                            <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                              <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                            </div>
                           </div>
-                          <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                            <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                          <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
+                          <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-gray-500">{video.views} views</p>
+                            <span className="text-sm text-gray-400">
+                              {video.scope === 'project' ? '🎯' : '🌐'}
+                            </span>
                           </div>
                         </div>
-                        <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
-                        <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-500">{video.views} views</p>
-                          <span className="text-sm text-gray-400">
-                            {video.scope === 'project' ? '🎯' : '🌐'}
-                          </span>
+                      ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Assistant Chat - Right side in empty space */}
+                <div className="w-full lg:w-[27%]">
+                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[300px] flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">AI Assistant</h3>
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    </div>
+                    
+                    {/* Chat Messages */}
+                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-[200px]">
+                      <div className="space-y-3">
+                        {/* AI Message */}
+                        <div className="flex">
+                          <div className="bg-blue-100 rounded-lg p-3 max-w-[85%]">
+                            <p className="text-sm text-gray-800">
+                              Hello! I'm your StoryXcel AI assistant. I can help you with character development, plot structure, and creative writing suggestions for your western project.
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* User Message */}
+                        <div className="flex justify-end">
+                          <div className="bg-gray-100 rounded-lg p-3 max-w-[85%]">
+                            <p className="text-sm text-gray-800">
+                              Can you help me develop the backstory for Eli Graves?
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* AI Response */}
+                        <div className="flex">
+                          <div className="bg-blue-100 rounded-lg p-3 max-w-[85%]">
+                            <p className="text-sm text-gray-800">
+                              Absolutely! For Eli Graves' backstory, let's explore his motivation for hunting Kane's gang. Consider these elements:
+                              <br/><br/>
+                              • Personal loss that drives his vendetta<br/>
+                              • His skills as a bounty hunter<br/>
+                              • The moral complexity of his methods
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    
+                    {/* Chat Input */}
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Ask me anything about your story..."
+                        className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <Button size="sm" className="px-3">
+                        <Send className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
