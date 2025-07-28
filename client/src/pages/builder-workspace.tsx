@@ -652,14 +652,14 @@ export default function BuilderWorkspace() {
 
                 {/* AI Assistant Chat - Right side in empty space */}
                 <div className="w-full lg:w-[27%]">
-                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[300px] flex flex-col">
+                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[300px] flex flex-col border-b-4 border-gray-300">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-gray-800">AI Assistant</h3>
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     </div>
                     
                     {/* Chat Messages */}
-                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-[200px]">
+                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-scroll min-h-[200px] max-h-[250px]" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
                       <div className="space-y-3">
                         {/* AI Message */}
                         <div className="flex">
