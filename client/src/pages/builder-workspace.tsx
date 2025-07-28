@@ -466,9 +466,9 @@ export default function BuilderWorkspace() {
         <div className="bg-white relative overflow-hidden">
           {activeTab === "dashboard" ? (
             /* DASHBOARD TEMPLATE */
-            <div className="h-full p-3 md:p-6 grid grid-rows-[2fr_1fr] gap-3 md:gap-6">
+            <div className="h-full p-[5%] grid grid-rows-[2fr_1fr] gap-[10%]">
               {/* Top Row: Project Carousel + Friends Panel */}
-              <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-3 md:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-[10%]">
                 {/* SECTION 1: Project Carousel */}
                 <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden min-h-[300px] lg:min-h-[400px]">
                   <div className="absolute inset-0 bg-black/40"></div>
@@ -531,9 +531,9 @@ export default function BuilderWorkspace() {
                 </div>
 
                 {/* SECTION 2: Right Side Panel - Friends + Quick Links */}
-                <div className="space-y-4">
+                <div className="space-y-[10%]">
                   {/* Friends/Collaborators */}
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-gray-800">Friends List</h3>
                       <Button variant="ghost" size="sm">
@@ -557,7 +557,7 @@ export default function BuilderWorkspace() {
                       {dashboardData.social.friends.filter(friend => 
                         friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
                       ).map(friend => (
-                        <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer">
+                        <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
                           <div className="relative">
                             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
                               {friend.avatar}
@@ -580,13 +580,13 @@ export default function BuilderWorkspace() {
                   </div>
 
                   {/* Quick Links */}
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-gray-200 rounded-lg p-4">
                     <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
                     <div className="grid grid-cols-2 gap-3">
                       {dashboardData.tools.quickLinks.map(link => (
                         <button
                           key={link.id}
-                          className="flex flex-col items-center p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex flex-col items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-150 transition-colors"
                           onClick={() => window.open(link.url, '_blank')}
                         >
                           <span className="text-2xl mb-1">{link.icon}</span>
@@ -604,7 +604,7 @@ export default function BuilderWorkspace() {
 
               {/* Bottom Row: Feature Videos - Reduced Width & Centered */}
               <div className="flex justify-center">
-                <div className="bg-gray-50 rounded-lg p-4 flex flex-col h-full w-[60%]">
+                <div className="bg-gray-200 rounded-lg p-4 flex flex-col h-full w-[60%]">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-800">Feature Video</h3>
                     <Button variant="ghost" size="sm">
@@ -616,7 +616,7 @@ export default function BuilderWorkspace() {
                     {dashboardData.media.referenceVideos.map(video => (
                       <div 
                         key={video.id} 
-                        className="flex-none w-28 bg-white rounded-lg p-1.5 cursor-pointer hover:shadow-md transition-shadow"
+                        className="flex-none w-28 bg-gray-100 rounded-lg p-1.5 cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => window.open(video.url, '_blank')}
                         title={`Watch "${video.title}" on YouTube`}
                       >
