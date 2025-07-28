@@ -610,12 +610,12 @@ export default function BuilderWorkspace() {
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
-                <div className="flex-1 overflow-y-auto">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                <div className="flex-1 overflow-x-auto overflow-y-hidden">
+                  <div className="flex space-x-4 pb-2 min-w-max">
                     {dashboardData.media.referenceVideos.map(video => (
                       <div 
                         key={video.id} 
-                        className="bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                        className="flex-none w-48 bg-white rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => window.open(video.url, '_blank')}
                         title={`Watch "${video.title}" on YouTube`}
                       >
