@@ -3,11 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { Layers } from "lucide-react";
+import { useLocation } from "wouter";
 import animatedBgGif from "@assets/animatedBG_1753651803819.gif";
 import customXLogo from "@assets/x_1753652746787.png";
 import storyXcelVectorLogo from "@assets/StoryXcel_Logo_Vectorial_Final_1753653663470.jpg";
 
 export default function Landing() {
+  const [, navigate] = useLocation();
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Logo and Animated Background */}
@@ -123,7 +125,7 @@ export default function Landing() {
 
           {/* Sign Up Button */}
           <Button 
-            onClick={() => window.location.href = "/"}
+            onClick={() => navigate("/builder")}
             className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-semibold py-3 rounded-lg transition-all duration-200"
           >
             Sign Up
@@ -133,7 +135,7 @@ export default function Landing() {
           <p className="text-center text-sm text-gray-600">
             Already have an account? 
             <button 
-              onClick={() => window.location.href = "/"}
+              onClick={() => navigate("/builder")}
               className="ml-1 text-blue-500 hover:text-blue-600 font-medium"
             >
               Sign in →
