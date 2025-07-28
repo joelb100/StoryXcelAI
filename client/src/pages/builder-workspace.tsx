@@ -693,18 +693,6 @@ export default function BuilderWorkspace() {
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Chat Input */}
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Ask me anything about your story..."
-                        className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <Button size="sm" className="px-3">
-                        <Send className="w-4 h-4" />
-                      </Button>
-                    </div>
                   </div>
                 </div>
               </div>
