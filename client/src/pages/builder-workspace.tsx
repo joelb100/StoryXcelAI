@@ -602,16 +602,17 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* Bottom Row: Feature Videos - Full Width */}
-              <div className="bg-gray-50 rounded-lg p-4 flex flex-col h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-gray-800">Feature Video</h3>
-                  <Button variant="ghost" size="sm">
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-                <div className="flex-1 overflow-x-auto overflow-y-hidden">
-                  <div className="flex space-x-2 pb-2 min-w-max">
+              {/* Bottom Row: Feature Videos - Reduced Width & Centered */}
+              <div className="flex justify-center">
+                <div className="bg-gray-50 rounded-lg p-4 flex flex-col h-full w-[60%]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Feature Video</h3>
+                    <Button variant="ghost" size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex-1 overflow-x-auto overflow-y-hidden">
+                    <div className="flex space-x-2 pb-2 min-w-max">
                     {dashboardData.media.referenceVideos.map(video => (
                       <div 
                         key={video.id} 
@@ -638,6 +639,7 @@ export default function BuilderWorkspace() {
                         </div>
                       </div>
                     ))}
+                    </div>
                   </div>
                 </div>
               </div>
