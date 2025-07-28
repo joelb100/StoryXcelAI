@@ -605,8 +605,8 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* Bottom Section: Feature Videos - Full width spanning to sidebar */}
-              <div className="mt-8">
+              {/* Bottom Section: Feature Videos - Match carousel width */}
+              <div className="mt-8 w-full lg:w-[68%]">
                 <div className="bg-gray-200 rounded-lg p-4 w-full">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-800">Feature Video</h3>
