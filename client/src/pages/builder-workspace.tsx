@@ -472,7 +472,7 @@ export default function BuilderWorkspace() {
                 {/* SECTION 1: Project Carousel - Match Quick Links width */}
                 <div className="flex-1 lg:flex-[0_0_68%]">
                 {/* Project Carousel */}
-                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden min-h-[300px] lg:min-h-[400px]">
+                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden min-h-[250px] lg:min-h-[320px]">
                   <div className="absolute inset-0 bg-black/40"></div>
                   <div className="relative h-full p-4 md:p-8 flex items-center">
                     <div className="text-white max-w-lg w-full">
