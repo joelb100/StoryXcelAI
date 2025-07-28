@@ -478,52 +478,111 @@ export default function BuilderWorkspace() {
               }
             </p>
           </div>
-          <div className="p-4 space-y-3 overflow-y-auto h-full">
-            {activeTab === "dashboard" ? (
-              // Dashboard Projects List
-              [
-                "Epic Fantasy Chronicles",
-                "Sci-Fi Adventure Series", 
-                "Mystery Detective Story",
-                "Romance Novel Draft",
-                "Documentary Project"
-              ].map((projectName, index) => (
-                <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                      <BookOpen className="w-4 h-4 text-slate-300" />
+          <div className="flex flex-col h-full">
+            {/* Projects Section */}
+            <div className="p-4 space-y-3 overflow-y-auto flex-1">
+              {activeTab === "dashboard" ? (
+                // Dashboard Projects List
+                [
+                  "Epic Fantasy Chronicles",
+                  "Sci-Fi Adventure Series", 
+                  "Mystery Detective Story",
+                  "Romance Novel Draft",
+                  "Documentary Project"
+                ].map((projectName, index) => (
+                  <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                        <BookOpen className="w-4 h-4 text-slate-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">
+                          {projectName}
+                        </p>
+                        <p className="text-xs text-slate-300">
+                          Active project
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                // Other Builders Asset List
+                [1, 2, 3, 4, 5].map((item) => (
+                  <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                        <FileText className="w-4 h-4 text-slate-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">
+                          Asset {item}
+                        </p>
+                        <p className="text-xs text-slate-300">
+                          {currentBuilder?.name} resource
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              )}
+            </div>
+
+            {/* Bottom Three Windows: Store, Featured Modules, Site News */}
+            <div className="border-t border-[#3B4A5F] space-y-3 p-3">
+              {/* Store Window */}
+              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-xs font-semibold text-white">Store</h4>
+                  <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                    </svg>
+                  </Button>
+                </div>
+                <div className="bg-[#4A5B72] rounded p-2 mb-2">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-6 h-6 bg-[#56677D] rounded flex items-center justify-center">
+                      <span className="text-xs">🛒</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">
-                        {projectName}
-                      </p>
-                      <p className="text-xs text-slate-300">
-                        Active project
-                      </p>
+                      <p className="text-xs font-medium text-white truncate">Buy Components Now!</p>
+                      <p className="text-xs text-slate-300">30% Off Store</p>
                     </div>
                   </div>
-                </Card>
-              ))
-            ) : (
-              // Other Builders Asset List
-              [1, 2, 3, 4, 5].map((item) => (
-                <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-slate-300" />
+                </div>
+              </div>
+
+              {/* Featured Modules Window */}
+              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
+                </div>
+                <div className="grid grid-cols-4 gap-1">
+                  {['🛒', '🎬', '🔧', '📊', '🎨', '📝', '🗺️', '💾'].map((icon, index) => (
+                    <div key={index} className="w-6 h-6 bg-[#4A5B72] rounded flex items-center justify-center cursor-pointer hover:bg-[#56677D] transition-colors">
+                      <span className="text-xs">{icon}</span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">
-                        Asset {item}
-                      </p>
-                      <p className="text-xs text-slate-300">
-                        {currentBuilder?.name} resource
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              ))
-            )}
+                  ))}
+                </div>
+              </div>
+
+              {/* Site News Window */}
+              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-xs font-semibold text-white">Site News</h4>
+                  <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                    </svg>
+                  </Button>
+                </div>
+                <div className="text-xs text-slate-300 leading-relaxed">
+                  <p className="font-medium text-white mb-1">New updates are available!</p>
+                  <p>A section within a user interface (UI) that displays information about recent updates or changes made to a software, application, or website.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
