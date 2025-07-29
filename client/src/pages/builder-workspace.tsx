@@ -454,213 +454,255 @@ export default function BuilderWorkspace() {
           </div>
         </div>
 
-        {/* Left Scroll Column - Projects - Fixed 240px width */}
-        <div className="bg-[#4A5B72] border-r border-[#3B4A5F] overflow-hidden">
-          <div className="p-4 border-b border-[#3B4A5F]">
-            <h3 className="text-sm font-semibold text-white mb-2">
-              {(() => {
-                switch(activeTab) {
-                  case "dashboard": return "Projects";
-                  case "world": return "Asset Overview";
-                  case "production": return "Production Overview";
-                  case "asset": return "Asset Overview";
-                  case "story": return "Story Overview";
-                  case "script": return "Script Overview";
-                  case "deck": return "Deck Overview";
-                  default: return "Asset Overview";
-                }
-              })()}
-            </h3>
-            <p className="text-xs text-slate-300">
-              {activeTab === "dashboard" 
-                ? "Your active projects" 
-                : `${currentBuilder?.name} assets and resources`
-              }
-            </p>
-          </div>
-          <div className="flex flex-col h-full">
-            {/* Projects Section */}
-            <div className="p-4 space-y-3 overflow-y-auto" style={{height: '50%'}}>
-              {activeTab === "dashboard" ? (
-                // Dashboard Projects List
-                [
-                  "Epic Fantasy Chronicles",
-                  "Sci-Fi Adventure Series", 
-                  "Mystery Detective Story",
-                  "Romance Novel Draft",
-                  "Documentary Project"
-                ].map((projectName, index) => (
-                  <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                        <BookOpen className="w-4 h-4 text-slate-300" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate">
-                          {projectName}
-                        </p>
-                        <p className="text-xs text-slate-300">
-                          Active project
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                // Other Builders Asset List
-                [1, 2, 3, 4, 5].map((item) => (
-                  <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                        <FileText className="w-4 h-4 text-slate-300" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-white truncate">
-                          Asset {item}
-                        </p>
-                        <p className="text-xs text-slate-300">
-                          {currentBuilder?.name} resource
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                ))
-              )}
+        {/* Left Sidebar for Non-Dashboard Views Only */}
+        {activeTab !== "dashboard" && (
+          <div className="bg-[#4A5B72] border-r border-[#3B4A5F] overflow-hidden w-64">
+            <div className="p-4 border-b border-[#3B4A5F]">
+              <h3 className="text-sm font-semibold text-white mb-2">
+                {(() => {
+                  switch(activeTab) {
+                    case "world": return "Asset Overview";
+                    case "production": return "Production Overview";
+                    case "asset": return "Asset Overview";
+                    case "story": return "Story Overview";
+                    case "script": return "Script Overview";
+                    case "deck": return "Deck Overview";
+                    default: return "Asset Overview";
+                  }
+                })()}
+              </h3>
+              <p className="text-xs text-slate-300">
+                {`${currentBuilder?.name} assets and resources`}
+              </p>
             </div>
-
-            {/* Bottom Three Windows: Store, Featured Modules, Site News */}
-            <div className="border-t border-[#3B4A5F] space-y-3 p-3">
-              {/* Store Window */}
-              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-xs font-semibold text-white">Store</h4>
-                  <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
-                    </svg>
-                  </Button>
-                </div>
-                <div className="bg-[#4A5B72] rounded p-2 mb-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 bg-[#56677D] rounded flex items-center justify-center">
-                      <span className="text-xs">🛒</span>
+            <div className="p-4 space-y-3 overflow-y-auto h-full">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <Card key={item} className="p-3 bg-[#3B4A5F] border-[#56677D]">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                      <FileText className="w-4 h-4 text-slate-300" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-white truncate">Buy Components Now!</p>
-                      <p className="text-xs text-slate-300">30% Off Store</p>
+                      <p className="text-sm font-medium text-white truncate">
+                        Asset {item}
+                      </p>
+                      <p className="text-xs text-slate-300">
+                        {currentBuilder?.name} resource
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Featured Modules Window */}
-              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
-                </div>
-                <div className="grid grid-cols-4 gap-1">
-                  {['🛒', '🎬', '🔧', '📊', '🎨', '📝', '🗺️', '💾'].map((icon, index) => (
-                    <div key={index} className="w-6 h-6 bg-[#4A5B72] rounded flex items-center justify-center cursor-pointer hover:bg-[#56677D] transition-colors">
-                      <span className="text-xs">{icon}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Site News Window */}
-              <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-xs font-semibold text-white">Site News</h4>
-                  <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
-                    </svg>
-                  </Button>
-                </div>
-                <div className="text-xs text-slate-300 leading-relaxed">
-                  <p className="font-medium text-white mb-1">New updates are available!</p>
-                  <p>A section within a user interface (UI) that displays information about recent updates or changes made to a software, application, or website.</p>
-                </div>
-              </div>
+                </Card>
+              ))}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Main Workspace - White Center Panel - Flexible width */}
-        <div className="bg-white relative overflow-hidden">
+        {/* Main Workspace - 3-Column Dashboard Layout */}
+        <div className="bg-white relative overflow-hidden flex">
           {activeTab === "dashboard" ? (
-            /* DASHBOARD TEMPLATE */
-            <div className="h-full p-6">
-              {/* Top Row: Project Carousel + Right Sidebar */}
-              <div className="flex flex-col lg:flex-row lg:items-stretch gap-6 mb-8">
-                {/* SECTION 1: Project Carousel - Match Quick Links width */}
-                <div className="flex-1 lg:flex-[0_0_68%] flex">
-                {/* Project Carousel */}
-                <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-[140px] lg:h-auto lg:flex-1 w-full">
-                  <div className="absolute inset-0 bg-black/40"></div>
-                  <div className="relative h-full p-4 md:p-8 flex items-center">
-                    <div className="text-white max-w-lg w-full">
-                      <h1 className="text-2xl md:text-4xl font-black mb-4 tracking-wider">
-                        {dashboardData.projects.active[currentProjectSlide].title}
-                      </h1>
-                      <p className="text-xs md:text-sm leading-relaxed mb-6 opacity-90 line-clamp-4 md:line-clamp-6">
-                        {dashboardData.projects.active[currentProjectSlide].description}
-                      </p>
-                      <Button 
-                        className="bg-white text-black hover:bg-gray-100"
-                        onClick={() => navigate(`/builder/story`)}
-                      >
-                        Open Project
-                      </Button>
-                    </div>
+            /* NEW 3-COLUMN DASHBOARD LAYOUT */
+            <>
+              {/* LEFT SIDEBAR - Projects, Store, Featured Modules, Site News */}
+              <div className="w-64 bg-[#4A5B72] border-r border-[#3B4A5F] flex flex-col overflow-hidden">
+                {/* Projects Section - Top Half */}
+                <div className="flex-1 p-4 overflow-y-auto">
+                  <div className="mb-4">
+                    <h3 className="text-sm font-semibold text-white mb-2">Projects</h3>
+                    <p className="text-xs text-slate-300">Your active projects</p>
                   </div>
-                  
-                  {/* Navigation arrows */}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                    onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                    onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </Button>
-                  
-                  {/* Slide indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {dashboardData.projects.active.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`w-3 h-3 rounded-full transition-colors ${
-                          index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
-                        }`}
-                        onClick={() => setCurrentProjectSlide(index)}
-                      />
+                  <div className="space-y-3">
+                    {[
+                      "Epic Fantasy Chronicles",
+                      "Sci-Fi Adventure Series", 
+                      "Mystery Detective Story",
+                      "Romance Novel Draft",
+                      "Documentary Project"
+                    ].map((projectName, index) => (
+                      <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
+                            <BookOpen className="w-4 h-4 text-slate-300" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-white truncate">{projectName}</p>
+                            <p className="text-xs text-slate-300">Active project</p>
+                          </div>
+                        </div>
+                      </Card>
                     ))}
                   </div>
-                  
-                  {/* Create New Project Button */}
-                  <Button
-                    variant="outline"
-                    className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create New Project
-                  </Button>
-                </div>
                 </div>
 
-                {/* SECTION 2: Right Side Panel - Friends + Quick Links - 27% width */}
-                <div className="flex-1 lg:flex-[0_0_27%] space-y-6">
-                  {/* Friends/Collaborators */}
-                  <div className="bg-gray-200 rounded-lg p-4">
+                {/* Bottom Three Windows - Store, Featured Modules, Site News */}
+                <div className="border-t border-[#3B4A5F] space-y-3 p-3">
+                  {/* Store Window */}
+                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xs font-semibold text-white">Store</h4>
+                      <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                        </svg>
+                      </Button>
+                    </div>
+                    <div className="bg-[#4A5B72] rounded p-2 mb-2">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-6 h-6 bg-[#56677D] rounded flex items-center justify-center">
+                          <span className="text-xs">🛒</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium text-white truncate">Buy Components Now!</p>
+                          <p className="text-xs text-slate-300">30% Off Store</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Featured Modules Window */}
+                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
+                    </div>
+                    <div className="grid grid-cols-4 gap-1">
+                      {['🛒', '🎬', '🔧', '📊', '🎨', '📝', '🗺️', '💾'].map((icon, index) => (
+                        <div key={index} className="w-6 h-6 bg-[#4A5B72] rounded flex items-center justify-center cursor-pointer hover:bg-[#56677D] transition-colors">
+                          <span className="text-xs">{icon}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Site News Window */}
+                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xs font-semibold text-white">Site News</h4>
+                      <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                        </svg>
+                      </Button>
+                    </div>
+                    <div className="text-xs text-slate-300 leading-relaxed">
+                      <p className="font-medium text-white mb-1">New updates are available!</p>
+                      <p>A section within a user interface (UI) that displays information about recent updates or changes made to a software, application, or website.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CENTER COLUMN - Project Highlight + Feature Videos */}
+              <div className="flex-1 p-6 flex flex-col">
+                {/* Project Highlight Section */}
+                <div className="mb-6">
+                  <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-80">
+                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="relative h-full p-8 flex items-center">
+                      <div className="text-white max-w-lg w-full">
+                        <h1 className="text-4xl font-black mb-4 tracking-wider">
+                          {dashboardData.projects.active[currentProjectSlide].title}
+                        </h1>
+                        <p className="text-sm leading-relaxed mb-6 opacity-90 line-clamp-6">
+                          {dashboardData.projects.active[currentProjectSlide].description}
+                        </p>
+                        <Button 
+                          className="bg-white text-black hover:bg-gray-100"
+                          onClick={() => navigate(`/builder/story`)}
+                        >
+                          Open Project
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* Navigation arrows */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                      onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                      onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </Button>
+                    
+                    {/* Slide indicators */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                      {dashboardData.projects.active.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`w-3 h-3 rounded-full transition-colors ${
+                            index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
+                          }`}
+                          onClick={() => setCurrentProjectSlide(index)}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Create New Project Button */}
+                    <Button
+                      variant="outline"
+                      className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create New Project
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Feature Videos Section - Matching width */}
+                <div className="flex-1">
+                  <div className="bg-gray-200 rounded-lg p-4 h-full">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">Feature Video</h3>
+                      <Button variant="ghost" size="sm">
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="overflow-x-auto overflow-y-hidden h-full">
+                      <div className="flex space-x-4 pb-2 min-w-max h-full">
+                        {dashboardData.media.referenceVideos.map(video => (
+                          <div 
+                            key={video.id} 
+                            className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                            onClick={() => window.open(video.url, '_blank')}
+                            title={`Watch "${video.title}" on YouTube`}
+                          >
+                            <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
+                              <span className="text-2xl">{video.thumbnail}</span>
+                              <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
+                                {video.duration}
+                              </div>
+                              <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                                <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
+                              </div>
+                            </div>
+                            <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
+                            <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm text-gray-500">{video.views} views</p>
+                              <span className="text-sm text-gray-400">
+                                {video.scope === 'project' ? '🎯' : '🌐'}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT SIDEBAR - Friends List + Site Links */}
+              <div className="w-64 bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden">
+                {/* Friends List */}
+                <div className="flex-1 p-4 overflow-y-auto">
+                  <div className="bg-white rounded-lg p-4 mb-4">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-gray-800">Friends List</h3>
                       <Button variant="ghost" size="sm">
@@ -680,7 +722,7 @@ export default function BuilderWorkspace() {
                     </div>
                     
                     {/* Friends list */}
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
                       {dashboardData.social.friends.filter(friend => 
                         friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
                       ).map(friend => (
@@ -705,19 +747,21 @@ export default function BuilderWorkspace() {
                       Add Friends +
                     </Button>
                   </div>
+                </div>
 
-                  {/* Quick Links */}
-                  <div className="bg-gray-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-gray-800 mb-4">Quick Links</h3>
-                    <div className="grid grid-cols-2 gap-3">
+                {/* Site Links */}
+                <div className="border-t border-gray-300 p-4">
+                  <div className="bg-white rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-800 mb-4">Site Links</h3>
+                    <div className="grid grid-cols-4 gap-3">
                       {dashboardData.tools.quickLinks.map(link => (
                         <button
                           key={link.id}
-                          className="flex flex-col items-center p-3 bg-gray-100 rounded-lg hover:bg-gray-150 transition-colors"
+                          className="flex flex-col items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-150 transition-colors"
                           onClick={() => window.open(link.url, '_blank')}
                         >
-                          <span className="text-2xl mb-1">{link.icon}</span>
-                          <span className="text-xs font-medium text-gray-700">{link.name}</span>
+                          <span className="text-lg mb-1">{link.icon}</span>
+                          <span className="text-xs font-medium text-gray-700 text-center">{link.name}</span>
                         </button>
                       ))}
                     </div>
@@ -728,81 +772,8 @@ export default function BuilderWorkspace() {
                   </div>
                 </div>
               </div>
-
-              {/* Bottom Section: Feature Videos and AI Assistant */}
-              <div className="flex flex-col lg:flex-row gap-6 mt-8">
-                {/* Feature Videos - Left side matching carousel width */}
-                <div className="w-full lg:w-[68%]">
-                  <div className="bg-gray-200 rounded-lg p-4 w-full">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">Feature Video</h3>
-                      <Button variant="ghost" size="sm">
-                        <Plus className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <div className="overflow-x-auto overflow-y-hidden">
-                      <div className="flex space-x-4 pb-2 min-w-max">
-                      {dashboardData.media.referenceVideos.map(video => (
-                        <div 
-                          key={video.id} 
-                          className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
-                          onClick={() => window.open(video.url, '_blank')}
-                          title={`Watch "${video.title}" on YouTube`}
-                        >
-                          <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
-                            <span className="text-2xl">{video.thumbnail}</span>
-                            <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
-                              {video.duration}
-                            </div>
-                            <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                              <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
-                            </div>
-                          </div>
-                          <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
-                          <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm text-gray-500">{video.views} views</p>
-                            <span className="text-sm text-gray-400">
-                              {video.scope === 'project' ? '🎯' : '🌐'}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* AI Assistant Chat - Right side in empty space */}
-                <div className="w-full lg:w-[27%]">
-                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[300px] flex flex-col border-b-4 border-gray-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">AI Assistant</h3>
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    </div>
-                    
-                    {/* Chat Messages */}
-                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-scroll min-h-[200px] max-h-[250px]" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
-                      <div className="space-y-3">
-                        {chatMessages.map((message) => (
-                          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
-                            <div className={`rounded-lg p-3 max-w-[85%] ${
-                              message.type === 'ai' 
-                                ? 'bg-blue-100' 
-                                : 'bg-gray-100'
-                            }`}>
-                              <p className="text-sm text-gray-800 whitespace-pre-line">
-                                {message.content}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </>
+            
           ) : (
             /* OTHER BUILDERS CONTENT */
             <div className="h-full p-8">
