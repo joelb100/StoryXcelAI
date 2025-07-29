@@ -150,7 +150,7 @@ const LeftSidebar = () => (
         </Button>
       </div>
       
-      <div className="bg-slate-600 rounded-lg p-2 h-4/5 overflow-y-auto">
+      <div className="rounded-lg p-2 h-4/5 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
         <h4 className="text-xs font-semibold text-white mb-1">Project Name</h4>
         <div className="space-y-1">
           <div className="flex items-center space-x-1 text-xs">
@@ -179,21 +179,21 @@ const LeftSidebar = () => (
 
     {/* Second Gray Frame - Store Section - 20% */}
     <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
-      <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
+      <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
         <h4 className="text-xs font-semibold text-white">Store</h4>
       </div>
     </div>
 
     {/* Third Gray Frame - Featured Modules Section - 20% */}
     <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
-      <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
+      <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
         <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
       </div>
     </div>
 
     {/* Fourth Gray Frame - Site News Section - 35% */}
     <div className="p-2 flex-1" style={{ height: '35%' }}>
-      <div className="bg-slate-600 rounded-lg p-2 h-full overflow-y-auto">
+      <div className="rounded-lg p-2 h-full overflow-y-auto" style={{ backgroundColor: '#758595' }}>
         <h4 className="text-xs font-semibold text-white mb-2">Site News</h4>
         <div className="text-xs text-slate-300 leading-relaxed space-y-1">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
