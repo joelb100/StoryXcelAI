@@ -20,7 +20,13 @@ import {
   Settings,
   Upload,
   Download,
-  Info
+  Info,
+  Star,
+  MessageSquare,
+  Calendar,
+  Clock,
+  Globe,
+  Bookmark
 } from "lucide-react";
 
 // Import logo
@@ -198,7 +204,76 @@ const LeftSidebar = () => (
   </div>
 );
 
-// Right Sidebar Component
+// Right Icon Sidebar Component
+const RightIconSidebar = () => (
+  <div className="w-16 bg-custom-blue border-l border-slate-600 flex flex-col justify-between items-center py-4">
+    {/* Top navigation icons */}
+    <div className="flex flex-col items-center space-y-4">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Favorites"
+      >
+        <Star className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Messages"
+      >
+        <MessageSquare className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Calendar"
+      >
+        <Calendar className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Recent"
+      >
+        <Clock className="w-5 h-5" />
+      </Button>
+    </div>
+    
+    {/* Bottom action icons */}
+    <div className="flex flex-col items-center space-y-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Web Links"
+      >
+        <Globe className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Bookmarks"
+      >
+        <Bookmark className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="More Options"
+      >
+        <Menu className="w-5 h-5" />
+      </Button>
+    </div>
+  </div>
+);
+
+// Right Content Sidebar Component
 const RightSidebar = () => (
   <div className="w-64 bg-slate-600 border-l border-slate-500 flex flex-col h-full">
     {/* Friends List */}
@@ -423,8 +498,8 @@ export default function DashboardLayout() {
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header */}
       <header className="bg-slate-800 border-b border-slate-700 flex">
-        {/* Logo Area - adjusted for icon sidebar */}
-        <div className="w-80 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
+        {/* Logo Area - adjusted for both icon sidebars */}
+        <div className="w-96 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -494,6 +569,7 @@ export default function DashboardLayout() {
             navigate={navigate}
           />
           <RightSidebar />
+          <RightIconSidebar />
         </div>
 
         {/* Mobile Layout */}
@@ -537,8 +613,8 @@ export default function DashboardLayout() {
         {mobileRightOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/50" onClick={() => setMobileRightOpen(false)} />
-            <div className="absolute right-0 top-0 h-full w-64 bg-white">
-              <div className="flex items-center justify-between p-4 border-b">
+            <div className="absolute right-0 top-0 h-full w-80 bg-white flex">
+              <div className="flex items-center justify-between p-4 border-b absolute top-0 left-0 right-0 z-10 bg-white">
                 <h2 className="text-lg font-semibold">Friends & Links</h2>
                 <Button
                   variant="ghost"
@@ -548,8 +624,9 @@ export default function DashboardLayout() {
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="h-full overflow-hidden">
+              <div className="h-full overflow-hidden flex pt-16">
                 <RightSidebar />
+                <RightIconSidebar />
               </div>
             </div>
           </div>
