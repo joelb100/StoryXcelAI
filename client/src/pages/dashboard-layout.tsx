@@ -141,8 +141,8 @@ const IconSidebar = () => (
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
 const LeftSidebar = () => (
   <div className="h-full bg-purple-600 border-r border-slate-600 flex flex-col">
-    {/* Project Name Section - 35% of height */}
-    <div className="p-2 border-b border-slate-600" style={{ height: '35%' }}>
+    {/* First Gray Frame - Project Name Section - 30% of height */}
+    <div className="p-2 border-b border-slate-600" style={{ height: '30%' }}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xs font-semibold text-white">Project Name</h3>
         <Button variant="ghost" size="sm" className="text-white p-1">
@@ -177,22 +177,22 @@ const LeftSidebar = () => (
       </div>
     </div>
 
-    {/* Store Section - 15% of height */}
+    {/* Second Gray Frame - Store Section - 15% of height */}
     <div className="p-2 border-b border-slate-600" style={{ height: '15%' }}>
       <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
         <h4 className="text-xs font-semibold text-white">Store</h4>
       </div>
     </div>
 
-    {/* Featured Modules Section - 15% of height */}
+    {/* Third Gray Frame - Featured Modules Section - 15% of height */}
     <div className="p-2 border-b border-slate-600" style={{ height: '15%' }}>
       <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
         <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
       </div>
     </div>
 
-    {/* Site News Section - 35% of height */}
-    <div className="p-2 flex-1" style={{ height: '35%' }}>
+    {/* Fourth Gray Frame - Site News Section - 30% of height */}
+    <div className="p-2 border-b border-slate-600" style={{ height: '30%' }}>
       <div className="bg-slate-600 rounded-lg p-2 h-full overflow-y-auto">
         <h4 className="text-xs font-semibold text-white mb-2">Site News</h4>
         <div className="text-xs text-slate-300 leading-relaxed space-y-1">
@@ -200,6 +200,11 @@ const LeftSidebar = () => (
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
         </div>
       </div>
+    </div>
+
+    {/* Bottom spacing section - 10% of height */}
+    <div className="flex-1" style={{ height: '10%' }}>
+      {/* Empty space for proper proportioning */}
     </div>
   </div>
 );
