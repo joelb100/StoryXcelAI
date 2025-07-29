@@ -655,9 +655,9 @@ export default function BuilderWorkspace() {
                   </div>
                 </div>
 
-                {/* Feature Videos Section - Matching width */}
-                <div className="flex-1">
-                  <div className="bg-gray-200 rounded-lg p-4 h-full">
+                {/* Feature Videos Section - Fixed height */}
+                <div className="mb-6">
+                  <div className="bg-gray-200 rounded-lg p-4 h-64">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-gray-800">Feature Video</h3>
                       <Button variant="ghost" size="sm">
@@ -665,7 +665,7 @@ export default function BuilderWorkspace() {
                       </Button>
                     </div>
                     <div className="overflow-x-auto overflow-y-hidden h-full">
-                      <div className="flex space-x-4 pb-2 min-w-max h-full">
+                      <div className="flex space-x-4 pb-2 min-w-max">
                         {dashboardData.media.referenceVideos.map(video => (
                           <div 
                             key={video.id} 
@@ -689,6 +689,35 @@ export default function BuilderWorkspace() {
                               <span className="text-sm text-gray-400">
                                 {video.scope === 'project' ? '🎯' : '🌐'}
                               </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Chat Window - Bottom section */}
+                <div className="flex-1">
+                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[200px] flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-gray-800">AI chat window</h3>
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    </div>
+                    
+                    {/* Chat Messages */}
+                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-[120px]" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
+                      <div className="space-y-3">
+                        {chatMessages.map((message) => (
+                          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
+                            <div className={`rounded-lg p-3 max-w-[85%] ${
+                              message.type === 'ai' 
+                                ? 'bg-blue-100' 
+                                : 'bg-gray-100'
+                            }`}>
+                              <p className="text-sm text-gray-800 whitespace-pre-line">
+                                {message.content}
+                              </p>
                             </div>
                           </div>
                         ))}
