@@ -520,25 +520,14 @@ export default function DashboardLayout() {
                         ? "text-white"
                         : "text-white hover:text-[#00d8ff]"
                     }`}
-                    style={
-                      tab.isActive
-                        ? {
-                            textAlign: 'center',
-                            textShadow: '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff'
-                          }
-                        : {
-                            textAlign: 'center'
-                          }
-                    }
+                    style={{ 
+                      textAlign: 'center'
+                    }}
                     onMouseEnter={(e) => {
-                      if (!tab.isActive) {
-                        e.currentTarget.style.textShadow = '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff';
-                      }
+                      e.currentTarget.style.textShadow = '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff';
                     }}
                     onMouseLeave={(e) => {
-                      if (!tab.isActive) {
-                        e.currentTarget.style.textShadow = '';
-                      }
+                      e.currentTarget.style.textShadow = '';
                     }}
                   >
                     {tab.name}
