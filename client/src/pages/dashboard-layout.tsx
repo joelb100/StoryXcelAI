@@ -367,25 +367,32 @@ const DashboardContent = ({
           <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
         </div>
 
-        {/* Description Section - Pink Section with specific dimensions */}
+        {/* Description Section - Pink Section scaled up */}
         <div className="flex justify-center">
-          <Card className="bg-pink-300 rounded-lg p-4 border-0" style={{
+          <Card className="bg-pink-300 rounded-lg p-6 border-0" style={{
             width: '14.5in',
             height: '2.5in'
           }}>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-slate-700">Describe the story you want to create</h3>
+            </div>
+            
+            <div className="flex-1 flex items-center justify-center mb-4">
+              {/* Expanded content area */}
+              <div className="w-full bg-white rounded-lg p-4 min-h-[1.5in]">
+                {/* Text input area */}
+              </div>
             </div>
             
             {/* Controls */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 bg-slate-400 rounded"></div>
-                <span className="text-sm text-slate-600">0</span>
-                <div className="w-4 h-4 bg-slate-400 rounded"></div>
-                <span className="text-sm text-slate-600">0</span>
+              <div className="flex items-center space-x-3">
+                <div className="w-6 h-6 bg-slate-400 rounded"></div>
+                <span className="text-base text-slate-600">0</span>
+                <div className="w-6 h-6 bg-slate-400 rounded"></div>
+                <span className="text-base text-slate-600">0</span>
               </div>
-              <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
+              <span className="text-base text-slate-600 bg-blue-500 text-white px-3 py-2 rounded">0</span>
             </div>
           </Card>
         </div>
