@@ -304,7 +304,7 @@ const RightSidebar = () => (
           <button
             key={i}
             className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: '#758595' }}
+            style={{ backgroundColor: '#47566b' }}
           >
           </button>
         ))}
