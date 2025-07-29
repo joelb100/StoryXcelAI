@@ -507,24 +507,26 @@ export default function DashboardLayout() {
 
         {/* Tab Navigation - Columns 6-28 */}
         <div className="col-span-23 flex items-center bg-slate-800">
-          <nav className="flex h-full w-full justify-center">
-            <div className="flex h-full items-center justify-between" style={{ width: '13.5in', margin: '0 0.5in' }}>
-              {builderTabs.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`px-6 py-3 text-base font-medium transition-all duration-300 rounded-none ${
-                    tab.isActive
-                      ? "text-[#00d8ff] bg-slate-700"
-                      : "text-slate-300 hover:text-white hover:bg-slate-700"
-                  }`}
-                  style={{ 
-                    textAlign: 'center'
-                  }}
-                >
-                  {tab.name}
-                </button>
-              ))}
+          <nav className="flex h-full w-full">
+            <div className="flex h-full items-center" style={{ width: '100%' }}>
+              <div className="flex justify-between" style={{ width: '14.5in', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '0.5in', paddingRight: '0.5in' }}>
+                {builderTabs.map((tab, index) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
+                      tab.isActive
+                        ? "text-[#00d8ff] bg-slate-700"
+                        : "text-slate-300 hover:text-white hover:bg-slate-700"
+                    }`}
+                    style={{ 
+                      textAlign: 'center'
+                    }}
+                  >
+                    {tab.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </nav>
         </div>
