@@ -341,70 +341,64 @@ const DashboardContent = ({
     </div>
 
     {/* Constrained Content Container - 15.25 inches max width */}
-    <div className="flex-1 flex justify-center">
-      <div className="w-full max-w-[15.25in] p-4 flex flex-col gap-4">
-        {/* Main Dashboard Section - Red Box with specific dimensions */}
-        <div className="flex justify-center items-center flex-1">
-          <Card className="bg-red-600 rounded-lg border-0" style={{
-            width: '14.5in',
-            height: '7.8in'
-          }}>
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        {/* Main Dashboard Section - Red Box takes up upper portion */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <Card className="bg-red-600 rounded-lg border-0 w-full max-w-[14.5in] h-full">
             {/* Main dashboard content area */}
           </Card>
         </div>
 
-        {/* Project Name Section with minimal spacing from red box */}
-        <div className="flex justify-center" style={{ marginTop: '0.25in' }}>
-          <div style={{ width: '14.5in' }}>
-            {/* Project Name label */}
-            <div className="mb-2">
-              <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-            </div>
-            
-            {/* Pink bars with exact 0.25 inch spacing between them */}
-            <div className="flex gap-[0.25in]">
-              {/* Left project card */}
-              <Card className="bg-pink-500 rounded-lg border-0" style={{
-                width: '3.5in',
-                height: '1.5in'
-              }}></Card>
+        {/* Bottom section - scales to remaining 40% of screen */}
+        <div className="flex-1 flex flex-col justify-start pt-4">
+          {/* Project Name Section */}
+          <div className="flex justify-center mb-4">
+            <div className="w-full max-w-[14.5in]">
+              {/* Project Name label */}
+              <div className="mb-2">
+                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+              </div>
               
-              {/* Right project card */}
-              <Card className="bg-pink-400 rounded-lg border-0 flex-1" style={{
-                height: '1.5in'
-              }}></Card>
+              {/* Pink bars with exact 0.25 inch spacing - scale to 25% of remaining height */}
+              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+                {/* Left project card */}
+                <Card className="bg-pink-500 rounded-lg border-0 h-full" style={{
+                  width: '3.5in'
+                }}></Card>
+                
+                {/* Right project card */}
+                <Card className="bg-pink-400 rounded-lg border-0 flex-1 h-full"></Card>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Description Section - Pink Section with 0.5 inch spacing */}
-        <div className="flex justify-center" style={{ marginTop: '0.5in' }}>
-          <Card className="bg-pink-300 rounded-lg p-6 border-0" style={{
-            width: '14.5in',
-            height: '2.5in'
-          }}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-slate-700">Describe the story you want to create</h3>
-            </div>
-            
-            <div className="flex-1 flex items-center justify-center mb-4">
-              {/* Expanded content area */}
-              <div className="w-full bg-white rounded-lg p-4 min-h-[1.5in]">
-                {/* Text input area */}
+          {/* Description Section - takes remaining space */}
+          <div className="flex justify-center flex-1">
+            <Card className="bg-pink-300 rounded-lg p-6 border-0 w-full max-w-[14.5in] h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-slate-700">Describe the story you want to create</h3>
               </div>
-            </div>
-            
-            {/* Controls */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 bg-slate-400 rounded"></div>
-                <span className="text-base text-slate-600">0</span>
-                <div className="w-6 h-6 bg-slate-400 rounded"></div>
-                <span className="text-base text-slate-600">0</span>
+              
+              <div className="flex-1 flex items-center justify-center mb-4">
+                {/* Expanded content area */}
+                <div className="w-full bg-white rounded-lg p-4 h-full">
+                  {/* Text input area */}
+                </div>
               </div>
-              <span className="text-base text-slate-600 bg-blue-500 text-white px-3 py-2 rounded">0</span>
-            </div>
-          </Card>
+              
+              {/* Controls */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 bg-slate-400 rounded"></div>
+                  <span className="text-base text-slate-600">0</span>
+                  <div className="w-6 h-6 bg-slate-400 rounded"></div>
+                  <span className="text-base text-slate-600">0</span>
+                </div>
+                <span className="text-base text-slate-600 bg-blue-500 text-white px-3 py-2 rounded">0</span>
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
