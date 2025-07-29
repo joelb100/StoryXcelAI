@@ -347,9 +347,9 @@ const DashboardContent = ({
       </Card>
 
       {/* Lower Center Content - Pink Section from grid */}
-      <div className="grid grid-cols-18 gap-4 h-32">
+      <div className="grid grid-cols-19 gap-4 h-32">
         {/* Project Name label spans full width */}
-        <div className="col-span-18 -mb-2">
+        <div className="col-span-19 -mb-2">
           <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
         </div>
         
@@ -357,7 +357,7 @@ const DashboardContent = ({
         <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
         
         {/* Right project cards */}
-        <Card className="col-span-14 bg-pink-400 rounded-lg border-0"></Card>
+        <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
       </div>
 
       {/* Description Section - Pink Section continues */}
@@ -510,8 +510,8 @@ export default function DashboardLayout() {
             <LeftSidebar />
           </div>
           
-          {/* Main Dashboard Content - Columns 6-23 */}
-          <div className="col-span-18">
+          {/* Main Dashboard Content - Columns 6-24 */}
+          <div className="col-span-19">
             <DashboardContent 
               chatMessages={chatMessages}
               chatMessage={chatMessage}
@@ -524,13 +524,13 @@ export default function DashboardLayout() {
             />
           </div>
           
-          {/* Right Content Sidebar - Columns 24-26 */}
+          {/* Right Content Sidebar - Columns 25-27 */}
           <div className="col-span-3">
             <RightSidebar />
           </div>
           
-          {/* Right Icon Sidebar - Columns 27-28 */}
-          <div className="col-span-2">
+          {/* Right Icon Sidebar - Column 28 only (very narrow) */}
+          <div className="col-span-1">
             <RightIconSidebar />
           </div>
         </div>
