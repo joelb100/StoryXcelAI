@@ -12,7 +12,15 @@ import {
   Search,
   UserPlus,
   Menu,
-  X
+  X,
+  FileText,
+  Users,
+  BookOpen,
+  Box,
+  Settings,
+  Upload,
+  Download,
+  Info
 } from "lucide-react";
 
 // Import logo
@@ -55,7 +63,76 @@ const dashboardData = {
   }
 };
 
-// Left Sidebar Component
+// Far Left Icon Sidebar Component
+const IconSidebar = () => (
+  <div className="w-16 bg-slate-800 border-r border-slate-700 flex flex-col justify-between items-center py-4">
+    {/* Top navigation icons */}
+    <div className="flex flex-col items-center space-y-4">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Asset Folder"
+      >
+        <FileText className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Character Manager"
+      >
+        <Users className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Script Library"
+      >
+        <BookOpen className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="World Objects"
+      >
+        <Box className="w-5 h-5" />
+      </Button>
+    </div>
+    
+    {/* Bottom action icons */}
+    <div className="flex flex-col items-center space-y-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Import"
+      >
+        <Upload className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Export"
+      >
+        <Download className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Settings"
+      >
+        <Settings className="w-5 h-5" />
+      </Button>
+    </div>
+  </div>
+);
+
+// Left Content Sidebar Component
 const LeftSidebar = () => (
   <div className="w-64 bg-slate-700 border-r border-slate-600 flex flex-col h-full">
     {/* Project Name Section */}
@@ -346,8 +423,8 @@ export default function DashboardLayout() {
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header */}
       <header className="bg-slate-800 border-b border-slate-700 flex">
-        {/* Logo Area */}
-        <div className="w-64 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
+        {/* Logo Area - adjusted for icon sidebar */}
+        <div className="w-80 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -404,6 +481,7 @@ export default function DashboardLayout() {
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Layout */}
         <div className="hidden lg:flex flex-1">
+          <IconSidebar />
           <LeftSidebar />
           <DashboardContent 
             chatMessages={chatMessages}
@@ -436,8 +514,8 @@ export default function DashboardLayout() {
         {mobileLeftOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/50" onClick={() => setMobileLeftOpen(false)} />
-            <div className="absolute left-0 top-0 h-full w-64 bg-white">
-              <div className="flex items-center justify-between p-4 border-b">
+            <div className="absolute left-0 top-0 h-full w-80 bg-white flex">
+              <div className="flex items-center justify-between p-4 border-b absolute top-0 left-0 right-0 z-10 bg-white">
                 <h2 className="text-lg font-semibold">Projects</h2>
                 <Button
                   variant="ghost"
@@ -447,7 +525,8 @@ export default function DashboardLayout() {
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="h-full overflow-hidden">
+              <div className="h-full overflow-hidden flex pt-16">
+                <IconSidebar />
                 <LeftSidebar />
               </div>
             </div>
