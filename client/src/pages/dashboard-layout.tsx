@@ -377,7 +377,7 @@ const DashboardContent = ({
 
           {/* AI Chat Window - takes remaining space */}
           <div className="flex justify-center flex-1">
-            <Card className="bg-pink-300 rounded-lg p-4 border-0 w-full max-w-[14.5in] h-full flex flex-col">
+            <Card className="rounded-lg p-4 border-0 w-full max-w-[14.5in] h-full flex flex-col" style={{ backgroundColor: '#d4dee7' }}>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
                 <Button variant="ghost" size="sm" className="text-slate-600 p-1">
