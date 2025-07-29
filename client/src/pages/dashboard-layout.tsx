@@ -439,12 +439,12 @@ export default function DashboardLayout() {
 
         {/* Tab Navigation */}
         <div className="flex-1 flex items-center bg-slate-800">
-          <nav className="flex h-full w-full">
+          <nav className="flex h-full">
             {builderTabs.map((tab, index) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`flex-1 h-full text-sm font-medium transition-all duration-300 ${
+                className={`px-8 h-full text-sm font-medium transition-all duration-300 ${
                   index < builderTabs.length - 1 ? 'border-r border-slate-700' : ''
                 } ${
                   tab.isActive
