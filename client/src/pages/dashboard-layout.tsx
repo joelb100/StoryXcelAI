@@ -353,18 +353,28 @@ const DashboardContent = ({
           </Card>
         </div>
 
-        {/* Lower Center Content - Pink Section from grid */}
-        <div className="grid grid-cols-19 gap-4 h-32">
-          {/* Project Name label spans full width */}
-          <div className="col-span-19 -mb-2">
-            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+        {/* Project Name Section with 1 inch spacing from red box */}
+        <div className="flex justify-center" style={{ marginTop: '1in' }}>
+          <div style={{ width: '14.5in' }}>
+            {/* Project Name label */}
+            <div className="mb-3">
+              <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+            </div>
+            
+            {/* Pink bars with specified dimensions */}
+            <div className="flex gap-4">
+              {/* Left project card */}
+              <Card className="bg-pink-500 rounded-lg border-0" style={{
+                width: '3.5in',
+                height: '1.5in'
+              }}></Card>
+              
+              {/* Right project card */}
+              <Card className="bg-pink-400 rounded-lg border-0 flex-1" style={{
+                height: '1.5in'
+              }}></Card>
+            </div>
           </div>
-          
-          {/* Left project card */}
-          <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
-          
-          {/* Right project cards */}
-          <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
         </div>
 
         {/* Description Section - Pink Section scaled up */}
