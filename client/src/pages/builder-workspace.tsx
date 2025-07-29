@@ -497,39 +497,21 @@ export default function BuilderWorkspace() {
           </div>
         )}
 
-        {/* Main Workspace - 3-Column Dashboard Layout */}
-        <div className="bg-white relative overflow-hidden flex">
+        {/* Main Workspace - Proper 3-Column Grid Layout */}
+        <div className="bg-white relative overflow-hidden">
           {activeTab === "dashboard" ? (
-            /* NEW 3-COLUMN DASHBOARD LAYOUT */
-            <>
-              {/* LEFT SIDEBAR - Projects, Store, Featured Modules, Site News */}
-              <div className="w-64 bg-[#4A5B72] border-r border-[#3B4A5F] flex flex-col overflow-hidden">
+            /* 3-COLUMN GRID DASHBOARD LAYOUT */
+            <div className="grid grid-cols-[256px_1fr_256px] h-full">
+              {/* LEFT COLUMN - Projects, Store, Featured Modules, Site News */}
+              <div className="bg-[#4A5B72] border-r border-[#3B4A5F] flex flex-col overflow-hidden">
                 {/* Projects Section - Top Half */}
                 <div className="flex-1 p-4 overflow-y-auto">
                   <div className="mb-4">
-                    <h3 className="text-sm font-semibold text-white mb-2">Projects</h3>
+                    <h3 className="text-sm font-semibold text-white mb-2">Project Name</h3>
                     <p className="text-xs text-slate-300">Your active projects</p>
                   </div>
-                  <div className="space-y-3">
-                    {[
-                      "Epic Fantasy Chronicles",
-                      "Sci-Fi Adventure Series", 
-                      "Mystery Detective Story",
-                      "Romance Novel Draft",
-                      "Documentary Project"
-                    ].map((projectName, index) => (
-                      <Card key={index} className="p-3 bg-[#3B4A5F] border-[#56677D] hover:bg-[#4A5B72] cursor-pointer transition-colors">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-[#56677D] rounded flex items-center justify-center">
-                            <BookOpen className="w-4 h-4 text-slate-300" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-white truncate">{projectName}</p>
-                            <p className="text-xs text-slate-300">Active project</p>
-                          </div>
-                        </div>
-                      </Card>
-                    ))}
+                  <div className="bg-[#3B4A5F] rounded-lg p-4 h-48 mb-4">
+                    {/* Large project showcase area */}
                   </div>
                 </div>
 
@@ -539,22 +521,6 @@ export default function BuilderWorkspace() {
                   <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-xs font-semibold text-white">Store</h4>
-                      <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
-                        </svg>
-                      </Button>
-                    </div>
-                    <div className="bg-[#4A5B72] rounded p-2 mb-2">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 bg-[#56677D] rounded flex items-center justify-center">
-                          <span className="text-xs">🛒</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium text-white truncate">Buy Components Now!</p>
-                          <p className="text-xs text-slate-300">30% Off Store</p>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -576,34 +542,77 @@ export default function BuilderWorkspace() {
                   <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-xs font-semibold text-white">Site News</h4>
-                      <Button variant="ghost" size="sm" className="w-4 h-4 p-0 text-slate-300">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
-                        </svg>
-                      </Button>
                     </div>
                     <div className="text-xs text-slate-300 leading-relaxed">
                       <p className="font-medium text-white mb-1">New updates are available!</p>
-                      <p>A section within a user interface (UI) that displays information about recent updates or changes made to a software, application, or website.</p>
+                      <p>Recent updates and changes to the platform.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* CENTER COLUMN - Project Highlight + Feature Videos + AI Chat */}
-              <div className="flex-1 p-6 flex flex-col h-full">
+              {/* CENTER COLUMN - Project Highlight + Featured Videos + AI Chat */}
+              <div className="p-6 flex flex-col h-full">
                 {/* Project Highlight Section - Large top section */}
                 <div className="mb-4 flex-[0_0_45%]">
-                  <div className="relative bg-[#4A5B72] rounded-lg overflow-hidden h-full">
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    <div className="relative h-full p-6 flex items-center">
-                      <div className="text-white w-full">
-                        <h1 className="text-3xl font-bold mb-3 tracking-wide">Dashboard</h1>
-                        <p className="text-sm leading-relaxed mb-4 opacity-90">
-                          Main dashboard area for project overview and management
+                  <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-full">
+                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="relative h-full p-8 flex items-center">
+                      <div className="text-white max-w-lg w-full">
+                        <h1 className="text-4xl font-black mb-4 tracking-wider">
+                          {dashboardData.projects.active[currentProjectSlide].title}
+                        </h1>
+                        <p className="text-sm leading-relaxed mb-6 opacity-90 line-clamp-6">
+                          {dashboardData.projects.active[currentProjectSlide].description}
                         </p>
+                        <Button 
+                          className="bg-white text-black hover:bg-gray-100"
+                          onClick={() => navigate(`/builder/story`)}
+                        >
+                          Open Project
+                        </Button>
                       </div>
                     </div>
+                    
+                    {/* Navigation arrows */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                      onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+                      onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </Button>
+                    
+                    {/* Slide indicators */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                      {dashboardData.projects.active.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`w-3 h-3 rounded-full transition-colors ${
+                            index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
+                          }`}
+                          onClick={() => setCurrentProjectSlide(index)}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Create New Project Button */}
+                    <Button
+                      variant="outline"
+                      className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create New Project
+                    </Button>
                   </div>
                 </div>
 
@@ -613,8 +622,12 @@ export default function BuilderWorkspace() {
                     <h3 className="text-sm font-medium text-gray-700">Project Name</h3>
                   </div>
                   <div className="flex gap-4 h-full">
-                    <div className="flex-1 bg-[#4A5B72] rounded-lg"></div>
-                    <div className="flex-[2] bg-[#4A5B72] rounded-lg"></div>
+                    <div className="flex-1 bg-gray-200 rounded-lg p-4">
+                      <div className="bg-gray-300 rounded h-full"></div>
+                    </div>
+                    <div className="flex-[2] bg-gray-200 rounded-lg p-4">
+                      <div className="bg-gray-300 rounded h-full"></div>
+                    </div>
                   </div>
                 </div>
 
@@ -651,81 +664,58 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* RIGHT SIDEBAR - Friends List + Site Links */}
-              <div className="w-64 bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden">
+              {/* RIGHT COLUMN - Friends List + Site Links */}
+              <div className="bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden">
                 {/* Friends List */}
                 <div className="flex-1 p-4 overflow-y-auto">
-                  <div className="bg-white rounded-lg p-4 mb-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">Friends List</h3>
-                      <Button variant="ghost" size="sm">
-                        <UserPlus className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    
-                    {/* Search bar */}
-                    <div className="relative mb-4">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        placeholder="Search friends..."
-                        value={friendsSearch}
-                        onChange={(e) => setFriendsSearch(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
-                    
-                    {/* Friends list */}
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {dashboardData.social.friends.filter(friend => 
-                        friend.name.toLowerCase().includes(friendsSearch.toLowerCase())
-                      ).map(friend => (
-                        <div key={friend.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
-                          <div className="relative">
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-sm">
-                              {friend.avatar}
-                            </div>
-                            <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
-                              friend.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                            }`}></div>
+                  <div className="mb-4">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-2">Friends List</h3>
+                  </div>
+                  
+                  {/* Friends list */}
+                  <div className="space-y-2 mb-6">
+                    {[
+                      "Buck Rogers",
+                      "Peter Parker", 
+                      "Tony Stark",
+                      "Sonny Crockett",
+                      "Robert Wagner",
+                      "Lando Calrissian",
+                      "Bob Dylan",
+                      "Ned Flanders"
+                    ].map((friendName, index) => (
+                      <div key={index} className="flex items-center space-x-3 p-2 bg-white rounded hover:bg-gray-50 cursor-pointer">
+                        <div className="relative">
+                          <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-sm">
+                            {friendName.split(' ').map(n => n[0]).join('')}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{friend.name}</p>
-                            <p className="text-xs text-gray-500">{friend.status}</p>
-                          </div>
+                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white bg-blue-400"></div>
                         </div>
-                      ))}
-                    </div>
-                    
-                    <Button variant="outline" className="w-full mt-4" size="sm">
-                      Add Friends +
-                    </Button>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{friendName}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 {/* Site Links */}
                 <div className="border-t border-gray-300 p-4">
-                  <div className="bg-white rounded-lg p-4">
-                    <h3 className="font-semibold text-gray-800 mb-4">Site Links</h3>
-                    <div className="grid grid-cols-4 gap-3">
-                      {dashboardData.tools.quickLinks.map(link => (
-                        <button
-                          key={link.id}
-                          className="flex flex-col items-center p-2 bg-gray-100 rounded-lg hover:bg-gray-150 transition-colors"
-                          onClick={() => window.open(link.url, '_blank')}
-                        >
-                          <span className="text-lg mb-1">{link.icon}</span>
-                          <span className="text-xs font-medium text-gray-700 text-center">{link.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <Button variant="outline" className="w-full mt-4" size="sm">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Link
-                    </Button>
+                  <div className="mb-4">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-2">Site Links</h3>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    {Array.from({length: 16}, (_, i) => (
+                      <button
+                        key={i}
+                        className="w-10 h-10 bg-gray-300 rounded-full hover:bg-gray-400 transition-colors"
+                      >
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
-            </>
+            </div>
             
           ) : (
             /* OTHER BUILDERS CONTENT */
