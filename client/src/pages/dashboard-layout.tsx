@@ -347,9 +347,9 @@ const DashboardContent = ({
       </Card>
 
       {/* Lower Center Content - Pink Section from grid */}
-      <div className="grid grid-cols-17 gap-4 h-32">
+      <div className="grid grid-cols-18 gap-4 h-32">
         {/* Project Name label spans full width */}
-        <div className="col-span-17 -mb-2">
+        <div className="col-span-18 -mb-2">
           <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
         </div>
         
@@ -357,7 +357,7 @@ const DashboardContent = ({
         <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
         
         {/* Right project cards */}
-        <Card className="col-span-13 bg-pink-400 rounded-lg border-0"></Card>
+        <Card className="col-span-14 bg-pink-400 rounded-lg border-0"></Card>
       </div>
 
       {/* Description Section - Pink Section continues */}
@@ -442,8 +442,8 @@ export default function DashboardLayout() {
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header - Spans full 28 columns */}
       <header className="bg-slate-800 border-b border-slate-700 grid grid-cols-28 h-16">
-        {/* Logo Area - Columns 1-6 (matches new sidebar widths) */}
-        <div className="col-span-6 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
+        {/* Logo Area - Columns 1-5 (matches new sidebar widths) */}
+        <div className="col-span-5 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -456,8 +456,8 @@ export default function DashboardLayout() {
           </button>
         </div>
 
-        {/* Tab Navigation - Columns 7-28 */}
-        <div className="col-span-22 flex items-center bg-slate-800">
+        {/* Tab Navigation - Columns 6-28 */}
+        <div className="col-span-23 flex items-center bg-slate-800">
           <nav className="flex h-full w-full">
             {builderTabs.map((tab, index) => (
               <button
@@ -500,18 +500,18 @@ export default function DashboardLayout() {
       <div className="flex-1 grid grid-cols-28 overflow-hidden">
         {/* Desktop Layout */}
         <div className="hidden lg:contents">
-          {/* Left Icon Sidebar - Columns 1-2 (narrower) */}
-          <div className="col-span-2">
+          {/* Left Icon Sidebar - Column 1 only (very narrow) */}
+          <div className="col-span-1">
             <IconSidebar />
           </div>
           
-          {/* Left Content Sidebar - Columns 3-6 */}
+          {/* Left Content Sidebar - Columns 2-5 */}
           <div className="col-span-4">
             <LeftSidebar />
           </div>
           
-          {/* Main Dashboard Content - Columns 7-23 */}
-          <div className="col-span-17">
+          {/* Main Dashboard Content - Columns 6-23 */}
+          <div className="col-span-18">
             <DashboardContent 
               chatMessages={chatMessages}
               chatMessage={chatMessage}
@@ -529,7 +529,7 @@ export default function DashboardLayout() {
             <RightSidebar />
           </div>
           
-          {/* Right Icon Sidebar - Columns 27-28 (narrower) */}
+          {/* Right Icon Sidebar - Columns 27-28 */}
           <div className="col-span-2">
             <RightIconSidebar />
           </div>
