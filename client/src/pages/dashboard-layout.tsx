@@ -340,43 +340,46 @@ const DashboardContent = ({
       <h2 className="text-lg font-semibold text-slate-800">Dashboard</h2>
     </div>
 
-    <div className="flex-1 p-4 flex flex-col gap-4">
-      {/* Main Dashboard Section - Red Box from grid */}
-      <Card className="bg-red-600 rounded-lg flex-1 border-0">
-        {/* Main dashboard content area */}
-      </Card>
+    {/* Constrained Content Container - 15.25 inches max width */}
+    <div className="flex-1 flex justify-center">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col gap-4">
+        {/* Main Dashboard Section - Red Box from grid */}
+        <Card className="bg-red-600 rounded-lg flex-1 border-0">
+          {/* Main dashboard content area */}
+        </Card>
 
-      {/* Lower Center Content - Pink Section from grid */}
-      <div className="grid grid-cols-19 gap-4 h-32">
-        {/* Project Name label spans full width */}
-        <div className="col-span-19 -mb-2">
-          <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-        </div>
-        
-        {/* Left project card */}
-        <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
-        
-        {/* Right project cards */}
-        <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
-      </div>
-
-      {/* Description Section - Pink Section continues */}
-      <Card className="bg-pink-300 rounded-lg p-4 h-24 border-0">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
-        </div>
-        
-        {/* Controls */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-slate-400 rounded"></div>
-            <span className="text-sm text-slate-600">0</span>
-            <div className="w-4 h-4 bg-slate-400 rounded"></div>
-            <span className="text-sm text-slate-600">0</span>
+        {/* Lower Center Content - Pink Section from grid */}
+        <div className="grid grid-cols-19 gap-4 h-32">
+          {/* Project Name label spans full width */}
+          <div className="col-span-19 -mb-2">
+            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
           </div>
-          <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
+          
+          {/* Left project card */}
+          <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
+          
+          {/* Right project cards */}
+          <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
         </div>
-      </Card>
+
+        {/* Description Section - Pink Section continues */}
+        <Card className="bg-pink-300 rounded-lg p-4 h-24 border-0">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
+          </div>
+          
+          {/* Controls */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-slate-400 rounded"></div>
+              <span className="text-sm text-slate-600">0</span>
+              <div className="w-4 h-4 bg-slate-400 rounded"></div>
+              <span className="text-sm text-slate-600">0</span>
+            </div>
+            <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
+          </div>
+        </Card>
+      </div>
     </div>
   </div>
 );
