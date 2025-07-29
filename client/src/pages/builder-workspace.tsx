@@ -590,123 +590,47 @@ export default function BuilderWorkspace() {
                 </div>
               </div>
 
-              {/* CENTER COLUMN - Project Highlight + Feature Videos */}
-              <div className="flex-1 p-6 flex flex-col">
-                {/* Project Highlight Section */}
-                <div className="mb-6">
-                  <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-80">
-                    <div className="absolute inset-0 bg-black/40"></div>
-                    <div className="relative h-full p-8 flex items-center">
-                      <div className="text-white max-w-lg w-full">
-                        <h1 className="text-4xl font-black mb-4 tracking-wider">
-                          {dashboardData.projects.active[currentProjectSlide].title}
-                        </h1>
-                        <p className="text-sm leading-relaxed mb-6 opacity-90 line-clamp-6">
-                          {dashboardData.projects.active[currentProjectSlide].description}
+              {/* CENTER COLUMN - Project Highlight + Feature Videos + AI Chat */}
+              <div className="flex-1 p-6 flex flex-col h-full">
+                {/* Project Highlight Section - Large top section */}
+                <div className="mb-4 flex-[0_0_45%]">
+                  <div className="relative bg-[#4A5B72] rounded-lg overflow-hidden h-full">
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <div className="relative h-full p-6 flex items-center">
+                      <div className="text-white w-full">
+                        <h1 className="text-3xl font-bold mb-3 tracking-wide">Dashboard</h1>
+                        <p className="text-sm leading-relaxed mb-4 opacity-90">
+                          Main dashboard area for project overview and management
                         </p>
-                        <Button 
-                          className="bg-white text-black hover:bg-gray-100"
-                          onClick={() => navigate(`/builder/story`)}
-                        >
-                          Open Project
-                        </Button>
                       </div>
                     </div>
-                    
-                    {/* Navigation arrows */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                      onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                      onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </Button>
-                    
-                    {/* Slide indicators */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                      {dashboardData.projects.active.map((_, index) => (
-                        <button
-                          key={index}
-                          className={`w-3 h-3 rounded-full transition-colors ${
-                            index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
-                          }`}
-                          onClick={() => setCurrentProjectSlide(index)}
-                        />
-                      ))}
-                    </div>
-                    
-                    {/* Create New Project Button */}
-                    <Button
-                      variant="outline"
-                      className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create New Project
-                    </Button>
                   </div>
                 </div>
 
-                {/* Feature Videos Section - Fixed height */}
-                <div className="mb-6">
-                  <div className="bg-gray-200 rounded-lg p-4 h-64">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">Feature Video</h3>
-                      <Button variant="ghost" size="sm">
-                        <Plus className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <div className="overflow-x-auto overflow-y-hidden h-full">
-                      <div className="flex space-x-4 pb-2 min-w-max">
-                        {dashboardData.media.referenceVideos.map(video => (
-                          <div 
-                            key={video.id} 
-                            className="flex-none w-64 bg-gray-100 rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
-                            onClick={() => window.open(video.url, '_blank')}
-                            title={`Watch "${video.title}" on YouTube`}
-                          >
-                            <div className="relative bg-gray-800 rounded-lg h-32 flex items-center justify-center mb-3 group">
-                              <span className="text-2xl">{video.thumbnail}</span>
-                              <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">
-                                {video.duration}
-                              </div>
-                              <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                                <Play className="w-6 h-6 text-white/80 group-hover:text-white group-hover:scale-110 transition-all" />
-                              </div>
-                            </div>
-                            <h4 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 leading-tight">{video.title}</h4>
-                            <p className="text-sm text-gray-600 mb-1">{video.creator}</p>
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm text-gray-500">{video.views} views</p>
-                              <span className="text-sm text-gray-400">
-                                {video.scope === 'project' ? '🎯' : '🌐'}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                {/* Project Name Section - Two side-by-side boxes */}
+                <div className="mb-4 flex-[0_0_15%]">
+                  <div className="mb-2">
+                    <h3 className="text-sm font-medium text-gray-700">Project Name</h3>
+                  </div>
+                  <div className="flex gap-4 h-full">
+                    <div className="flex-1 bg-[#4A5B72] rounded-lg"></div>
+                    <div className="flex-[2] bg-[#4A5B72] rounded-lg"></div>
                   </div>
                 </div>
 
                 {/* AI Chat Window - Bottom section */}
-                <div className="flex-1">
-                  <div className="bg-gray-200 rounded-lg p-4 h-full min-h-[200px] flex flex-col">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-gray-800">AI chat window</h3>
+                <div className="flex-1 min-h-0">
+                  <div className="mb-2">
+                    <h3 className="text-sm font-medium text-gray-700">AI chat window</h3>
+                  </div>
+                  <div className="bg-gray-200 rounded-lg p-4 h-full flex flex-col">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm text-gray-600">Chat Interface</span>
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     </div>
                     
                     {/* Chat Messages */}
-                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-[120px]" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
+                    <div className="flex-1 bg-white rounded-lg p-3 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
                       <div className="space-y-3">
                         {chatMessages.map((message) => (
                           <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
