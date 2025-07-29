@@ -518,7 +518,7 @@ export default function DashboardLayout() {
                     className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
                       tab.isActive
                         ? "text-[#00d8ff] bg-slate-700"
-                        : "text-slate-300 hover:text-white hover:bg-slate-700"
+                        : "text-white hover:text-white hover:bg-slate-700"
                     }`}
                     style={{ 
                       textAlign: 'center'
