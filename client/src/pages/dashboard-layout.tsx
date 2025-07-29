@@ -60,30 +60,62 @@ const LeftSidebar = () => (
   <div className="w-64 bg-slate-700 border-r border-slate-600 flex flex-col h-full">
     {/* Project Name Section */}
     <div className="p-4 border-b border-slate-600">
-      <h3 className="text-sm font-semibold text-white mb-4">Project Name</h3>
-      <div className="bg-slate-600 rounded-lg h-64 mb-4">
-        {/* Large project showcase area */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-white">Project Name</h3>
+        <Button variant="ghost" size="sm" className="text-white p-1">
+          <Menu className="w-4 h-4" />
+        </Button>
+      </div>
+      
+      <div className="bg-slate-600 rounded-lg p-3 mb-4">
+        <h4 className="text-xs font-semibold text-white mb-2">Project Name</h4>
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2 text-xs">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+            <span className="text-cyan-400">Gun Smoke</span>
+            <span className="text-slate-300">— In progress</span>
+          </div>
+          <div className="text-xs text-slate-400">Project description</div>
+          
+          <div className="flex items-center space-x-2 text-xs">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+            <span className="text-yellow-400">Gun Smoke</span>
+            <span className="text-slate-300">— Planning</span>
+          </div>
+          <div className="text-xs text-slate-400">Project description</div>
+          
+          <div className="flex items-center space-x-2 text-xs">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span className="text-green-400">Gun Smoke</span>
+            <span className="text-slate-300">— Completed</span>
+          </div>
+          <div className="text-xs text-slate-400">Project description</div>
+        </div>
       </div>
     </div>
 
     {/* Store Section */}
     <div className="p-4 border-b border-slate-600">
-      <div className="bg-slate-600 rounded-lg p-4 h-20">
-        <h4 className="text-xs font-semibold text-white">Store</h4>
+      <div className="bg-slate-600 rounded-lg p-4">
+        <h4 className="text-sm font-semibold text-white">Store</h4>
       </div>
     </div>
 
     {/* Featured Modules Section */}
     <div className="p-4 border-b border-slate-600">
-      <div className="bg-slate-600 rounded-lg p-4 h-20">
-        <h4 className="text-xs font-semibold text-white mb-2">Featured Modules</h4>
+      <div className="bg-slate-600 rounded-lg p-4">
+        <h4 className="text-sm font-semibold text-white">Featured Modules</h4>
       </div>
     </div>
 
     {/* Site News Section */}
     <div className="p-4 flex-1">
-      <div className="bg-slate-600 rounded-lg p-4 h-20">
-        <h4 className="text-xs font-semibold text-white">Site News</h4>
+      <div className="bg-slate-600 rounded-lg p-4">
+        <h4 className="text-sm font-semibold text-white mb-3">Site News</h4>
+        <div className="text-xs text-slate-300 leading-relaxed space-y-2">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+        </div>
       </div>
     </div>
   </div>
