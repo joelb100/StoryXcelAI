@@ -71,7 +71,7 @@ const dashboardData = {
 
 // Far Left Icon Sidebar Component - Green from grid (Columns 1-3)
 const IconSidebar = () => (
-  <div className="h-full bg-primary border-r border-border flex flex-col justify-between items-center py-4">
+  <div className="h-full bg-green-600 border-r border-slate-600 flex flex-col justify-between items-center py-4">
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -140,7 +140,7 @@ const IconSidebar = () => (
 
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
 const LeftSidebar = () => (
-  <div className="h-full bg-secondary border-r border-border flex flex-col">
+  <div className="h-full bg-purple-600 border-r border-slate-600 flex flex-col">
     {/* First Gray Frame - Project Name Section - 25% */}
     <div className="p-2 border-b border-slate-600" style={{ height: '25%' }}>
       <div className="flex items-center justify-between mb-2">
@@ -206,7 +206,7 @@ const LeftSidebar = () => (
 
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
 const RightIconSidebar = () => (
-  <div className="h-full bg-primary border-l border-border flex flex-col justify-between items-center py-4">
+  <div className="h-full bg-blue-600 border-l border-slate-600 flex flex-col justify-between items-center py-4">
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -275,7 +275,7 @@ const RightIconSidebar = () => (
 
 // Right Content Sidebar Component - Yellow from grid (Columns 24-26)
 const RightSidebar = () => (
-  <div className="h-full bg-secondary border-l border-border flex flex-col">
+  <div className="h-full bg-yellow-500 border-l border-slate-500 flex flex-col">
     {/* Friends List */}
     <div className="p-4 flex-1">
       <h3 className="text-sm font-semibold text-white mb-4">Friends List</h3>
@@ -488,11 +488,11 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="h-screen bg-background dark:bg-background flex flex-col overflow-hidden">
+    <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header - Spans full 28 columns */}
-      <header className="bg-primary border-b border-border grid grid-cols-28 h-16">
+      <header className="bg-slate-800 border-b border-slate-700 grid grid-cols-28 h-16">
         {/* Logo Area - Columns 1-5 (matches new sidebar widths) */}
-        <div className="col-span-5 px-6 py-4 bg-primary flex items-center justify-center border-r border-border">
+        <div className="col-span-5 px-6 py-4 bg-slate-800 flex items-center justify-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -506,8 +506,8 @@ export default function DashboardLayout() {
         </div>
 
         {/* Tab Navigation - Columns 6-28 */}
-        <div className="col-span-23 bg-primary">
-          <div className="w-full bg-primary h-16">
+        <div className="col-span-23 bg-slate-800">
+          <div className="w-full bg-slate-800 h-16">
             <div className="max-w-[15.25in] w-full mx-auto h-full flex items-center px-4">
               <nav className="flex justify-evenly w-full h-full items-center transform -translate-x-36">
                 {builderTabs.map((tab, index) => (
@@ -516,8 +516,8 @@ export default function DashboardLayout() {
                     onClick={() => handleTabChange(tab.id)}
                     className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
                       tab.isActive
-                        ? "text-accent-foreground bg-secondary"
-                        : "text-primary-foreground hover:text-primary-foreground hover:bg-secondary/50"
+                        ? "text-[#00d8ff] bg-slate-700"
+                        : "text-slate-300 hover:text-white hover:bg-slate-700"
                     }`}
                     style={{ 
                       textAlign: 'center'
