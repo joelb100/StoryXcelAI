@@ -65,7 +65,7 @@ const dashboardData = {
 
 // Far Left Icon Sidebar Component
 const IconSidebar = () => (
-  <div className="w-16 bg-slate-700 border-r border-slate-600 flex flex-col justify-between items-center py-4">
+  <div className="w-16 bg-custom-blue border-r border-slate-600 flex flex-col justify-between items-center py-4">
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button

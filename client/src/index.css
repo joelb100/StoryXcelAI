@@ -68,6 +68,11 @@
   }
 }
 
+/* Custom colors */
+.bg-custom-blue {
+  background-color: #29415d;
+}
+
 /* Custom animations */
 @keyframes slow-pulse {
   0%, 100% {
