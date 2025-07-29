@@ -508,12 +508,12 @@ export default function DashboardLayout() {
         {/* Tab Navigation - Columns 6-28 */}
         <div className="col-span-23 flex items-center bg-slate-800">
           <nav className="flex h-full w-full justify-center">
-            <div className="flex h-full" style={{ width: '14.5in', justifyContent: 'space-evenly' }}>
+            <div className="flex h-full justify-between items-center" style={{ width: '14.5in', paddingLeft: '1in', paddingRight: '1in' }}>
               {builderTabs.map((tab, index) => (
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`px-6 h-full text-sm font-medium transition-all duration-300 ${
+                  className={`px-4 h-full text-sm font-medium transition-all duration-300 ${
                     tab.isActive
                       ? "text-[#00d8ff] bg-slate-700"
                       : "text-slate-300 hover:text-white hover:bg-slate-700"
