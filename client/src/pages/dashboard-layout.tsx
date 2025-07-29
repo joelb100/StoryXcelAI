@@ -361,8 +361,8 @@ const DashboardContent = ({
               <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
             </div>
             
-            {/* Pink bars with exact 0.5 inch spacing between them */}
-            <div className="flex gap-[0.5in]">
+            {/* Pink bars with exact 0.25 inch spacing between them */}
+            <div className="flex gap-[0.25in]">
               {/* Left project card */}
               <Card className="bg-pink-500 rounded-lg border-0" style={{
                 width: '3.5in',
