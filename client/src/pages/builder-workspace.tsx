@@ -638,12 +638,12 @@ export default function BuilderWorkspace() {
                   </div>
                   <div className="bg-gray-200 rounded-lg p-4 h-full flex flex-col">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm text-gray-600">Chat Interface</span>
+                      <span className="text-sm text-gray-600">AI Assistant</span>
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     </div>
                     
                     {/* Chat Messages */}
-                    <div className="flex-1 bg-white rounded-lg p-3 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
+                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
                       <div className="space-y-3">
                         {chatMessages.map((message) => (
                           <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
@@ -659,6 +659,20 @@ export default function BuilderWorkspace() {
                           </div>
                         ))}
                       </div>
+                    </div>
+                    
+                    {/* Chat Input */}
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Ask AI assistant..."
+                        value={chatMessage}
+                        onChange={(e) => setChatMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="flex-1"
+                      />
+                      <Button onClick={handleSendMessage} size="sm">
+                        <Send className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
