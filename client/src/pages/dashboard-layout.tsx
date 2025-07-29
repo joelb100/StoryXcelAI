@@ -316,11 +316,16 @@ export default function DashboardLayout() {
       <header className="bg-slate-800 border-b border-slate-700 flex">
         {/* Logo Area */}
         <div className="w-64 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
-          <img 
-            src={storyXcelLogo} 
-            alt="StoryXcel" 
-            className="h-8 w-auto"
-          />
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="hover:opacity-80 transition-opacity"
+          >
+            <img 
+              src={storyXcelLogo} 
+              alt="StoryXcel" 
+              className="h-8 w-auto cursor-pointer"
+            />
+          </button>
         </div>
 
         {/* Tab Navigation */}
