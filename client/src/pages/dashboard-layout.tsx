@@ -507,9 +507,9 @@ export default function DashboardLayout() {
 
         {/* Tab Navigation - Columns 6-28 */}
         <div className="col-span-23 flex items-center bg-slate-800">
-          <nav className="flex h-full w-full justify-center">
-            <div className="flex h-full items-center" style={{ width: '14.5in' }}>
-              <div className="flex justify-between w-full" style={{ paddingLeft: '0.5in', paddingRight: '0.5in' }}>
+          <nav className="flex h-full w-full">
+            <div className="flex h-full items-center" style={{ width: '14.5in', marginLeft: 'auto', marginRight: 'auto' }}>
+              <div className="flex justify-between w-1/2" style={{ paddingLeft: '0.5in' }}>
                 {builderTabs.map((tab, index) => (
                   <button
                     key={tab.id}
