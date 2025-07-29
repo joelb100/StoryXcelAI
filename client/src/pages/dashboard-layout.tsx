@@ -360,15 +360,16 @@ const DashboardContent = ({
                 <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
               </div>
               
-              {/* Pink bars with exact 0.25 inch spacing - scale to 25% of remaining height */}
+              {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
               <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-                {/* Left project card */}
-                <Card className="bg-pink-500 rounded-lg border-0 h-full" style={{
-                  width: '3.5in'
-                }}></Card>
+                {/* First project card */}
+                <Card className="bg-pink-500 rounded-lg border-0 h-full flex-1"></Card>
                 
-                {/* Right project card */}
-                <Card className="bg-pink-400 rounded-lg border-0 flex-1 h-full"></Card>
+                {/* Second project card */}
+                <Card className="bg-pink-400 rounded-lg border-0 h-full flex-1"></Card>
+                
+                {/* Third project card */}
+                <Card className="bg-pink-300 rounded-lg border-0 h-full flex-1"></Card>
               </div>
             </div>
           </div>
