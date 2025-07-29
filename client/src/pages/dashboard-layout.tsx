@@ -141,61 +141,61 @@ const IconSidebar = () => (
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
 const LeftSidebar = () => (
   <div className="h-full bg-purple-600 border-r border-slate-600 flex flex-col">
-    {/* Project Name Section */}
-    <div className="p-4 border-b border-slate-600">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white">Project Name</h3>
+    {/* Project Name Section - 35% of height */}
+    <div className="p-2 border-b border-slate-600" style={{ height: '35%' }}>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-xs font-semibold text-white">Project Name</h3>
         <Button variant="ghost" size="sm" className="text-white p-1">
-          <Menu className="w-4 h-4" />
+          <Menu className="w-3 h-3" />
         </Button>
       </div>
       
-      <div className="bg-slate-600 rounded-lg p-3 mb-4">
-        <h4 className="text-xs font-semibold text-white mb-2">Project Name</h4>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2 text-xs">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-            <span className="text-cyan-400">Gun Smoke</span>
-            <span className="text-slate-300">— In progress</span>
+      <div className="bg-slate-600 rounded-lg p-2 h-full overflow-y-auto">
+        <h4 className="text-xs font-semibold text-white mb-1">Project Name</h4>
+        <div className="space-y-1">
+          <div className="flex items-center space-x-1 text-xs">
+            <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full flex-shrink-0"></div>
+            <span className="text-cyan-400 truncate">Gun Smoke</span>
+            <span className="text-slate-300 text-xs">— In progress</span>
           </div>
-          <div className="text-xs text-slate-400">Project description</div>
+          <div className="text-xs text-slate-400 truncate">Project description</div>
           
-          <div className="flex items-center space-x-2 text-xs">
-            <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-            <span className="text-yellow-400">Gun Smoke</span>
-            <span className="text-slate-300">— Planning</span>
+          <div className="flex items-center space-x-1 text-xs">
+            <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full flex-shrink-0"></div>
+            <span className="text-yellow-400 truncate">Gun Smoke</span>
+            <span className="text-slate-300 text-xs">— Planning</span>
           </div>
-          <div className="text-xs text-slate-400">Project description</div>
+          <div className="text-xs text-slate-400 truncate">Project description</div>
           
-          <div className="flex items-center space-x-2 text-xs">
-            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-            <span className="text-green-400">Gun Smoke</span>
-            <span className="text-slate-300">— Completed</span>
+          <div className="flex items-center space-x-1 text-xs">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0"></div>
+            <span className="text-green-400 truncate">Gun Smoke</span>
+            <span className="text-slate-300 text-xs">— Completed</span>
           </div>
-          <div className="text-xs text-slate-400">Project description</div>
+          <div className="text-xs text-slate-400 truncate">Project description</div>
         </div>
       </div>
     </div>
 
-    {/* Store Section */}
-    <div className="p-4 border-b border-slate-600">
-      <div className="bg-slate-600 rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-white">Store</h4>
+    {/* Store Section - 15% of height */}
+    <div className="p-2 border-b border-slate-600" style={{ height: '15%' }}>
+      <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
+        <h4 className="text-xs font-semibold text-white">Store</h4>
       </div>
     </div>
 
-    {/* Featured Modules Section */}
-    <div className="p-4 border-b border-slate-600">
-      <div className="bg-slate-600 rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-white">Featured Modules</h4>
+    {/* Featured Modules Section - 15% of height */}
+    <div className="p-2 border-b border-slate-600" style={{ height: '15%' }}>
+      <div className="bg-slate-600 rounded-lg p-2 h-full flex items-center">
+        <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
       </div>
     </div>
 
-    {/* Site News Section */}
-    <div className="p-4 flex-1">
-      <div className="bg-slate-600 rounded-lg p-4">
-        <h4 className="text-sm font-semibold text-white mb-3">Site News</h4>
-        <div className="text-xs text-slate-300 leading-relaxed space-y-2">
+    {/* Site News Section - 35% of height */}
+    <div className="p-2 flex-1" style={{ height: '35%' }}>
+      <div className="bg-slate-600 rounded-lg p-2 h-full overflow-y-auto">
+        <h4 className="text-xs font-semibold text-white mb-2">Site News</h4>
+        <div className="text-xs text-slate-300 leading-relaxed space-y-1">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
         </div>
