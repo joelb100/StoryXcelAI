@@ -492,7 +492,7 @@ export default function DashboardLayout() {
       {/* Top Navigation Header - Spans full 28 columns */}
       <header className="bg-slate-800 border-b border-slate-700 grid grid-cols-28 h-16">
         {/* Logo Area - Columns 1-5 (matches new sidebar widths) */}
-        <div className="col-span-5 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
+        <div className="col-span-5 px-6 py-4 bg-slate-800 flex items-center justify-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
