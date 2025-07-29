@@ -506,10 +506,10 @@ export default function DashboardLayout() {
         </div>
 
         {/* Tab Navigation - Columns 6-28 */}
-        <div className="col-span-23 flex items-center bg-slate-800">
-          <div className="w-full flex justify-center">
-            <div className="w-full max-w-[15.25in] px-4">
-              <nav className="flex justify-evenly h-full items-center">
+        <div className="col-span-23 bg-slate-800">
+          <div className="w-full bg-slate-800 h-16">
+            <div className="max-w-[15.25in] w-full mx-auto h-full flex items-center px-4">
+              <nav className="flex justify-evenly w-full h-full items-center">
                 {builderTabs.map((tab, index) => (
                   <button
                     key={tab.id}
