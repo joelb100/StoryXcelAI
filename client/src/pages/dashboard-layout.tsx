@@ -303,7 +303,8 @@ const RightSidebar = () => (
         {Array.from({length: 16}, (_, i) => (
           <button
             key={i}
-            className="w-10 h-10 bg-slate-500 rounded-full hover:bg-slate-400 transition-colors"
+            className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity"
+            style={{ backgroundColor: '#758595' }}
           >
           </button>
         ))}
