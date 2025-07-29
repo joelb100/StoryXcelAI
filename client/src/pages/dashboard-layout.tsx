@@ -32,14 +32,14 @@ import {
 // Import logo
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 
-// Builder tabs configuration
-const builderTabs = [
-  { id: "world", name: "World", isActive: false },
-  { id: "production", name: "Production", isActive: false },
-  { id: "asset", name: "Asset", isActive: false },
-  { id: "story", name: "Story", isActive: true },
-  { id: "script", name: "Script", isActive: false },
-  { id: "deck", name: "Deck", isActive: false },
+// Builder tabs configuration - moved inside component to access activeTab
+const getBuilderTabs = (activeTab: string) => [
+  { id: "world", name: "World", isActive: activeTab === "world" },
+  { id: "production", name: "Production", isActive: activeTab === "production" },
+  { id: "asset", name: "Asset", isActive: activeTab === "asset" },
+  { id: "story", name: "Story", isActive: activeTab === "story" },
+  { id: "script", name: "Script", isActive: activeTab === "script" },
+  { id: "deck", name: "Deck", isActive: activeTab === "deck" },
 ];
 
 // Friends list data
@@ -433,7 +433,7 @@ const DashboardContent = ({
 
 // Main Dashboard Layout
 export default function DashboardLayout() {
-  const [activeTab, setActiveTab] = useState("story");
+  const [location, navigate] = useLocation();
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
   const [chatMessages, setChatMessages] = useState([
     { id: 1, type: 'ai', content: 'Hello! I\'m your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.' }
@@ -441,10 +441,17 @@ export default function DashboardLayout() {
   const [chatMessage, setChatMessage] = useState("");
   const [mobileLeftOpen, setMobileLeftOpen] = useState(false);
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
-  const [, navigate] = useLocation();
+  
+  // Determine active tab from current route
+  const getActiveTab = () => {
+    if (location === '/dashboard') return 'dashboard';
+    const match = location.match(/\/builder\/(.+)/);
+    return match ? match[1] : 'story';
+  };
+  
+  const activeTab = getActiveTab();
 
   const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
     navigate(`/builder/${tabId}`);
   };
 
@@ -511,19 +518,22 @@ export default function DashboardLayout() {
           <div className="w-full h-16" style={{ backgroundColor: '#0d274c' }}>
             <div className="max-w-[15.25in] w-full mx-auto h-full flex items-center px-4">
               <nav className="flex justify-evenly w-full h-full items-center transform -translate-x-36">
-                {builderTabs.map((tab, index) => (
+                {getBuilderTabs(activeTab).map((tab, index) => (
                   <button
                     key={tab.id}
                     onClick={() => handleTabChange(tab.id)}
                     className="px-4 py-3 text-base font-medium text-white transition-all duration-300 rounded-none"
                     style={{ 
-                      textAlign: 'center'
+                      textAlign: 'center',
+                      textShadow: tab.isActive ? '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff' : ''
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.textShadow = '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.textShadow = '';
+                      if (!tab.isActive) {
+                        e.currentTarget.style.textShadow = '';
+                      }
                     }}
                   >
                     {tab.name}
