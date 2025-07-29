@@ -343,10 +343,15 @@ const DashboardContent = ({
     {/* Constrained Content Container - 15.25 inches max width */}
     <div className="flex-1 flex justify-center">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col gap-4">
-        {/* Main Dashboard Section - Red Box from grid */}
-        <Card className="bg-red-600 rounded-lg flex-1 border-0">
-          {/* Main dashboard content area */}
-        </Card>
+        {/* Main Dashboard Section - Red Box with specific dimensions */}
+        <div className="flex justify-center items-center flex-1">
+          <Card className="bg-red-600 rounded-lg border-0" style={{
+            width: '14.5in',
+            height: '7.8in'
+          }}>
+            {/* Main dashboard content area */}
+          </Card>
+        </div>
 
         {/* Lower Center Content - Pink Section from grid */}
         <div className="grid grid-cols-19 gap-4 h-32">
