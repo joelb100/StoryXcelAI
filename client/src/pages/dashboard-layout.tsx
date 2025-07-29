@@ -517,7 +517,7 @@ export default function DashboardLayout() {
                     onClick={() => handleTabChange(tab.id)}
                     className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
                       tab.isActive
-                        ? "text-white bg-slate-700"
+                        ? "text-white"
                         : "text-white hover:text-white hover:bg-slate-700"
                     }`}
                     style={{ 
