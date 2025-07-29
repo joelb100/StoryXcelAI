@@ -69,9 +69,9 @@ const dashboardData = {
   }
 };
 
-// Far Left Icon Sidebar Component
+// Far Left Icon Sidebar Component - Green from grid (Columns 1-3)
 const IconSidebar = () => (
-  <div className="w-16 bg-custom-blue border-r border-slate-600 flex flex-col justify-between items-center py-4">
+  <div className="h-full bg-green-600 border-r border-slate-600 flex flex-col justify-between items-center py-4">
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -138,9 +138,9 @@ const IconSidebar = () => (
   </div>
 );
 
-// Left Content Sidebar Component
+// Left Content Sidebar Component - Purple from grid (Columns 4-7)
 const LeftSidebar = () => (
-  <div className="w-64 bg-slate-700 border-r border-slate-600 flex flex-col h-full">
+  <div className="h-full bg-purple-600 border-r border-slate-600 flex flex-col">
     {/* Project Name Section */}
     <div className="p-4 border-b border-slate-600">
       <div className="flex items-center justify-between mb-4">
@@ -204,9 +204,9 @@ const LeftSidebar = () => (
   </div>
 );
 
-// Right Icon Sidebar Component
+// Right Icon Sidebar Component - Blue from grid (Columns 27-28)
 const RightIconSidebar = () => (
-  <div className="w-16 bg-custom-blue border-l border-slate-600 flex flex-col justify-between items-center py-4">
+  <div className="h-full bg-blue-600 border-l border-slate-600 flex flex-col justify-between items-center py-4">
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -273,9 +273,9 @@ const RightIconSidebar = () => (
   </div>
 );
 
-// Right Content Sidebar Component
+// Right Content Sidebar Component - Yellow from grid (Columns 24-26)
 const RightSidebar = () => (
-  <div className="w-64 bg-slate-600 border-l border-slate-500 flex flex-col h-full">
+  <div className="h-full bg-yellow-500 border-l border-slate-500 flex flex-col">
     {/* Friends List */}
     <div className="p-4 flex-1">
       <h3 className="text-sm font-semibold text-white mb-4">Friends List</h3>
@@ -334,44 +334,47 @@ const DashboardContent = ({
   setCurrentProjectSlide,
   navigate 
 }: DashboardContentProps) => (
-  <div className="flex-1 bg-gray-100 flex flex-col h-full">
+  <div className="bg-gray-100 flex flex-col h-full">
     {/* Dashboard Header */}
     <div className="bg-white border-b border-gray-200 p-4">
       <h2 className="text-lg font-semibold text-slate-800">Dashboard</h2>
     </div>
 
-    <div className="flex-1 p-6 flex flex-col space-y-4">
-      {/* Large Top Section */}
-      <Card className="bg-slate-600 rounded-lg h-64 border-0">
-        {/* Empty slate design matching picture 2 */}
+    <div className="flex-1 p-4 flex flex-col gap-4">
+      {/* Main Dashboard Section - Red Box from grid */}
+      <Card className="bg-red-600 rounded-lg flex-1 border-0">
+        {/* Main dashboard content area */}
       </Card>
 
-      {/* Project Name Section */}
-      <div>
-        <h3 className="text-sm font-medium text-slate-700 mb-3">Project Name</h3>
-        <div className="flex gap-4 h-24">
-          <Card className="w-32 bg-slate-600 rounded-lg border-0"></Card>
-          <Card className="flex-1 bg-slate-600 rounded-lg border-0"></Card>
+      {/* Lower Center Content - Pink Section from grid */}
+      <div className="grid grid-cols-16 gap-4 h-32">
+        {/* Project Name label spans full width */}
+        <div className="col-span-16 -mb-2">
+          <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
         </div>
+        
+        {/* Left project card */}
+        <Card className="col-span-4 bg-pink-500 rounded-lg border-0"></Card>
+        
+        {/* Right project cards */}
+        <Card className="col-span-12 bg-pink-400 rounded-lg border-0"></Card>
       </div>
 
-      {/* Bottom Text Section */}
-      <Card className="bg-slate-300 rounded-lg p-4 flex-1 flex flex-col border-0">
-        <div className="flex items-center justify-between mb-3">
+      {/* Description Section - Pink Section continues */}
+      <Card className="bg-pink-300 rounded-lg p-4 h-24 border-0">
+        <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
         </div>
         
-        {/* Text Area */}
-        <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-slate-400 rounded"></div>
-              <span className="text-sm text-slate-600">0</span>
-              <div className="w-4 h-4 bg-slate-400 rounded"></div>
-              <span className="text-sm text-slate-600">0</span>
-            </div>
-            <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
+        {/* Controls */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 bg-slate-400 rounded"></div>
+            <span className="text-sm text-slate-600">0</span>
+            <div className="w-4 h-4 bg-slate-400 rounded"></div>
+            <span className="text-sm text-slate-600">0</span>
           </div>
+          <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
         </div>
       </Card>
     </div>
@@ -437,10 +440,10 @@ export default function DashboardLayout() {
 
   return (
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
-      {/* Top Navigation Header */}
-      <header className="bg-slate-800 border-b border-slate-700 flex">
-        {/* Logo Area - adjusted for both icon sidebars */}
-        <div className="w-96 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
+      {/* Top Navigation Header - Spans full 28 columns */}
+      <header className="bg-slate-800 border-b border-slate-700 grid grid-cols-28 h-16">
+        {/* Logo Area - Columns 1-7 */}
+        <div className="col-span-7 px-6 py-4 bg-slate-800 flex items-center border-r border-slate-700">
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -453,14 +456,14 @@ export default function DashboardLayout() {
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex-1 flex items-center bg-slate-800">
-          <nav className="flex h-full">
+        {/* Tab Navigation - Columns 8-28 */}
+        <div className="col-span-21 flex items-center bg-slate-800">
+          <nav className="flex h-full w-full">
             {builderTabs.map((tab, index) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`px-8 h-full text-sm font-medium transition-all duration-300 ${
+                className={`flex-1 h-full text-sm font-medium transition-all duration-300 ${
                   index < builderTabs.length - 1 ? 'border-r border-slate-700' : ''
                 } ${
                   tab.isActive
@@ -475,7 +478,7 @@ export default function DashboardLayout() {
         </div>
 
         {/* Mobile Menu Buttons */}
-        <div className="lg:hidden flex items-center px-4 space-x-2">
+        <div className="lg:hidden flex items-center px-4 space-x-2 col-span-28 justify-end">
           <Button
             variant="ghost"
             size="sm"
@@ -493,24 +496,43 @@ export default function DashboardLayout() {
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* Main Content Area - 28 Column Grid */}
+      <div className="flex-1 grid grid-cols-28 overflow-hidden">
         {/* Desktop Layout */}
-        <div className="hidden lg:flex flex-1">
-          <IconSidebar />
-          <LeftSidebar />
-          <DashboardContent 
-            chatMessages={chatMessages}
-            chatMessage={chatMessage}
-            setChatMessage={setChatMessage}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-            currentProjectSlide={currentProjectSlide}
-            setCurrentProjectSlide={setCurrentProjectSlide}
-            navigate={navigate}
-          />
-          <RightSidebar />
-          <RightIconSidebar />
+        <div className="hidden lg:contents">
+          {/* Left Icon Sidebar - Columns 1-3 */}
+          <div className="col-span-3">
+            <IconSidebar />
+          </div>
+          
+          {/* Left Content Sidebar - Columns 4-7 */}
+          <div className="col-span-4">
+            <LeftSidebar />
+          </div>
+          
+          {/* Main Dashboard Content - Columns 8-23 */}
+          <div className="col-span-16">
+            <DashboardContent 
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+              currentProjectSlide={currentProjectSlide}
+              setCurrentProjectSlide={setCurrentProjectSlide}
+              navigate={navigate}
+            />
+          </div>
+          
+          {/* Right Content Sidebar - Columns 24-26 */}
+          <div className="col-span-3">
+            <RightSidebar />
+          </div>
+          
+          {/* Right Icon Sidebar - Columns 27-28 */}
+          <div className="col-span-2">
+            <RightIconSidebar />
+          </div>
         </div>
 
         {/* Mobile Layout */}

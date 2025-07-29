@@ -5,6 +5,13 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        '28': 'repeat(28, minmax(0, 1fr))',
+      },
+      gridColumn: {
+        'span-16': 'span 16 / span 16',
+        'span-21': 'span 21 / span 21',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

@@ -1,0 +1,108 @@
+🧱 Grid System:
+
+    The layout is based on a 28-column grid with consistent gutter spacing.
+
+    Each vertical guide represents a column division.
+
+    The full layout spans columns 1–28, which will be used to proportionally define content placement.
+
+🎨 Layout Section Breakdown by Grid Columns
+🟦 Top Navbar (Header)
+
+    Spans: Columns 1 to 28
+
+    Height: Approx. 1.5 grid rows
+
+    Content:
+
+        Left: Logo ("STORYXCEL")
+
+        Right: Nav Tabs (World, Production, Asset, etc.)
+
+🟩 Left Sidebar Navigation (Bright Green)
+
+    Spans: Columns 1 to 3
+
+    Contains:
+
+        Navigation icons
+
+        Aligns vertically with the full screen height
+
+    Fixed/Sticky for vertical navigation
+
+🟪 Left Sidebar Content (Purple)
+
+    Spans: Columns 4 to 7
+
+    Contains:
+
+        Project list
+
+        Store
+
+        Featured Modules
+
+        Site News
+
+    Independent vertical scroll inside
+
+    Stacked blocks with padding between them
+
+🟥 Main Dashboard (Red Box)
+
+    Spans: Columns 8 to 23
+
+    Top content block for the selected dashboard tab
+
+    Fills vertical space from the top navbar to just above the lower chat/form area
+
+    Scrolls with page
+
+💗 Lower Center Content (Pink Section)
+
+    Spans: Columns 8 to 23
+
+    Contains:
+
+        Project name (left)
+
+        2 cards (middle and right)
+
+        Description text field
+
+    Rests below main dashboard content
+
+    Breaks into stacked layout for mobile
+
+🟨 Right Sidebar Content (Yellow)
+
+    Spans: Columns 24 to 26
+
+    Contains two blocks:
+
+        Friends List (top half)
+
+        Site Links (bottom half)
+
+    Vertical alignment matches left sidebar content
+
+🟦 Right Sidebar Navigation (Blue Sidebar)
+
+    Spans: Columns 27 to 28
+
+    Icons/buttons aligned with Friends section
+
+    Used for settings, actions, or quick access tools
+
+🔧 Additional Notes:
+
+    Gutters between columns are uniform.
+
+    All sections follow a modular box layout, easy to implement with Tailwind grid-cols-28 or flex + width ratios.
+
+    You may use Tailwind’s col-span-* classes for precise column control.
+
+    Suggested breakpoint: Collapse left/right sidebars on sm screens and stack main, friends, and project areas vertically.
+
+    For precision: Use Tailwind’s grid, col-span, row-span, gap-*, and px-* classes to space items correctly.
