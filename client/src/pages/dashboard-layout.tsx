@@ -515,11 +515,7 @@ export default function DashboardLayout() {
                   <button
                     key={tab.id}
                     onClick={() => handleTabChange(tab.id)}
-                    className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
-                      tab.isActive
-                        ? "text-white"
-                        : "text-white hover:text-[#00d8ff]"
-                    }`}
+                    className="px-4 py-3 text-base font-medium text-white transition-all duration-300 rounded-none"
                     style={{ 
                       textAlign: 'center'
                     }}
