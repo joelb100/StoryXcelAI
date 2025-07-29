@@ -341,96 +341,37 @@ const DashboardContent = ({
     </div>
 
     <div className="flex-1 p-6 flex flex-col space-y-4">
-      {/* Main Project Display */}
-      <Card className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-80 border-0">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative h-full p-8 flex items-center">
-          <div className="text-white max-w-lg w-full">
-            <h1 className="text-4xl font-black mb-4 tracking-wider">
-              {dashboardData.projects.active[currentProjectSlide].title}
-            </h1>
-            <p className="text-sm leading-relaxed mb-6 opacity-90">
-              {dashboardData.projects.active[currentProjectSlide].description}
-            </p>
-            <Button 
-              className="bg-white text-black hover:bg-gray-100"
-              onClick={() => navigate(`/builder/story`)}
-            >
-              Open Project
-            </Button>
-          </div>
-        </div>
-        
-        {/* Create New Project Button */}
-        <Button
-          variant="outline"
-          className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Project
-        </Button>
-
-        {/* Slide indicators */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-          {dashboardData.projects.active.map((_, index) => (
-            <button
-              key={index}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
-              }`}
-              onClick={() => setCurrentProjectSlide(index)}
-            />
-          ))}
-        </div>
+      {/* Large Top Section */}
+      <Card className="bg-slate-600 rounded-lg h-64 border-0">
+        {/* Empty slate design matching picture 2 */}
       </Card>
 
       {/* Project Name Section */}
       <div>
         <h3 className="text-sm font-medium text-slate-700 mb-3">Project Name</h3>
-        <div className="flex gap-6 h-24">
-          <Card className="flex-1 bg-slate-500 rounded-lg border border-slate-400"></Card>
-          <Card className="flex-[2] bg-slate-500 rounded-lg border border-slate-400"></Card>
+        <div className="flex gap-4 h-24">
+          <Card className="w-32 bg-slate-600 rounded-lg border-0"></Card>
+          <Card className="flex-1 bg-slate-600 rounded-lg border-0"></Card>
         </div>
       </div>
 
-      {/* AI Chat Window */}
-      <Card className="bg-gray-200 rounded-lg p-4 flex-1 flex flex-col border-0">
+      {/* Bottom Text Section */}
+      <Card className="bg-slate-300 rounded-lg p-4 flex-1 flex flex-col border-0">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-slate-700">AI chat window</h3>
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
         </div>
         
-        {/* Chat Messages */}
+        {/* Text Area */}
         <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-0">
-          <div className="space-y-3">
-            {chatMessages.map((message) => (
-              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
-                <div className={`rounded-lg p-3 max-w-[85%] ${
-                  message.type === 'ai' 
-                    ? 'bg-blue-100' 
-                    : 'bg-gray-100'
-                }`}>
-                  <p className="text-sm text-gray-800 whitespace-pre-line">
-                    {message.content}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-slate-400 rounded"></div>
+              <span className="text-sm text-slate-600">0</span>
+              <div className="w-4 h-4 bg-slate-400 rounded"></div>
+              <span className="text-sm text-slate-600">0</span>
+            </div>
+            <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
           </div>
-        </div>
-        
-        {/* Chat Input */}
-        <div className="flex gap-2">
-          <Input
-            placeholder="Ask AI assistant..."
-            value={chatMessage}
-            onChange={(e) => setChatMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="flex-1"
-          />
-          <Button onClick={handleSendMessage} size="sm">
-            <Send className="w-4 h-4" />
-          </Button>
         </div>
       </Card>
     </div>
