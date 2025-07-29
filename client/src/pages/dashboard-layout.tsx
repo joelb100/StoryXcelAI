@@ -201,9 +201,12 @@ const DashboardContent = ({
       </Card>
 
       {/* Project Name Section */}
-      <div className="flex gap-4 h-24">
-        <div className="flex-1 bg-slate-500 rounded-lg"></div>
-        <div className="flex-[2] bg-slate-500 rounded-lg"></div>
+      <div>
+        <h3 className="text-sm font-medium text-slate-700 mb-3">Project Name</h3>
+        <div className="flex gap-6 h-24">
+          <Card className="flex-1 bg-slate-500 rounded-lg border border-slate-400"></Card>
+          <Card className="flex-[2] bg-slate-500 rounded-lg border border-slate-400"></Card>
+        </div>
       </div>
 
       {/* AI Chat Window */}
