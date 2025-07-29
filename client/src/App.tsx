@@ -8,15 +8,16 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import BuilderWorkspace from "@/pages/builder-workspace";
+import DashboardLayout from "@/pages/dashboard-layout";
 
 function Router() {
   // Start on login page
   return (
     <Switch>
       <Route path="/login" component={Landing} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/builder/:type" component={BuilderWorkspace} />
-      <Route path="/builder" component={BuilderWorkspace} />
+      <Route path="/dashboard" component={DashboardLayout} />
+      <Route path="/builder/:type" component={DashboardLayout} />
+      <Route path="/builder" component={DashboardLayout} />
       <Route path="/" component={Landing} />
       <Route component={NotFound} />
     </Switch>
