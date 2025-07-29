@@ -497,239 +497,20 @@ export default function BuilderWorkspace() {
           </div>
         )}
 
-        {/* Main Workspace - Proper 3-Column Grid Layout */}
+        {/* Main Workspace - Responsive Dashboard Layout */}
         <div className="bg-white relative overflow-hidden">
           {activeTab === "dashboard" ? (
-            /* 3-COLUMN GRID DASHBOARD LAYOUT */
-            <div className="grid grid-cols-[256px_1fr_256px] h-full">
-              {/* LEFT COLUMN - Projects, Store, Featured Modules, Site News */}
-              <div className="bg-[#4A5B72] border-r border-[#3B4A5F] flex flex-col overflow-hidden">
-                {/* Projects Section - Top Half */}
-                <div className="flex-1 p-4 overflow-y-auto">
-                  <div className="mb-4">
-                    <h3 className="text-sm font-semibold text-white mb-2">Project Name</h3>
-                    <p className="text-xs text-slate-300">Your active projects</p>
-                  </div>
-                  <div className="bg-[#3B4A5F] rounded-lg p-4 h-48 mb-4">
-                    {/* Large project showcase area */}
-                  </div>
-                </div>
-
-                {/* Bottom Three Windows - Store, Featured Modules, Site News */}
-                <div className="border-t border-[#3B4A5F] space-y-3 p-3">
-                  {/* Store Window */}
-                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-xs font-semibold text-white">Store</h4>
-                    </div>
-                  </div>
-
-                  {/* Featured Modules Window */}
-                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {['🛒', '🎬', '🔧', '📊', '🎨', '📝', '🗺️', '💾'].map((icon, index) => (
-                        <div key={index} className="w-6 h-6 bg-[#4A5B72] rounded flex items-center justify-center cursor-pointer hover:bg-[#56677D] transition-colors">
-                          <span className="text-xs">{icon}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Site News Window */}
-                  <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-xs font-semibold text-white">Site News</h4>
-                    </div>
-                    <div className="text-xs text-slate-300 leading-relaxed">
-                      <p className="font-medium text-white mb-1">New updates are available!</p>
-                      <p>Recent updates and changes to the platform.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* CENTER COLUMN - Project Highlight + Featured Videos + AI Chat */}
-              <div className="p-6 flex flex-col h-full">
-                {/* Project Highlight Section - Large top section */}
-                <div className="mb-4 flex-[0_0_45%]">
-                  <div className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-full">
-                    <div className="absolute inset-0 bg-black/40"></div>
-                    <div className="relative h-full p-8 flex items-center">
-                      <div className="text-white max-w-lg w-full">
-                        <h1 className="text-4xl font-black mb-4 tracking-wider">
-                          {dashboardData.projects.active[currentProjectSlide].title}
-                        </h1>
-                        <p className="text-sm leading-relaxed mb-6 opacity-90 line-clamp-6">
-                          {dashboardData.projects.active[currentProjectSlide].description}
-                        </p>
-                        <Button 
-                          className="bg-white text-black hover:bg-gray-100"
-                          onClick={() => navigate(`/builder/story`)}
-                        >
-                          Open Project
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    {/* Navigation arrows */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                      onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
-                      onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </Button>
-                    
-                    {/* Slide indicators */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                      {dashboardData.projects.active.map((_, index) => (
-                        <button
-                          key={index}
-                          className={`w-3 h-3 rounded-full transition-colors ${
-                            index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
-                          }`}
-                          onClick={() => setCurrentProjectSlide(index)}
-                        />
-                      ))}
-                    </div>
-                    
-                    {/* Create New Project Button */}
-                    <Button
-                      variant="outline"
-                      className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create New Project
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Project Name Section - Two side-by-side boxes */}
-                <div className="mb-4 flex-[0_0_15%]">
-                  <div className="mb-2">
-                    <h3 className="text-sm font-medium text-gray-700">Project Name</h3>
-                  </div>
-                  <div className="flex gap-4 h-full">
-                    <div className="flex-1 bg-gray-200 rounded-lg p-4">
-                      <div className="bg-gray-300 rounded h-full"></div>
-                    </div>
-                    <div className="flex-[2] bg-gray-200 rounded-lg p-4">
-                      <div className="bg-gray-300 rounded h-full"></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* AI Chat Window - Bottom section */}
-                <div className="flex-1 min-h-0">
-                  <div className="mb-2">
-                    <h3 className="text-sm font-medium text-gray-700">AI chat window</h3>
-                  </div>
-                  <div className="bg-gray-200 rounded-lg p-4 h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm text-gray-600">AI Assistant</span>
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    </div>
-                    
-                    {/* Chat Messages */}
-                    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
-                      <div className="space-y-3">
-                        {chatMessages.map((message) => (
-                          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
-                            <div className={`rounded-lg p-3 max-w-[85%] ${
-                              message.type === 'ai' 
-                                ? 'bg-blue-100' 
-                                : 'bg-gray-100'
-                            }`}>
-                              <p className="text-sm text-gray-800 whitespace-pre-line">
-                                {message.content}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Chat Input */}
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="Ask AI assistant..."
-                        value={chatMessage}
-                        onChange={(e) => setChatMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        className="flex-1"
-                      />
-                      <Button onClick={handleSendMessage} size="sm">
-                        <Send className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT COLUMN - Friends List + Site Links */}
-              <div className="bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden">
-                {/* Friends List */}
-                <div className="flex-1 p-4 overflow-y-auto">
-                  <div className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-800 mb-2">Friends List</h3>
-                  </div>
-                  
-                  {/* Friends list */}
-                  <div className="space-y-2 mb-6">
-                    {[
-                      "Buck Rogers",
-                      "Peter Parker", 
-                      "Tony Stark",
-                      "Sonny Crockett",
-                      "Robert Wagner",
-                      "Lando Calrissian",
-                      "Bob Dylan",
-                      "Ned Flanders"
-                    ].map((friendName, index) => (
-                      <div key={index} className="flex items-center space-x-3 p-2 bg-white rounded hover:bg-gray-50 cursor-pointer">
-                        <div className="relative">
-                          <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-sm">
-                            {friendName.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white bg-blue-400"></div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{friendName}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Site Links */}
-                <div className="border-t border-gray-300 p-4">
-                  <div className="mb-4">
-                    <h3 className="text-sm font-semibold text-gray-800 mb-2">Site Links</h3>
-                  </div>
-                  <div className="grid grid-cols-4 gap-2">
-                    {Array.from({length: 16}, (_, i) => (
-                      <button
-                        key={i}
-                        className="w-10 h-10 bg-gray-300 rounded-full hover:bg-gray-400 transition-colors"
-                      >
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <DashboardLayout 
+              dashboardData={dashboardData}
+              currentProjectSlide={currentProjectSlide}
+              setCurrentProjectSlide={setCurrentProjectSlide}
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+              navigate={navigate}
+            />
             
           ) : (
             /* OTHER BUILDERS CONTENT */
@@ -813,3 +594,427 @@ export default function BuilderWorkspace() {
     </div>
   );
 }
+
+// Component: Left Sidebar
+const SidebarLeft = () => (
+  <div className="bg-[#4A5B72] border-r border-[#3B4A5F] flex flex-col overflow-hidden">
+    {/* Projects Section - Top Half */}
+    <div className="flex-1 p-4 overflow-y-auto">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-white mb-2">Project Name</h3>
+        <p className="text-xs text-slate-300">Your active projects</p>
+      </div>
+      <div className="bg-[#3B4A5F] rounded-lg p-4 h-48 mb-4">
+        {/* Large project showcase area */}
+      </div>
+    </div>
+
+    {/* Bottom Three Windows - Store, Featured Modules, Site News */}
+    <div className="border-t border-[#3B4A5F] space-y-3 p-3">
+      {/* Store Window */}
+      <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="text-xs font-semibold text-white">Store</h4>
+        </div>
+      </div>
+
+      {/* Featured Modules Window */}
+      <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
+        </div>
+        <div className="grid grid-cols-4 gap-1">
+          {['🛒', '🎬', '🔧', '📊', '🎨', '📝', '🗺️', '💾'].map((icon, index) => (
+            <div key={index} className="w-6 h-6 bg-[#4A5B72] rounded flex items-center justify-center cursor-pointer hover:bg-[#56677D] transition-colors">
+              <span className="text-xs">{icon}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Site News Window */}
+      <div className="bg-[#3B4A5F] rounded-lg p-3 border border-[#56677D]">
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="text-xs font-semibold text-white">Site News</h4>
+        </div>
+        <div className="text-xs text-slate-300 leading-relaxed">
+          <p className="font-medium text-white mb-1">New updates are available!</p>
+          <p>Recent updates and changes to the platform.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// Component: Right Sidebar
+const SidebarRight = () => (
+  <div className="bg-gray-100 border-l border-gray-300 flex flex-col overflow-hidden">
+    {/* Friends List */}
+    <div className="flex-1 p-4 overflow-y-auto">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-gray-800 mb-2">Friends List</h3>
+      </div>
+      
+      {/* Friends list */}
+      <div className="space-y-2 mb-6">
+        {[
+          "Buck Rogers",
+          "Peter Parker", 
+          "Tony Stark",
+          "Sonny Crockett",
+          "Robert Wagner",
+          "Lando Calrissian",
+          "Bob Dylan",
+          "Ned Flanders"
+        ].map((friendName, index) => (
+          <div key={index} className="flex items-center space-x-3 p-2 bg-white rounded hover:bg-gray-50 cursor-pointer">
+            <div className="relative">
+              <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-sm">
+                {friendName.split(' ').map(n => n[0]).join('')}
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white bg-blue-400"></div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">{friendName}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Site Links */}
+    <div className="border-t border-gray-300 p-4">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-gray-800 mb-2">Site Links</h3>
+      </div>
+      <div className="grid grid-cols-4 gap-2">
+        {Array.from({length: 16}, (_, i) => (
+          <button
+            key={i}
+            className="w-10 h-10 bg-gray-300 rounded-full hover:bg-gray-400 transition-colors"
+          >
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// Component: Project Window
+interface ProjectWindowProps {
+  dashboardData: any;
+  currentProjectSlide: number;
+  setCurrentProjectSlide: (value: number | ((prev: number) => number)) => void;
+  navigate: (path: string) => void;
+}
+
+const ProjectWindow = ({ dashboardData, currentProjectSlide, setCurrentProjectSlide, navigate }: ProjectWindowProps) => (
+  <Card className="relative bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 rounded-lg overflow-hidden h-full border-0">
+    <div className="absolute inset-0 bg-black/40"></div>
+    <div className="relative h-full p-8 flex items-center">
+      <div className="text-white max-w-lg w-full">
+        <h1 className="text-4xl font-black mb-4 tracking-wider">
+          {dashboardData.projects.active[currentProjectSlide].title}
+        </h1>
+        <p className="text-sm leading-relaxed mb-6 opacity-90 line-clamp-6">
+          {dashboardData.projects.active[currentProjectSlide].description}
+        </p>
+        <Button 
+          className="bg-white text-black hover:bg-gray-100"
+          onClick={() => navigate(`/builder/story`)}
+        >
+          Open Project
+        </Button>
+      </div>
+    </div>
+    
+    {/* Navigation arrows */}
+    <Button
+      variant="ghost"
+      size="sm"
+      className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+      onClick={() => setCurrentProjectSlide(prev => prev === 0 ? dashboardData.projects.active.length - 1 : prev - 1)}
+    >
+      <ChevronLeft className="w-6 h-6" />
+    </Button>
+    <Button
+      variant="ghost"
+      size="sm"
+      className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20"
+      onClick={() => setCurrentProjectSlide(prev => prev === dashboardData.projects.active.length - 1 ? 0 : prev + 1)}
+    >
+      <ChevronRight className="w-6 h-6" />
+    </Button>
+    
+    {/* Slide indicators */}
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+      {dashboardData.projects.active.map((_: any, index: number) => (
+        <button
+          key={index}
+          className={`w-3 h-3 rounded-full transition-colors ${
+            index === currentProjectSlide ? 'bg-white' : 'bg-white/50'
+          }`}
+          onClick={() => setCurrentProjectSlide(index)}
+        />
+      ))}
+    </div>
+    
+    {/* Create New Project Button */}
+    <Button
+      variant="outline"
+      className="absolute top-4 right-4 bg-white/20 border-white/30 text-white hover:bg-white/30"
+    >
+      <Plus className="w-4 h-4 mr-2" />
+      Create New Project
+    </Button>
+  </Card>
+);
+
+// Component: Featured Video Section
+const FeaturedVideo = () => (
+  <Card className="bg-gray-200 rounded-lg p-4 h-full border-0">
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-sm font-medium text-gray-700">Project Name</h3>
+    </div>
+    <div className="flex gap-4 h-full">
+      <div className="flex-1 bg-gray-300 rounded-lg"></div>
+      <div className="flex-[2] bg-gray-300 rounded-lg"></div>
+    </div>
+  </Card>
+);
+
+// Component: AI Chat Window
+interface ChatWindowProps {
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+}
+
+const ChatWindow = ({ chatMessages, chatMessage, setChatMessage, handleSendMessage, handleKeyPress }: ChatWindowProps) => (
+  <Card className="bg-gray-200 rounded-lg p-4 h-full flex flex-col border-0">
+    <div className="flex items-center justify-between mb-3">
+      <h3 className="text-sm font-medium text-gray-700">AI chat window</h3>
+      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+    </div>
+    
+    {/* Chat Messages */}
+    <div className="flex-1 bg-white rounded-lg p-3 mb-4 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
+      <div className="space-y-3">
+        {chatMessages.map((message) => (
+          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
+            <div className={`rounded-lg p-3 max-w-[85%] ${
+              message.type === 'ai' 
+                ? 'bg-blue-100' 
+                : 'bg-gray-100'
+            }`}>
+              <p className="text-sm text-gray-800 whitespace-pre-line">
+                {message.content}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+    {/* Chat Input */}
+    <div className="flex gap-2">
+      <Input
+        placeholder="Ask AI assistant..."
+        value={chatMessage}
+        onChange={(e) => setChatMessage(e.target.value)}
+        onKeyPress={handleKeyPress}
+        className="flex-1"
+      />
+      <Button onClick={handleSendMessage} size="sm">
+        <Send className="w-4 h-4" />
+      </Button>
+    </div>
+  </Card>
+);
+
+// Component: Dashboard Main Content
+interface DashboardMainProps {
+  dashboardData: any;
+  currentProjectSlide: number;
+  setCurrentProjectSlide: (value: number | ((prev: number) => number)) => void;
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  navigate: (path: string) => void;
+}
+
+const DashboardMain = ({ 
+  dashboardData, 
+  currentProjectSlide, 
+  setCurrentProjectSlide, 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress, 
+  navigate 
+}: DashboardMainProps) => (
+  <div className="p-6 flex flex-col h-full">
+    {/* Project Window - Stretches vertically to align with right sidebar top */}
+    <div className="mb-4 flex-[0_0_50%]">
+      <ProjectWindow 
+        dashboardData={dashboardData}
+        currentProjectSlide={currentProjectSlide}
+        setCurrentProjectSlide={setCurrentProjectSlide}
+        navigate={navigate}
+      />
+    </div>
+
+    {/* Featured Video Section - Horizontally aligned with Project Window */}
+    <div className="mb-4 flex-[0_0_15%]">
+      <FeaturedVideo />
+    </div>
+
+    {/* AI Chat Window - Fixed underneath, fully responsive */}
+    <div className="flex-1 min-h-0">
+      <ChatWindow 
+        chatMessages={chatMessages}
+        chatMessage={chatMessage}
+        setChatMessage={setChatMessage}
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+      />
+    </div>
+  </div>
+);
+
+// Main Dashboard Layout Component
+interface DashboardLayoutProps {
+  dashboardData: any;
+  currentProjectSlide: number;
+  setCurrentProjectSlide: (value: number | ((prev: number) => number)) => void;
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  navigate: (path: string) => void;
+}
+
+const DashboardLayout = ({ 
+  dashboardData, 
+  currentProjectSlide, 
+  setCurrentProjectSlide, 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress, 
+  navigate 
+}: DashboardLayoutProps) => {
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
+
+  return (
+    <>
+      {/* Desktop Layout - 3 Column Grid */}
+      <div className="hidden lg:grid lg:grid-cols-[256px_1fr_256px] h-full">
+        <SidebarLeft />
+        <DashboardMain 
+          dashboardData={dashboardData}
+          currentProjectSlide={currentProjectSlide}
+          setCurrentProjectSlide={setCurrentProjectSlide}
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+          navigate={navigate}
+        />
+        <SidebarRight />
+      </div>
+
+      {/* Mobile Layout - Collapsible Sidebars */}
+      <div className="lg:hidden h-full flex flex-col">
+        {/* Mobile Header with Hamburger Menus */}
+        <div className="flex items-center justify-between p-4 bg-gray-50 border-b">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}
+            className="lg:hidden"
+          >
+            <Search className="w-4 h-4" />
+          </Button>
+          <h1 className="text-lg font-semibold">Dashboard</h1>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setRightSidebarOpen(!rightSidebarOpen)}
+            className="lg:hidden"
+          >
+            <UserPlus className="w-4 h-4" />
+          </Button>
+        </div>
+
+        {/* Mobile Main Content */}
+        <div className="flex-1 overflow-hidden">
+          <DashboardMain 
+            dashboardData={dashboardData}
+            currentProjectSlide={currentProjectSlide}
+            setCurrentProjectSlide={setCurrentProjectSlide}
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+            navigate={navigate}
+          />
+        </div>
+
+        {/* Mobile Left Sidebar Drawer */}
+        {leftSidebarOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setLeftSidebarOpen(false)} />
+            <div className="absolute left-0 top-0 h-full w-64 bg-white">
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="text-lg font-semibold">Projects</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLeftSidebarOpen(false)}
+                >
+                  ×
+                </Button>
+              </div>
+              <div className="h-full overflow-hidden">
+                <SidebarLeft />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Right Sidebar Drawer */}
+        {rightSidebarOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setRightSidebarOpen(false)} />
+            <div className="absolute right-0 top-0 h-full w-64 bg-white">
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="text-lg font-semibold">Friends & Links</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setRightSidebarOpen(false)}
+                >
+                  ×
+                </Button>
+              </div>
+              <div className="h-full overflow-hidden">
+                <SidebarRight />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
