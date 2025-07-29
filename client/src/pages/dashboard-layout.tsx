@@ -508,24 +508,26 @@ export default function DashboardLayout() {
         {/* Tab Navigation - Columns 6-28 */}
         <div className="col-span-23 flex items-center bg-slate-800">
           <div className="w-full flex justify-center">
-            <nav className="flex justify-evenly w-[80%] h-full items-center">
-              {builderTabs.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
-                    tab.isActive
-                      ? "text-[#00d8ff] bg-slate-700"
-                      : "text-slate-300 hover:text-white hover:bg-slate-700"
-                  }`}
-                  style={{ 
-                    textAlign: 'center'
-                  }}
-                >
-                  {tab.name}
-                </button>
-              ))}
-            </nav>
+            <div className="w-full max-w-[15.25in] px-4">
+              <nav className="flex justify-evenly h-full items-center">
+                {builderTabs.map((tab, index) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`px-4 py-3 text-base font-medium transition-all duration-300 rounded-none ${
+                      tab.isActive
+                        ? "text-[#00d8ff] bg-slate-700"
+                        : "text-slate-300 hover:text-white hover:bg-slate-700"
+                    }`}
+                    style={{ 
+                      textAlign: 'center'
+                    }}
+                  >
+                    {tab.name}
+                  </button>
+                ))}
+              </nav>
+            </div>
           </div>
         </div>
 
