@@ -367,23 +367,28 @@ const DashboardContent = ({
           <Card className="col-span-15 bg-pink-400 rounded-lg border-0"></Card>
         </div>
 
-        {/* Description Section - Pink Section continues */}
-        <Card className="bg-pink-300 rounded-lg p-4 h-24 border-0">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
-          </div>
-          
-          {/* Controls */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-slate-400 rounded"></div>
-              <span className="text-sm text-slate-600">0</span>
-              <div className="w-4 h-4 bg-slate-400 rounded"></div>
-              <span className="text-sm text-slate-600">0</span>
+        {/* Description Section - Pink Section with specific dimensions */}
+        <div className="flex justify-center">
+          <Card className="bg-pink-300 rounded-lg p-4 border-0" style={{
+            width: '14.5in',
+            height: '2.5in'
+          }}>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-slate-700">Describe the story you want to create</h3>
             </div>
-            <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
-          </div>
-        </Card>
+            
+            {/* Controls */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-slate-400 rounded"></div>
+                <span className="text-sm text-slate-600">0</span>
+                <div className="w-4 h-4 bg-slate-400 rounded"></div>
+                <span className="text-sm text-slate-600">0</span>
+              </div>
+              <span className="text-sm text-slate-600 bg-blue-500 text-white px-2 py-1 rounded">0</span>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
