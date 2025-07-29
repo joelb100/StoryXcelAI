@@ -353,16 +353,16 @@ const DashboardContent = ({
           </Card>
         </div>
 
-        {/* Project Name Section with 1 inch spacing from red box */}
-        <div className="flex justify-center" style={{ marginTop: '1in' }}>
+        {/* Project Name Section with closer spacing from red box */}
+        <div className="flex justify-center" style={{ marginTop: '0.5in' }}>
           <div style={{ width: '14.5in' }}>
             {/* Project Name label */}
             <div className="mb-3">
               <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
             </div>
             
-            {/* Pink bars with specified dimensions */}
-            <div className="flex gap-4">
+            {/* Pink bars with 0.5 inch spacing between them */}
+            <div className="flex" style={{ gap: '0.5in' }}>
               {/* Left project card */}
               <Card className="bg-pink-500 rounded-lg border-0" style={{
                 width: '3.5in',
