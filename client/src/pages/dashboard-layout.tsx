@@ -353,16 +353,16 @@ const DashboardContent = ({
           </Card>
         </div>
 
-        {/* Project Name Section - 0.5 inch gap from red dashboard */}
-        <div style={{ marginTop: '0.5in', marginLeft: '1.5in' }}>
+        {/* Project Name Section with minimal spacing from red box */}
+        <div className="flex justify-center" style={{ marginTop: '0.25in' }}>
           <div style={{ width: '14.5in' }}>
             {/* Project Name label */}
             <div className="mb-2">
               <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
             </div>
             
-            {/* Pink bars with 0.5 inch gap between them */}
-            <div className="flex" style={{ gap: '0.5in' }}>
+            {/* Pink bars with exact 0.25 inch spacing between them */}
+            <div className="flex gap-[0.25in]">
               {/* Left project card */}
               <Card className="bg-pink-500 rounded-lg border-0" style={{
                 width: '3.5in',
@@ -377,8 +377,8 @@ const DashboardContent = ({
           </div>
         </div>
 
-        {/* Description Section - 0.25 inch gap from pink blocks, 2.5 inch left margin */}
-        <div style={{ marginTop: '0.25in', marginLeft: '2.5in', marginBottom: '0.25in' }}>
+        {/* Description Section - Pink Section with 0.5 inch spacing */}
+        <div className="flex justify-center" style={{ marginTop: '0.5in' }}>
           <Card className="bg-pink-300 rounded-lg p-6 border-0" style={{
             width: '14.5in',
             height: '2.5in'
