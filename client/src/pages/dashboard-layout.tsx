@@ -140,7 +140,7 @@ const IconSidebar = () => (
 
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
 const LeftSidebar = () => (
-  <div className="h-full bg-purple-600 border-r border-slate-600 flex flex-col">
+  <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {/* First Gray Frame - Project Name Section - 25% */}
     <div className="p-2 border-b border-slate-600" style={{ height: '25%' }}>
       <div className="flex items-center justify-between mb-2">
@@ -275,7 +275,7 @@ const RightIconSidebar = () => (
 
 // Right Content Sidebar Component - Yellow from grid (Columns 24-26)
 const RightSidebar = () => (
-  <div className="h-full bg-yellow-500 border-l border-slate-500 flex flex-col">
+  <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {/* Friends List */}
     <div className="p-4 flex-1">
       <h3 className="text-sm font-semibold text-white mb-4">Friends List</h3>
