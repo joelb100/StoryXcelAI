@@ -346,7 +346,7 @@ const DashboardContent = ({
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         {/* Main Dashboard Section - Red Box takes up upper portion */}
         <div className="flex justify-center items-center" style={{ height: '60%' }}>
-          <Card className="bg-red-600 rounded-lg border-0 w-full max-w-[14.5in] h-full">
+          <Card className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
             {/* Main dashboard content area */}
           </Card>
         </div>
