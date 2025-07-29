@@ -490,9 +490,9 @@ export default function DashboardLayout() {
   return (
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header - Spans full 28 columns */}
-      <header className="bg-slate-800 border-b border-slate-700 grid grid-cols-28 h-16">
+      <header className="border-b border-slate-700 grid grid-cols-28 h-16" style={{ backgroundColor: '#0d274c' }}>
         {/* Logo Area - Columns 1-5 (matches new sidebar widths) */}
-        <div className="col-span-5 px-6 py-4 bg-slate-800 flex items-center justify-center border-r border-slate-700">
+        <div className="col-span-5 px-6 py-4 flex items-center justify-center border-r border-slate-700" style={{ backgroundColor: '#0d274c' }}>
           <button 
             onClick={() => navigate('/dashboard')}
             className="hover:opacity-80 transition-opacity"
@@ -506,8 +506,8 @@ export default function DashboardLayout() {
         </div>
 
         {/* Tab Navigation - Columns 6-28 */}
-        <div className="col-span-23 bg-slate-800">
-          <div className="w-full bg-slate-800 h-16">
+        <div className="col-span-23" style={{ backgroundColor: '#0d274c' }}>
+          <div className="w-full h-16" style={{ backgroundColor: '#0d274c' }}>
             <div className="max-w-[15.25in] w-full mx-auto h-full flex items-center px-4">
               <nav className="flex justify-evenly w-full h-full items-center transform -translate-x-36">
                 {builderTabs.map((tab, index) => (
