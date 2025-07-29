@@ -377,8 +377,8 @@ const DashboardContent = ({
           </div>
         </div>
 
-        {/* Description Section - Pink Section scaled up */}
-        <div className="flex justify-center">
+        {/* Description Section - Pink Section with 0.5 inch spacing */}
+        <div className="flex justify-center" style={{ marginTop: '0.5in' }}>
           <Card className="bg-pink-300 rounded-lg p-6 border-0" style={{
             width: '14.5in',
             height: '2.5in'
