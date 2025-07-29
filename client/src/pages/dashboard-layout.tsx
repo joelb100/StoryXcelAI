@@ -509,7 +509,7 @@ export default function DashboardLayout() {
         <div className="col-span-23 bg-slate-800">
           <div className="w-full bg-slate-800 h-16">
             <div className="max-w-[15.25in] w-full mx-auto h-full flex items-center px-4">
-              <nav className="flex justify-evenly w-full h-full items-center" style={{ transform: 'translateX(-200%)' }}>
+              <nav className="flex justify-evenly w-full h-full items-center">
                 {builderTabs.map((tab, index) => (
                   <button
                     key={tab.id}
