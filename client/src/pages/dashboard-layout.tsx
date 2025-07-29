@@ -71,7 +71,7 @@ const dashboardData = {
 
 // Far Left Icon Sidebar Component - Green from grid (Columns 1-3)
 const IconSidebar = () => (
-  <div className="h-full bg-green-600 border-r border-slate-600 flex flex-col justify-between items-center py-4">
+  <div className="h-full border-r border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -206,7 +206,7 @@ const LeftSidebar = () => (
 
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
 const RightIconSidebar = () => (
-  <div className="h-full bg-blue-600 border-l border-slate-600 flex flex-col justify-between items-center py-4">
+  <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
