@@ -364,13 +364,13 @@ const DashboardContent = ({
               {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
               <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
                 {/* First project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#5f4c5f' }}></Card>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
                 
                 {/* Second project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#5f4c5f' }}></Card>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
                 
                 {/* Third project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#5f4c5f' }}></Card>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
               </div>
             </div>
           </div>
