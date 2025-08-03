@@ -282,21 +282,7 @@ const RightIconSidebar = () => (
 );
 
 // Right Content Sidebar Component - Yellow from grid (Columns 24-26)
-interface RightSidebarProps {
-  chatMessages: any[];
-  chatMessage: string;
-  setChatMessage: (value: string) => void;
-  handleSendMessage: () => void;
-  handleKeyPress: (e: React.KeyboardEvent) => void;
-}
-
-const RightSidebar = ({ 
-  chatMessages, 
-  chatMessage, 
-  setChatMessage, 
-  handleSendMessage, 
-  handleKeyPress 
-}: RightSidebarProps) => (
+const RightSidebar = () => (
   <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {/* Friends List */}
     <div className="p-4 flex-1">
@@ -318,43 +304,7 @@ const RightSidebar = ({
       </div>
     </div>
 
-    {/* AI Assistant Chat - Consistent Position */}
-    <div className="border-t-2 border-slate-400 p-4 flex flex-col h-96" style={{ backgroundColor: '#758595' }}>
-      <h3 className="text-sm font-semibold text-white mb-4">AI Assistant</h3>
-      
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto space-y-3 mb-3">
-        {chatMessages.map((message) => (
-          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] p-3 rounded-lg text-sm ${
-              message.type === 'user' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-white text-slate-800'
-            }`}>
-              {message.content}
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Chat Input */}
-      <div className="flex space-x-2">
-        <Textarea
-          value={chatMessage}
-          onChange={(e) => setChatMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Ask AI assistant..."
-          className="flex-1 min-h-[40px] max-h-[80px] resize-none text-sm bg-white border-slate-300"
-        />
-        <Button
-          onClick={handleSendMessage}
-          size="sm"
-          className="px-3 bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
-      </div>
-    </div>
 
     {/* Site Links */}
     <div className="border-t-2 border-slate-400 p-4" style={{ backgroundColor: '#758595' }}>
@@ -805,13 +755,7 @@ export default function DashboardLayout() {
                 </Button>
               </div>
               <div className="h-full overflow-hidden flex pt-16">
-                <RightSidebar 
-                  chatMessages={chatMessages}
-                  chatMessage={chatMessage}
-                  setChatMessage={setChatMessage}
-                  handleSendMessage={handleSendMessage}
-                  handleKeyPress={handleKeyPress}
-                />
+                <RightSidebar />
                 <RightIconSidebar />
               </div>
             </div>
