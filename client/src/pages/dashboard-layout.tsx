@@ -29,8 +29,9 @@ import {
   Bookmark
 } from "lucide-react";
 
-// Import logo
+// Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
+import StoryBuilder from "@/components/story-builder";
 
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
@@ -577,18 +578,36 @@ export default function DashboardLayout() {
             <LeftSidebar />
           </div>
           
-          {/* Main Dashboard Content - Columns 6-24 */}
+          {/* Main Content - Columns 6-24 - Conditional rendering based on active tab */}
           <div className="col-span-19">
-            <DashboardContent 
-              chatMessages={chatMessages}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyPress}
-              currentProjectSlide={currentProjectSlide}
-              setCurrentProjectSlide={setCurrentProjectSlide}
-              navigate={navigate}
-            />
+            {activeTab === 'story' ? (
+              <div className="bg-gray-100 flex flex-col h-full">
+                {/* Story Builder Header */}
+                <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                  <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+                </div>
+                
+                {/* Story Builder Content */}
+                <StoryBuilder 
+                  chatMessages={chatMessages}
+                  chatMessage={chatMessage}
+                  setChatMessage={setChatMessage}
+                  handleSendMessage={handleSendMessage}
+                  handleKeyPress={handleKeyPress}
+                />
+              </div>
+            ) : (
+              <DashboardContent 
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+                currentProjectSlide={currentProjectSlide}
+                setCurrentProjectSlide={setCurrentProjectSlide}
+                navigate={navigate}
+              />
+            )}
           </div>
           
           {/* Right Content Sidebar - Columns 25-27 */}
@@ -604,16 +623,34 @@ export default function DashboardLayout() {
 
         {/* Mobile Layout */}
         <div className="lg:hidden flex-1 flex flex-col">
-          <DashboardContent 
-            chatMessages={chatMessages}
-            chatMessage={chatMessage}
-            setChatMessage={setChatMessage}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-            currentProjectSlide={currentProjectSlide}
-            setCurrentProjectSlide={setCurrentProjectSlide}
-            navigate={navigate}
-          />
+          {activeTab === 'story' ? (
+            <div className="bg-gray-100 flex flex-col h-full">
+              {/* Story Builder Header */}
+              <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+              </div>
+              
+              {/* Story Builder Content */}
+              <StoryBuilder 
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+              />
+            </div>
+          ) : (
+            <DashboardContent 
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+              currentProjectSlide={currentProjectSlide}
+              setCurrentProjectSlide={setCurrentProjectSlide}
+              navigate={navigate}
+            />
+          )}
         </div>
 
         {/* Mobile Left Sidebar Drawer */}
