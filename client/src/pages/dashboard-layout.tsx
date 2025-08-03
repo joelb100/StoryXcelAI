@@ -562,63 +562,73 @@ export default function DashboardLayout() {
           {/* Main Content - Columns 6-24 - Conditional rendering based on active tab */}
           <div className="col-span-19">
             {activeTab === 'story' ? (
-              <div className="bg-white flex flex-col h-full">
-                {/* Story Builder Header with Toolbar */}
-                <div className="bg-white border-b border-gray-200 px-4 py-2">
-                  <h2 className="text-lg font-semibold text-slate-800 mb-2">Story Builder</h2>
-                  
-                  {/* Simple Toolbar */}
-                  <div className="flex items-center space-x-2 text-sm">
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      <span className="font-bold">B</span>
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      <span className="italic">I</span>
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      <span className="underline">U</span>
-                    </Button>
-                    <div className="w-px h-4 bg-gray-300"></div>
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      Normal text
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      Arial
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                      12
-                    </Button>
-                  </div>
+              <div className="bg-gray-100 flex flex-col h-full">
+                {/* Story Builder Header */}
+                <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                  <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Full Document Writing Area */}
-                <div className="flex-1 flex justify-center overflow-hidden bg-gray-50">
-                  <div className="w-full max-w-4xl bg-white m-6 shadow-sm border border-gray-200 flex flex-col">
-                    {/* Document Content */}
-                    <div className="flex-1 p-8">
-                      <Textarea
-                        className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
-                        placeholder="Start writing your story here..."
-                        style={{ 
-                          fontSize: '14px',
-                          lineHeight: '1.6',
-                          fontFamily: 'Arial, sans-serif'
-                        }}
-                      />
+                {/* Constrained Content Container - 15.25 inches max width */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Main Story Builder Section - 60% like Dashboard main section */}
+                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
+                      <div className="w-full max-w-[14.5in] h-full">
+                        {/* Story Content Editor - Full width document style */}
+                        <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
+                          {/* Simple Toolbar */}
+                          <div className="border-b border-gray-200 px-4 py-2">
+                            <div className="flex items-center space-x-2 text-sm">
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                <span className="font-bold">B</span>
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                <span className="italic">I</span>
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                <span className="underline">U</span>
+                              </Button>
+                              <div className="w-px h-4 bg-gray-300"></div>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                Normal text
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                Arial
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                                12
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {/* Document Content */}
+                          <div className="flex-1 p-8">
+                            <Textarea
+                              className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
+                              placeholder="Start writing your story here..."
+                              style={{ 
+                                fontSize: '14px',
+                                lineHeight: '1.6',
+                                fontFamily: 'Arial, sans-serif'
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* AI Story Assistant Section - Bottom */}
-                <div className="h-80 border-t border-gray-200 bg-gray-50">
-                  <div className="h-full p-4">
-                    <AIStoryAssistant 
-                      chatMessages={chatMessages}
-                      chatMessage={chatMessage}
-                      setChatMessage={setChatMessage}
-                      handleSendMessage={handleSendMessage}
-                      handleKeyPress={handleKeyPress}
-                    />
+                    {/* AI Story Assistant Section - 40% like Dashboard - EXACT SAME POSITION */}
+                    <div className="flex justify-center items-center" style={{ height: '40%', paddingTop: '16px' }}>
+                      <div className="w-full max-w-[14.5in] h-full">
+                        <AIStoryAssistant 
+                          chatMessages={chatMessages}
+                          chatMessage={chatMessage}
+                          setChatMessage={setChatMessage}
+                          handleSendMessage={handleSendMessage}
+                          handleKeyPress={handleKeyPress}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
