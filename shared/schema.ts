@@ -83,36 +83,6 @@ export const projectAssets = pgTable("project_assets", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// External tool integrations table
-export const externalIntegrations = pgTable("external_integrations", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id").notNull().references(() => users.id),
-  toolType: varchar("tool_type", { length: 50 }).notNull(), // figma, adobe_creative_cloud, photoshop, illustrator, after_effects, etc.
-  accountId: varchar("account_id"), // External account identifier
-  accessToken: text("access_token"), // Encrypted access token
-  refreshToken: text("refresh_token"), // Encrypted refresh token
-  tokenExpiry: timestamp("token_expiry"),
-  isActive: boolean("is_active").default(true),
-  metadata: jsonb("metadata"), // Tool-specific settings and preferences
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// External tool projects table - links StoryXcel projects to external tool projects
-export const externalToolProjects = pgTable("external_tool_projects", {
-  id: serial("id").primaryKey(),
-  projectId: integer("project_id").notNull().references(() => projects.id),
-  integrationId: integer("integration_id").notNull().references(() => externalIntegrations.id),
-  externalProjectId: varchar("external_project_id").notNull(), // ID in the external tool
-  externalProjectName: varchar("external_project_name", { length: 255 }),
-  externalProjectUrl: text("external_project_url"),
-  syncStatus: varchar("sync_status", { length: 50 }).notNull().default("active"), // active, paused, error
-  lastSyncAt: timestamp("last_sync_at"),
-  metadata: jsonb("metadata"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   projects: many(projects),
@@ -166,25 +136,6 @@ export const projectAssetsRelations = relations(projectAssets, ({ one }) => ({
   }),
 }));
 
-export const externalIntegrationsRelations = relations(externalIntegrations, ({ one, many }) => ({
-  user: one(users, {
-    fields: [externalIntegrations.userId],
-    references: [users.id],
-  }),
-  toolProjects: many(externalToolProjects),
-}));
-
-export const externalToolProjectsRelations = relations(externalToolProjects, ({ one }) => ({
-  project: one(projects, {
-    fields: [externalToolProjects.projectId],
-    references: [projects.id],
-  }),
-  integration: one(externalIntegrations, {
-    fields: [externalToolProjects.integrationId],
-    references: [externalIntegrations.id],
-  }),
-}));
-
 // Schemas
 export const insertProjectSchema = createInsertSchema(projects).omit({
   id: true,
@@ -207,18 +158,6 @@ export const insertProjectAssetSchema = createInsertSchema(projectAssets).omit({
   createdAt: true,
 });
 
-export const insertExternalIntegrationSchema = createInsertSchema(externalIntegrations).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertExternalToolProjectSchema = createInsertSchema(externalToolProjects).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -232,8 +171,3 @@ export type Friend = typeof friends.$inferSelect;
 export type FriendWithUser = Friend & { friend: User };
 export type InsertProjectAsset = z.infer<typeof insertProjectAssetSchema>;
 export type ProjectAsset = typeof projectAssets.$inferSelect;
-export type InsertExternalIntegration = z.infer<typeof insertExternalIntegrationSchema>;
-export type ExternalIntegration = typeof externalIntegrations.$inferSelect;
-export type InsertExternalToolProject = z.infer<typeof insertExternalToolProjectSchema>;
-export type ExternalToolProject = typeof externalToolProjects.$inferSelect;
-export type ExternalToolProjectWithIntegration = ExternalToolProject & { integration: ExternalIntegration };
