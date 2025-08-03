@@ -979,7 +979,7 @@ export default function DashboardLayout() {
               </div>
               <div className="h-full overflow-hidden flex pt-16">
                 <IconSidebar />
-                <LeftSidebar />
+                <LeftSidebar activeTab={activeTab} />
               </div>
             </div>
           </div>
