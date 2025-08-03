@@ -29,7 +29,10 @@ import {
   Calendar,
   Clock,
   Globe,
-  Bookmark
+  Bookmark,
+  HelpCircle,
+  User,
+  LogOut
 } from "lucide-react";
 
 // Import logo and components
@@ -113,7 +116,7 @@ const IconSidebar = () => (
       </Button>
     </div>
     
-    {/* Bottom action icons */}
+    {/* Bottom action icons - From top to bottom: Import, Export, Support, Accounts, Sign Out */}
     <div className="flex flex-col items-center space-y-2">
       <Button
         variant="ghost"
@@ -121,7 +124,7 @@ const IconSidebar = () => (
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Import"
       >
-        <Upload className="w-5 h-5" />
+        <Download className="w-5 h-5" />
       </Button>
       <Button
         variant="ghost"
@@ -129,15 +132,31 @@ const IconSidebar = () => (
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Export"
       >
-        <Download className="w-5 h-5" />
+        <Upload className="w-5 h-5" />
       </Button>
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Settings"
+        title="Support"
       >
-        <Settings className="w-5 h-5" />
+        <HelpCircle className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Accounts"
+      >
+        <User className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Sign Out"
+      >
+        <LogOut className="w-5 h-5" />
       </Button>
     </div>
   </div>
