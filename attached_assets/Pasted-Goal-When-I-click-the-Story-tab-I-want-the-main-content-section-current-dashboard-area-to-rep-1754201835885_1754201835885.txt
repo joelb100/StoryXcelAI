@@ -1,0 +1,63 @@
+Goal:
+
+When I click the “Story” tab, I want the main content section (current dashboard area) to replace with a Story Editor Layout that looks like the provided reference (Pic 3). The AI Story Assistant panel should remain static across all tabs.
+Breakdown of Changes Needed:
+1. Layout Behavior:
+
+    The global navbars (top tabs, sidebars, AI Assistant footer panel) must remain unchanged and static.
+
+    Only the main content section (current dashboard area) should swap views when clicking the “Story” tab.
+
+    The Story tab should switch to a Story Editor Layout (Pic 3) where:
+
+        The left side (green box) has input fields for Project Name, Genre, Sub-Genre, Theme, Sub Theme, Central Conflict, Plot A, Subplot B, Subplot C, Plot Twists, Emotional Hook.
+
+        The right side (red box) becomes a large text area input (plain textarea is fine for now).
+
+        The breadcrumbs/header text at the top should change from “Dashboard” to “Story Builder”.
+
+2. Functionality Flow:
+
+    When the user clicks the Story Tab:
+
+        Replace the current Dashboard main content section with the Story Builder layout.
+
+        The left sidebar inputs (green area) should become editable fields.
+
+        The right content area (red area) should be a text editor (plain textarea).
+
+        Breadcrumb should update to “Story Builder”.
+
+    All other tabs (Dashboard, Production, etc.) should retain the existing layout.
+
+    The AI Story Assistant (bottom panel) should always remain visible across all tabs.
+
+3. Component Details:
+
+    You can create a new component/page for Story Builder View (e.g., <StoryBuilder />).
+
+    You can hardcode the input fields layout on the left (no need for dynamic forms yet).
+
+    The textarea editor on the right can be a simple HTML <textarea> with basic styling to match the reference.
+
+4. Implementation Notes:
+
+    I am not sure if the routing is handled via Wouter’s <Route> system or manual state toggling.
+
+        If using Wouter, configure a new /story route for the Story tab that swaps in <StoryBuilder />.
+
+        If not using Wouter, you can implement a simple state-based conditional render when clicking “Story”.
+
+    All layout/grid measurements should mirror the reference image provided (Pic 3) in terms of spacing, width proportions, and alignment.
+
+Summary:
+
+    Clicking “Story” Tab swaps the main content area with the Story Builder layout.
+
+    Sidebars and AI Assistant remain static.
+
+    Left input fields + right textarea for writing.
+
+    Breadcrumb updates to "Story Builder".
+
+    Wouter routing preferred if setup, otherwise a simple state toggle for now.

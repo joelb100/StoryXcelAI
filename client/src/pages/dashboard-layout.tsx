@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -32,6 +34,7 @@ import {
 // Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 import StoryBuilder from "@/components/story-builder";
+import AIStoryAssistant from "@/components/ai-story-assistant";
 
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
@@ -377,55 +380,13 @@ const DashboardContent = ({
           </div>
 
           {/* AI Chat Window - takes remaining space */}
-          <div className="flex justify-center flex-1">
-            <Card className="rounded-lg p-4 border-0 w-full max-w-[14.5in] h-full flex flex-col" style={{ backgroundColor: '#d4dee7' }}>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
-                <Button variant="ghost" size="sm" className="text-slate-600 p-1">
-                  <Settings className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {/* Chat Messages Area */}
-              <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
-                <div className="space-y-3">
-                  {chatMessages.map((message) => (
-                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                        message.type === 'user' 
-                          ? 'bg-blue-500 text-white rounded-br-none' 
-                          : 'bg-gray-100 text-slate-700 rounded-bl-none'
-                      }`}>
-                        {message.content}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Chat Input Area */}
-              <div className="flex items-center space-x-2">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={chatMessage}
-                    onChange={(e) => setChatMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Describe your story idea..."
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={!chatMessage.trim()}
-                  size="sm"
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
-                >
-                  Send
-                </Button>
-              </div>
-            </Card>
-          </div>
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
         </div>
       </div>
     </div>
@@ -587,14 +548,154 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Story Builder Content */}
-                <StoryBuilder 
-                  chatMessages={chatMessages}
-                  chatMessage={chatMessage}
-                  setChatMessage={setChatMessage}
-                  handleSendMessage={handleSendMessage}
-                  handleKeyPress={handleKeyPress}
-                />
+                {/* Constrained Content Container - 15.25 inches max width */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Main Story Builder Section - 60% like Dashboard main section */}
+                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
+                      <div className="w-full max-w-[14.5in] h-full flex gap-4">
+                        {/* Left Side - Story Input Fields (Green box reference) */}
+                        <div className="w-1/2 flex flex-col">
+                          <Card className="flex-1 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+                            <div className="space-y-4">
+                              <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
+                              
+                              <div className="space-y-3">
+                                <div>
+                                  <Label htmlFor="projectName" className="text-sm font-medium text-white">Project Name</Label>
+                                  <Input
+                                    id="projectName"
+                                    className="mt-1 bg-white"
+                                    placeholder="Enter your project name"
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="genre" className="text-sm font-medium text-white">Genre</Label>
+                                  <Input
+                                    id="genre"
+                                    className="mt-1 bg-white"
+                                    placeholder="e.g., Western, Sci-Fi, Romance"
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="subGenre" className="text-sm font-medium text-white">Sub-Genre</Label>
+                                  <Input
+                                    id="subGenre"
+                                    className="mt-1 bg-white"
+                                    placeholder="e.g., Revenge Western, Space Opera"
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="theme" className="text-sm font-medium text-white">Theme</Label>
+                                  <Input
+                                    id="theme"
+                                    className="mt-1 bg-white"
+                                    placeholder="Main theme of your story"
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="subTheme" className="text-sm font-medium text-white">Sub Theme</Label>
+                                  <Input
+                                    id="subTheme"
+                                    className="mt-1 bg-white"
+                                    placeholder="Secondary theme"
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="centralConflict" className="text-sm font-medium text-white">Central Conflict</Label>
+                                  <Textarea
+                                    id="centralConflict"
+                                    className="mt-1 bg-white"
+                                    placeholder="Describe the main conflict driving your story"
+                                    rows={2}
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="plotA" className="text-sm font-medium text-white">Plot A</Label>
+                                  <Textarea
+                                    id="plotA"
+                                    className="mt-1 bg-white"
+                                    placeholder="Main plot line"
+                                    rows={2}
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="subplotB" className="text-sm font-medium text-white">Subplot B</Label>
+                                  <Textarea
+                                    id="subplotB"
+                                    className="mt-1 bg-white"
+                                    placeholder="First subplot"
+                                    rows={2}
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="subplotC" className="text-sm font-medium text-white">Subplot C</Label>
+                                  <Textarea
+                                    id="subplotC"
+                                    className="mt-1 bg-white"
+                                    placeholder="Second subplot"
+                                    rows={2}
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="plotTwists" className="text-sm font-medium text-white">Plot Twists</Label>
+                                  <Textarea
+                                    id="plotTwists"
+                                    className="mt-1 bg-white"
+                                    placeholder="Key plot twists and revelations"
+                                    rows={2}
+                                  />
+                                </div>
+
+                                <div>
+                                  <Label htmlFor="emotionalHook" className="text-sm font-medium text-white">Emotional Hook</Label>
+                                  <Textarea
+                                    id="emotionalHook"
+                                    className="mt-1 bg-white"
+                                    placeholder="What emotional connection draws readers in?"
+                                    rows={2}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+
+                        {/* Right Side - Story Content Editor (Red box reference) */}
+                        <div className="w-1/2 flex flex-col">
+                          <Card className="flex-1 p-4 flex flex-col" style={{ backgroundColor: '#3f4c5f' }}>
+                            <h3 className="text-lg font-semibold text-white mb-4">Story Content</h3>
+                            <Textarea
+                              className="flex-1 bg-white resize-none"
+                              placeholder="Write your story here... Use this space to develop your narrative, scenes, dialogue, and character development."
+                            />
+                          </Card>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom section - scales to remaining 40% like Dashboard */}
+                    <div className="flex-1 flex flex-col justify-start pt-4">
+                      {/* AI Story Assistant - takes remaining space */}
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <DashboardContent 
@@ -630,14 +731,81 @@ export default function DashboardLayout() {
                 <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
               </div>
               
-              {/* Story Builder Content */}
-              <StoryBuilder 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-              />
+              {/* Mobile Story Builder Content */}
+              <div className="flex-1 flex justify-center overflow-hidden">
+                <div className="w-full p-4 flex flex-col h-full">
+                  {/* Main Story Builder Section - Stacked on mobile */}
+                  <div className="flex-1 flex flex-col gap-4">
+                    {/* Story Input Fields */}
+                    <div className="flex-1">
+                      <Card className="h-full p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+                        <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
+                        
+                        <div className="space-y-3">
+                          <div>
+                            <Label htmlFor="projectName-mobile" className="text-sm font-medium text-white">Project Name</Label>
+                            <Input
+                              id="projectName-mobile"
+                              className="mt-1 bg-white"
+                              placeholder="Enter your project name"
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="genre-mobile" className="text-sm font-medium text-white">Genre</Label>
+                            <Input
+                              id="genre-mobile"
+                              className="mt-1 bg-white"
+                              placeholder="e.g., Western, Sci-Fi, Romance"
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="theme-mobile" className="text-sm font-medium text-white">Theme</Label>
+                            <Input
+                              id="theme-mobile"
+                              className="mt-1 bg-white"
+                              placeholder="Main theme of your story"
+                            />
+                          </div>
+
+                          <div>
+                            <Label htmlFor="centralConflict-mobile" className="text-sm font-medium text-white">Central Conflict</Label>
+                            <Textarea
+                              id="centralConflict-mobile"
+                              className="mt-1 bg-white"
+                              placeholder="Describe the main conflict driving your story"
+                              rows={2}
+                            />
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* Story Content Editor */}
+                    <div className="flex-1">
+                      <Card className="h-full p-4 flex flex-col" style={{ backgroundColor: '#3f4c5f' }}>
+                        <h3 className="text-lg font-semibold text-white mb-4">Story Content</h3>
+                        <Textarea
+                          className="flex-1 bg-white resize-none"
+                          placeholder="Write your story here..."
+                        />
+                      </Card>
+                    </div>
+
+                    {/* AI Story Assistant */}
+                    <div className="h-64">
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <DashboardContent 
