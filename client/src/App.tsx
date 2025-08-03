@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import BuilderWorkspace from "@/pages/builder-workspace";
 import DashboardLayout from "@/pages/dashboard-layout";
+import IntegrationsPage from "@/pages/integrations";
 
 function Router() {
   // Start on login page
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/dashboard" component={DashboardLayout} />
       <Route path="/builder/:type" component={DashboardLayout} />
       <Route path="/builder" component={DashboardLayout} />
+      <Route path="/integrations" component={IntegrationsPage} />
       <Route path="/" component={Landing} />
       <Route component={NotFound} />
     </Switch>

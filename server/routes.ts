@@ -2,7 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { insertProjectSchema, insertFriendSchema } from "@shared/schema";
+import { 
+  insertProjectSchema, 
+  insertFriendSchema, 
+  insertExternalIntegrationSchema,
+  insertExternalToolProjectSchema 
+} from "@shared/schema";
 import { ZodError } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -179,6 +184,144 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching assets:", error);
       res.status(500).json({ message: "Failed to fetch assets" });
+    }
+  });
+
+  // External integrations routes
+  app.get('/api/integrations', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const integrations = await storage.getUserIntegrations(userId);
+      res.json(integrations);
+    } catch (error) {
+      console.error("Error fetching integrations:", error);
+      res.status(500).json({ message: "Failed to fetch integrations" });
+    }
+  });
+
+  app.post('/api/integrations', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const integrationData = insertExternalIntegrationSchema.parse({
+        ...req.body,
+        userId,
+      });
+      
+      const integration = await storage.createIntegration(integrationData);
+      res.status(201).json(integration);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ message: "Invalid integration data", errors: error.errors });
+      }
+      console.error("Error creating integration:", error);
+      res.status(500).json({ message: "Failed to create integration" });
+    }
+  });
+
+  app.patch('/api/integrations/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const integrationId = parseInt(req.params.id);
+      const integrationData = insertExternalIntegrationSchema.partial().parse(req.body);
+      
+      const integration = await storage.updateIntegration(integrationId, integrationData, userId);
+      
+      if (!integration) {
+        return res.status(404).json({ message: "Integration not found or unauthorized" });
+      }
+      
+      res.json(integration);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ message: "Invalid integration data", errors: error.errors });
+      }
+      console.error("Error updating integration:", error);
+      res.status(500).json({ message: "Failed to update integration" });
+    }
+  });
+
+  app.delete('/api/integrations/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const integrationId = parseInt(req.params.id);
+      const success = await storage.deleteIntegration(integrationId, userId);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Integration not found or unauthorized" });
+      }
+      
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting integration:", error);
+      res.status(500).json({ message: "Failed to delete integration" });
+    }
+  });
+
+  // External tool project routes
+  app.get('/api/projects/:id/integrations', isAuthenticated, async (req: any, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const toolProjects = await storage.getProjectToolIntegrations(projectId);
+      res.json(toolProjects);
+    } catch (error) {
+      console.error("Error fetching project integrations:", error);
+      res.status(500).json({ message: "Failed to fetch project integrations" });
+    }
+  });
+
+  app.post('/api/projects/:id/integrations', isAuthenticated, async (req: any, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const toolProjectData = insertExternalToolProjectSchema.parse({
+        ...req.body,
+        projectId,
+      });
+      
+      const toolProject = await storage.createToolProject(toolProjectData);
+      res.status(201).json(toolProject);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ message: "Invalid tool project data", errors: error.errors });
+      }
+      console.error("Error creating tool project:", error);
+      res.status(500).json({ message: "Failed to create tool project" });
+    }
+  });
+
+  app.patch('/api/tool-projects/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const toolProjectId = parseInt(req.params.id);
+      const toolProjectData = insertExternalToolProjectSchema.partial().parse(req.body);
+      
+      const toolProject = await storage.updateToolProject(toolProjectId, toolProjectData);
+      
+      if (!toolProject) {
+        return res.status(404).json({ message: "Tool project not found" });
+      }
+      
+      res.json(toolProject);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ message: "Invalid tool project data", errors: error.errors });
+      }
+      console.error("Error updating tool project:", error);
+      res.status(500).json({ message: "Failed to update tool project" });
+    }
+  });
+
+  app.delete('/api/tool-projects/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const toolProjectId = parseInt(req.params.id);
+      const success = await storage.deleteToolProject(toolProjectId);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Tool project not found" });
+      }
+      
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting tool project:", error);
+      res.status(500).json({ message: "Failed to delete tool project" });
     }
   });
 

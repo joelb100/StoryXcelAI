@@ -4,6 +4,8 @@ import {
   projectCollaborators,
   friends,
   projectAssets,
+  externalIntegrations,
+  externalToolProjects,
   type User,
   type UpsertUser,
   type Project,
@@ -16,6 +18,11 @@ import {
   type FriendWithUser,
   type InsertProjectAsset,
   type ProjectAsset,
+  type InsertExternalIntegration,
+  type ExternalIntegration,
+  type InsertExternalToolProject,
+  type ExternalToolProject,
+  type ExternalToolProjectWithIntegration,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc } from "drizzle-orm";
@@ -46,6 +53,18 @@ export interface IStorage {
   getProjectAssets(projectId: number): Promise<ProjectAsset[]>;
   createProjectAsset(asset: InsertProjectAsset): Promise<ProjectAsset>;
   deleteProjectAsset(id: number, userId: string): Promise<boolean>;
+  
+  // External integration operations
+  getUserIntegrations(userId: string): Promise<ExternalIntegration[]>;
+  createIntegration(integration: InsertExternalIntegration): Promise<ExternalIntegration>;
+  updateIntegration(id: number, integration: Partial<InsertExternalIntegration>, userId: string): Promise<ExternalIntegration | undefined>;
+  deleteIntegration(id: number, userId: string): Promise<boolean>;
+  
+  // External tool project operations
+  getProjectToolIntegrations(projectId: number): Promise<ExternalToolProjectWithIntegration[]>;
+  createToolProject(toolProject: InsertExternalToolProject): Promise<ExternalToolProject>;
+  updateToolProject(id: number, toolProject: Partial<InsertExternalToolProject>): Promise<ExternalToolProject | undefined>;
+  deleteToolProject(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -247,6 +266,88 @@ export class DatabaseStorage implements IStorage {
           eq(projectAssets.createdBy, userId)
         )
       );
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // External integration operations
+  async getUserIntegrations(userId: string): Promise<ExternalIntegration[]> {
+    return await db
+      .select()
+      .from(externalIntegrations)
+      .where(eq(externalIntegrations.userId, userId))
+      .orderBy(desc(externalIntegrations.createdAt));
+  }
+
+  async createIntegration(integration: InsertExternalIntegration): Promise<ExternalIntegration> {
+    const [newIntegration] = await db
+      .insert(externalIntegrations)
+      .values(integration)
+      .returning();
+    return newIntegration;
+  }
+
+  async updateIntegration(id: number, integration: Partial<InsertExternalIntegration>, userId: string): Promise<ExternalIntegration | undefined> {
+    const [updatedIntegration] = await db
+      .update(externalIntegrations)
+      .set({ ...integration, updatedAt: new Date() })
+      .where(
+        and(
+          eq(externalIntegrations.id, id),
+          eq(externalIntegrations.userId, userId)
+        )
+      )
+      .returning();
+    return updatedIntegration;
+  }
+
+  async deleteIntegration(id: number, userId: string): Promise<boolean> {
+    const result = await db
+      .delete(externalIntegrations)
+      .where(
+        and(
+          eq(externalIntegrations.id, id),
+          eq(externalIntegrations.userId, userId)
+        )
+      );
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // External tool project operations
+  async getProjectToolIntegrations(projectId: number): Promise<ExternalToolProjectWithIntegration[]> {
+    const toolProjects = await db
+      .select()
+      .from(externalToolProjects)
+      .leftJoin(externalIntegrations, eq(externalToolProjects.integrationId, externalIntegrations.id))
+      .where(eq(externalToolProjects.projectId, projectId))
+      .orderBy(desc(externalToolProjects.createdAt));
+
+    return toolProjects.map(row => ({
+      ...row.external_tool_projects,
+      integration: row.external_integrations!,
+    }));
+  }
+
+  async createToolProject(toolProject: InsertExternalToolProject): Promise<ExternalToolProject> {
+    const [newToolProject] = await db
+      .insert(externalToolProjects)
+      .values(toolProject)
+      .returning();
+    return newToolProject;
+  }
+
+  async updateToolProject(id: number, toolProject: Partial<InsertExternalToolProject>): Promise<ExternalToolProject | undefined> {
+    const [updatedToolProject] = await db
+      .update(externalToolProjects)
+      .set({ ...toolProject, updatedAt: new Date() })
+      .where(eq(externalToolProjects.id, id))
+      .returning();
+    return updatedToolProject;
+  }
+
+  async deleteToolProject(id: number): Promise<boolean> {
+    const result = await db
+      .delete(externalToolProjects)
+      .where(eq(externalToolProjects.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 }
