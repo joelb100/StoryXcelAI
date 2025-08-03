@@ -701,27 +701,137 @@ export default function DashboardLayout() {
                       <div className="w-full max-w-[14.5in] h-full">
                         {/* Story Content Editor - Full width document style */}
                         <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
-                          {/* Simple Toolbar */}
+                          {/* Enhanced Toolbar - Matching reference design */}
                           <div className="border-b border-gray-200 px-4 py-2">
-                            <div className="flex items-center space-x-2 text-sm">
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                            <div className="flex items-center space-x-1 text-sm flex-wrap">
+                              {/* File operations */}
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                📄
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                💾
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ↩️
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ↪️
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Text formatting */}
+                              <Select>
+                                <SelectTrigger className="h-6 w-20 text-xs">
+                                  <SelectValue placeholder="Normal text" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="normal">Normal text</SelectItem>
+                                  <SelectItem value="heading1">Heading 1</SelectItem>
+                                  <SelectItem value="heading2">Heading 2</SelectItem>
+                                  <SelectItem value="heading3">Heading 3</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <Select>
+                                <SelectTrigger className="h-6 w-16 text-xs">
+                                  <SelectValue placeholder="Arial" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="arial">Arial</SelectItem>
+                                  <SelectItem value="times">Times</SelectItem>
+                                  <SelectItem value="calibri">Calibri</SelectItem>
+                                  <SelectItem value="helvetica">Helvetica</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <Select>
+                                <SelectTrigger className="h-6 w-12 text-xs">
+                                  <SelectValue placeholder="11" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="8">8</SelectItem>
+                                  <SelectItem value="9">9</SelectItem>
+                                  <SelectItem value="10">10</SelectItem>
+                                  <SelectItem value="11">11</SelectItem>
+                                  <SelectItem value="12">12</SelectItem>
+                                  <SelectItem value="14">14</SelectItem>
+                                  <SelectItem value="16">16</SelectItem>
+                                  <SelectItem value="18">18</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Text styling */}
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
                                 <span className="font-bold">B</span>
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
                                 <span className="italic">I</span>
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
                                 <span className="underline">U</span>
                               </Button>
-                              <div className="w-px h-4 bg-gray-300"></div>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                                Normal text
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                A🎨
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                                Arial
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                🎨
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600">
-                                12
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Alignment */}
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ≡
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ≣
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ≡
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ≣
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Lists */}
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                • •
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                1. 2.
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ←↓
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                →↑
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Additional tools */}
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                🔗
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                📊
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                📷
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ⏱️
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
+                                ✏️
                               </Button>
                             </div>
                           </div>
