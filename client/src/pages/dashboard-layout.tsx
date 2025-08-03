@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -146,19 +147,143 @@ const IconSidebar = () => (
 const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
-      // Story Writing Area - Clean text editor
-      <div className="p-4 h-full flex flex-col bg-white">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Overview</h3>
-        <Textarea
-          className="flex-1 resize-none border-none shadow-none text-slate-700 leading-relaxed"
-          placeholder="Start writing your story here..."
-          style={{ 
-            fontSize: '14px',
-            lineHeight: '1.6',
-            outline: 'none',
-            boxShadow: 'none'
-          }}
-        />
+      // Story Overview with structured elements
+      <div className="p-4 h-full overflow-y-auto" style={{ backgroundColor: '#47566b' }}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">Story Overview</h3>
+          <div className="bg-teal-400 text-white text-xs px-2 py-1 rounded">
+            STEP 1
+          </div>
+        </div>
+        
+        <div className="space-y-3">
+          <div>
+            <Label htmlFor="story-projectName" className="text-sm font-medium text-white block mb-1">Project Name</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Project Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="story">Story Project</SelectItem>
+                <SelectItem value="script">Script Project</SelectItem>
+                <SelectItem value="novel">Novel Project</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-genre" className="text-sm font-medium text-white block mb-1">Genre</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="drama">Drama</SelectItem>
+                <SelectItem value="comedy">Comedy</SelectItem>
+                <SelectItem value="thriller">Thriller</SelectItem>
+                <SelectItem value="romance">Romance</SelectItem>
+                <SelectItem value="scifi">Sci-Fi</SelectItem>
+                <SelectItem value="fantasy">Fantasy</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Sub Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="psychological">Psychological</SelectItem>
+                <SelectItem value="action">Action</SelectItem>
+                <SelectItem value="mystery">Mystery</SelectItem>
+                <SelectItem value="adventure">Adventure</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-theme" className="text-sm font-medium text-white block mb-1">Theme</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="love">Love</SelectItem>
+                <SelectItem value="betrayal">Betrayal</SelectItem>
+                <SelectItem value="redemption">Redemption</SelectItem>
+                <SelectItem value="justice">Justice</SelectItem>
+                <SelectItem value="family">Family</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-subTheme" className="text-sm font-medium text-white block mb-1">Sub Theme</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Sub Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="sacrifice">Sacrifice</SelectItem>
+                <SelectItem value="loyalty">Loyalty</SelectItem>
+                <SelectItem value="forgiveness">Forgiveness</SelectItem>
+                <SelectItem value="courage">Courage</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
+            <Select>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Central Conflict" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="internal">Internal Conflict</SelectItem>
+                <SelectItem value="external">External Conflict</SelectItem>
+                <SelectItem value="society">Man vs Society</SelectItem>
+                <SelectItem value="nature">Man vs Nature</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="story-plotA" className="text-sm font-medium text-white block mb-1">Plot A</Label>
+            <Button variant="ghost" className="w-full justify-start bg-slate-600 text-white hover:bg-slate-500 border-slate-500">
+              Add Plot A
+            </Button>
+          </div>
+
+          <div>
+            <Label htmlFor="story-subplotB" className="text-sm font-medium text-white block mb-1">Sub Plot B</Label>
+            <Button variant="ghost" className="w-full justify-start bg-slate-600 text-white hover:bg-slate-500 border-slate-500">
+              Add Sub Plot B
+            </Button>
+          </div>
+
+          <div>
+            <Label htmlFor="story-subplotC" className="text-sm font-medium text-white block mb-1">Sub Plot C</Label>
+            <Button variant="ghost" className="w-full justify-start bg-slate-600 text-white hover:bg-slate-500 border-slate-500">
+              Add Sub Plot C
+            </Button>
+          </div>
+
+          <div>
+            <Label htmlFor="story-plotTwists" className="text-sm font-medium text-white block mb-1">Plot Twists</Label>
+            <Button variant="ghost" className="w-full justify-start bg-slate-600 text-white hover:bg-slate-500 border-slate-500">
+              Add Plot Twist
+            </Button>
+          </div>
+
+          <div>
+            <Label htmlFor="story-emotionalHook" className="text-sm font-medium text-white block mb-1">Emotional Hook</Label>
+            <Button variant="ghost" className="w-full justify-start bg-slate-600 text-white hover:bg-slate-500 border-slate-500">
+              Add Emotional Hook
+            </Button>
+          </div>
+        </div>
       </div>
     ) : (
       // Default Dashboard Left Sidebar Content
