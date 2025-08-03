@@ -531,104 +531,106 @@ export default function DashboardLayout() {
     const [storyContent, setStoryContent] = useState("");
 
     return (
-      <div className="bg-gray-100 flex h-full">
-        {/* Story Overview Header */}
-        <div className="bg-white border-b border-gray-200 px-4 pb-4 absolute top-0 left-0 right-0 z-10">
+      <div className="bg-gray-100 flex flex-col h-full">
+        {/* Story Builder Header */}
+        <div className="bg-white border-b border-gray-200 px-4 pb-4">
           <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
         </div>
 
-        {/* Content with constrained width */}
-        <div className="w-full max-w-[15.25in] mx-auto p-4 flex h-full pt-16">
-          {/* Left Sidebar - Story Inputs (col-span-4 equivalent) */}
-          <div className="w-1/4 pr-4">
-            <div className="h-full overflow-y-auto" style={{ backgroundColor: '#758595' }}>
-              <div className="p-4">
-                <h3 className="text-white font-semibold mb-4 flex items-center">
-                  <div className="w-6 h-6 bg-blue-500 rounded mr-2 flex items-center justify-center">
-                    <Type className="w-4 h-4 text-white" />
-                  </div>
-                  Story Elements
-                </h3>
-                
-                <div className="space-y-4">
-                  {/* Project Name */}
-                  <div>
-                    <label className="text-sm text-gray-300 block mb-1">Project Name</label>
-                    <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
-                      <span className="truncate">Gun Smoke</span>
-                      <ChevronDown className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </div>
+        {/* Main content area with grid layout matching 28-column structure */}
+        <div className="flex-1 overflow-hidden">
+          <div className="w-full max-w-[15.25in] mx-auto p-4 h-full flex">
+            {/* Left Sidebar - Story Inputs (col-span-4 equivalent) */}
+            <div className="w-1/4 pr-4 h-full">
+              <div className="h-full overflow-y-auto rounded-lg" style={{ backgroundColor: '#758595' }}>
+                <div className="p-4">
+                  <h3 className="text-white font-semibold mb-4 flex items-center">
+                    <div className="w-6 h-6 bg-blue-500 rounded mr-2 flex items-center justify-center">
+                      <Type className="w-4 h-4 text-white" />
+                    </div>
+                    Story Elements
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {/* Project Name */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Project Name</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Gun Smoke</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
 
-                  {/* Genre */}
-                  <div>
-                    <label className="text-sm text-gray-300 block mb-1">Genre</label>
-                    <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
-                      <span className="truncate">Western</span>
-                      <ChevronDown className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </div>
+                    {/* Genre */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Genre</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Western</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
 
-                  {/* Theme */}
-                  <div>
-                    <label className="text-sm text-gray-300 block mb-1">Theme</label>
-                    <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
-                      <span className="truncate">Justice vs Corruption</span>
-                      <ChevronDown className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </div>
+                    {/* Theme */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Theme</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Justice vs Corruption</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
 
-                  {/* Central Conflict */}
-                  <div>
-                    <label className="text-sm text-gray-300 block mb-1">Central Conflict</label>
-                    <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
-                      <span className="truncate">Eli vs Kane</span>
-                      <ChevronDown className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </div>
+                    {/* Central Conflict */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Central Conflict</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Eli vs Kane</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
 
-                  {/* Plot Structure */}
-                  <div>
-                    <label className="text-sm text-gray-300 block mb-1">Plot Structure</label>
-                    <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
-                      <span className="truncate">Three Act Structure</span>
-                      <ChevronDown className="w-4 h-4 ml-auto" />
-                    </Button>
+                    {/* Plot Structure */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Plot Structure</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Three Act Structure</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Main Text Area - Story Editor (col-span-15 equivalent) */}
-          <div className="flex-1 pl-4">
-            <Card className="rounded-lg border-0 h-full flex flex-col bg-white">
-              {/* Text Area Header */}
-              <div className="border-b border-gray-200 px-4 py-3">
-                <h3 className="text-lg font-medium text-slate-800">Story Content</h3>
-              </div>
-
-              {/* Main Text Editor */}
-              <div className="flex-1 p-6">
-                <Textarea
-                  value={storyContent}
-                  onChange={(e) => setStoryContent(e.target.value)}
-                  className="w-full h-full border-0 resize-none text-base leading-relaxed focus:outline-none focus:ring-0 shadow-none"
-                  placeholder="Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money..."
-                />
-              </div>
-
-              {/* Status Bar */}
-              <div className="border-t border-gray-200 px-4 py-2 flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center space-x-4">
-                  <span>Words: {storyContent.split(' ').filter(word => word.length > 0).length}</span>
-                  <span>Characters: {storyContent.length}</span>
+            {/* Main Text Area - Story Editor (col-span-15 equivalent) */}
+            <div className="flex-1 pl-4 h-full">
+              <Card className="rounded-lg border-0 h-full flex flex-col bg-white">
+                {/* Text Area Header */}
+                <div className="border-b border-gray-200 px-4 py-3">
+                  <h3 className="text-lg font-medium text-slate-800">Story Content</h3>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span>Last saved: 2 minutes ago</span>
+
+                {/* Main Text Editor */}
+                <div className="flex-1 p-6">
+                  <Textarea
+                    value={storyContent}
+                    onChange={(e) => setStoryContent(e.target.value)}
+                    className="w-full h-full border-0 resize-none text-base leading-relaxed focus:outline-none focus:ring-0 shadow-none"
+                    placeholder="Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money..."
+                  />
                 </div>
-              </div>
-            </Card>
+
+                {/* Status Bar */}
+                <div className="border-t border-gray-200 px-4 py-2 flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center space-x-4">
+                    <span>Words: {storyContent.split(' ').filter(word => word.length > 0).length}</span>
+                    <span>Characters: {storyContent.length}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span>Last saved: 2 minutes ago</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
