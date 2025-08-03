@@ -143,68 +143,185 @@ const IconSidebar = () => (
 );
 
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
-const LeftSidebar = () => (
+const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
-    {/* First Gray Frame - Project Name Section - 25% */}
-    <div className="p-2 border-b border-slate-600" style={{ height: '25%' }}>
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs font-semibold text-white">Project Name</h3>
-        <Button variant="ghost" size="sm" className="text-white p-1">
-          <Menu className="w-3 h-3" />
-        </Button>
-      </div>
-      
-      <div className="rounded-lg p-2 h-4/5 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
-        <h4 className="text-xs font-semibold text-white mb-1">Project Name</h4>
-        <div className="space-y-1">
-          <div className="flex items-center space-x-1 text-xs">
-            <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full flex-shrink-0"></div>
-            <span className="text-cyan-400 truncate">Gun Smoke</span>
-            <span className="text-slate-300 text-xs">— In progress</span>
+    {activeTab === 'story' ? (
+      // Story Elements Panel
+      <div className="p-4 h-full overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+        <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
+        
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="story-projectName" className="text-sm font-medium text-white">Project Name</Label>
+            <Input
+              id="story-projectName"
+              className="mt-1 bg-white"
+              placeholder="Enter your project name"
+            />
           </div>
-          <div className="text-xs text-slate-400 truncate">Project description</div>
-          
-          <div className="flex items-center space-x-1 text-xs">
-            <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full flex-shrink-0"></div>
-            <span className="text-yellow-400 truncate">Gun Smoke</span>
-            <span className="text-slate-300 text-xs">— Planning</span>
+
+          <div>
+            <Label htmlFor="story-genre" className="text-sm font-medium text-white">Genre</Label>
+            <Input
+              id="story-genre"
+              className="mt-1 bg-white"
+              placeholder="e.g., Western, Sci-Fi, Romance"
+            />
           </div>
-          <div className="text-xs text-slate-400 truncate">Project description</div>
-          
-          <div className="flex items-center space-x-1 text-xs">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0"></div>
-            <span className="text-green-400 truncate">Gun Smoke</span>
-            <span className="text-slate-300 text-xs">— Completed</span>
+
+          <div>
+            <Label htmlFor="story-subGenre" className="text-sm font-medium text-white">Sub-Genre</Label>
+            <Input
+              id="story-subGenre"
+              className="mt-1 bg-white"
+              placeholder="e.g., Revenge Western, Space Opera"
+            />
           </div>
-          <div className="text-xs text-slate-400 truncate">Project description</div>
+
+          <div>
+            <Label htmlFor="story-theme" className="text-sm font-medium text-white">Theme</Label>
+            <Input
+              id="story-theme"
+              className="mt-1 bg-white"
+              placeholder="Main theme of your story"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-subTheme" className="text-sm font-medium text-white">Sub Theme</Label>
+            <Input
+              id="story-subTheme"
+              className="mt-1 bg-white"
+              placeholder="Secondary theme"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white">Central Conflict</Label>
+            <Textarea
+              id="story-centralConflict"
+              className="mt-1 bg-white"
+              placeholder="Describe the main conflict driving your story"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-plotA" className="text-sm font-medium text-white">Plot A</Label>
+            <Textarea
+              id="story-plotA"
+              className="mt-1 bg-white"
+              placeholder="Main plot line"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-subplotB" className="text-sm font-medium text-white">Subplot B</Label>
+            <Textarea
+              id="story-subplotB"
+              className="mt-1 bg-white"
+              placeholder="First subplot"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-subplotC" className="text-sm font-medium text-white">Subplot C</Label>
+            <Textarea
+              id="story-subplotC"
+              className="mt-1 bg-white"
+              placeholder="Second subplot"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-plotTwists" className="text-sm font-medium text-white">Plot Twists</Label>
+            <Textarea
+              id="story-plotTwists"
+              className="mt-1 bg-white"
+              placeholder="Key plot twists and revelations"
+              rows={3}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-emotionalHook" className="text-sm font-medium text-white">Emotional Hook</Label>
+            <Textarea
+              id="story-emotionalHook"
+              className="mt-1 bg-white"
+              placeholder="What emotional connection draws readers in?"
+              rows={3}
+            />
+          </div>
         </div>
       </div>
-    </div>
-
-    {/* Second Gray Frame - Store Section - 20% */}
-    <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
-      <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
-        <h4 className="text-xs font-semibold text-white">Store</h4>
-      </div>
-    </div>
-
-    {/* Third Gray Frame - Featured Modules Section - 20% */}
-    <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
-      <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
-        <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
-      </div>
-    </div>
-
-    {/* Fourth Gray Frame - Site News Section - 35% */}
-    <div className="p-2 flex-1" style={{ height: '35%' }}>
-      <div className="rounded-lg p-2 h-full overflow-y-auto" style={{ backgroundColor: '#758595' }}>
-        <h4 className="text-xs font-semibold text-white mb-2">Site News</h4>
-        <div className="text-xs text-slate-300 leading-relaxed space-y-1">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+    ) : (
+      // Default Dashboard Left Sidebar Content
+      <>
+        {/* First Gray Frame - Project Name Section - 25% */}
+        <div className="p-2 border-b border-slate-600" style={{ height: '25%' }}>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-semibold text-white">Project Name</h3>
+            <Button variant="ghost" size="sm" className="text-white p-1">
+              <Menu className="w-3 h-3" />
+            </Button>
+          </div>
+          
+          <div className="rounded-lg p-2 h-4/5 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+            <h4 className="text-xs font-semibold text-white mb-1">Project Name</h4>
+            <div className="space-y-1">
+              <div className="flex items-center space-x-1 text-xs">
+                <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full flex-shrink-0"></div>
+                <span className="text-cyan-400 truncate">Gun Smoke</span>
+                <span className="text-slate-300 text-xs">— In progress</span>
+              </div>
+              <div className="text-xs text-slate-400 truncate">Project description</div>
+              
+              <div className="flex items-center space-x-1 text-xs">
+                <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full flex-shrink-0"></div>
+                <span className="text-yellow-400 truncate">Gun Smoke</span>
+                <span className="text-slate-300 text-xs">— Planning</span>
+              </div>
+              <div className="text-xs text-slate-400 truncate">Project description</div>
+              
+              <div className="flex items-center space-x-1 text-xs">
+                <div className="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0"></div>
+                <span className="text-green-400 truncate">Gun Smoke</span>
+                <span className="text-slate-300 text-xs">— Completed</span>
+              </div>
+              <div className="text-xs text-slate-400 truncate">Project description</div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+
+        {/* Second Gray Frame - Store Section - 20% */}
+        <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
+          <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
+            <h4 className="text-xs font-semibold text-white">Store</h4>
+          </div>
+        </div>
+
+        {/* Third Gray Frame - Featured Modules Section - 20% */}
+        <div className="p-2 border-b border-slate-600" style={{ height: '20%' }}>
+          <div className="rounded-lg p-2 h-full flex items-center" style={{ backgroundColor: '#758595' }}>
+            <h4 className="text-xs font-semibold text-white">Featured Modules</h4>
+          </div>
+        </div>
+
+        {/* Fourth Gray Frame - Site News Section - 35% */}
+        <div className="p-2 flex-1" style={{ height: '35%' }}>
+          <div className="rounded-lg p-2 h-full overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+            <h4 className="text-xs font-semibold text-white mb-2">Site News</h4>
+            <div className="text-xs text-slate-300 leading-relaxed space-y-1">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+            </div>
+          </div>
+        </div>
+      </>
+    )}
   </div>
 );
 
@@ -536,7 +653,7 @@ export default function DashboardLayout() {
           
           {/* Left Content Sidebar - Columns 2-5 */}
           <div className="col-span-4">
-            <LeftSidebar />
+            <LeftSidebar activeTab={activeTab} />
           </div>
           
           {/* Main Content - Columns 6-24 - Conditional rendering based on active tab */}
@@ -553,146 +670,29 @@ export default function DashboardLayout() {
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
                     {/* Main Story Builder Section - 60% like Dashboard main section */}
                     <div className="flex justify-center items-center" style={{ height: '60%' }}>
-                      <div className="w-full max-w-[14.5in] h-full flex gap-4">
-                        {/* Left Side - Story Input Fields (Green box reference) */}
-                        <div className="w-1/2 flex flex-col">
-                          <Card className="flex-1 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
-                            <div className="space-y-4">
-                              <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
-                              
-                              <div className="space-y-3">
-                                <div>
-                                  <Label htmlFor="projectName" className="text-sm font-medium text-white">Project Name</Label>
-                                  <Input
-                                    id="projectName"
-                                    className="mt-1 bg-white"
-                                    placeholder="Enter your project name"
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="genre" className="text-sm font-medium text-white">Genre</Label>
-                                  <Input
-                                    id="genre"
-                                    className="mt-1 bg-white"
-                                    placeholder="e.g., Western, Sci-Fi, Romance"
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="subGenre" className="text-sm font-medium text-white">Sub-Genre</Label>
-                                  <Input
-                                    id="subGenre"
-                                    className="mt-1 bg-white"
-                                    placeholder="e.g., Revenge Western, Space Opera"
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="theme" className="text-sm font-medium text-white">Theme</Label>
-                                  <Input
-                                    id="theme"
-                                    className="mt-1 bg-white"
-                                    placeholder="Main theme of your story"
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="subTheme" className="text-sm font-medium text-white">Sub Theme</Label>
-                                  <Input
-                                    id="subTheme"
-                                    className="mt-1 bg-white"
-                                    placeholder="Secondary theme"
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="centralConflict" className="text-sm font-medium text-white">Central Conflict</Label>
-                                  <Textarea
-                                    id="centralConflict"
-                                    className="mt-1 bg-white"
-                                    placeholder="Describe the main conflict driving your story"
-                                    rows={2}
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="plotA" className="text-sm font-medium text-white">Plot A</Label>
-                                  <Textarea
-                                    id="plotA"
-                                    className="mt-1 bg-white"
-                                    placeholder="Main plot line"
-                                    rows={2}
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="subplotB" className="text-sm font-medium text-white">Subplot B</Label>
-                                  <Textarea
-                                    id="subplotB"
-                                    className="mt-1 bg-white"
-                                    placeholder="First subplot"
-                                    rows={2}
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="subplotC" className="text-sm font-medium text-white">Subplot C</Label>
-                                  <Textarea
-                                    id="subplotC"
-                                    className="mt-1 bg-white"
-                                    placeholder="Second subplot"
-                                    rows={2}
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="plotTwists" className="text-sm font-medium text-white">Plot Twists</Label>
-                                  <Textarea
-                                    id="plotTwists"
-                                    className="mt-1 bg-white"
-                                    placeholder="Key plot twists and revelations"
-                                    rows={2}
-                                  />
-                                </div>
-
-                                <div>
-                                  <Label htmlFor="emotionalHook" className="text-sm font-medium text-white">Emotional Hook</Label>
-                                  <Textarea
-                                    id="emotionalHook"
-                                    className="mt-1 bg-white"
-                                    placeholder="What emotional connection draws readers in?"
-                                    rows={2}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </Card>
-                        </div>
-
-                        {/* Right Side - Story Content Editor (Red box reference) */}
-                        <div className="w-1/2 flex flex-col">
-                          <Card className="flex-1 p-4 flex flex-col" style={{ backgroundColor: '#3f4c5f' }}>
-                            <h3 className="text-lg font-semibold text-white mb-4">Story Content</h3>
-                            <Textarea
-                              className="flex-1 bg-white resize-none"
-                              placeholder="Write your story here... Use this space to develop your narrative, scenes, dialogue, and character development."
-                            />
-                          </Card>
-                        </div>
+                      <div className="w-full max-w-[14.5in] h-full">
+                        {/* Story Content Editor - Full width since left panel is now in sidebar */}
+                        <Card className="h-full p-4 flex flex-col" style={{ backgroundColor: '#3f4c5f' }}>
+                          <h3 className="text-lg font-semibold text-white mb-4">Story Content</h3>
+                          <Textarea
+                            className="flex-1 bg-white resize-none"
+                            placeholder="Write your story here... Use this space to develop your narrative, scenes, dialogue, and character development."
+                          />
+                        </Card>
                       </div>
                     </div>
 
-                    {/* Bottom section - scales to remaining 40% like Dashboard */}
-                    <div className="flex-1 flex flex-col justify-start pt-4">
-                      {/* AI Story Assistant - takes remaining space */}
-                      <AIStoryAssistant 
-                        chatMessages={chatMessages}
-                        chatMessage={chatMessage}
-                        setChatMessage={setChatMessage}
-                        handleSendMessage={handleSendMessage}
-                        handleKeyPress={handleKeyPress}
-                      />
+                    {/* AI Story Assistant Section - 40% like Dashboard */}
+                    <div className="flex justify-center items-center" style={{ height: '40%', paddingTop: '16px' }}>
+                      <div className="w-full max-w-[14.5in] h-full">
+                        <AIStoryAssistant 
+                          chatMessages={chatMessages}
+                          chatMessage={chatMessage}
+                          setChatMessage={setChatMessage}
+                          handleSendMessage={handleSendMessage}
+                          handleKeyPress={handleKeyPress}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
