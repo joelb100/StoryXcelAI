@@ -581,13 +581,6 @@ export default function DashboardLayout() {
           {/* Main Content - Columns 6-24 - Conditional rendering based on active tab */}
           <div className="col-span-19">
             {activeTab === 'story' ? (
-              <div className="bg-gray-100 flex flex-col h-full">
-                {/* Story Builder Header */}
-                <div className="bg-white border-b border-gray-200 px-4 pb-4">
-                  <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
-                </div>
-                
-                {/* Story Builder Content */}
                 <StoryBuilder 
                   chatMessages={chatMessages}
                   chatMessage={chatMessage}
@@ -595,7 +588,6 @@ export default function DashboardLayout() {
                   handleSendMessage={handleSendMessage}
                   handleKeyPress={handleKeyPress}
                 />
-              </div>
             ) : (
               <DashboardContent 
                 chatMessages={chatMessages}
@@ -624,13 +616,6 @@ export default function DashboardLayout() {
         {/* Mobile Layout */}
         <div className="lg:hidden flex-1 flex flex-col">
           {activeTab === 'story' ? (
-            <div className="bg-gray-100 flex flex-col h-full">
-              {/* Story Builder Header */}
-              <div className="bg-white border-b border-gray-200 px-4 pb-4">
-                <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
-              </div>
-              
-              {/* Story Builder Content */}
               <StoryBuilder 
                 chatMessages={chatMessages}
                 chatMessage={chatMessage}
@@ -638,7 +623,6 @@ export default function DashboardLayout() {
                 handleSendMessage={handleSendMessage}
                 handleKeyPress={handleKeyPress}
               />
-            </div>
           ) : (
             <DashboardContent 
               chatMessages={chatMessages}

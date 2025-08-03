@@ -3,6 +3,24 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { 
+  Bold, 
+  Italic, 
+  Underline, 
+  AlignLeft, 
+  AlignCenter, 
+  AlignRight, 
+  List, 
+  ListOrdered,
+  Link,
+  Type,
+  ChevronDown,
+  Plus,
+  Eye,
+  Save,
+  Download
+} from "lucide-react";
 
 interface StoryBuilderProps {
   chatMessages: any[];
@@ -21,6 +39,7 @@ export default function StoryBuilder({
 }: StoryBuilderProps) {
   const [storyData, setStoryData] = useState({
     projectName: "",
+    projectType: "",
     genre: "",
     subGenre: "",
     theme: "",
@@ -42,211 +61,226 @@ export default function StoryBuilder({
   };
 
   return (
-    <div className="flex-1 flex justify-center overflow-hidden">
-      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Story Builder Header */}
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">Story Builder</h2>
-          <p className="text-sm text-slate-600">Create and develop your story with structured inputs and AI assistance</p>
+    <div className="flex-1 overflow-hidden bg-gray-100">
+      {/* Story Overview Header */}
+      <div className="bg-white border-b border-gray-200 px-6 py-3">
+        <h2 className="text-lg font-semibold text-slate-800">Story Overview</h2>
+      </div>
+
+      {/* Main Content Layout */}
+      <div className="flex h-full">
+        {/* Left Panel - Story Elements */}
+        <div className="w-80 bg-slate-700 border-r border-slate-600 overflow-y-auto">
+          <div className="p-4">
+            <h3 className="text-white font-semibold mb-4 flex items-center">
+              <div className="w-6 h-6 bg-blue-500 rounded mr-2 flex items-center justify-center">
+                <Type className="w-4 h-4 text-white" />
+              </div>
+              Story Overview
+            </h3>
+            
+            <div className="space-y-4">
+              {/* Project Name */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Project Name</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.projectName || "Select Project Type"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Select Project Type */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Select Project Type</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.projectType || "Select Project Type"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Genre */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Genre</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.genre || "Select Genre"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Sub Genre */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Sub Genre</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.subGenre || "Select Sub Genre"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Theme */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Theme</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.theme || "Select Theme"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Sub Theme */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Sub Theme</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.subTheme || "Select Sub Theme"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Central Conflict */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Central Conflict</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">{storyData.centralConflict || "Select Central Conflict"}</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Plot A */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Plot A</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">Add Plot A</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Sub Plot B */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Sub Plot B</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">Add Sub Plot B</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Sub Plot C */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Sub Plot C</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">Add Sub Plot C</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Plot Twists */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Plot Twists</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">Add Plot Twist</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+
+              {/* Emotional Hook */}
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Emotional Hook</label>
+                <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                  <span className="truncate">Add Emotional Hook</span>
+                  <ChevronDown className="w-4 h-4 ml-auto" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Main Story Builder Content - Split Layout */}
-        <div className="flex-1 flex gap-4 min-h-0">
-          {/* Left Side - Story Input Fields (Green box reference) */}
-          <div className="w-1/2 flex flex-col">
-            <Card className="flex-1 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
-                
-                <div className="space-y-3">
-                  <div>
-                    <Label htmlFor="projectName" className="text-sm font-medium text-white">Project Name</Label>
-                    <Input
-                      id="projectName"
-                      value={storyData.projectName}
-                      onChange={(e) => handleInputChange('projectName', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Enter your project name"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="genre" className="text-sm font-medium text-white">Genre</Label>
-                    <Input
-                      id="genre"
-                      value={storyData.genre}
-                      onChange={(e) => handleInputChange('genre', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="e.g., Western, Sci-Fi, Romance"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subGenre" className="text-sm font-medium text-white">Sub-Genre</Label>
-                    <Input
-                      id="subGenre"
-                      value={storyData.subGenre}
-                      onChange={(e) => handleInputChange('subGenre', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="e.g., Revenge Western, Space Opera"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="theme" className="text-sm font-medium text-white">Theme</Label>
-                    <Input
-                      id="theme"
-                      value={storyData.theme}
-                      onChange={(e) => handleInputChange('theme', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Main theme of your story"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subTheme" className="text-sm font-medium text-white">Sub Theme</Label>
-                    <Input
-                      id="subTheme"
-                      value={storyData.subTheme}
-                      onChange={(e) => handleInputChange('subTheme', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Secondary theme"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="centralConflict" className="text-sm font-medium text-white">Central Conflict</Label>
-                    <Textarea
-                      id="centralConflict"
-                      value={storyData.centralConflict}
-                      onChange={(e) => handleInputChange('centralConflict', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Describe the main conflict driving your story"
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="plotA" className="text-sm font-medium text-white">Plot A</Label>
-                    <Textarea
-                      id="plotA"
-                      value={storyData.plotA}
-                      onChange={(e) => handleInputChange('plotA', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Main plot line"
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subplotB" className="text-sm font-medium text-white">Subplot B</Label>
-                    <Textarea
-                      id="subplotB"
-                      value={storyData.subplotB}
-                      onChange={(e) => handleInputChange('subplotB', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="First subplot"
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subplotC" className="text-sm font-medium text-white">Subplot C</Label>
-                    <Textarea
-                      id="subplotC"
-                      value={storyData.subplotC}
-                      onChange={(e) => handleInputChange('subplotC', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Second subplot"
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="plotTwists" className="text-sm font-medium text-white">Plot Twists</Label>
-                    <Textarea
-                      id="plotTwists"
-                      value={storyData.plotTwists}
-                      onChange={(e) => handleInputChange('plotTwists', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="Key plot twists and revelations"
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="emotionalHook" className="text-sm font-medium text-white">Emotional Hook</Label>
-                    <Textarea
-                      id="emotionalHook"
-                      value={storyData.emotionalHook}
-                      onChange={(e) => handleInputChange('emotionalHook', e.target.value)}
-                      className="mt-1 bg-white"
-                      placeholder="What emotional connection draws readers in?"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Card>
+        {/* Right Panel - Story Editor */}
+        <div className="flex-1 flex flex-col bg-white">
+          {/* Editor Toolbar */}
+          <div className="border-b border-gray-200 px-4 py-2">
+            <div className="flex items-center space-x-1">
+              {/* Font and Size Controls */}
+              <Button variant="ghost" size="sm" className="text-sm">
+                100% <ChevronDown className="w-3 h-3 ml-1" />
+              </Button>
+              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              <Button variant="ghost" size="sm" className="text-sm">
+                Normal text <ChevronDown className="w-3 h-3 ml-1" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-sm">
+                Arial <ChevronDown className="w-3 h-3 ml-1" />
+              </Button>
+              <Button variant="ghost" size="sm" className="text-sm">
+                11 <ChevronDown className="w-3 h-3 ml-1" />
+              </Button>
+              
+              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              
+              {/* Formatting Controls */}
+              <Button variant="ghost" size="sm">
+                <Bold className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <Italic className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <Underline className="w-4 h-4" />
+              </Button>
+              
+              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              
+              {/* Alignment Controls */}
+              <Button variant="ghost" size="sm">
+                <AlignLeft className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <AlignCenter className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <AlignRight className="w-4 h-4" />
+              </Button>
+              
+              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              
+              {/* List Controls */}
+              <Button variant="ghost" size="sm">
+                <List className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="sm">
+                <ListOrdered className="w-4 h-4" />
+              </Button>
+              
+              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              
+              {/* Additional Controls */}
+              <Button variant="ghost" size="sm">
+                <Link className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
 
-          {/* Right Side - Story Content Editor (Red box reference) */}
-          <div className="w-1/2 flex flex-col">
-            <Card className="flex-1 p-4 flex flex-col" style={{ backgroundColor: '#3f4c5f' }}>
-              <h3 className="text-lg font-semibold text-white mb-4">Story Content</h3>
+          {/* Story Content Editor */}
+          <div className="flex-1 p-6">
+            <div className="h-full">
               <Textarea
                 value={storyData.storyContent}
                 onChange={(e) => handleInputChange('storyContent', e.target.value)}
-                className="flex-1 bg-white resize-none"
-                placeholder="Write your story here... Use this space to develop your narrative, scenes, dialogue, and character development."
+                className="w-full h-full border-0 resize-none text-base leading-relaxed focus:outline-none focus:ring-0 shadow-none"
+                placeholder="Describe the Story you want to create..."
               />
-            </Card>
+            </div>
           </div>
-        </div>
 
-        {/* AI Story Assistant - Bottom Panel */}
-        <div className="mt-4">
-          <Card className="p-4" style={{ backgroundColor: '#d4dee7' }}>
-            <h3 className="text-sm font-semibold text-slate-800 mb-3">AI Story Assistant</h3>
-            
-            {/* Chat Messages Display */}
-            <div className="mb-3">
-              <div className="h-24 overflow-y-auto bg-white rounded border p-2">
-                {chatMessages.map((message, index) => (
-                  <div key={index} className="mb-2 last:mb-0">
-                    <div className={`inline-block px-3 py-1 rounded-lg text-sm max-w-[80%] ${
-                      message.type === 'user' 
-                        ? 'bg-blue-500 text-white rounded-br-none' 
-                        : 'bg-gray-100 text-slate-700 rounded-bl-none'
-                    }`}>
-                      {message.content}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Bottom Status Bar */}
+          <div className="border-t border-gray-200 px-4 py-2 flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center space-x-4">
+              <span>●</span>
+              <span>●</span>
+              <span>○</span>
             </div>
-            
-            {/* Chat Input Area */}
             <div className="flex items-center space-x-2">
-              <div className="flex-1 relative">
-                <input
-                  type="text"
-                  value={chatMessage}
-                  onChange={(e) => setChatMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask AI about your story development..."
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <button
-                onClick={handleSendMessage}
-                disabled={!chatMessage.trim()}
-                className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                Send
-              </button>
+              <Button variant="ghost" size="sm">
+                <Eye className="w-4 h-4" />
+              </Button>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </div>
