@@ -22,21 +22,7 @@ import {
   Download
 } from "lucide-react";
 
-interface StoryBuilderProps {
-  chatMessages: any[];
-  chatMessage: string;
-  setChatMessage: (value: string) => void;
-  handleSendMessage: () => void;
-  handleKeyPress: (e: React.KeyboardEvent) => void;
-}
-
-export default function StoryBuilder({
-  chatMessages,
-  chatMessage,
-  setChatMessage,
-  handleSendMessage,
-  handleKeyPress
-}: StoryBuilderProps) {
+export default function StoryBuilder() {
   const [storyContent, setStoryContent] = useState("");
 
   return (
