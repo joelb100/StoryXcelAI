@@ -31,7 +31,6 @@ import {
 
 // Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
-import StoryBuilder from "@/components/story-builder";
 import { 
   Type,
   ChevronDown
@@ -375,7 +374,7 @@ const DashboardContent = ({
             </div>
           </div>
 
-
+          {/* Project cards area - no AI assistant here anymore since it's persistent below */}
         </div>
       </div>
     </div>
@@ -526,6 +525,118 @@ export default function DashboardLayout() {
       </div>
     );
   };
+
+  // Story Builder Content Component - New layout for story editing
+  const StoryBuilderContent = () => {
+    const [storyContent, setStoryContent] = useState("");
+
+    return (
+      <div className="bg-gray-100 flex flex-col h-full">
+        {/* Story Builder Header */}
+        <div className="bg-white border-b border-gray-200 px-4 pb-4">
+          <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+        </div>
+
+        {/* Main content area with grid layout matching 28-column structure */}
+        <div className="flex-1 overflow-hidden">
+          <div className="w-full max-w-[15.25in] mx-auto p-4 h-full flex">
+            {/* Left Sidebar - Story Inputs (col-span-4 equivalent) */}
+            <div className="w-1/4 pr-4 h-full">
+              <div className="h-full overflow-y-auto rounded-lg" style={{ backgroundColor: '#758595' }}>
+                <div className="p-4">
+                  <h3 className="text-white font-semibold mb-4 flex items-center">
+                    <div className="w-6 h-6 bg-blue-500 rounded mr-2 flex items-center justify-center">
+                      <Type className="w-4 h-4 text-white" />
+                    </div>
+                    Story Elements
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {/* Project Name */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Project Name</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Gun Smoke</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
+
+                    {/* Genre */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Genre</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Western</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
+
+                    {/* Theme */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Theme</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Justice vs Corruption</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
+
+                    {/* Central Conflict */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Central Conflict</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Eli vs Kane</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
+
+                    {/* Plot Structure */}
+                    <div>
+                      <label className="text-sm text-gray-300 block mb-1">Plot Structure</label>
+                      <Button variant="ghost" className="w-full justify-start text-left text-gray-300 hover:text-white hover:bg-slate-600 p-2 h-auto">
+                        <span className="truncate">Three Act Structure</span>
+                        <ChevronDown className="w-4 h-4 ml-auto" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Text Area - Story Editor (col-span-15 equivalent) */}
+            <div className="flex-1 pl-4 h-full">
+              <Card className="rounded-lg border-0 h-full flex flex-col bg-white">
+                {/* Text Area Header */}
+                <div className="border-b border-gray-200 px-4 py-3">
+                  <h3 className="text-lg font-medium text-slate-800">Story Content</h3>
+                </div>
+
+                {/* Main Text Editor */}
+                <div className="flex-1 p-6">
+                  <Textarea
+                    value={storyContent}
+                    onChange={(e) => setStoryContent(e.target.value)}
+                    className="w-full h-full border-0 resize-none text-base leading-relaxed focus:outline-none focus:ring-0 shadow-none"
+                    placeholder="Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money..."
+                  />
+                </div>
+
+                {/* Status Bar */}
+                <div className="border-t border-gray-200 px-4 py-2 flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center space-x-4">
+                    <span>Words: {storyContent.split(' ').filter(word => word.length > 0).length}</span>
+                    <span>Characters: {storyContent.length}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span>Last saved: 2 minutes ago</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
   const [chatMessages, setChatMessages] = useState([
     { id: 1, type: 'ai', content: 'Hello! I\'m your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.' }
@@ -673,28 +784,77 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Main Content - Columns 6-24 - Conditional rendering based on active tab */}
-          <div className="col-span-19">
-            {activeTab === 'story' ? (
-                <StoryBuilder />
-            ) : (
-              <DashboardContent 
-                currentProjectSlide={currentProjectSlide}
-                setCurrentProjectSlide={setCurrentProjectSlide}
-                navigate={navigate}
-              />
-            )}
+          {/* Main Content - Columns 6-24 - Persistent AI Assistant Structure */}
+          <div className="col-span-19 flex flex-col">
+            <div className="flex-1 overflow-hidden">
+              {activeTab === 'story' ? (
+                <StoryBuilderContent />
+              ) : (
+                <DashboardContent 
+                  currentProjectSlide={currentProjectSlide}
+                  setCurrentProjectSlide={setCurrentProjectSlide}
+                  navigate={navigate}
+                />
+              )}
+            </div>
+            
+            {/* Persistent AI Story Assistant - Fixed position across all views */}
+            <div className="bg-gray-100 p-4">
+              <div className="w-full max-w-[15.25in] mx-auto">
+                <Card className="rounded-lg p-4 border-0 w-full flex flex-col" style={{ backgroundColor: '#d4dee7', height: '200px' }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
+                    <Button variant="ghost" size="sm" className="text-slate-600 p-1">
+                      <Settings className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  {/* Chat Messages Area */}
+                  <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
+                    <div className="space-y-3">
+                      {chatMessages.map((message) => (
+                        <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                            message.type === 'user' 
+                              ? 'bg-blue-500 text-white rounded-br-none' 
+                              : 'bg-gray-100 text-slate-700 rounded-bl-none'
+                          }`}>
+                            {message.content}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Chat Input Area */}
+                  <div className="flex items-center space-x-2">
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        value={chatMessage}
+                        onChange={(e) => setChatMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Describe your story idea..."
+                        className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <Button
+                      onClick={handleSendMessage}
+                      disabled={!chatMessage.trim()}
+                      size="sm"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
+                    >
+                      Send
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+            </div>
           </div>
           
           {/* Right Content Sidebar - Columns 25-27 */}
           <div className="col-span-3">
-            <RightSidebar 
-              chatMessages={chatMessages}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyPress}
-            />
+            <RightSidebar />
           </div>
           
           {/* Right Icon Sidebar - Column 28 only (very narrow) */}
@@ -705,15 +865,68 @@ export default function DashboardLayout() {
 
         {/* Mobile Layout */}
         <div className="lg:hidden flex-1 flex flex-col">
-          {activeTab === 'story' ? (
-              <StoryBuilder />
-          ) : (
-            <DashboardContent 
-              currentProjectSlide={currentProjectSlide}
-              setCurrentProjectSlide={setCurrentProjectSlide}
-              navigate={navigate}
-            />
-          )}
+          <div className="flex-1 overflow-hidden">
+            {activeTab === 'story' ? (
+              <StoryBuilderContent />
+            ) : (
+              <DashboardContent 
+                currentProjectSlide={currentProjectSlide}
+                setCurrentProjectSlide={setCurrentProjectSlide}
+                navigate={navigate}
+              />
+            )}
+          </div>
+          
+          {/* Persistent AI Story Assistant - Mobile */}
+          <div className="bg-gray-100 p-4">
+            <Card className="rounded-lg p-4 border-0 w-full flex flex-col" style={{ backgroundColor: '#d4dee7', height: '200px' }}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
+                <Button variant="ghost" size="sm" className="text-slate-600 p-1">
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              {/* Chat Messages Area */}
+              <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
+                <div className="space-y-3">
+                  {chatMessages.map((message) => (
+                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                        message.type === 'user' 
+                          ? 'bg-blue-500 text-white rounded-br-none' 
+                          : 'bg-gray-100 text-slate-700 rounded-bl-none'
+                      }`}>
+                        {message.content}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Chat Input Area */}
+              <div className="flex items-center space-x-2">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Describe your story idea..."
+                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!chatMessage.trim()}
+                  size="sm"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
+                >
+                  Send
+                </Button>
+              </div>
+            </Card>
+          </div>
         </div>
 
         {/* Mobile Left Sidebar Drawer */}
