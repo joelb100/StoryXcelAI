@@ -159,6 +159,16 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
         <div className="space-y-3">
           <div>
             <Label htmlFor="story-projectName" className="text-sm font-medium text-white block mb-1">Project Name</Label>
+            <Input
+              id="story-projectName"
+              type="text"
+              placeholder="Enter project name..."
+              className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="story-projectType" className="text-sm font-medium text-white block mb-1">Project Type</Label>
             <Select>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Project Type" />
@@ -167,6 +177,9 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectItem value="story">Story Project</SelectItem>
                 <SelectItem value="script">Script Project</SelectItem>
                 <SelectItem value="novel">Novel Project</SelectItem>
+                <SelectItem value="screenplay">Screenplay</SelectItem>
+                <SelectItem value="book">Book</SelectItem>
+                <SelectItem value="series">Series</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -125,6 +125,11 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added Project Name and Project Type fields to Story Builder
+  - Changed Project Name from dropdown to text input field for user entry
+  - Added new Project Type dropdown with options (Story, Script, Novel, Screenplay, Book, Series)
+  - Positioned Project Type field between Project Name and Genre as requested
+  - Enhanced Story Overview section with proper field hierarchy
 - **2024-01-20**: Redesigned landing page to match user's design specification
   - Created split-screen layout with gradient background and geometric patterns
   - Implemented StoryXcel branding with large "X" logo on left side
