@@ -696,8 +696,8 @@ export default function DashboardLayout() {
                 {/* Constrained Content Container - EXACT SAME as Dashboard - 15.25 inches max width */}
                 <div className="flex-1 flex justify-center overflow-hidden">
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Main Story Builder Section - Reduced by 1.5in to accommodate AI Assistant expansion */}
-                    <div className="flex justify-center items-center" style={{ height: 'calc(60% + 1in + 8.336% - 1.5in)' }}>
+                    {/* Main Story Builder Section - Story Builder takes remaining space after 1.25in AI Assistant */}
+                    <div className="flex justify-center items-center" style={{ height: 'calc(100% - 1.25in - 1rem)' }}>
                       <div className="w-full max-w-[14.5in] h-full">
                         {/* Story Content Editor - Full width document style */}
                         <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
@@ -797,9 +797,9 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* Bottom section - Expanded by 1.5in for AI Assistant to align with blue guideline */}
-                    <div style={{ height: 'calc(40% - 1in - 8.336% + 1.5in)' }} className="flex flex-col justify-start pt-4">
-                      {/* AI Chat Window - expanded up by 1.5in to align with 0.75" blue guideline */}
+                    {/* Bottom section - AI Assistant fixed to exactly 1.25 inches height */}
+                    <div style={{ height: '1.25in' }} className="flex flex-col justify-start pt-4">
+                      {/* AI Chat Window - exactly 1.25 inches total height including padding */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
