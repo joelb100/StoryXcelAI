@@ -445,34 +445,257 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="classic">Classic</SelectItem>
-                <SelectItem value="crime-drama">Crime / Drama</SelectItem>
-                <SelectItem value="epic">Epic</SelectItem>
-                <SelectItem value="fable">Fable</SelectItem>
-                <SelectItem value="fairy-tale">Fairy Tale</SelectItem>
-                <SelectItem value="fantasy">Fantasy</SelectItem>
-                <SelectItem value="folktale">Folktale</SelectItem>
-                <SelectItem value="gothic-fiction">Gothic Fiction</SelectItem>
-                <SelectItem value="historical-fiction">Historical Fiction</SelectItem>
-                <SelectItem value="horror">Horror</SelectItem>
-                <SelectItem value="humor">Humor</SelectItem>
-                <SelectItem value="legend">Legend</SelectItem>
-                <SelectItem value="magical-realism">Magical Realism</SelectItem>
-                <SelectItem value="meta-fiction">Meta Fiction</SelectItem>
-                <SelectItem value="mystery">Mystery</SelectItem>
-                <SelectItem value="realistic-fiction">Realistic Fiction</SelectItem>
-                <SelectItem value="romance">Romance</SelectItem>
-                <SelectItem value="satire">Satire</SelectItem>
-                <SelectItem value="science-fiction">Science Fiction</SelectItem>
-                <SelectItem value="spy-fiction">Spy Fiction</SelectItem>
-                <SelectItem value="superhero">Superhero</SelectItem>
-                <SelectItem value="swashbuckler">Swashbuckler</SelectItem>
-                <SelectItem value="suspense-thriller">Suspense / Thriller</SelectItem>
-                <SelectItem value="tall-tale">Tall Tale</SelectItem>
-                <SelectItem value="theological">Theological</SelectItem>
-                <SelectItem value="tragicomedy">Tragicomedy</SelectItem>
-                <SelectItem value="travel">Travel</SelectItem>
-                <SelectItem value="western">Western</SelectItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="classic">Classic</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Timeless literary works that have enduring cultural, artistic, or historical significance.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="crime-drama">Crime / Drama</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Stories focused on criminal activities, investigations, and the emotional/psychological conflicts surrounding them.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="epic">Epic</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Grand, lengthy narratives involving heroic deeds and large-scale adventures or conflicts.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="fable">Fable</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Short tales with moral lessons, often featuring anthropomorphic animals or mythical creatures.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="fairy-tale">Fairy Tale</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Magical stories involving enchantments, fantastical beings, and clear distinctions between good and evil.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="fantasy">Fantasy</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fiction set in imaginative worlds where magic, mythical creatures, and supernatural forces are common.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="folktale">Folktale</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Traditional stories passed down orally that reflect cultural values, customs, and beliefs.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="gothic-fiction">Gothic Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Dark, atmospheric tales blending horror, romance, and mystery, often set in decaying or haunted locations.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="historical-fiction">Historical Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Stories set in a real past era, blending fictional characters with actual historical events and settings.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="horror">Horror</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fiction designed to evoke fear, dread, and shock through terrifying situations and monstrous antagonists.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="humor">Humor</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Lighthearted, comedic stories intended to entertain through wit, satire, and absurd situations.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="legend">Legend</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Semi-true stories rooted in historical events but embellished with heroic feats or supernatural elements.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="magical-realism">Magical Realism</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fiction where magical elements seamlessly blend into realistic, everyday settings.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="meta-fiction">Meta Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Self-referential stories that break the fourth wall, acknowledging their own fictional nature.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="mystery">Mystery</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Plots centered around solving a crime, uncovering secrets, or piecing together enigmatic puzzles.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="realistic-fiction">Realistic Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Stories that could happen in real life, portraying believable characters, settings, and scenarios.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="romance">Romance</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Narratives focusing on romantic relationships, emotional conflicts, and love as a central theme.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="satire">Satire</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fiction that uses humor, irony, and exaggeration to critique social norms, politics, or human behavior.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="science-fiction">Science Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Speculative stories exploring futuristic technology, space, time travel, and scientific possibilities.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="spy-fiction">Spy Fiction</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Tales of espionage, secret agents, and covert missions involving political intrigue and deception.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="superhero">Superhero</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Stories about individuals with extraordinary abilities who combat villains and protect society.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="swashbuckler">Swashbuckler</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Adventure tales filled with sword fights, daring heroes, and high-action exploits, often in historical settings.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="suspense-thriller">Suspense / Thriller</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fast-paced, tension-filled stories that keep readers on edge through danger and unexpected twists.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="tall-tale">Tall Tale</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Exaggerated, humorous stories featuring larger-than-life characters and impossible feats.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="theological">Theological</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Fiction that explores religious themes, spiritual dilemmas, and the nature of faith and divinity.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="tragicomedy">Tragicomedy</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Blends elements of tragedy and comedy, finding humor in sorrowful or serious situations.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="travel">Travel</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Stories that center around journeys, exploration, and discovering new places and cultures.</p>
+                  </TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SelectItem value="western">Western</SelectItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-xs">
+                    <p>Tales set in the American frontier, often involving cowboys, outlaws, and lawmen in rugged landscapes.</p>
+                  </TooltipContent>
+                </Tooltip>
               </SelectContent>
             </Select>
           </div>
