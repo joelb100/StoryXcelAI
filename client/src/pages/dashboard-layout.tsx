@@ -496,11 +496,44 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="love">Love</SelectItem>
+                <SelectItem value="abandonment">Abandonment</SelectItem>
+                <SelectItem value="acceptance">Acceptance</SelectItem>
+                <SelectItem value="adultery">Adultery</SelectItem>
+                <SelectItem value="adventure">Adventure</SelectItem>
+                <SelectItem value="alienation">Alienation</SelectItem>
+                <SelectItem value="ambition">Ambition</SelectItem>
                 <SelectItem value="betrayal">Betrayal</SelectItem>
-                <SelectItem value="redemption">Redemption</SelectItem>
+                <SelectItem value="coming-of-age">Coming of Age</SelectItem>
+                <SelectItem value="death">Death</SelectItem>
+                <SelectItem value="discovery">Discovery</SelectItem>
+                <SelectItem value="escape">Escape</SelectItem>
+                <SelectItem value="forbidden-love">Forbidden Love</SelectItem>
+                <SelectItem value="forgiveness">Forgiveness</SelectItem>
+                <SelectItem value="freedom">Freedom</SelectItem>
+                <SelectItem value="friendship">Friendship</SelectItem>
+                <SelectItem value="greed">Greed</SelectItem>
                 <SelectItem value="justice">Justice</SelectItem>
-                <SelectItem value="family">Family</SelectItem>
+                <SelectItem value="legacy">Legacy</SelectItem>
+                <SelectItem value="loneliness">Loneliness</SelectItem>
+                <SelectItem value="love">Love</SelectItem>
+                <SelectItem value="morality">Morality</SelectItem>
+                <SelectItem value="obsession">Obsession</SelectItem>
+                <SelectItem value="overcoming">Overcoming</SelectItem>
+                <SelectItem value="patriot">Patriot</SelectItem>
+                <SelectItem value="poverty">Poverty</SelectItem>
+                <SelectItem value="prejudice">Prejudice</SelectItem>
+                <SelectItem value="redemption">Redemption</SelectItem>
+                <SelectItem value="revenge">Revenge</SelectItem>
+                <SelectItem value="rivalry">Rivalry</SelectItem>
+                <SelectItem value="sacrifice">Sacrifice</SelectItem>
+                <SelectItem value="survival">Survival</SelectItem>
+                <SelectItem value="temptation">Temptation</SelectItem>
+                <SelectItem value="the-right">The Right</SelectItem>
+                <SelectItem value="tradition">Tradition</SelectItem>
+                <SelectItem value="transformation">Transformation</SelectItem>
+                <SelectItem value="war">War</SelectItem>
+                <SelectItem value="wealth-found">Wealth Found</SelectItem>
+                <SelectItem value="war-zone">War Zone</SelectItem>
               </SelectContent>
             </Select>
           </div>
