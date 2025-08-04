@@ -125,6 +125,12 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added hover tooltips to Project Type dropdown options
+  - Added HTML title tooltips for all 4 project type options with detailed explanations
+  - Worldbuilding: The process of creating detailed fictional universes, including their cultures, geography, history, and rules
+  - Novel: A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose
+  - Script: A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions
+  - Screenplay: A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue
 - **2024-01-20**: Enhanced Story Builder Genre dropdown with comprehensive hover definitions
   - Added HTML title tooltips for all 26 genre options with detailed explanations
   - Browser-native tooltips appear on hover with clear, informative descriptions for each genre type
