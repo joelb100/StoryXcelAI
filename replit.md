@@ -125,6 +125,10 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added hover tooltips to Theme dropdown options
+  - Added HTML title tooltips for all 38 theme options with detailed explanations
+  - Includes comprehensive definitions for Abandonment, Acceptance, Adultery, Adventure, Alienation, Ambition, Betrayal, Coming of Age, Death, Discovery, Escape, Forbidden Love, Forgiveness, Freedom, Friendship, Greed, Justice, Legacy, Loneliness, Love, Morality, Obsession, Overcoming, Patriot, Poverty, Prejudice, Redemption, Revenge, Rivalry, Sacrifice, Survival, Temptation, The Right, Tradition, Transformation, War, Wealth Found, and War Zone
+  - Provides detailed thematic context to help users select the most appropriate themes for their narrative projects
 - **2024-01-20**: Added hover tooltips to Sub Genre dropdown options
   - Added HTML title tooltips for all 20 sub genre options with detailed explanations
   - Includes comprehensive definitions for Acid, Buddy, Classic, Comedy, Contemporary, Family, Feminist, Gunslinger, Historical, Horror, Martial Arts, Musical, Noir, Psychological, Railroad, Revisionist, Sci Fi, Southern Gothic, Spaghetti, and Survival

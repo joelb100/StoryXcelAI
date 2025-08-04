@@ -515,44 +515,44 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="abandonment">Abandonment</SelectItem>
-                <SelectItem value="acceptance">Acceptance</SelectItem>
-                <SelectItem value="adultery">Adultery</SelectItem>
-                <SelectItem value="adventure">Adventure</SelectItem>
-                <SelectItem value="alienation">Alienation</SelectItem>
-                <SelectItem value="ambition">Ambition</SelectItem>
-                <SelectItem value="betrayal">Betrayal</SelectItem>
-                <SelectItem value="coming-of-age">Coming of Age</SelectItem>
-                <SelectItem value="death">Death</SelectItem>
-                <SelectItem value="discovery">Discovery</SelectItem>
-                <SelectItem value="escape">Escape</SelectItem>
-                <SelectItem value="forbidden-love">Forbidden Love</SelectItem>
-                <SelectItem value="forgiveness">Forgiveness</SelectItem>
-                <SelectItem value="freedom">Freedom</SelectItem>
-                <SelectItem value="friendship">Friendship</SelectItem>
-                <SelectItem value="greed">Greed</SelectItem>
-                <SelectItem value="justice">Justice</SelectItem>
-                <SelectItem value="legacy">Legacy</SelectItem>
-                <SelectItem value="loneliness">Loneliness</SelectItem>
-                <SelectItem value="love">Love</SelectItem>
-                <SelectItem value="morality">Morality</SelectItem>
-                <SelectItem value="obsession">Obsession</SelectItem>
-                <SelectItem value="overcoming">Overcoming</SelectItem>
-                <SelectItem value="patriot">Patriot</SelectItem>
-                <SelectItem value="poverty">Poverty</SelectItem>
-                <SelectItem value="prejudice">Prejudice</SelectItem>
-                <SelectItem value="redemption">Redemption</SelectItem>
-                <SelectItem value="revenge">Revenge</SelectItem>
-                <SelectItem value="rivalry">Rivalry</SelectItem>
-                <SelectItem value="sacrifice">Sacrifice</SelectItem>
-                <SelectItem value="survival">Survival</SelectItem>
-                <SelectItem value="temptation">Temptation</SelectItem>
-                <SelectItem value="the-right">The Right</SelectItem>
-                <SelectItem value="tradition">Tradition</SelectItem>
-                <SelectItem value="transformation">Transformation</SelectItem>
-                <SelectItem value="war">War</SelectItem>
-                <SelectItem value="wealth-found">Wealth Found</SelectItem>
-                <SelectItem value="war-zone">War Zone</SelectItem>
+                <SelectItem value="abandonment" title="The emotional struggle or consequences of being left behind or deserted.">Abandonment</SelectItem>
+                <SelectItem value="acceptance" title="The journey toward embracing oneself or others despite differences or flaws.">Acceptance</SelectItem>
+                <SelectItem value="adultery" title="The betrayal of trust through infidelity in relationships.">Adultery</SelectItem>
+                <SelectItem value="adventure" title="The pursuit of thrilling experiences or quests filled with danger and discovery.">Adventure</SelectItem>
+                <SelectItem value="alienation" title="The feeling of being isolated or disconnected from society or oneself.">Alienation</SelectItem>
+                <SelectItem value="ambition" title="The drive to achieve greatness, often at a personal or ethical cost.">Ambition</SelectItem>
+                <SelectItem value="betrayal" title="The breaking of trust or loyalty, leading to conflict or emotional pain.">Betrayal</SelectItem>
+                <SelectItem value="coming-of-age" title="The transition from youth to adulthood, marked by personal growth.">Coming of Age</SelectItem>
+                <SelectItem value="death" title="The exploration of mortality and its impact on characters.">Death</SelectItem>
+                <SelectItem value="discovery" title="The act of uncovering hidden truths about the world or oneself.">Discovery</SelectItem>
+                <SelectItem value="escape" title="The desire to break free from confinement, danger, or oppression.">Escape</SelectItem>
+                <SelectItem value="forbidden-love" title="A romance that defies social, cultural, or moral boundaries.">Forbidden Love</SelectItem>
+                <SelectItem value="forgiveness" title="The journey of letting go of resentment to heal emotional wounds.">Forgiveness</SelectItem>
+                <SelectItem value="freedom" title="The struggle to achieve personal, political, or spiritual liberation.">Freedom</SelectItem>
+                <SelectItem value="friendship" title="The bonds of loyalty, trust, and support between individuals.">Friendship</SelectItem>
+                <SelectItem value="greed" title="The excessive desire for wealth, power, or material gain.">Greed</SelectItem>
+                <SelectItem value="justice" title="The pursuit of fairness, moral rightness, or legal retribution.">Justice</SelectItem>
+                <SelectItem value="legacy" title="The lasting impact one leaves on future generations or society.">Legacy</SelectItem>
+                <SelectItem value="loneliness" title="The emotional void of isolation, either physical or emotional.">Loneliness</SelectItem>
+                <SelectItem value="love" title="The profound emotional connection between individuals, romantic or otherwise.">Love</SelectItem>
+                <SelectItem value="morality" title="The internal or societal struggle between right and wrong.">Morality</SelectItem>
+                <SelectItem value="obsession" title="An overpowering fixation on an idea, person, or goal.">Obsession</SelectItem>
+                <SelectItem value="overcoming" title="The triumph over personal flaws, fears, or external obstacles.">Overcoming</SelectItem>
+                <SelectItem value="patriot" title="A theme centered on devotion and sacrifice for one's country.">Patriot</SelectItem>
+                <SelectItem value="poverty" title="The harsh realities and struggles associated with economic deprivation.">Poverty</SelectItem>
+                <SelectItem value="prejudice" title="The exploration of bias, discrimination, and its consequences.">Prejudice</SelectItem>
+                <SelectItem value="redemption" title="The quest to atone for past sins or mistakes.">Redemption</SelectItem>
+                <SelectItem value="revenge" title="The pursuit of retribution for a personal or moral wrongdoing.">Revenge</SelectItem>
+                <SelectItem value="rivalry" title="The competitive conflict between individuals or groups.">Rivalry</SelectItem>
+                <SelectItem value="sacrifice" title="The act of giving up something valuable for a greater cause or person.">Sacrifice</SelectItem>
+                <SelectItem value="survival" title="The primal struggle to stay alive against overwhelming odds.">Survival</SelectItem>
+                <SelectItem value="temptation" title="The internal conflict between desire and moral restraint.">Temptation</SelectItem>
+                <SelectItem value="the-right" title="The defense or pursuit of what is morally or legally correct.">The Right</SelectItem>
+                <SelectItem value="tradition" title="The importance and challenges of preserving cultural or familial customs.">Tradition</SelectItem>
+                <SelectItem value="transformation" title="A profound change in character, perspective, or circumstances.">Transformation</SelectItem>
+                <SelectItem value="war" title="The brutal realities, strategies, and consequences of armed conflict.">War</SelectItem>
+                <SelectItem value="wealth-found" title="The discovery of fortune and its transformative effects.">Wealth Found</SelectItem>
+                <SelectItem value="war-zone" title="The personal and collective experiences of life amidst conflict zones.">War Zone</SelectItem>
               </SelectContent>
             </Select>
           </div>
