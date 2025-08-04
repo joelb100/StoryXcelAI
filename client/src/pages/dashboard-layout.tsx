@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DefinitionTooltip } from "@/components/definition-tooltip";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -430,10 +431,30 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="worldbuilding" title="The process of creating detailed fictional universes, including their cultures, geography, history, and rules.">Worldbuilding</SelectItem>
-                <SelectItem value="novel" title="A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose.">Novel</SelectItem>
-                <SelectItem value="script" title="A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions.">Script</SelectItem>
-                <SelectItem value="screenplay" title="A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue.">Screenplay</SelectItem>
+                <DefinitionTooltip 
+                  term="Worldbuilding" 
+                  definition="The process of creating detailed fictional universes, including their cultures, geography, history, and rules."
+                >
+                  <SelectItem value="worldbuilding">Worldbuilding</SelectItem>
+                </DefinitionTooltip>
+                <DefinitionTooltip 
+                  term="Novel" 
+                  definition="A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose."
+                >
+                  <SelectItem value="novel">Novel</SelectItem>
+                </DefinitionTooltip>
+                <DefinitionTooltip 
+                  term="Script" 
+                  definition="A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions."
+                >
+                  <SelectItem value="script">Script</SelectItem>
+                </DefinitionTooltip>
+                <DefinitionTooltip 
+                  term="Screenplay" 
+                  definition="A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue."
+                >
+                  <SelectItem value="screenplay">Screenplay</SelectItem>
+                </DefinitionTooltip>
               </SelectContent>
             </Select>
           </div>
