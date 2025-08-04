@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -99,84 +100,129 @@ const IconSidebar = ({
   <div className="h-full border-r border-slate-600 flex flex-col justify-between items-center py-4 relative" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Asset Folder"
-      >
-        <FileText className="w-5 h-5" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Character Manager"
-      >
-        <Users className="w-5 h-5" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Script Library"
-      >
-        <BookOpen className="w-5 h-5" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="World Objects"
-      >
-        <Box className="w-5 h-5" />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+          >
+            <FileText className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Asset Folder</p>
+        </TooltipContent>
+      </Tooltip>
+      
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+          >
+            <Users className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Character Manager</p>
+        </TooltipContent>
+      </Tooltip>
+      
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+          >
+            <BookOpen className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Script Library</p>
+        </TooltipContent>
+      </Tooltip>
+      
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+          >
+            <Box className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>World Objects</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
     
     {/* Bottom action icons - From top to bottom: Import, Export, Support, Accounts, Sign Out */}
     <div className="flex flex-col items-center space-y-2 relative">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Import files into the program"
-        onClick={() => {
-          // TODO: Implement file import functionality
-          console.log('Import files');
-        }}
-      >
-        <Download className="w-5 h-5" />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+            onClick={() => {
+              // TODO: Implement file import functionality
+              console.log('Import files');
+            }}
+          >
+            <Download className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Import Files</p>
+        </TooltipContent>
+      </Tooltip>
       
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Export project to PDF or other formats"
-        onClick={() => {
-          // TODO: Implement export functionality
-          console.log('Export project');
-        }}
-      >
-        <Upload className="w-5 h-5" />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+            onClick={() => {
+              // TODO: Implement export functionality
+              console.log('Export project');
+            }}
+          >
+            <Upload className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Export Project</p>
+        </TooltipContent>
+      </Tooltip>
       
       {/* Support Menu */}
       <div className="relative">
-        <Button
-          variant="ghost"
-          size="sm"
-          className={`w-10 h-10 p-0 transition-colors ${
-            supportMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
-          }`}
-          title="Support options"
-          onClick={() => {
-            setSupportMenuOpen(!supportMenuOpen);
-            setAccountMenuOpen(false);
-          }}
-        >
-          <HelpCircle className="w-5 h-5" />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-10 h-10 p-0 transition-colors ${
+                supportMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
+              }`}
+              onClick={() => {
+                setSupportMenuOpen(!supportMenuOpen);
+                setAccountMenuOpen(false);
+              }}
+            >
+              <HelpCircle className="w-5 h-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+            <p>Support Options</p>
+          </TooltipContent>
+        </Tooltip>
         
         {supportMenuOpen && (
           <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
@@ -236,20 +282,26 @@ const IconSidebar = ({
       
       {/* Account Menu */}
       <div className="relative">
-        <Button
-          variant="ghost"
-          size="sm"
-          className={`w-10 h-10 p-0 transition-colors ${
-            accountMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
-          }`}
-          title="Account options"
-          onClick={() => {
-            setAccountMenuOpen(!accountMenuOpen);
-            setSupportMenuOpen(false);
-          }}
-        >
-          <User className="w-5 h-5" />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`w-10 h-10 p-0 transition-colors ${
+                accountMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
+              }`}
+              onClick={() => {
+                setAccountMenuOpen(!accountMenuOpen);
+                setSupportMenuOpen(false);
+              }}
+            >
+              <User className="w-5 h-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+            <p>Account Settings</p>
+          </TooltipContent>
+        </Tooltip>
         
         {accountMenuOpen && (
           <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
@@ -307,15 +359,21 @@ const IconSidebar = ({
         )}
       </div>
       
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Sign Out"
-        onClick={onSignOut}
-      >
-        <LogOut className="w-5 h-5" />
-      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+            onClick={onSignOut}
+          >
+            <LogOut className="w-5 h-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
+          <p>Sign Out</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   </div>
 );

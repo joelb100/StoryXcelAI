@@ -125,6 +125,11 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added helpful tooltips to all icon sidebar buttons
+  - Enhanced all 8 icon buttons with styled Tooltip components for better user experience
+  - Tooltips appear on the right side with consistent dark theme styling
+  - Includes tooltips for: Asset Folder, Character Manager, Script Library, World Objects, Import Files, Export Project, Support Options, Account Settings, and Sign Out
+  - Replaced basic HTML title attributes with proper shadcn/ui Tooltip components
 - **2024-01-20**: Enhanced authentication flow to redirect users to dashboard after sign-in
   - Updated server authentication callback to redirect to `/dashboard` instead of root
   - Implemented authentication-aware routing in frontend to redirect authenticated users from root to dashboard
