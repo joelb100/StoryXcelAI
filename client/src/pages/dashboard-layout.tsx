@@ -484,26 +484,26 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="acid">Acid</SelectItem>
-                <SelectItem value="buddy">Buddy</SelectItem>
-                <SelectItem value="classic">Classic</SelectItem>
-                <SelectItem value="comedy">Comedy</SelectItem>
-                <SelectItem value="contemporary">Contemporary</SelectItem>
-                <SelectItem value="family">Family</SelectItem>
-                <SelectItem value="feminist">Feminist</SelectItem>
-                <SelectItem value="gunslinger">Gunslinger</SelectItem>
-                <SelectItem value="historical">Historical</SelectItem>
-                <SelectItem value="horror">Horror</SelectItem>
-                <SelectItem value="martial-arts">Martial Arts</SelectItem>
-                <SelectItem value="musical">Musical</SelectItem>
-                <SelectItem value="noir">Noir</SelectItem>
-                <SelectItem value="psychological">Psychological</SelectItem>
-                <SelectItem value="railroad">Railroad</SelectItem>
-                <SelectItem value="revisionist">Revisionist</SelectItem>
-                <SelectItem value="sci-fi">Sci Fi</SelectItem>
-                <SelectItem value="southern-gothic">Southern Gothic</SelectItem>
-                <SelectItem value="spaghetti">Spaghetti</SelectItem>
-                <SelectItem value="survival">Survival</SelectItem>
+                <SelectItem value="acid" title="Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.">Acid</SelectItem>
+                <SelectItem value="buddy" title="Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.">Buddy</SelectItem>
+                <SelectItem value="classic" title="Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.">Classic</SelectItem>
+                <SelectItem value="comedy" title="Stories designed to entertain and amuse through humor, wit, and exaggerated situations.">Comedy</SelectItem>
+                <SelectItem value="contemporary" title="Set in the present day, focusing on modern societal issues, relationships, or environments.">Contemporary</SelectItem>
+                <SelectItem value="family" title="Themes of familial bonds, responsibilities, and conflicts are central to the plot.">Family</SelectItem>
+                <SelectItem value="feminist" title="Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.">Feminist</SelectItem>
+                <SelectItem value="gunslinger" title="Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.">Gunslinger</SelectItem>
+                <SelectItem value="historical" title="Set in a specific historical era, emphasizing period-accurate settings, characters, and events.">Historical</SelectItem>
+                <SelectItem value="horror" title="Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.">Horror</SelectItem>
+                <SelectItem value="martial-arts" title="Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.">Martial Arts</SelectItem>
+                <SelectItem value="musical" title="Integrates songs and dance as a primary method of storytelling and emotional expression.">Musical</SelectItem>
+                <SelectItem value="noir" title="Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.">Noir</SelectItem>
+                <SelectItem value="psychological" title="Explores the inner workings of characters' minds, delving into mental struggles, paranoia, or psychological manipulation.">Psychological</SelectItem>
+                <SelectItem value="railroad" title="Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.">Railroad</SelectItem>
+                <SelectItem value="revisionist" title="Reinterprets established genres or historical events by challenging traditional perspectives or myths.">Revisionist</SelectItem>
+                <SelectItem value="sci-fi" title="Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.">Sci Fi</SelectItem>
+                <SelectItem value="southern-gothic" title="Combines Gothic elements with the American South's decayed grandeur, eccentric characters, and dark social themes.">Southern Gothic</SelectItem>
+                <SelectItem value="spaghetti" title="A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.">Spaghetti</SelectItem>
+                <SelectItem value="survival" title="Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.">Survival</SelectItem>
               </SelectContent>
             </Select>
           </div>

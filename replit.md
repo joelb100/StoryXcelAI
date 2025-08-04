@@ -125,6 +125,10 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added hover tooltips to Sub Genre dropdown options
+  - Added HTML title tooltips for all 20 sub genre options with detailed explanations
+  - Includes comprehensive definitions for Acid, Buddy, Classic, Comedy, Contemporary, Family, Feminist, Gunslinger, Historical, Horror, Martial Arts, Musical, Noir, Psychological, Railroad, Revisionist, Sci Fi, Southern Gothic, Spaghetti, and Survival
+  - Provides specific sub-genre characteristics to help users make precise categorization choices
 - **2024-01-20**: Added hover tooltips to Project Type dropdown options
   - Added HTML title tooltips for all 4 project type options with detailed explanations
   - Worldbuilding: The process of creating detailed fictional universes, including their cultures, geography, history, and rules
