@@ -125,10 +125,11 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
-- **2024-01-20**: Updated Story Builder Genre, Sub Genre, and Theme dropdowns with complete lists
+- **2024-01-20**: Updated Story Builder Genre, Sub Genre, Theme, and Sub Theme dropdowns with complete lists
   - Expanded Genre dropdown from 6 to 26 comprehensive options: Classic, Crime/Drama, Epic, Fable, Fairy Tale, Fantasy, Folktale, Gothic Fiction, Historical Fiction, Horror, Humor, Legend, Magical Realism, Meta Fiction, Mystery, Realistic Fiction, Romance, Satire, Science Fiction, Spy Fiction, Superhero, Swashbuckler, Suspense/Thriller, Tall Tale, Theological, Tragicomedy, Travel, Western
   - Updated Sub Genre dropdown from 4 to 20 specialized options: Acid, Buddy, Classic, Comedy, Contemporary, Family, Feminist, Gunslinger, Historical, Horror, Martial Arts, Musical, Noir, Psychological, Railroad, Revisionist, Sci Fi, Southern Gothic, Spaghetti, Survival
   - Enhanced Theme dropdown from 5 to 38 thematic options: Abandonment, Acceptance, Adultery, Adventure, Alienation, Ambition, Betrayal, Coming of Age, Death, Discovery, Escape, Forbidden Love, Forgiveness, Freedom, Friendship, Greed, Justice, Legacy, Loneliness, Love, Morality, Obsession, Overcoming, Patriot, Poverty, Prejudice, Redemption, Revenge, Rivalry, Sacrifice, Survival, Temptation, The Right, Tradition, Transformation, War, Wealth Found, War Zone
+  - Enhanced Sub Theme dropdown from 4 to 38 sub-thematic options: Abduction, Adventure, Adultery, Ambition, Ascension, Deliverance, Descension, Disaster, Discovery, Escape, Forbidden Love, Forgiveness, Freedom, Honor, Justice, Love, Loyalty, Madness, Maturation, Metamorphosis, Moral Ambiguity, Obtaining, Ownership, Pursuit, Quest, Redemption, Remorse, Rescue, Respect, Revenge, Revolt, Rivalry, Sacrifice, Supplication, Survival, Temptation, The Riddle, Transformation, Underdog, Wretched Excess
   - All lists based on user reference images to provide comprehensive story categorization options
 - **2024-01-20**: Added helpful tooltips to all icon sidebar buttons
   - Enhanced all 8 icon buttons with styled Tooltip components for better user experience

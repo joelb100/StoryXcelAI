@@ -545,10 +545,46 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Sub Theme" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="sacrifice">Sacrifice</SelectItem>
-                <SelectItem value="loyalty">Loyalty</SelectItem>
+                <SelectItem value="abduction">Abduction</SelectItem>
+                <SelectItem value="adventure">Adventure</SelectItem>
+                <SelectItem value="adultery">Adultery</SelectItem>
+                <SelectItem value="ambition">Ambition</SelectItem>
+                <SelectItem value="ascension">Ascension</SelectItem>
+                <SelectItem value="deliverance">Deliverance</SelectItem>
+                <SelectItem value="descension">Descension</SelectItem>
+                <SelectItem value="disaster">Disaster</SelectItem>
+                <SelectItem value="discovery">Discovery</SelectItem>
+                <SelectItem value="escape">Escape</SelectItem>
+                <SelectItem value="forbidden-love">Forbidden Love</SelectItem>
                 <SelectItem value="forgiveness">Forgiveness</SelectItem>
-                <SelectItem value="courage">Courage</SelectItem>
+                <SelectItem value="freedom">Freedom</SelectItem>
+                <SelectItem value="honor">Honor</SelectItem>
+                <SelectItem value="justice">Justice</SelectItem>
+                <SelectItem value="love">Love</SelectItem>
+                <SelectItem value="loyalty">Loyalty</SelectItem>
+                <SelectItem value="madness">Madness</SelectItem>
+                <SelectItem value="maturation">Maturation</SelectItem>
+                <SelectItem value="metamorphosis">Metamorphosis</SelectItem>
+                <SelectItem value="moral-ambiguity">Moral Ambiguity</SelectItem>
+                <SelectItem value="obtaining">Obtaining</SelectItem>
+                <SelectItem value="ownership">Ownership</SelectItem>
+                <SelectItem value="pursuit">Pursuit</SelectItem>
+                <SelectItem value="quest">Quest</SelectItem>
+                <SelectItem value="redemption">Redemption</SelectItem>
+                <SelectItem value="remorse">Remorse</SelectItem>
+                <SelectItem value="rescue">Rescue</SelectItem>
+                <SelectItem value="respect">Respect</SelectItem>
+                <SelectItem value="revenge">Revenge</SelectItem>
+                <SelectItem value="revolt">Revolt</SelectItem>
+                <SelectItem value="rivalry">Rivalry</SelectItem>
+                <SelectItem value="sacrifice">Sacrifice</SelectItem>
+                <SelectItem value="supplication">Supplication</SelectItem>
+                <SelectItem value="survival">Survival</SelectItem>
+                <SelectItem value="temptation">Temptation</SelectItem>
+                <SelectItem value="the-riddle">The Riddle</SelectItem>
+                <SelectItem value="transformation">Transformation</SelectItem>
+                <SelectItem value="underdog">Underdog</SelectItem>
+                <SelectItem value="wretched-excess">Wretched Excess</SelectItem>
               </SelectContent>
             </Select>
           </div>
