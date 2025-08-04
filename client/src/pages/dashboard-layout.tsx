@@ -426,12 +426,34 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="drama">Drama</SelectItem>
-                <SelectItem value="comedy">Comedy</SelectItem>
-                <SelectItem value="thriller">Thriller</SelectItem>
-                <SelectItem value="romance">Romance</SelectItem>
-                <SelectItem value="scifi">Sci-Fi</SelectItem>
+                <SelectItem value="classic">Classic</SelectItem>
+                <SelectItem value="crime-drama">Crime / Drama</SelectItem>
+                <SelectItem value="epic">Epic</SelectItem>
+                <SelectItem value="fable">Fable</SelectItem>
+                <SelectItem value="fairy-tale">Fairy Tale</SelectItem>
                 <SelectItem value="fantasy">Fantasy</SelectItem>
+                <SelectItem value="folktale">Folktale</SelectItem>
+                <SelectItem value="gothic-fiction">Gothic Fiction</SelectItem>
+                <SelectItem value="historical-fiction">Historical Fiction</SelectItem>
+                <SelectItem value="horror">Horror</SelectItem>
+                <SelectItem value="humor">Humor</SelectItem>
+                <SelectItem value="legend">Legend</SelectItem>
+                <SelectItem value="magical-realism">Magical Realism</SelectItem>
+                <SelectItem value="meta-fiction">Meta Fiction</SelectItem>
+                <SelectItem value="mystery">Mystery</SelectItem>
+                <SelectItem value="realistic-fiction">Realistic Fiction</SelectItem>
+                <SelectItem value="romance">Romance</SelectItem>
+                <SelectItem value="satire">Satire</SelectItem>
+                <SelectItem value="science-fiction">Science Fiction</SelectItem>
+                <SelectItem value="spy-fiction">Spy Fiction</SelectItem>
+                <SelectItem value="superhero">Superhero</SelectItem>
+                <SelectItem value="swashbuckler">Swashbuckler</SelectItem>
+                <SelectItem value="suspense-thriller">Suspense / Thriller</SelectItem>
+                <SelectItem value="tall-tale">Tall Tale</SelectItem>
+                <SelectItem value="theological">Theological</SelectItem>
+                <SelectItem value="tragicomedy">Tragicomedy</SelectItem>
+                <SelectItem value="travel">Travel</SelectItem>
+                <SelectItem value="western">Western</SelectItem>
               </SelectContent>
             </Select>
           </div>
