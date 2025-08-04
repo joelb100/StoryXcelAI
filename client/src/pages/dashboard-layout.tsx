@@ -68,14 +68,22 @@ import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 import StoryBuilder from "@/components/story-builder";
 import AIStoryAssistant from "@/components/ai-story-assistant";
 
+// Import tab icons
+import worldBuilderIcon from "@assets/worldBuilder_1754280588370.png";
+import productionBuilderIcon from "@assets/productionBuilder_1754280596376.png";
+import assetBuilderIcon from "@assets/assetBuilder_1754280609014.png";
+import storyBuilderIcon from "@assets/storyBuilder_1754280620526.png";
+import scriptBuilderIcon from "@assets/scriptBuilder_1754280628421.png";
+import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png";
+
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
-  { id: "world", name: "World", isActive: activeTab === "world" },
-  { id: "production", name: "Production", isActive: activeTab === "production" },
-  { id: "asset", name: "Asset", isActive: activeTab === "asset" },
-  { id: "story", name: "Story", isActive: activeTab === "story" },
-  { id: "script", name: "Script", isActive: activeTab === "script" },
-  { id: "deck", name: "Deck", isActive: activeTab === "deck" },
+  { id: "world", name: "World", icon: worldBuilderIcon, isActive: activeTab === "world" },
+  { id: "production", name: "Production", icon: productionBuilderIcon, isActive: activeTab === "production" },
+  { id: "asset", name: "Asset", icon: assetBuilderIcon, isActive: activeTab === "asset" },
+  { id: "story", name: "Story", icon: storyBuilderIcon, isActive: activeTab === "story" },
+  { id: "script", name: "Script", icon: scriptBuilderIcon, isActive: activeTab === "script" },
+  { id: "deck", name: "Deck", icon: deckBuilderIcon, isActive: activeTab === "deck" },
 ];
 
 // Friends list data
@@ -1015,7 +1023,7 @@ export default function DashboardLayout() {
                   <button
                     key={tab.id}
                     onClick={() => handleTabChange(tab.id)}
-                    className="px-4 py-3 text-base font-medium text-white transition-all duration-300 rounded-none"
+                    className="px-4 py-3 text-base font-medium text-white transition-all duration-300 rounded-none flex items-center gap-2"
                     style={{ 
                       textAlign: 'center',
                       textShadow: tab.isActive ? '0 0 5px #00d8ff, 0 0 10px #00d8ff, 0 0 15px #00d8ff' : ''
@@ -1029,6 +1037,16 @@ export default function DashboardLayout() {
                       }
                     }}
                   >
+                    <img 
+                      src={tab.icon} 
+                      alt={`${tab.name} icon`}
+                      className="w-5 h-5 object-contain filter brightness-0 invert"
+                      style={{
+                        filter: tab.isActive 
+                          ? 'brightness(0) invert(1) drop-shadow(0 0 3px #00d8ff)' 
+                          : 'brightness(0) invert(1)'
+                      }}
+                    />
                     {tab.name}
                   </button>
                 ))}
