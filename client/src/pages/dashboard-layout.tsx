@@ -38,7 +38,28 @@ import {
   Shield,
   CreditCard,
   Palette,
-  Mail
+  Mail,
+  Undo,
+  Redo,
+  Printer,
+  PaintBucket,
+  Minus,
+  Bold,
+  Italic,
+  Underline,
+  Type,
+  Highlighter,
+  Link,
+  Image,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  List,
+  ListOrdered,
+  Indent,
+  Outdent,
+  MoreHorizontal
 } from "lucide-react";
 
 // Import logo and components
@@ -1073,20 +1094,46 @@ export default function DashboardLayout() {
                       <div className="w-full max-w-[14.5in] h-full">
                         {/* Story Content Editor - Full width document style */}
                         <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
-                          {/* Enhanced Toolbar - Matching reference design */}
+                          {/* Enhanced Toolbar - Google Docs Style */}
                           <div className="border-b border-gray-200 px-4 py-2">
                             <div className="flex items-center space-x-1 text-sm flex-wrap">
-                              {/* File operations */}
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">📄</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">💾</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">↩️</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">↪️</Button>
+                              {/* Undo/Redo */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Undo className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Redo className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Print */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Printer className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Format Painter */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <PaintBucket className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Zoom */}
+                              <Select>
+                                <SelectTrigger className="h-7 w-16 text-xs">
+                                  <SelectValue placeholder="100%" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="50">50%</SelectItem>
+                                  <SelectItem value="75">75%</SelectItem>
+                                  <SelectItem value="100">100%</SelectItem>
+                                  <SelectItem value="125">125%</SelectItem>
+                                  <SelectItem value="150">150%</SelectItem>
+                                </SelectContent>
+                              </Select>
                               
                               <div className="w-px h-4 bg-gray-300 mx-1"></div>
                               
-                              {/* Text formatting */}
+                              {/* Format */}
                               <Select>
-                                <SelectTrigger className="h-6 w-20 text-xs">
+                                <SelectTrigger className="h-7 w-28 text-xs">
                                   <SelectValue placeholder="Normal text" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -1097,8 +1144,9 @@ export default function DashboardLayout() {
                                 </SelectContent>
                               </Select>
                               
+                              {/* Font Family */}
                               <Select>
-                                <SelectTrigger className="h-6 w-16 text-xs">
+                                <SelectTrigger className="h-7 w-20 text-xs">
                                   <SelectValue placeholder="Arial" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -1109,8 +1157,15 @@ export default function DashboardLayout() {
                                 </SelectContent>
                               </Select>
                               
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Font Size */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Minus className="w-3 h-3" />
+                              </Button>
+                              
                               <Select>
-                                <SelectTrigger className="h-6 w-12 text-xs">
+                                <SelectTrigger className="h-7 w-12 text-xs">
                                   <SelectValue placeholder="11" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -1125,31 +1180,90 @@ export default function DashboardLayout() {
                                 </SelectContent>
                               </Select>
                               
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Text styling */}
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
-                                <span className="font-bold">B</span>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Plus className="w-3 h-3" />
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
-                                <span className="italic">I</span>
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">
-                                <span className="underline">U</span>
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">A🎨</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">🎨</Button>
                               
                               <div className="w-px h-4 bg-gray-300 mx-1"></div>
                               
-                              {/* Alignment, Lists, and Additional tools - condensed */}
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">≡</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">≣</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">• •</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">1. 2.</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">🔗</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">📊</Button>
-                              <Button variant="ghost" size="sm" className="h-6 px-2 text-slate-600 hover:bg-gray-100">📷</Button>
+                              {/* Text Formatting */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Bold className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Italic className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Underline className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Text Color */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Type className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Highlight Color */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Highlighter className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Link */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Link className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Comment */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <MessageSquare className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Image */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Image className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Alignment */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignLeft className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignCenter className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignRight className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignJustify className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Lists */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <List className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <ListOrdered className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Indent */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Indent className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Outdent className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* More Options */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
                             </div>
                           </div>
                           
