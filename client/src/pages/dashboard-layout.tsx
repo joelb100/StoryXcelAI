@@ -596,10 +596,14 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Central Conflict" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="internal">Internal Conflict</SelectItem>
-                <SelectItem value="external">External Conflict</SelectItem>
-                <SelectItem value="society">Man vs Society</SelectItem>
-                <SelectItem value="nature">Man vs Nature</SelectItem>
+                <SelectItem value="man-vs-man">[Wo]Man vs. [Wo]Man</SelectItem>
+                <SelectItem value="man-vs-nature">[Wo]Man vs. Nature</SelectItem>
+                <SelectItem value="man-vs-environment">[Wo]Man vs. the Environment</SelectItem>
+                <SelectItem value="man-vs-machines">[Wo]Man vs. Machines / Technology</SelectItem>
+                <SelectItem value="man-vs-supernatural">[Wo]Man vs. the Supernatural</SelectItem>
+                <SelectItem value="man-vs-self">[Wo]Man vs. Self</SelectItem>
+                <SelectItem value="man-vs-god">[Wo]Man vs. God / Religion</SelectItem>
+                <SelectItem value="man-vs-society">[Wo]Man vs. Society</SelectItem>
               </SelectContent>
             </Select>
           </div>
