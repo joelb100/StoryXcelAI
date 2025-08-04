@@ -431,10 +431,10 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="worldbuilding" className="definition-tooltip" data-tooltip="Worldbuilding - The process of creating detailed fictional universes, including their cultures, geography, history, and rules.">Worldbuilding</SelectItem>
-                <SelectItem value="novel" className="definition-tooltip" data-tooltip="Novel - A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose.">Novel</SelectItem>
-                <SelectItem value="script" className="definition-tooltip" data-tooltip="Script - A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions.">Script</SelectItem>
-                <SelectItem value="screenplay" className="definition-tooltip" data-tooltip="Screenplay - A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue.">Screenplay</SelectItem>
+                <SelectItem value="worldbuilding" title="Worldbuilding - The process of creating detailed fictional universes, including their cultures, geography, history, and rules.">Worldbuilding</SelectItem>
+                <SelectItem value="novel" title="Novel - A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose.">Novel</SelectItem>
+                <SelectItem value="script" title="Script - A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions.">Script</SelectItem>
+                <SelectItem value="screenplay" title="Screenplay - A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue.">Screenplay</SelectItem>
               </SelectContent>
             </Select>
           </div>
