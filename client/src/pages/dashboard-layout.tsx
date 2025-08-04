@@ -465,10 +465,26 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="acid">Acid</SelectItem>
+                <SelectItem value="buddy">Buddy</SelectItem>
+                <SelectItem value="classic">Classic</SelectItem>
+                <SelectItem value="comedy">Comedy</SelectItem>
+                <SelectItem value="contemporary">Contemporary</SelectItem>
+                <SelectItem value="family">Family</SelectItem>
+                <SelectItem value="feminist">Feminist</SelectItem>
+                <SelectItem value="gunslinger">Gunslinger</SelectItem>
+                <SelectItem value="historical">Historical</SelectItem>
+                <SelectItem value="horror">Horror</SelectItem>
+                <SelectItem value="martial-arts">Martial Arts</SelectItem>
+                <SelectItem value="musical">Musical</SelectItem>
+                <SelectItem value="noir">Noir</SelectItem>
                 <SelectItem value="psychological">Psychological</SelectItem>
-                <SelectItem value="action">Action</SelectItem>
-                <SelectItem value="mystery">Mystery</SelectItem>
-                <SelectItem value="adventure">Adventure</SelectItem>
+                <SelectItem value="railroad">Railroad</SelectItem>
+                <SelectItem value="revisionist">Revisionist</SelectItem>
+                <SelectItem value="sci-fi">Sci Fi</SelectItem>
+                <SelectItem value="southern-gothic">Southern Gothic</SelectItem>
+                <SelectItem value="spaghetti">Spaghetti</SelectItem>
+                <SelectItem value="survival">Survival</SelectItem>
               </SelectContent>
             </Select>
           </div>
