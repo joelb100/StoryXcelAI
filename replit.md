@@ -130,9 +130,11 @@ Preferred communication style: Simple, everyday language.
   - Tooltips appear on the right side with consistent dark theme styling
   - Includes tooltips for: Asset Folder, Character Manager, Script Library, World Objects, Import Files, Export Project, Support Options, Account Settings, and Sign Out
   - Replaced basic HTML title attributes with proper shadcn/ui Tooltip components
-- **2024-01-20**: Enhanced authentication flow to redirect users to dashboard after sign-in
+- **2024-01-20**: Fixed authentication flow to properly show dashboard after sign-in
   - Updated server authentication callback to redirect to `/dashboard` instead of root
   - Implemented authentication-aware routing in frontend to redirect authenticated users from root to dashboard
+  - Fixed DashboardLayout default behavior to show dashboard instead of story builder
+  - Changed activeTab default from 'story' to 'dashboard' for proper initial state
   - Added proper loading state and navigation logic for seamless user experience
 - **2024-01-20**: Implemented functional icon sidebar with expandable menus
   - Updated bottom icons: Import, Export, Support, Account, Sign Out

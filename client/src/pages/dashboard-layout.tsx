@@ -803,7 +803,7 @@ export default function DashboardLayout() {
   const getActiveTab = () => {
     if (location === '/dashboard') return 'dashboard';
     const match = location.match(/\/builder\/(.+)/);
-    return match ? match[1] : 'story';
+    return match ? match[1] : 'dashboard';  // Default to dashboard instead of story
   };
   
   const activeTab = getActiveTab();
