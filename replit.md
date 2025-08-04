@@ -125,6 +125,10 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Enhanced authentication flow to redirect users to dashboard after sign-in
+  - Updated server authentication callback to redirect to `/dashboard` instead of root
+  - Implemented authentication-aware routing in frontend to redirect authenticated users from root to dashboard
+  - Added proper loading state and navigation logic for seamless user experience
 - **2024-01-20**: Implemented functional icon sidebar with expandable menus
   - Updated bottom icons: Import, Export, Support, Account, Sign Out
   - Added expandable Support menu with FAQ, Technical Support, Live Chat, Messaging
