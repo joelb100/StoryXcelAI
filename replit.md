@@ -125,9 +125,10 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
-- **2024-01-20**: Enhanced Story Builder Genre dropdown with comprehensive tooltip definitions
-  - Added hover tooltips for all 26 genre options with detailed explanations
-  - Tooltips appear on the right side with clear, informative descriptions for each genre type
+- **2024-01-20**: Enhanced Story Builder Genre dropdown with comprehensive hover definitions
+  - Added HTML title tooltips for all 26 genre options with detailed explanations
+  - Browser-native tooltips appear on hover with clear, informative descriptions for each genre type
+  - Fixed tooltip implementation to work properly within Select dropdown components
   - Includes definitions for Classic, Crime/Drama, Epic, Fable, Fairy Tale, Fantasy, Folktale, Gothic Fiction, Historical Fiction, Horror, Humor, Legend, Magical Realism, Meta Fiction, Mystery, Realistic Fiction, Romance, Satire, Science Fiction, Spy Fiction, Superhero, Swashbuckler, Suspense/Thriller, Tall Tale, Theological, Tragicomedy, Travel, and Western
 - **2024-01-20**: Updated Story Builder Project Type dropdown with streamlined options
   - Replaced previous 6 options (Story Project, Script Project, Novel Project, Screenplay, Book, Series) with 4 focused options: Worldbuilding, Novel, Script, Screenplay
