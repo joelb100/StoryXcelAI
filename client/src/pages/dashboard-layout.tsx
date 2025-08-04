@@ -430,12 +430,10 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="story">Story Project</SelectItem>
-                <SelectItem value="script">Script Project</SelectItem>
-                <SelectItem value="novel">Novel Project</SelectItem>
+                <SelectItem value="worldbuilding">Worldbuilding</SelectItem>
+                <SelectItem value="novel">Novel</SelectItem>
+                <SelectItem value="script">Script</SelectItem>
                 <SelectItem value="screenplay">Screenplay</SelectItem>
-                <SelectItem value="book">Book</SelectItem>
-                <SelectItem value="series">Series</SelectItem>
               </SelectContent>
             </Select>
           </div>

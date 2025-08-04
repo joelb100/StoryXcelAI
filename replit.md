@@ -125,6 +125,9 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Updated Story Builder Project Type dropdown with streamlined options
+  - Replaced previous 6 options (Story Project, Script Project, Novel Project, Screenplay, Book, Series) with 4 focused options: Worldbuilding, Novel, Script, Screenplay
+  - Based on user reference image to provide more targeted project categorization
 - **2024-01-20**: Enhanced Story Builder text editor toolbar with comprehensive Google Docs-style icons
   - Replaced basic emoji icons with professional Lucide React icons including: Undo/Redo, Print, Format Painter, Zoom controls, Bold/Italic/Underline, Text/Highlight colors, Link, Comment, Image insertion, Alignment options, Lists (bullet/numbered), Indent/Outdent controls
   - Improved toolbar functionality and visual consistency to match modern document editing interfaces
