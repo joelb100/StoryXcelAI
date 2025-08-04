@@ -32,7 +32,12 @@ import {
   Bookmark,
   HelpCircle,
   User,
-  LogOut
+  LogOut,
+  FileDown,
+  Shield,
+  CreditCard,
+  Palette,
+  Mail
 } from "lucide-react";
 
 // Import logo and components
@@ -78,8 +83,20 @@ const dashboardData = {
 };
 
 // Far Left Icon Sidebar Component - Green from grid (Columns 1-3)
-const IconSidebar = () => (
-  <div className="h-full border-r border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
+const IconSidebar = ({ 
+  supportMenuOpen, 
+  setSupportMenuOpen, 
+  accountMenuOpen, 
+  setAccountMenuOpen,
+  onSignOut 
+}: { 
+  supportMenuOpen: boolean;
+  setSupportMenuOpen: (open: boolean) => void;
+  accountMenuOpen: boolean;
+  setAccountMenuOpen: (open: boolean) => void;
+  onSignOut: () => void;
+}) => (
+  <div className="h-full border-r border-slate-600 flex flex-col justify-between items-center py-4 relative" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -117,44 +134,185 @@ const IconSidebar = () => (
     </div>
     
     {/* Bottom action icons - From top to bottom: Import, Export, Support, Accounts, Sign Out */}
-    <div className="flex flex-col items-center space-y-2">
+    <div className="flex flex-col items-center space-y-2 relative">
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Import"
+        title="Import files into the program"
+        onClick={() => {
+          // TODO: Implement file import functionality
+          console.log('Import files');
+        }}
       >
         <Download className="w-5 h-5" />
       </Button>
+      
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Export"
+        title="Export project to PDF or other formats"
+        onClick={() => {
+          // TODO: Implement export functionality
+          console.log('Export project');
+        }}
       >
         <Upload className="w-5 h-5" />
       </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Support"
-      >
-        <HelpCircle className="w-5 h-5" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Accounts"
-      >
-        <User className="w-5 h-5" />
-      </Button>
+      
+      {/* Support Menu */}
+      <div className="relative">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`w-10 h-10 p-0 transition-colors ${
+            supportMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
+          }`}
+          title="Support options"
+          onClick={() => {
+            setSupportMenuOpen(!supportMenuOpen);
+            setAccountMenuOpen(false);
+          }}
+        >
+          <HelpCircle className="w-5 h-5" />
+        </Button>
+        
+        {supportMenuOpen && (
+          <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
+            <div className="flex flex-col space-y-2 min-w-[120px]">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('FAQ');
+                  setSupportMenuOpen(false);
+                }}
+              >
+                <Info className="w-4 h-4 mr-2" />
+                FAQ
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Technical Support');
+                  setSupportMenuOpen(false);
+                }}
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Tech Support
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Live Chat');
+                  setSupportMenuOpen(false);
+                }}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Live Chat
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Messaging');
+                  setSupportMenuOpen(false);
+                }}
+              >
+                <Mail className="w-4 h-4 mr-2" />
+                Messaging
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Account Menu */}
+      <div className="relative">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`w-10 h-10 p-0 transition-colors ${
+            accountMenuOpen ? 'text-white bg-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-700'
+          }`}
+          title="Account options"
+          onClick={() => {
+            setAccountMenuOpen(!accountMenuOpen);
+            setSupportMenuOpen(false);
+          }}
+        >
+          <User className="w-5 h-5" />
+        </Button>
+        
+        {accountMenuOpen && (
+          <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
+            <div className="flex flex-col space-y-2 min-w-[120px]">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Settings');
+                  setAccountMenuOpen(false);
+                }}
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Personalize');
+                  setAccountMenuOpen(false);
+                }}
+              >
+                <Palette className="w-4 h-4 mr-2" />
+                Personalize
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Security');
+                  setAccountMenuOpen(false);
+                }}
+              >
+                <Shield className="w-4 h-4 mr-2" />
+                Security
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start text-white hover:bg-slate-600 h-8 px-2"
+                onClick={() => {
+                  console.log('Payment');
+                  setAccountMenuOpen(false);
+                }}
+              >
+                <CreditCard className="w-4 h-4 mr-2" />
+                Payment
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+      
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Sign Out"
+        onClick={onSignOut}
       >
         <LogOut className="w-5 h-5" />
       </Button>
@@ -580,6 +738,8 @@ export default function DashboardLayout() {
   const [chatMessage, setChatMessage] = useState("");
   const [mobileLeftOpen, setMobileLeftOpen] = useState(false);
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
+  const [supportMenuOpen, setSupportMenuOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   
   // Determine active tab from current route
   const getActiveTab = () => {
@@ -632,6 +792,11 @@ export default function DashboardLayout() {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleSignOut = () => {
+    // Navigate to login page (assuming it's the root path when not authenticated)
+    window.location.href = '/api/logout';
   };
 
   return (
@@ -708,7 +873,13 @@ export default function DashboardLayout() {
         <div className="hidden lg:contents">
           {/* Left Icon Sidebar - Column 1 only (very narrow) */}
           <div className="col-span-1">
-            <IconSidebar />
+            <IconSidebar 
+              supportMenuOpen={supportMenuOpen}
+              setSupportMenuOpen={setSupportMenuOpen}
+              accountMenuOpen={accountMenuOpen}
+              setAccountMenuOpen={setAccountMenuOpen}
+              onSignOut={handleSignOut}
+            />
           </div>
           
           {/* Left Content Sidebar - Columns 2-5 */}
@@ -954,7 +1125,13 @@ export default function DashboardLayout() {
                 </Button>
               </div>
               <div className="h-full overflow-hidden flex pt-16">
-                <IconSidebar />
+                <IconSidebar 
+                  supportMenuOpen={supportMenuOpen}
+                  setSupportMenuOpen={setSupportMenuOpen}
+                  accountMenuOpen={accountMenuOpen}
+                  setAccountMenuOpen={setAccountMenuOpen}
+                  onSignOut={handleSignOut}
+                />
                 <LeftSidebar activeTab={activeTab} />
               </div>
             </div>
