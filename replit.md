@@ -125,6 +125,10 @@ Preferred communication style: Simple, everyday language.
 - **Debugging**: Source maps and runtime error overlays
 
 ## Recent Changes
+- **2024-01-20**: Added hover tooltips to Sub Theme dropdown options
+  - Added HTML title tooltips for all 38 sub theme options with detailed explanations
+  - Includes comprehensive definitions for Abduction, Adventure, Adultery, Ambition, Ascension, Deliverance, Descension, Disaster, Discovery, Escape, Forbidden Love, Forgiveness, Freedom, Honor, Justice, Love, Loyalty, Madness, Maturation, Metamorphosis, Moral Ambiguity, Obtaining, Ownership, Pursuit, Quest, Redemption, Remorse, Rescue, Respect, Revenge, Revolt, Rivalry, Sacrifice, Supplication, Survival, Temptation, The Riddle, Transformation, Underdog, Wretched Excess
+  - Provides specific narrative action and plot element guidance to help users identify precise sub-thematic focus
 - **2024-01-20**: Added hover tooltips to Theme dropdown options
   - Added HTML title tooltips for all 38 theme options with detailed explanations
   - Includes comprehensive definitions for Abandonment, Acceptance, Adultery, Adventure, Alienation, Ambition, Betrayal, Coming of Age, Death, Discovery, Escape, Forbidden Love, Forgiveness, Freedom, Friendship, Greed, Justice, Legacy, Loneliness, Love, Morality, Obsession, Overcoming, Patriot, Poverty, Prejudice, Redemption, Revenge, Rivalry, Sacrifice, Survival, Temptation, The Right, Tradition, Transformation, War, Wealth Found, and War Zone

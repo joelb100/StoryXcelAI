@@ -564,46 +564,46 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
                 <SelectValue placeholder="Select Sub Theme" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="abduction">Abduction</SelectItem>
-                <SelectItem value="adventure">Adventure</SelectItem>
-                <SelectItem value="adultery">Adultery</SelectItem>
-                <SelectItem value="ambition">Ambition</SelectItem>
-                <SelectItem value="ascension">Ascension</SelectItem>
-                <SelectItem value="deliverance">Deliverance</SelectItem>
-                <SelectItem value="descension">Descension</SelectItem>
-                <SelectItem value="disaster">Disaster</SelectItem>
-                <SelectItem value="discovery">Discovery</SelectItem>
-                <SelectItem value="escape">Escape</SelectItem>
-                <SelectItem value="forbidden-love">Forbidden Love</SelectItem>
-                <SelectItem value="forgiveness">Forgiveness</SelectItem>
-                <SelectItem value="freedom">Freedom</SelectItem>
-                <SelectItem value="honor">Honor</SelectItem>
-                <SelectItem value="justice">Justice</SelectItem>
-                <SelectItem value="love">Love</SelectItem>
-                <SelectItem value="loyalty">Loyalty</SelectItem>
-                <SelectItem value="madness">Madness</SelectItem>
-                <SelectItem value="maturation">Maturation</SelectItem>
-                <SelectItem value="metamorphosis">Metamorphosis</SelectItem>
-                <SelectItem value="moral-ambiguity">Moral Ambiguity</SelectItem>
-                <SelectItem value="obtaining">Obtaining</SelectItem>
-                <SelectItem value="ownership">Ownership</SelectItem>
-                <SelectItem value="pursuit">Pursuit</SelectItem>
-                <SelectItem value="quest">Quest</SelectItem>
-                <SelectItem value="redemption">Redemption</SelectItem>
-                <SelectItem value="remorse">Remorse</SelectItem>
-                <SelectItem value="rescue">Rescue</SelectItem>
-                <SelectItem value="respect">Respect</SelectItem>
-                <SelectItem value="revenge">Revenge</SelectItem>
-                <SelectItem value="revolt">Revolt</SelectItem>
-                <SelectItem value="rivalry">Rivalry</SelectItem>
-                <SelectItem value="sacrifice">Sacrifice</SelectItem>
-                <SelectItem value="supplication">Supplication</SelectItem>
-                <SelectItem value="survival">Survival</SelectItem>
-                <SelectItem value="temptation">Temptation</SelectItem>
-                <SelectItem value="the-riddle">The Riddle</SelectItem>
-                <SelectItem value="transformation">Transformation</SelectItem>
-                <SelectItem value="underdog">Underdog</SelectItem>
-                <SelectItem value="wretched-excess">Wretched Excess</SelectItem>
+                <SelectItem value="abduction" title="A character is kidnapped or taken against their will, sparking conflict or rescue.">Abduction</SelectItem>
+                <SelectItem value="adventure" title="The protagonist embarks on an exciting journey full of risks and discoveries.">Adventure</SelectItem>
+                <SelectItem value="adultery" title="A betrayal of romantic commitment, leading to emotional fallout.">Adultery</SelectItem>
+                <SelectItem value="ambition" title="A character's relentless pursuit of power, success, or personal goals.">Ambition</SelectItem>
+                <SelectItem value="ascension" title="A rise to power, enlightenment, or higher status.">Ascension</SelectItem>
+                <SelectItem value="deliverance" title="Being rescued or freed from a dire situation.">Deliverance</SelectItem>
+                <SelectItem value="descension" title="A fall from grace, status, or moral standing.">Descension</SelectItem>
+                <SelectItem value="disaster" title="A catastrophic event upends lives and environments.">Disaster</SelectItem>
+                <SelectItem value="discovery" title="Unveiling hidden truths, objects, or aspects of oneself.">Discovery</SelectItem>
+                <SelectItem value="escape" title="A character's struggle to break free from confinement or danger.">Escape</SelectItem>
+                <SelectItem value="forbidden-love" title="A romance that defies societal, cultural, or moral boundaries.">Forbidden Love</SelectItem>
+                <SelectItem value="forgiveness" title="Characters confront emotional wounds to offer or seek redemption.">Forgiveness</SelectItem>
+                <SelectItem value="freedom" title="The pursuit of autonomy from oppression or control.">Freedom</SelectItem>
+                <SelectItem value="honor" title="Upholding personal or cultural codes of ethics and duty.">Honor</SelectItem>
+                <SelectItem value="justice" title="The moral quest to right a wrong or balance fairness.">Justice</SelectItem>
+                <SelectItem value="love" title="Emotional connection driving character motivation and conflicts.">Love</SelectItem>
+                <SelectItem value="loyalty" title="Allegiance to a person, cause, or belief, even at great cost.">Loyalty</SelectItem>
+                <SelectItem value="madness" title="Descent into insanity, blurring reality and delusion.">Madness</SelectItem>
+                <SelectItem value="maturation" title="A coming-of-age journey of personal growth and responsibility.">Maturation</SelectItem>
+                <SelectItem value="metamorphosis" title="A profound transformation in identity, form, or perspective.">Metamorphosis</SelectItem>
+                <SelectItem value="moral-ambiguity" title="A blurred line between right and wrong in character choices.">Moral Ambiguity</SelectItem>
+                <SelectItem value="obtaining" title="The relentless pursuit to acquire a prized object or goal.">Obtaining</SelectItem>
+                <SelectItem value="ownership" title="Themes of control, possession, or claiming what one believes is theirs.">Ownership</SelectItem>
+                <SelectItem value="pursuit" title="A relentless chase, whether for justice, revenge, or desire.">Pursuit</SelectItem>
+                <SelectItem value="quest" title="A character's journey to achieve a nearly impossible objective.">Quest</SelectItem>
+                <SelectItem value="redemption" title="Atonement for past sins through sacrifice or good deeds.">Redemption</SelectItem>
+                <SelectItem value="remorse" title="A character grapples with guilt and regret.">Remorse</SelectItem>
+                <SelectItem value="rescue" title="Saving someone from imminent peril.">Rescue</SelectItem>
+                <SelectItem value="respect" title="Earning recognition and dignity through actions or perseverance.">Respect</SelectItem>
+                <SelectItem value="revenge" title="Retribution for a past wrong, regardless of consequence.">Revenge</SelectItem>
+                <SelectItem value="revolt" title="An uprising against authority or oppressive forces.">Revolt</SelectItem>
+                <SelectItem value="rivalry" title="Intense competition between two characters or factions.">Rivalry</SelectItem>
+                <SelectItem value="sacrifice" title="Giving up something of great personal value for a higher cause.">Sacrifice</SelectItem>
+                <SelectItem value="supplication" title="A desperate plea for aid, mercy, or forgiveness.">Supplication</SelectItem>
+                <SelectItem value="survival" title="Battling overwhelming odds to stay alive.">Survival</SelectItem>
+                <SelectItem value="temptation" title="A character is lured toward desires that conflict with their morals.">Temptation</SelectItem>
+                <SelectItem value="the-riddle" title="Solving a complex mystery or intellectual challenge.">The Riddle</SelectItem>
+                <SelectItem value="transformation" title="A fundamental change in a character's nature or circumstances.">Transformation</SelectItem>
+                <SelectItem value="underdog" title="A lesser-powered character defies expectations against stronger opponents.">Underdog</SelectItem>
+                <SelectItem value="wretched-excess" title="Characters driven to ruin by indulgence, greed, or obsession.">Wretched Excess</SelectItem>
               </SelectContent>
             </Select>
           </div>
