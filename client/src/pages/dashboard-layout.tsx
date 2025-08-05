@@ -1232,19 +1232,20 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Expands dynamically based on collapsed panels */}
-          <div className={`transition-all duration-300 ${
+          {/* Main Content - Dashboard fixed at col-span-19, Builder tabs dynamic */}
+          <div className={`${
             activeTab === 'dashboard' 
               ? 'col-span-19' 
               : (() => {
                   const friendsOpen = isFriendsListOpen;
                   const siteOpen = isSiteLinksOpen;
                   
-                  // Use static Tailwind classes for proper compilation
-                  if (friendsOpen && siteOpen) return 'col-span-16'; // Both panels open
-                  if (friendsOpen && !siteOpen) return 'col-span-19'; // Only Friends open
-                  if (!friendsOpen && siteOpen) return 'col-span-19'; // Only Site Links open
-                  return 'col-span-22'; // Both panels collapsed
+                  // Dynamic width with smooth transitions for Builder tabs only
+                  const baseClass = 'transition-all duration-300 ';
+                  if (friendsOpen && siteOpen) return baseClass + 'col-span-16'; // Both panels open
+                  if (friendsOpen && !siteOpen) return baseClass + 'col-span-19'; // Only Friends open
+                  if (!friendsOpen && siteOpen) return baseClass + 'col-span-19'; // Only Site Links open
+                  return baseClass + 'col-span-22'; // Both panels collapsed
                 })()
           }`}>
             {activeTab === 'story' ? (
@@ -1479,35 +1480,35 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Friends List Panel - Slides in/out with animation */}
-          <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-            activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen) 
-              ? 'col-span-3' 
-              : 'col-span-0'
-          }`}>
-            <div className={`h-full transition-transform duration-300 ${
-              activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen)
-                ? 'translate-x-0'
-                : 'translate-x-full'
-            }`} style={{ width: '280px' }}>
+          {/* Friends List Panel - Dashboard always shows, other tabs animate */}
+          {activeTab === 'dashboard' ? (
+            <div className="col-span-3 relative z-40">
               <RightSidebar />
             </div>
-          </div>
-          
-          {/* Site Links Panel - Slides in/out with animation */}
-          <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-            activeTab !== 'dashboard' && isSiteLinksOpen 
-              ? 'col-span-3' 
-              : 'col-span-0'
-          }`}>
-            <div className={`h-full transition-transform duration-300 ${
-              activeTab !== 'dashboard' && isSiteLinksOpen
-                ? 'translate-x-0'
-                : 'translate-x-full'
-            }`} style={{ width: '280px' }}>
-              <SiteLinksSidebar />
+          ) : (
+            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+              isFriendsListOpen ? 'col-span-3' : 'col-span-0'
+            }`}>
+              <div className={`h-full transition-transform duration-300 ${
+                isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
+              }`} style={{ width: '280px' }}>
+                <RightSidebar />
+              </div>
             </div>
-          </div>
+          )}
+          
+          {/* Site Links Panel - Only for non-dashboard tabs */}
+          {activeTab !== 'dashboard' && (
+            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+              isSiteLinksOpen ? 'col-span-3' : 'col-span-0'
+            }`}>
+              <div className={`h-full transition-transform duration-300 ${
+                isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
+              }`} style={{ width: '280px' }}>
+                <SiteLinksSidebar />
+              </div>
+            </div>
+          )}
           
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
