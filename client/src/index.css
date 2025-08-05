@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Ensure all dynamic column spans are available */
+.col-span-16 { grid-column: span 16 / span 16; }
+.col-span-19 { grid-column: span 19 / span 19; }
+.col-span-22 { grid-column: span 22 / span 22; }
+
 /* Custom Styled Tooltips */
 .definition-tooltip {
   position: relative;

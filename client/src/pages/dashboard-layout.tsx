@@ -1232,20 +1232,14 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Dashboard fixed at col-span-19, Builder tabs dynamic */}
+          {/* Main Content - Dashboard fixed, Builder tabs dynamic based on rendered panels */}
           <div className={`${
             activeTab === 'dashboard' 
               ? 'col-span-19' 
               : (() => {
-                  const friendsOpen = isFriendsListOpen;
-                  const siteOpen = isSiteLinksOpen;
-                  
-                  // Dynamic width with smooth transitions for Builder tabs only
-                  const baseClass = 'transition-all duration-300 ';
-                  if (friendsOpen && siteOpen) return baseClass + 'col-span-16'; // Both panels open
-                  if (friendsOpen && !siteOpen) return baseClass + 'col-span-19'; // Only Friends open
-                  if (!friendsOpen && siteOpen) return baseClass + 'col-span-19'; // Only Site Links open
-                  return baseClass + 'col-span-22'; // Both panels collapsed
+                  // Calculate main content span: 28 - 1 (left icon) - 4 (left content) - (friends ? 3 : 0) - (sitelinks ? 3 : 0) - 1 (right icon)
+                  const mainContentSpan = 28 - 1 - 4 - (isFriendsListOpen ? 3 : 0) - (isSiteLinksOpen ? 3 : 0) - 1;
+                  return `col-span-${mainContentSpan} transition-all duration-300`;
                 })()
           }`}>
             {activeTab === 'story' ? (
@@ -1480,31 +1474,25 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Friends List Panel - Dashboard always shows, other tabs animate */}
+          {/* Friends List Panel - Dashboard always shows, Builder tabs conditionally render */}
           {activeTab === 'dashboard' ? (
             <div className="col-span-3 relative z-40">
               <RightSidebar />
             </div>
           ) : (
-            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-              isFriendsListOpen ? 'col-span-3' : 'col-span-0'
-            }`}>
-              <div className={`h-full transition-transform duration-300 ${
-                isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
-              }`} style={{ width: '280px' }}>
-                <RightSidebar />
+            isFriendsListOpen && (
+              <div className="col-span-3 relative z-40 overflow-hidden">
+                <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
+                  <RightSidebar />
+                </div>
               </div>
-            </div>
+            )
           )}
           
-          {/* Site Links Panel - Only for non-dashboard tabs */}
-          {activeTab !== 'dashboard' && (
-            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-              isSiteLinksOpen ? 'col-span-3' : 'col-span-0'
-            }`}>
-              <div className={`h-full transition-transform duration-300 ${
-                isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
-              }`} style={{ width: '280px' }}>
+          {/* Site Links Panel - Only render when open on non-dashboard tabs */}
+          {activeTab !== 'dashboard' && isSiteLinksOpen && (
+            <div className="col-span-3 relative z-40 overflow-hidden">
+              <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
                 <SiteLinksSidebar />
               </div>
             </div>
