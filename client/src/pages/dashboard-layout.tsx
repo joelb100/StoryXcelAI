@@ -1202,8 +1202,8 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Expands when Friends List is closed */}
-          <div className={`${isFriendsListOpen ? 'col-span-19' : 'col-span-23'}`}>
+          {/* Main Content - Expands when Friends List is closed (only on non-dashboard tabs) */}
+          <div className={`${activeTab === 'dashboard' ? 'col-span-19' : (isFriendsListOpen ? 'col-span-19' : 'col-span-23')}`}>
             {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
@@ -1436,8 +1436,8 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Right Content Sidebar - Columns 25-27 - Only show when Friends List is open */}
-          {isFriendsListOpen && (
+          {/* Right Content Sidebar - Columns 25-27 - Always show on dashboard, conditionally on other tabs */}
+          {(activeTab === 'dashboard' || isFriendsListOpen) && (
             <div className="col-span-3 relative z-50">
               <RightSidebar />
             </div>
