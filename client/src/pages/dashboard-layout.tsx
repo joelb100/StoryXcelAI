@@ -111,6 +111,46 @@ const friendsList = [
   "Ned Flanders"
 ];
 
+// Friends List Component
+const FriendsListSidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
+  <div className={`fixed top-0 right-14 h-full bg-slate-700 border-l border-slate-600 transition-transform duration-300 ease-in-out z-40 ${
+    isOpen ? 'translate-x-0' : 'translate-x-full'
+  }`} style={{ width: '280px' }}>
+    <div className="p-4 h-full">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-white font-semibold">Friends List</h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClose}
+          className="text-slate-300 hover:text-white p-1"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+      <div className="space-y-3">
+        {friendsList.map((friend, index) => {
+          const initials = friend.split(' ').map(n => n[0]).join('');
+          return (
+            <div key={index} className="flex items-center space-x-3 p-2 rounded hover:bg-slate-600 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-white text-sm font-medium">
+                {initials}
+              </div>
+              <div className="flex-1">
+                <div className="text-white text-sm font-medium">{friend}</div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="text-slate-400 text-xs">Online</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+);
+
 // Dashboard data
 const dashboardData = {
   projects: {
@@ -770,7 +810,7 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
 );
 
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
-const RightIconSidebar = () => (
+const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListToggle?: () => void; activeTab: string }) => (
   <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
@@ -779,6 +819,8 @@ const RightIconSidebar = () => (
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Friends List"
+        onClick={activeTab !== 'dashboard' ? onFriendsListToggle : undefined}
+        disabled={activeTab === 'dashboard'}
       >
         <Users className="w-5 h-5" />
       </Button>
@@ -998,6 +1040,7 @@ export default function DashboardLayout() {
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
   const [supportMenuOpen, setSupportMenuOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
   
   // Determine active tab from current route
   const getActiveTab = () => {
@@ -1396,9 +1439,18 @@ export default function DashboardLayout() {
           
           {/* Right Icon Sidebar - Column 28 only (very narrow) */}
           <div className="col-span-1">
-            <RightIconSidebar />
+            <RightIconSidebar 
+              onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
+              activeTab={activeTab}
+            />
           </div>
         </div>
+
+        {/* Friends List Sidebar */}
+        <FriendsListSidebar 
+          isOpen={isFriendsListOpen} 
+          onClose={() => setIsFriendsListOpen(false)} 
+        />
 
         {/* Mobile Layout */}
         <div className="lg:hidden flex-1 flex flex-col">
