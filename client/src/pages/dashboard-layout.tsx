@@ -809,8 +809,31 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
   </div>
 );
 
+// Site Links Sidebar Component - Purple panel showing site links
+const SiteLinksSidebar = () => (
+  <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#29415d' }}>
+    <h3 className="text-white text-sm font-semibold mb-4">Site Links</h3>
+    
+    {/* Grid of circular icons as shown in purple panel */}
+    <div className="grid grid-cols-4 gap-2">
+      {Array.from({ length: 16 }, (_, index) => (
+        <div
+          key={index}
+          className="w-8 h-8 rounded-full bg-slate-600 hover:bg-slate-500 cursor-pointer flex items-center justify-center"
+        >
+          <div className="w-4 h-4 bg-slate-400 rounded-full"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
-const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListToggle?: () => void; activeTab: string }) => (
+const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }: { 
+  onFriendsListToggle?: () => void; 
+  onSiteLinksToggle?: () => void; 
+  activeTab: string 
+}) => (
   <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4 relative z-50" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
@@ -893,6 +916,12 @@ const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListTog
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Site link"
+        onClick={() => {
+          if (activeTab !== 'dashboard' && onSiteLinksToggle) {
+            onSiteLinksToggle();
+          }
+        }}
+        disabled={activeTab === 'dashboard'}
       >
         <Globe className="w-5 h-5" />
       </Button>
@@ -1045,6 +1074,7 @@ export default function DashboardLayout() {
   const [supportMenuOpen, setSupportMenuOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
+  const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(false);
   
   // Determine active tab from current route
   const getActiveTab = () => {
@@ -1202,8 +1232,18 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Expands when Friends List is closed (only on non-dashboard tabs) */}
-          <div className={`${activeTab === 'dashboard' ? 'col-span-19' : (isFriendsListOpen ? 'col-span-19' : 'col-span-24')}`}>
+          {/* Main Content - Expands based on which panels are open (only on non-dashboard tabs) */}
+          <div className={`${
+            activeTab === 'dashboard' 
+              ? 'col-span-19' 
+              : (() => {
+                  const friendsOpen = isFriendsListOpen;
+                  const siteOpen = isSiteLinksOpen;
+                  if (friendsOpen && siteOpen) return 'col-span-16'; // Both panels open
+                  if (friendsOpen || siteOpen) return 'col-span-19'; // One panel open  
+                  return 'col-span-24'; // Both panels closed
+                })()
+          }`}>
             {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
@@ -1436,17 +1476,25 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Right Content Sidebar - Columns 25-27 - Always show on dashboard, conditionally on other tabs */}
-          {(activeTab === 'dashboard' || isFriendsListOpen) && (
-            <div className="col-span-3 relative z-50">
+          {/* Friends List Panel - Shows when Friends List is open on non-dashboard or always on dashboard */}
+          {(activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen)) && (
+            <div className="col-span-3 relative z-40">
               <RightSidebar />
             </div>
           )}
           
-          {/* Right Icon Sidebar - Always visible, positioned absolutely when Friends List closed */}
-          <div className={`${activeTab === 'dashboard' || isFriendsListOpen ? 'col-span-1 relative' : 'fixed right-0 top-16 w-12'} z-50 h-full`}>
+          {/* Site Links Panel - Shows when Site Links is open on non-dashboard (dashboard doesn't need this) */}
+          {(activeTab !== 'dashboard' && isSiteLinksOpen) && (
+            <div className="col-span-3 relative z-40">
+              <SiteLinksSidebar />
+            </div>
+          )}
+          
+          {/* Right Icon Sidebar - Always visible, positioned absolutely when both panels closed */}
+          <div className={`${activeTab === 'dashboard' || isFriendsListOpen || isSiteLinksOpen ? 'col-span-1 relative' : 'fixed right-0 top-16 w-12'} z-50 h-full`}>
             <RightIconSidebar 
               onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
+              onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
               activeTab={activeTab}
             />
           </div>
