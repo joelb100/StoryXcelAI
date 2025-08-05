@@ -1500,11 +1500,7 @@ export default function DashboardLayout() {
           </div>
         </div>
 
-        {/* Friends List Sidebar */}
-        <FriendsListSidebar 
-          isOpen={isFriendsListOpen} 
-          onClose={() => setIsFriendsListOpen(false)} 
-        />
+
 
         {/* Mobile Layout */}
         <div className="lg:hidden flex-1 flex flex-col">
