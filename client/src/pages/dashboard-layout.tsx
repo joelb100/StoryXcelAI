@@ -1486,32 +1486,26 @@ export default function DashboardLayout() {
               <RightSidebar />
             </div>
           ) : (
-            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-              isFriendsListOpen ? 'col-span-3' : 'col-span-0'
-            }`} style={{ border: '2px solid lime' }}>
-              <div className={`h-full transition-transform duration-300 ${
-                isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
-              }`} style={{ width: '280px' }}>
-                <RightSidebar />
+            isFriendsListOpen && (
+              <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid lime' }}>
+                <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
+                  <RightSidebar />
+                </div>
+                <div className="absolute top-0 left-0 bg-green-500 text-white text-xs px-2 py-1 z-50">
+                  FRIENDS LIST GRID COL-SPAN-3
+                </div>
               </div>
-              <div className="absolute top-0 left-0 bg-green-500 text-white text-xs px-2 py-1 z-50">
-                FRIENDS LIST GRID COL-SPAN-{isFriendsListOpen ? '3' : '0'}
-              </div>
-            </div>
+            )
           )}
           
           {/* Site Links Panel - Independent grid child */}
-          {activeTab !== 'dashboard' && (
-            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
-              isSiteLinksOpen ? 'col-span-3' : 'col-span-0'
-            }`} style={{ border: '2px solid magenta' }}>
-              <div className={`h-full transition-transform duration-300 ${
-                isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
-              }`} style={{ width: '280px' }}>
+          {activeTab !== 'dashboard' && isSiteLinksOpen && (
+            <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid magenta' }}>
+              <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
                 <SiteLinksSidebar />
               </div>
               <div className="absolute top-0 left-0 bg-purple-500 text-white text-xs px-2 py-1 z-50">
-                SITE LINKS GRID COL-SPAN-{isSiteLinksOpen ? '3' : '0'}
+                SITE LINKS GRID COL-SPAN-3
               </div>
             </div>
           )}
