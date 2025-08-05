@@ -1232,16 +1232,19 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Expands based on which panels are open (only on non-dashboard tabs) */}
-          <div className={`${
+          {/* Main Content - Expands dynamically based on collapsed panels */}
+          <div className={`transition-all duration-300 ${
             activeTab === 'dashboard' 
               ? 'col-span-19' 
               : (() => {
                   const friendsOpen = isFriendsListOpen;
                   const siteOpen = isSiteLinksOpen;
+                  
+                  // Use static Tailwind classes for proper compilation
                   if (friendsOpen && siteOpen) return 'col-span-16'; // Both panels open
-                  if (friendsOpen || siteOpen) return 'col-span-19'; // One panel open  
-                  return 'col-span-23'; // Both panels closed (leave space for right icon sidebar)
+                  if (friendsOpen && !siteOpen) return 'col-span-19'; // Only Friends open
+                  if (!friendsOpen && siteOpen) return 'col-span-19'; // Only Site Links open
+                  return 'col-span-22'; // Both panels collapsed
                 })()
           }`}>
             {activeTab === 'story' ? (
@@ -1476,19 +1479,35 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Friends List Panel - Shows when Friends List is open on non-dashboard or always on dashboard */}
-          {(activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen)) && (
-            <div className="col-span-3 relative z-40">
+          {/* Friends List Panel - Slides in/out with animation */}
+          <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+            activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen) 
+              ? 'col-span-3' 
+              : 'col-span-0'
+          }`}>
+            <div className={`h-full transition-transform duration-300 ${
+              activeTab === 'dashboard' || (activeTab !== 'dashboard' && isFriendsListOpen)
+                ? 'translate-x-0'
+                : 'translate-x-full'
+            }`} style={{ width: '280px' }}>
               <RightSidebar />
             </div>
-          )}
+          </div>
           
-          {/* Site Links Panel - Shows when Site Links is open on non-dashboard (dashboard doesn't need this) */}
-          {(activeTab !== 'dashboard' && isSiteLinksOpen) && (
-            <div className="col-span-3 relative z-40">
+          {/* Site Links Panel - Slides in/out with animation */}
+          <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+            activeTab !== 'dashboard' && isSiteLinksOpen 
+              ? 'col-span-3' 
+              : 'col-span-0'
+          }`}>
+            <div className={`h-full transition-transform duration-300 ${
+              activeTab !== 'dashboard' && isSiteLinksOpen
+                ? 'translate-x-0'
+                : 'translate-x-full'
+            }`} style={{ width: '280px' }}>
               <SiteLinksSidebar />
             </div>
-          )}
+          </div>
           
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
