@@ -1241,7 +1241,7 @@ export default function DashboardLayout() {
                   const siteOpen = isSiteLinksOpen;
                   if (friendsOpen && siteOpen) return 'col-span-16'; // Both panels open
                   if (friendsOpen || siteOpen) return 'col-span-19'; // One panel open  
-                  return 'col-span-24'; // Both panels closed
+                  return 'col-span-23'; // Both panels closed (leave space for right icon sidebar)
                 })()
           }`}>
             {activeTab === 'story' ? (
@@ -1490,8 +1490,8 @@ export default function DashboardLayout() {
             </div>
           )}
           
-          {/* Right Icon Sidebar - Always visible, positioned absolutely when both panels closed */}
-          <div className={`${activeTab === 'dashboard' || isFriendsListOpen || isSiteLinksOpen ? 'col-span-1 relative' : 'fixed right-0 top-16 w-12'} z-50 h-full`}>
+          {/* Right Icon Sidebar - Always visible */}
+          <div className="col-span-1 relative z-50 h-full">
             <RightIconSidebar 
               onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
               onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
