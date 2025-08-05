@@ -76,6 +76,12 @@ import storyBuilderIcon from "@assets/storyBuilder_1754280620526.png";
 import scriptBuilderIcon from "@assets/scriptBuilder_1754280628421.png";
 import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png";
 
+// Import sidebar icons
+import storyOverviewIcon from "@assets/story_1754371104469.png";
+import formatOverviewIcon from "@assets/format_1754371161796.png";
+import assetOverviewIcon from "@assets/Asset_1754371169859.png";
+import pitchIcon from "@assets/pitch_1754371175274.png";
+
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
   { id: "world", name: "World", icon: worldBuilderIcon, isActive: activeTab === "world" },
@@ -137,11 +143,15 @@ const IconSidebar = ({
             size="sm"
             className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
           >
-            <FileText className="w-5 h-5" />
+            <img 
+              src={storyOverviewIcon} 
+              alt="Story Overview"
+              className="w-5 h-5 object-contain filter brightness-0 invert"
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
-          <p>Asset Folder</p>
+          <p>Story Overview</p>
         </TooltipContent>
       </Tooltip>
       
@@ -152,11 +162,15 @@ const IconSidebar = ({
             size="sm"
             className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
           >
-            <Users className="w-5 h-5" />
+            <img 
+              src={formatOverviewIcon} 
+              alt="Format Overview"
+              className="w-5 h-5 object-contain filter brightness-0 invert"
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
-          <p>Character Manager</p>
+          <p>Format Overview</p>
         </TooltipContent>
       </Tooltip>
       
@@ -167,11 +181,15 @@ const IconSidebar = ({
             size="sm"
             className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
           >
-            <BookOpen className="w-5 h-5" />
+            <img 
+              src={assetOverviewIcon} 
+              alt="Asset Overview"
+              className="w-5 h-5 object-contain filter brightness-0 invert"
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
-          <p>Script Library</p>
+          <p>Asset Overview</p>
         </TooltipContent>
       </Tooltip>
       
@@ -182,11 +200,15 @@ const IconSidebar = ({
             size="sm"
             className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
           >
-            <Box className="w-5 h-5" />
+            <img 
+              src={pitchIcon} 
+              alt="Pitch"
+              className="w-5 h-5 object-contain filter brightness-0 invert"
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" className="bg-slate-700 text-white border-slate-600">
-          <p>World Objects</p>
+          <p>Pitch</p>
         </TooltipContent>
       </Tooltip>
     </div>
