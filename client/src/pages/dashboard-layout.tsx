@@ -811,7 +811,7 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
 
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
 const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListToggle?: () => void; activeTab: string }) => (
-  <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
+  <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4 relative z-50" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
       <Button
@@ -1438,7 +1438,7 @@ export default function DashboardLayout() {
           </div>
           
           {/* Right Icon Sidebar - Column 28 only (very narrow) */}
-          <div className="col-span-1">
+          <div className="col-span-1 relative z-50">
             <RightIconSidebar 
               onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
               activeTab={activeTab}
@@ -1568,7 +1568,10 @@ export default function DashboardLayout() {
               </div>
               <div className="h-full overflow-hidden flex pt-16">
                 <RightSidebar />
-                <RightIconSidebar />
+                <RightIconSidebar 
+                  onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
+                  activeTab={activeTab}
+                />
               </div>
             </div>
           </div>
