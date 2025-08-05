@@ -82,6 +82,12 @@ import formatOverviewIcon from "@assets/format_1754371161796.png";
 import assetOverviewIcon from "@assets/Asset_1754371169859.png";
 import pitchIcon from "@assets/pitch_1754371175274.png";
 
+// Import right sidebar icons
+import assetTagIcon from "@assets/AssetTag_1754371518555.png";
+import storyDetailsIcon from "@assets/storyDetails_1754371523841.png";
+import storyMechanicsIcon from "@assets/storyMechanics_1754371530436.png";
+import taskIcon from "@assets/task_1754371536085.png";
+
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
   { id: "world", name: "World", icon: worldBuilderIcon, isActive: activeTab === "world" },
@@ -771,33 +777,49 @@ const RightIconSidebar = () => (
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Favorites"
+        title="Asset Tag"
       >
-        <Star className="w-5 h-5" />
+        <img 
+          src={assetTagIcon} 
+          alt="Asset Tag"
+          className="w-5 h-5 object-contain filter brightness-0 invert"
+        />
       </Button>
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Messages"
+        title="Story Details"
       >
-        <MessageSquare className="w-5 h-5" />
+        <img 
+          src={storyDetailsIcon} 
+          alt="Story Details"
+          className="w-5 h-5 object-contain filter brightness-0 invert"
+        />
       </Button>
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Calendar"
+        title="Story Mechanic"
       >
-        <Calendar className="w-5 h-5" />
+        <img 
+          src={storyMechanicsIcon} 
+          alt="Story Mechanic"
+          className="w-5 h-5 object-contain filter brightness-0 invert"
+        />
       </Button>
       <Button
         variant="ghost"
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
-        title="Recent"
+        title="Task"
       >
-        <Clock className="w-5 h-5" />
+        <img 
+          src={taskIcon} 
+          alt="Task"
+          className="w-5 h-5 object-contain filter brightness-0 invert"
+        />
       </Button>
     </div>
     
