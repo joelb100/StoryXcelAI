@@ -113,7 +113,7 @@ const friendsList = [
 
 // Friends List Component
 const FriendsListSidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
-  <div className={`fixed top-0 right-12 h-full bg-slate-700 border-l border-slate-600 transition-transform duration-300 ease-in-out z-40 ${
+  <div className={`fixed top-0 right-0 h-full bg-green-600 border-l border-slate-600 transition-transform duration-300 ease-in-out z-30 ${
     isOpen ? 'translate-x-0' : 'translate-x-full'
   }`} style={{ width: '280px' }}>
     <div className="p-4 h-full">
@@ -819,8 +819,7 @@ const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListTog
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Friends List"
-        onClick={(e) => {
-          console.log('Friends List button clicked', { activeTab, onFriendsListToggle });
+        onClick={() => {
           if (activeTab !== 'dashboard' && onFriendsListToggle) {
             onFriendsListToggle();
           }
@@ -1108,7 +1107,7 @@ export default function DashboardLayout() {
   return (
     <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
       {/* Top Navigation Header - Spans full 28 columns */}
-      <header className="border-b border-slate-700 grid grid-cols-28 h-16" style={{ backgroundColor: '#0d274c' }}>
+      <header className="border-b border-slate-700 grid grid-cols-28 h-16 relative z-50" style={{ backgroundColor: '#0d274c' }}>
         {/* Logo Area - Columns 1-5 (matches new sidebar widths) */}
         <div className="col-span-5 px-6 py-4 flex items-center justify-center border-r border-slate-700" style={{ backgroundColor: '#0d274c' }}>
           <button 
@@ -1438,7 +1437,7 @@ export default function DashboardLayout() {
           </div>
           
           {/* Right Content Sidebar - Columns 25-27 */}
-          <div className="col-span-3">
+          <div className="col-span-3 relative z-50">
             <RightSidebar />
           </div>
           
