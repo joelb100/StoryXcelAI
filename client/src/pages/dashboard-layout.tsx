@@ -1501,8 +1501,14 @@ export default function DashboardLayout() {
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
             <RightIconSidebar 
-              onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
-              onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
+              onFriendsListToggle={() => {
+                console.log('Friends List Toggle clicked, current state:', isFriendsListOpen);
+                setIsFriendsListOpen(!isFriendsListOpen);
+              }}
+              onSiteLinksToggle={() => {
+                console.log('Site Links Toggle clicked, current state:', isSiteLinksOpen);
+                setIsSiteLinksOpen(!isSiteLinksOpen);
+              }}
               activeTab={activeTab}
             />
           </div>
