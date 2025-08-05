@@ -60,7 +60,8 @@ import {
   ListOrdered,
   Indent,
   Outdent,
-  MoreHorizontal
+  MoreHorizontal,
+  Bell
 } from "lucide-react";
 
 // Import logo and components
@@ -773,6 +774,22 @@ const RightIconSidebar = () => (
   <div className="h-full border-l border-slate-600 flex flex-col justify-between items-center py-4" style={{ backgroundColor: '#29415d' }}>
     {/* Top navigation icons */}
     <div className="flex flex-col items-center space-y-4">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Friends List"
+      >
+        <Users className="w-5 h-5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
+        title="Notifications"
+      >
+        <Bell className="w-5 h-5" />
+      </Button>
       <Button
         variant="ghost"
         size="sm"
