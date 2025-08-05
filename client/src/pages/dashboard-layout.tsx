@@ -1203,7 +1203,7 @@ export default function DashboardLayout() {
           </div>
           
           {/* Main Content - Expands when Friends List is closed (only on non-dashboard tabs) */}
-          <div className={`${activeTab === 'dashboard' ? 'col-span-19' : (isFriendsListOpen ? 'col-span-19' : 'col-span-23')}`}>
+          <div className={`${activeTab === 'dashboard' ? 'col-span-19' : (isFriendsListOpen ? 'col-span-19' : 'col-span-24')}`}>
             {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
@@ -1443,8 +1443,8 @@ export default function DashboardLayout() {
             </div>
           )}
           
-          {/* Right Icon Sidebar - Column 28 only (very narrow) - Always visible */}
-          <div className="col-span-1 relative z-50">
+          {/* Right Icon Sidebar - Always visible, positioned absolutely when Friends List closed */}
+          <div className={`${activeTab === 'dashboard' || isFriendsListOpen ? 'col-span-1 relative' : 'fixed right-0 top-16 w-12'} z-50 h-full`}>
             <RightIconSidebar 
               onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
               activeTab={activeTab}
