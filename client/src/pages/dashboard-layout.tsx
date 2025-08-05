@@ -1238,6 +1238,7 @@ export default function DashboardLayout() {
               ? 'col-span-19' 
               : (() => {
                   // Calculate main content span: 28 - 1 (left icon) - 4 (left content) - (friends ? 3 : 0) - (sitelinks ? 3 : 0) - 1 (right icon)
+                  // Note: col-span-0 panels still exist in DOM but take no grid space
                   const mainContentSpan = 28 - 1 - 4 - (isFriendsListOpen ? 3 : 0) - (isSiteLinksOpen ? 3 : 0) - 1;
                   console.log('📏 GRID CALCULATION:');
                   console.log('  - Friends List Open:', isFriendsListOpen);
@@ -1479,32 +1480,38 @@ export default function DashboardLayout() {
             )}
           </div>
           
-          {/* Friends List Panel - Dashboard always shows, Builder tabs conditionally render */}
+          {/* Friends List Panel - Independent grid child */}
           {activeTab === 'dashboard' ? (
             <div className="col-span-3 relative z-40">
               <RightSidebar />
             </div>
           ) : (
-            isFriendsListOpen && (
-              <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid lime' }}>
-                <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
-                  <RightSidebar />
-                </div>
-                <div className="absolute top-0 left-0 bg-green-500 text-white text-xs px-2 py-1 z-50">
-                  FRIENDS LIST GRID COL-SPAN-3
-                </div>
+            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+              isFriendsListOpen ? 'col-span-3' : 'col-span-0'
+            }`} style={{ border: '2px solid lime' }}>
+              <div className={`h-full transition-transform duration-300 ${
+                isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
+              }`} style={{ width: '280px' }}>
+                <RightSidebar />
               </div>
-            )
+              <div className="absolute top-0 left-0 bg-green-500 text-white text-xs px-2 py-1 z-50">
+                FRIENDS LIST GRID COL-SPAN-{isFriendsListOpen ? '3' : '0'}
+              </div>
+            </div>
           )}
           
-          {/* Site Links Panel - Only render when open on non-dashboard tabs */}
-          {activeTab !== 'dashboard' && isSiteLinksOpen && (
-            <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid magenta' }}>
-              <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
+          {/* Site Links Panel - Independent grid child */}
+          {activeTab !== 'dashboard' && (
+            <div className={`relative z-40 overflow-hidden transition-all duration-300 ${
+              isSiteLinksOpen ? 'col-span-3' : 'col-span-0'
+            }`} style={{ border: '2px solid magenta' }}>
+              <div className={`h-full transition-transform duration-300 ${
+                isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
+              }`} style={{ width: '280px' }}>
                 <SiteLinksSidebar />
               </div>
               <div className="absolute top-0 left-0 bg-purple-500 text-white text-xs px-2 py-1 z-50">
-                SITE LINKS GRID COL-SPAN-3
+                SITE LINKS GRID COL-SPAN-{isSiteLinksOpen ? '3' : '0'}
               </div>
             </div>
           )}
