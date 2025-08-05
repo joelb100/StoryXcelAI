@@ -113,7 +113,7 @@ const friendsList = [
 
 // Friends List Component
 const FriendsListSidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
-  <div className={`fixed top-0 right-14 h-full bg-slate-700 border-l border-slate-600 transition-transform duration-300 ease-in-out z-40 ${
+  <div className={`fixed top-0 right-12 h-full bg-slate-700 border-l border-slate-600 transition-transform duration-300 ease-in-out z-40 ${
     isOpen ? 'translate-x-0' : 'translate-x-full'
   }`} style={{ width: '280px' }}>
     <div className="p-4 h-full">
@@ -819,7 +819,12 @@ const RightIconSidebar = ({ onFriendsListToggle, activeTab }: { onFriendsListTog
         size="sm"
         className="w-10 h-10 p-0 text-slate-300 hover:text-white hover:bg-slate-700"
         title="Friends List"
-        onClick={activeTab !== 'dashboard' ? onFriendsListToggle : undefined}
+        onClick={(e) => {
+          console.log('Friends List button clicked', { activeTab, onFriendsListToggle });
+          if (activeTab !== 'dashboard' && onFriendsListToggle) {
+            onFriendsListToggle();
+          }
+        }}
         disabled={activeTab === 'dashboard'}
       >
         <Users className="w-5 h-5" />
