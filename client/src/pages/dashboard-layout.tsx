@@ -1213,7 +1213,7 @@ export default function DashboardLayout() {
       </header>
 
       {/* Main Content Area - 28 Column Grid */}
-      <div className="flex-1 grid grid-cols-28 overflow-hidden" style={{ border: '4px solid red', backgroundColor: 'rgba(255,0,0,0.05)' }}>
+      <div className="flex-1 grid grid-cols-28 overflow-hidden">
         {/* Desktop Layout */}
         <div className="hidden lg:contents">
           {/* Left Icon Sidebar - Column 1 only (very narrow) */}
@@ -1238,16 +1238,10 @@ export default function DashboardLayout() {
               ? 'col-span-19' 
               : (() => {
                   // Calculate main content span: 28 - 1 (left icon) - 4 (left content) - (friends ? 3 : 0) - (sitelinks ? 3 : 0) - 1 (right icon)
-                  // Note: col-span-0 panels still exist in DOM but take no grid space
                   const mainContentSpan = 28 - 1 - 4 - (isFriendsListOpen ? 3 : 0) - (isSiteLinksOpen ? 3 : 0) - 1;
-                  console.log('📏 GRID CALCULATION:');
-                  console.log('  - Friends List Open:', isFriendsListOpen);
-                  console.log('  - Site Links Open:', isSiteLinksOpen);
-                  console.log('  - Main Content Span:', mainContentSpan);
-                  console.log('  - CSS Class:', `col-span-${mainContentSpan}`);
                   return `col-span-${mainContentSpan} transition-all duration-300`;
                 })()
-          }`} style={{ border: '3px solid orange' }}>
+          }`}>
             {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
@@ -1487,12 +1481,9 @@ export default function DashboardLayout() {
             </div>
           ) : (
             isFriendsListOpen && (
-              <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid lime' }}>
+              <div className="col-span-3 relative z-40 overflow-hidden">
                 <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
                   <RightSidebar />
-                </div>
-                <div className="absolute top-0 left-0 bg-green-500 text-white text-xs px-2 py-1 z-50">
-                  FRIENDS LIST GRID COL-SPAN-3
                 </div>
               </div>
             )
@@ -1500,12 +1491,9 @@ export default function DashboardLayout() {
           
           {/* Site Links Panel - Independent grid child */}
           {activeTab !== 'dashboard' && isSiteLinksOpen && (
-            <div className="col-span-3 relative z-40 overflow-hidden" style={{ border: '2px solid magenta' }}>
+            <div className="col-span-3 relative z-40 overflow-hidden">
               <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
                 <SiteLinksSidebar />
-              </div>
-              <div className="absolute top-0 left-0 bg-purple-500 text-white text-xs px-2 py-1 z-50">
-                SITE LINKS GRID COL-SPAN-3
               </div>
             </div>
           )}
@@ -1513,20 +1501,8 @@ export default function DashboardLayout() {
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
             <RightIconSidebar 
-              onFriendsListToggle={() => {
-                console.log('🟢 FRIENDS LIST TOGGLE:');
-                console.log('  - Current state:', isFriendsListOpen);
-                console.log('  - Will become:', !isFriendsListOpen);
-                console.log('  - Site Links state:', isSiteLinksOpen);
-                setIsFriendsListOpen(!isFriendsListOpen);
-              }}
-              onSiteLinksToggle={() => {
-                console.log('🟣 SITE LINKS TOGGLE:');
-                console.log('  - Current state:', isSiteLinksOpen);
-                console.log('  - Will become:', !isSiteLinksOpen);
-                console.log('  - Friends List state:', isFriendsListOpen);
-                setIsSiteLinksOpen(!isSiteLinksOpen);
-              }}
+              onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
+              onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
               activeTab={activeTab}
             />
           </div>
