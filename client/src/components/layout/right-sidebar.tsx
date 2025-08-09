@@ -140,10 +140,10 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
   const mockFriendStatuses = ['online', 'offline', 'away', 'online', 'busy'];
 
   return (
-    <aside className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+    <aside className="w-80 bg-slate-700 border-l border-slate-600 p-4 overflow-y-auto text-white">
       {/* Notification Banner */}
-      <Card className="bg-primary/10 border-primary/20 p-3 mb-6 text-center">
-        <p className="text-primary font-medium text-sm flex items-center justify-center">
+      <Card className="bg-slate-600 border-slate-500 p-3 mb-6 text-center">
+        <p className="text-white font-medium text-sm flex items-center justify-center">
           <Lightbulb className="w-4 h-4 mr-2" />
           Create! Fund your next project here!
         </p>
@@ -151,7 +151,7 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
 
       {/* Friends List Section */}
       <div className="mb-8">
-        <h3 className="font-semibold text-lg mb-4">Friends List</h3>
+        <h3 className="font-semibold text-lg mb-4 text-white">Friends List</h3>
         
         {friendsLoading ? (
           <div className="space-y-3">
@@ -171,19 +171,19 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
             {friends.map((friendship, index) => (
               <div 
                 key={friendship.id} 
-                className="flex items-center space-x-3 p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                className="flex items-center space-x-3 p-2 rounded-lg hover:bg-slate-600/50 transition-colors cursor-pointer"
               >
                 <Avatar className="w-10 h-10">
                   <AvatarImage src={friendship.friend.profileImageUrl || undefined} />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-slate-600 text-white">
                     {friendship.friend.firstName?.[0]}{friendship.friend.lastName?.[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <h4 className="font-medium text-sm">
+                  <h4 className="font-medium text-sm text-white">
                     {friendship.friend.firstName} {friendship.friend.lastName}
                   </h4>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-300">
                     {getStatusText(mockFriendStatuses[index % mockFriendStatuses.length])}
                   </p>
                 </div>
@@ -192,9 +192,9 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
             ))}
           </div>
         ) : (
-          <Card className="p-4 text-center border-dashed border-2">
-            <p className="text-muted-foreground text-sm mb-2">No friends yet</p>
-            <p className="text-xs text-muted-foreground mb-3">
+          <Card className="p-4 text-center border-dashed border-2 bg-slate-600 border-slate-500">
+            <p className="text-slate-300 text-sm mb-2">No friends yet</p>
+            <p className="text-xs text-slate-400 mb-3">
               Connect with other creators to collaborate
             </p>
           </Card>
@@ -202,7 +202,7 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
 
         <Button 
           variant="ghost" 
-          className="text-primary font-medium text-sm hover:text-primary/80 mt-3 w-full justify-start"
+          className="text-white font-medium text-sm hover:text-white/80 hover:bg-slate-600 mt-3 w-full justify-start"
         >
           <UserPlus className="w-4 h-4 mr-2" />
           Add Friends +
@@ -212,7 +212,7 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
       {/* Utility Links Section - conditionally rendered */}
       {showSiteLinks && (
         <div className="border-t border-slate-600 pt-4">
-          <h3 className="font-semibold text-lg mb-4">Idle Links</h3>
+          <h3 className="font-semibold text-lg mb-4 text-white">Idle Links</h3>
           <div className="grid grid-cols-4 gap-3">
             {utilityLinks.map((link, index) => (
               <div
@@ -225,10 +225,10 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
             ))}
           </div>
           
-          <Card className="mt-4 p-3 border-dashed border-2">
+          <Card className="mt-4 p-3 border-dashed border-2 bg-slate-600 border-slate-500">
             <div className="text-center">
-              <MessageCircle className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">
+              <MessageCircle className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+              <p className="text-xs text-slate-400">
                 More integrations coming soon
               </p>
             </div>
