@@ -174,7 +174,7 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
                 className="flex items-center space-x-3 p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
               >
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src={friendship.friend.profileImageUrl} />
+                  <AvatarImage src={friendship.friend.profileImageUrl || undefined} />
                   <AvatarFallback>
                     {friendship.friend.firstName?.[0]}{friendship.friend.lastName?.[0]}
                   </AvatarFallback>
