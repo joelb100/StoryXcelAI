@@ -41,7 +41,11 @@ const getStatusText = (status: string) => {
   return status.charAt(0).toUpperCase() + status.slice(1);
 };
 
-export default function RightSidebar() {
+type RightSidebarProps = {
+  showSiteLinks?: boolean; // default true keeps dashboard behavior
+};
+
+export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps) {
   // Mock friends data for demo
   const mockFriends: FriendWithUser[] = [
     {
@@ -205,30 +209,32 @@ export default function RightSidebar() {
         </Button>
       </div>
 
-      {/* Utility Links Section */}
-      <div>
-        <h3 className="font-semibold text-lg mb-4">Idle Links</h3>
-        <div className="grid grid-cols-4 gap-3">
-          {utilityLinks.map((link, index) => (
-            <div
-              key={index}
-              className={`${link.bgClass} rounded-lg p-3 flex items-center justify-center transition-colors cursor-pointer`}
-              title={link.name}
-            >
-              <link.icon className="text-white text-xl" />
-            </div>
-          ))}
-        </div>
-        
-        <Card className="mt-4 p-3 border-dashed border-2">
-          <div className="text-center">
-            <MessageCircle className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-xs text-muted-foreground">
-              More integrations coming soon
-            </p>
+      {/* Utility Links Section - conditionally rendered */}
+      {showSiteLinks && (
+        <div className="border-t border-slate-600 pt-4">
+          <h3 className="font-semibold text-lg mb-4">Idle Links</h3>
+          <div className="grid grid-cols-4 gap-3">
+            {utilityLinks.map((link, index) => (
+              <div
+                key={index}
+                className={`${link.bgClass} rounded-lg p-3 flex items-center justify-center transition-colors cursor-pointer`}
+                title={link.name}
+              >
+                <link.icon className="text-white text-xl" />
+              </div>
+            ))}
           </div>
-        </Card>
-      </div>
+          
+          <Card className="mt-4 p-3 border-dashed border-2">
+            <div className="text-center">
+              <MessageCircle className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-xs text-muted-foreground">
+                More integrations coming soon
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
     </aside>
   );
 }

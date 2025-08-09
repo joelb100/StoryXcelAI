@@ -1486,7 +1486,7 @@ export default function DashboardLayout() {
                   <div className={`flex-1 overflow-y-auto transition-transform duration-300 ${
                     isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
                   }`}>
-                    <RightSidebar />
+                    <RightSidebar showSiteLinks={false} />
                   </div>
 
                   {/* SITE LINKS (bottom, fixed height) */}
