@@ -1476,7 +1476,7 @@ export default function DashboardLayout() {
           {/* Right Rail - Dashboard shows fixed Friends panel, Story shows dynamic stacked panels */}
           {activeTab === 'dashboard' ? (
             <div className="col-span-3 relative z-40">
-              <RightSidebar />
+              <RightSidebar showSiteLinks={true} />
             </div>
           ) : (
             activeTab === 'story' && (isFriendsListOpen || isSiteLinksOpen) && (
@@ -1486,7 +1486,7 @@ export default function DashboardLayout() {
                   <div className={`flex-1 overflow-y-auto transition-transform duration-300 ${
                     isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
                   }`}>
-                    <RightSidebar showSiteLinks={false} />
+                    <RightSidebar />
                   </div>
 
                   {/* SITE LINKS (bottom, fixed height) */}

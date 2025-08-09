@@ -45,7 +45,7 @@ type RightSidebarProps = {
   showSiteLinks?: boolean; // default true keeps dashboard behavior
 };
 
-export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps) {
+export default function RightSidebar({ showSiteLinks = false }: RightSidebarProps) {
   // Mock friends data for demo
   const mockFriends: FriendWithUser[] = [
     {
@@ -212,7 +212,7 @@ export default function RightSidebar({ showSiteLinks = true }: RightSidebarProps
       {/* Utility Links Section - conditionally rendered */}
       {showSiteLinks && (
         <div className="border-t border-slate-600 pt-4">
-          <h3 className="font-semibold text-lg mb-4 text-white">Idle Links</h3>
+          <h3 className="font-semibold text-lg mb-4 text-white">Site Links</h3>
           <div className="grid grid-cols-4 gap-3">
             {utilityLinks.map((link, index) => (
               <div
