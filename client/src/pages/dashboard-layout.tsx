@@ -1073,8 +1073,9 @@ export default function DashboardLayout() {
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
   const [supportMenuOpen, setSupportMenuOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const [isFriendsListOpen, setIsFriendsListOpen] = useState(false);
-  const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(false);
+  // Story tab specific panel states (default both open as shown in first image)
+  const [friendsOpen, setFriendsOpen] = useState(true);
+  const [linksOpen, setLinksOpen] = useState(true);
   
   // Determine active tab from current route
   const getActiveTab = () => {
@@ -1232,15 +1233,21 @@ export default function DashboardLayout() {
             <LeftSidebar activeTab={activeTab} />
           </div>
           
-          {/* Main Content - Dashboard fixed, Builder tabs dynamic based on rendered panels */}
+          {/* Main Content - Dashboard fixed, Story tab dynamic, other tabs static */}
           <div className={`${
             activeTab === 'dashboard' 
               ? 'col-span-19' 
-              : (() => {
-                  // Calculate main content span: 28 - 1 (left icon) - 4 (left content) - (friends ? 3 : 0) - (sitelinks ? 3 : 0) - 1 (right icon)
-                  const mainContentSpan = 28 - 1 - 4 - (isFriendsListOpen ? 3 : 0) - (isSiteLinksOpen ? 3 : 0) - 1;
-                  return `col-span-${mainContentSpan} transition-all duration-300`;
-                })()
+              : activeTab === 'story' 
+                ? (() => {
+                    // Story tab: Calculate main content span: 28 - 1 (left icon) - 4 (left content) - (friends ? 3 : 0) - (links ? 3 : 0) - 1 (right icon)
+                    const rightCols = (friendsOpen ? 3 : 0) + (linksOpen ? 3 : 0);
+                    const mainSpan = 28 - 6 - rightCols; // Fixed: left (1) + content (4) + right icon (1) = 6
+                    // Map to explicit Tailwind classes
+                    return mainSpan === 16 ? 'col-span-16 transition-all duration-300'
+                         : mainSpan === 19 ? 'col-span-19 transition-all duration-300'
+                         :                   'col-span-22 transition-all duration-300';
+                  })()
+                : 'col-span-22' // Other builder tabs without panels
           }`}>
             {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
@@ -1480,19 +1487,23 @@ export default function DashboardLayout() {
               <RightSidebar />
             </div>
           ) : (
-            isFriendsListOpen && (
+            activeTab === 'story' && friendsOpen && (
               <div className="col-span-3 relative z-40 overflow-hidden">
-                <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
+                <div className={`h-full w-[280px] transition-transform duration-300 ${
+                  friendsOpen ? 'translate-x-0' : 'translate-x-full'
+                }`} aria-hidden={!friendsOpen}>
                   <RightSidebar />
                 </div>
               </div>
             )
           )}
           
-          {/* Site Links Panel - Independent grid child */}
-          {activeTab !== 'dashboard' && isSiteLinksOpen && (
+          {/* Site Links Panel - Only render when open on Story tab to free columns */}
+          {activeTab === 'story' && linksOpen && (
             <div className="col-span-3 relative z-40 overflow-hidden">
-              <div className="h-full transition-transform duration-300 translate-x-0" style={{ width: '280px' }}>
+              <div className={`h-full w-[280px] transition-transform duration-300 ${
+                linksOpen ? 'translate-x-0' : 'translate-x-full'
+              }`} aria-hidden={!linksOpen}>
                 <SiteLinksSidebar />
               </div>
             </div>
@@ -1501,8 +1512,8 @@ export default function DashboardLayout() {
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
             <RightIconSidebar 
-              onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
-              onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
+              onFriendsListToggle={() => setFriendsOpen(!friendsOpen)}
+              onSiteLinksToggle={() => setLinksOpen(!linksOpen)}
               activeTab={activeTab}
             />
           </div>
@@ -1627,7 +1638,8 @@ export default function DashboardLayout() {
               <div className="h-full overflow-hidden flex pt-16">
                 <RightSidebar />
                 <RightIconSidebar 
-                  onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
+                  onFriendsListToggle={() => setFriendsOpen(!friendsOpen)}
+                  onSiteLinksToggle={() => setLinksOpen(!linksOpen)}
                   activeTab={activeTab}
                 />
               </div>
