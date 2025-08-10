@@ -487,12 +487,16 @@ const LeftSidebar = ({
   activeTab, 
   projectName, 
   onProjectNameChange,
-  onProjectTypeChange
+  onProjectTypeChange,
+  genre,
+  onGenreChange
 }: { 
   activeTab: string;
   projectName?: string;
   onProjectNameChange?: (value: string) => void;
   onProjectTypeChange?: (value: string) => void;
+  genre?: string;
+  onGenreChange?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -535,7 +539,7 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-genre" className="text-sm font-medium text-white block mb-1">Genre</Label>
-            <Select>
+            <Select value={genre} onValueChange={onGenreChange}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
@@ -1102,6 +1106,59 @@ export default function DashboardLayout() {
   const [lengthPages, setLengthPages] = useState<number | ''>('');
   const [lengthMinutes, setLengthMinutes] = useState<number | ''>('');
   
+  // Genre state for auto-insertion into overview block
+  const [genre, setGenre] = useState<string>('');
+  
+  // Genre definitions map (matches the definitions in the UI)
+  const GENRE_DEFS: Record<string, string> = {
+    'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
+    'crime-drama': 'Stories focused on criminal activities, investigations, and the emotional/psychological conflicts surrounding them.',
+    'epic': 'Grand, lengthy narratives involving heroic deeds and large-scale adventures or conflicts.',
+    'fable': 'Short tales with moral lessons, often featuring anthropomorphic animals or mythical creatures.',
+    'fairy-tale': 'Magical stories involving enchantments, fantastical beings, and clear distinctions between good and evil.',
+    'fantasy': 'Fiction set in imaginative worlds where magic, mythical creatures, and supernatural forces are common.',
+    'folktale': 'Traditional stories passed down orally that reflect cultural values, customs, and beliefs.',
+    'gothic-fiction': 'Dark, atmospheric tales blending horror, romance, and mystery, often set in decaying or haunted locations.',
+    'historical-fiction': 'Stories set in a real past era, blending fictional characters with actual historical events and settings.',
+    'horror': 'Fiction designed to evoke fear, dread, and shock through terrifying situations and monstrous antagonists.',
+    'humor': 'Lighthearted, comedic stories intended to entertain through wit, satire, and absurd situations.',
+    'legend': 'Semi-true stories rooted in historical events but embellished with heroic feats or supernatural elements.',
+    'magical-realism': 'Fiction where magical elements seamlessly blend into realistic, everyday settings.',
+    'mystery': 'Narratives centered on solving a crime or uncovering hidden truths through clues and deduction.',
+    'myth': 'Sacred tales from ancient cultures explaining the origins of the world, gods, and fundamental human experiences.',
+    'romance': 'Stories centered on romantic relationships, exploring themes of love, attraction, and emotional connection.',
+    'satire': 'Works that use irony, humor, and exaggeration to criticize and expose flaws in human behavior or society.',
+    'science-fiction': 'Imaginative fiction featuring futuristic concepts, advanced technology, space exploration, or alternative realities.',
+    'thriller': 'Fast-paced stories designed to keep readers in constant suspense with high stakes and relentless tension.',
+    'tragedy': 'Serious dramatic works depicting the downfall of a protagonist due to fate, character flaws, or circumstances.',
+    'western': 'Stories typically set in the American Old West and feature themes of rugged individualism, justice, and frontier life.'
+  };
+
+  // Genre label mapping (value to display name)
+  const GENRE_LABELS: Record<string, string> = {
+    'classic': 'Classic',
+    'crime-drama': 'Crime / Drama',
+    'epic': 'Epic',
+    'fable': 'Fable',
+    'fairy-tale': 'Fairy Tale',
+    'fantasy': 'Fantasy',
+    'folktale': 'Folktale',
+    'gothic-fiction': 'Gothic Fiction',
+    'historical-fiction': 'Historical Fiction',
+    'horror': 'Horror',
+    'humor': 'Humor',
+    'legend': 'Legend',
+    'magical-realism': 'Magical Realism',
+    'mystery': 'Mystery',
+    'myth': 'Myth',
+    'romance': 'Romance',
+    'satire': 'Satire',
+    'science-fiction': 'Science Fiction',
+    'thriller': 'Thriller',
+    'tragedy': 'Tragedy',
+    'western': 'Western'
+  };
+  
   // state that stores the authoritative raw text (with hidden markers)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
   
@@ -1121,8 +1178,10 @@ export default function DashboardLayout() {
     projectType?: string; // e.g., "Screenplay"
     pages?: number | null;
     minutes?: number | null;
+    genreLabel?: string | null;
+    genreDef?: string | null;
   }) {
-    const { title, projectType, pages, minutes } = opts;
+    const { title, projectType, pages, minutes, genreLabel, genreDef } = opts;
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
@@ -1134,6 +1193,15 @@ export default function DashboardLayout() {
       if (typeof pages === 'number')   parts.push(`${pages} pages`);
       if (typeof minutes === 'number') parts.push(`${minutes} mins`);
       lines.push(`Project Type — ${parts.join(' / ')}`);
+    }
+
+    // ---- Genre (NEW) ----
+    if (genreLabel) {
+      lines.push(`Genre — ${genreLabel}`);
+      if (genreDef?.trim()) {
+        // keep the "indented second line" look from your reference
+        lines.push(`  ${genreLabel} : ${genreDef.trim()}`);
+      }
     }
 
     return [SX_START, ...lines, SX_END].join('\n');
@@ -1159,13 +1227,18 @@ export default function DashboardLayout() {
     // If display already contains the block lines (without markers), we still write the
     // official block (with markers) on top and then the user text below (sans the block),
     // to avoid duplication.
-    const withoutBlock = displayText
+    const withoutOverviewLines = displayText
       .split('\n')
-      .filter(l => !l.startsWith('Story Title —') && !l.startsWith('Project Type —'))
+      .filter(l =>
+        !l.startsWith('Story Title —') &&
+        !l.startsWith('Project Type —') &&
+        !l.startsWith('Genre —') &&
+        !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented "<Genre> : def" line
+      )
       .join('\n')
       .trimStart();
 
-    return `${currentOverviewBlock}\n\n${withoutBlock}`.trimEnd();
+    return `${currentOverviewBlock}\n\n${withoutOverviewLines}`.trimEnd();
   }
 
   // Determine active tab from current route
@@ -1205,6 +1278,10 @@ export default function DashboardLayout() {
     navigate(`/builder/${tabId}`);
   };
 
+  // Derive genre label and definition
+  const genreLabel = genre ? (GENRE_LABELS[genre] ?? null) : null;
+  const genreDef = genreLabel ? (GENRE_DEFS[genre] ?? '') : '';
+
   // on type, update ONLY the "display" portion; we'll reinsert markers on save
   const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // we keep the current overview block we last computed
@@ -1212,7 +1289,9 @@ export default function DashboardLayout() {
       title: projectName, 
       projectType, 
       pages: typeof lengthPages === 'number' ? lengthPages : null, 
-      minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null 
+      minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
+      genreLabel,
+      genreDef
     });
     const merged = ensureMarkersBeforeSave(e.target.value, block);
     setRawStoryText(merged);
@@ -1226,10 +1305,12 @@ export default function DashboardLayout() {
       projectType: projectType || undefined,
       pages: typeof lengthPages === 'number' ? lengthPages : null,
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
+      genreLabel: genreLabel || null,
+      genreDef: genreDef || null,
     });
 
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
-  }, [projectName, projectType, lengthPages, lengthMinutes]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef]);
 
   const handleProjectTypeChange = (val: string) => {
     setProjectType(val);
@@ -1400,6 +1481,8 @@ export default function DashboardLayout() {
               projectName={projectName}
               onProjectNameChange={setProjectName}
               onProjectTypeChange={handleProjectTypeChange}
+              genre={genre}
+              onGenreChange={setGenre}
             />
           </div>
           
@@ -1783,6 +1866,8 @@ export default function DashboardLayout() {
                   projectName={projectName}
                   onProjectNameChange={setProjectName}
                   onProjectTypeChange={handleProjectTypeChange}
+                  genre={genre}
+                  onGenreChange={setGenre}
                 />
               </div>
             </div>

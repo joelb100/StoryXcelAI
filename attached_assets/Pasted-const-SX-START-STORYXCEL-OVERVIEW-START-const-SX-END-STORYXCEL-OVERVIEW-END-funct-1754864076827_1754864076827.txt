@@ -1,0 +1,68 @@
+const SX_START = '// STORYXCEL_OVERVIEW_START';
+const SX_END   = '// STORYXCEL_OVERVIEW_END';
+
+function stripOverviewMarkers(text: string) {
+  return text
+    .split('\n')
+    .filter(line => line.trim() !== SX_START && line.trim() !== SX_END)
+    .join('\n');
+}
+
+function buildOverviewBlock(opts: {
+  title?: string;
+  projectType?: string;
+  pages?: number | null;
+  minutes?: number | null;
+  genreLabel?: string | null;
+  genreDef?: string | null;
+}) {
+  const { title, projectType, pages, minutes, genreLabel, genreDef } = opts;
+
+  const lines: string[] = [];
+
+  if (title?.trim()) lines.push(`Story Title — ${title.trim()}`);
+
+  if (projectType) {
+    const parts: string[] = [projectType];
+    if (typeof pages === 'number')   parts.push(`${pages} pages`);
+    if (typeof minutes === 'number') parts.push(`${minutes} mins`);
+    lines.push(`Project Type — ${parts.join(' / ')}`);
+  }
+
+  // ---- Genre (NEW) ----
+  if (genreLabel) {
+    lines.push(`Genre — ${genreLabel}`);
+    if (genreDef?.trim()) {
+      // keep the “indented second line” look from your reference
+      lines.push(`  ${genreLabel} : ${genreDef.trim()}`);
+    }
+  }
+
+  return [SX_START, ...lines, SX_END].join('\n');
+}
+
+function upsertOverviewBlock(rawText: string, block: string) {
+  const startIdx = rawText.indexOf(SX_START);
+  const endIdx = rawText.indexOf(SX_END);
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    const before = rawText.slice(0, startIdx);
+    const after  = rawText.slice(endIdx + SX_END.length);
+    return `${before.trimEnd()}\n${block}\n${after.trimStart()}`;
+  }
+  return `${block}\n\n${rawText}`.trimEnd();
+}
+
+function ensureMarkersBeforeSave(displayText: string, currentOverviewBlock: string) {
+  const withoutOverviewLines = displayText
+    .split('\n')
+    .filter(l =>
+      !l.startsWith('Story Title —') &&
+      !l.startsWith('Project Type —') &&
+      !l.startsWith('Genre —') &&
+      !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented “<Genre> : def” line
+    )
+    .join('\n')
+    .trimStart();
+
+  return `${currentOverviewBlock}\n\n${withoutOverviewLines}`.trimEnd();
+}
