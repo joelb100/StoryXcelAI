@@ -490,7 +490,7 @@ const LeftSidebar = ({
   onProjectTypeChange,
   genre,
   onGenreChange,
-  subGenres,
+  subGenre,
   onSubGenreChange
 }: { 
   activeTab: string;
@@ -499,8 +499,8 @@ const LeftSidebar = ({
   onProjectTypeChange?: (value: string) => void;
   genre?: string;
   onGenreChange?: (value: string) => void;
-  subGenres?: string[];
-  onSubGenreChange?: (values: string[]) => void;
+  subGenre?: string;
+  onSubGenreChange?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -581,43 +581,34 @@ const LeftSidebar = ({
           </div>
 
           <div>
-            <label className="block text-slate-200 text-sm mb-2">Sub Genre</label>
-            <select
-              multiple
-              value={subGenres || []}
-              onChange={(e) => {
-                const values = Array.from(e.target.selectedOptions).map(o => o.value);
-                onSubGenreChange?.(values);
-              }}
-              className="w-full h-52 bg-slate-700 text-slate-100 rounded-md border border-slate-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
-            >
-              {[
-                { value: 'acid', label: 'Acid' },
-                { value: 'buddy', label: 'Buddy' },
-                { value: 'classic', label: 'Classic' },
-                { value: 'comedy', label: 'Comedy' },
-                { value: 'contemporary', label: 'Contemporary' },
-                { value: 'family', label: 'Family' },
-                { value: 'feminist', label: 'Feminist' },
-                { value: 'gunslinger', label: 'Gunslinger' },
-                { value: 'historical', label: 'Historical' },
-                { value: 'horror', label: 'Horror' },
-                { value: 'martial-arts', label: 'Martial Arts' },
-                { value: 'musical', label: 'Musical' },
-                { value: 'noir', label: 'Noir' },
-                { value: 'psychological', label: 'Psychological' },
-                { value: 'railroad', label: 'Railroad' },
-                { value: 'revisionist', label: 'Revisionist' },
-                { value: 'sci-fi', label: 'Sci Fi' },
-                { value: 'southern-gothic', label: 'Southern Gothic' },
-                { value: 'spaghetti', label: 'Spaghetti' },
-                { value: 'survival', label: 'Survival' }
-              ].map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+            <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
+            <Select value={subGenre || ''} onValueChange={onSubGenreChange}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Sub Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="acid" title="Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.">Acid</SelectItem>
+                <SelectItem value="buddy" title="Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.">Buddy</SelectItem>
+                <SelectItem value="classic" title="Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.">Classic</SelectItem>
+                <SelectItem value="comedy" title="Stories designed to entertain and amuse through humor, wit, and exaggerated situations.">Comedy</SelectItem>
+                <SelectItem value="contemporary" title="Set in the present day, focusing on modern societal issues, relationships, or environments.">Contemporary</SelectItem>
+                <SelectItem value="family" title="Themes of familial bonds, responsibilities, and conflicts are central to the plot.">Family</SelectItem>
+                <SelectItem value="feminist" title="Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.">Feminist</SelectItem>
+                <SelectItem value="gunslinger" title="Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.">Gunslinger</SelectItem>
+                <SelectItem value="historical" title="Set in a specific historical era, emphasizing period-accurate settings, characters, and events.">Historical</SelectItem>
+                <SelectItem value="horror" title="Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.">Horror</SelectItem>
+                <SelectItem value="martial-arts" title="Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.">Martial Arts</SelectItem>
+                <SelectItem value="musical" title="Integrates songs and dance as a primary method of storytelling and emotional expression.">Musical</SelectItem>
+                <SelectItem value="noir" title="Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.">Noir</SelectItem>
+                <SelectItem value="psychological" title="Explores the inner workings of characters' minds, delving into mental struggles, paranoia, or psychological manipulation.">Psychological</SelectItem>
+                <SelectItem value="railroad" title="Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.">Railroad</SelectItem>
+                <SelectItem value="revisionist" title="Reinterprets established genres or historical events by challenging traditional perspectives or myths.">Revisionist</SelectItem>
+                <SelectItem value="sci-fi" title="Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.">Sci Fi</SelectItem>
+                <SelectItem value="southern-gothic" title="Combines Gothic elements with the American South's decayed grandeur, eccentric characters, and dark social themes.">Southern Gothic</SelectItem>
+                <SelectItem value="spaghetti" title="A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.">Spaghetti</SelectItem>
+                <SelectItem value="survival" title="Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.">Survival</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -1122,8 +1113,8 @@ export default function DashboardLayout() {
   // Genre state for auto-insertion into overview block
   const [genre, setGenre] = useState<string>('');
   
-  // Sub-Genre state for auto-insertion into overview block (supports multiple selections)
-  const [subGenres, setSubGenres] = useState<string[]>([]);
+  // Sub-Genre state for auto-insertion into overview block (single selection)
+  const [subGenre, setSubGenre] = useState<string>('');
   
   // Genre definitions map (matches the definitions in the UI)
   const GENRE_DEFS: Record<string, string> = {
@@ -1268,9 +1259,10 @@ export default function DashboardLayout() {
     minutes?: number | null;
     genreLabel?: string | null;
     genreDef?: string | null;
-    subGenres?: Array<{ label: string; def?: string }> | null;
+    subGenreLabel?: string | null;
+    subGenreDef?: string | null;
   }) {
-    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenres } = opts;
+    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenreLabel, subGenreDef } = opts;
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
@@ -1293,14 +1285,12 @@ export default function DashboardLayout() {
       }
     }
 
-    // ---- Sub Genre (NEW) ----
-    if (subGenres && subGenres.length) {
-      const list = subGenres.map(s => s.label).join(', ');
-      lines.push(`Sub Genre — ${list}`);
-      subGenres.forEach(s => {
-        const d = (s.def ?? '').trim();
-        if (d) lines.push(`  ${s.label} : ${d}`);
-      });
+    // ---- Sub Genre ----
+    if (subGenreLabel) {
+      lines.push(`Sub Genre — ${subGenreLabel}`);
+      if (subGenreDef?.trim()) {
+        lines.push(`  ${subGenreLabel} : ${subGenreDef.trim()}`);
+      }
     }
 
     return [SX_START, ...lines, SX_END].join('\n');
@@ -1382,12 +1372,9 @@ export default function DashboardLayout() {
   const genreLabel = genre ? (GENRE_LABELS[genre] ?? null) : null;
   const genreDef = genreLabel ? (GENRE_DEFS[genre] ?? '') : '';
 
-  // Derive sub-genre labels and definitions
-  const subGenreLabels = Array.isArray(subGenres) ? subGenres.filter(Boolean) : [];
-  const subGenreDefs = subGenreLabels.map(value => ({
-    label: SUBGENRE_LABELS[value] ?? value,
-    def: SUBGENRE_DEFS[value] ?? ''
-  }));
+  // Derive sub-genre label and definition
+  const subGenreLabel = subGenre ? (SUBGENRE_LABELS[subGenre] ?? subGenre) : null;
+  const subGenreDef = subGenreLabel ? (SUBGENRE_DEFS[subGenre] ?? '') : '';
 
   // on type, update ONLY the "display" portion; we'll reinsert markers on save
   const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -1399,7 +1386,8 @@ export default function DashboardLayout() {
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
       genreLabel,
       genreDef,
-      subGenres: subGenreDefs.length ? subGenreDefs : null
+      subGenreLabel,
+      subGenreDef
     });
     const merged = ensureMarkersBeforeSave(e.target.value, block);
     setRawStoryText(merged);
@@ -1415,15 +1403,16 @@ export default function DashboardLayout() {
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
       genreLabel: genreLabel || null,
       genreDef: genreDef || null,
-      subGenres: subGenreDefs.length ? subGenreDefs : null,
+      subGenreLabel: subGenreLabel || null,
+      subGenreDef: subGenreDef || null,
     });
 
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreDefs]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef]);
 
-  // Handle sub-genre change (set entire array)
-  const handleSubGenreChange = (values: string[]) => {
-    setSubGenres(values);
+  // Handle sub-genre change (single value)
+  const handleSubGenreChange = (value: string) => {
+    setSubGenre(value);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -1597,7 +1586,7 @@ export default function DashboardLayout() {
               onProjectTypeChange={handleProjectTypeChange}
               genre={genre}
               onGenreChange={setGenre}
-              subGenres={subGenres}
+              subGenre={subGenre}
               onSubGenreChange={handleSubGenreChange}
             />
           </div>
@@ -1984,7 +1973,7 @@ export default function DashboardLayout() {
                   onProjectTypeChange={handleProjectTypeChange}
                   genre={genre}
                   onGenreChange={setGenre}
-                  subGenres={subGenres}
+                  subGenre={subGenre}
                   onSubGenreChange={handleSubGenreChange}
                 />
               </div>
