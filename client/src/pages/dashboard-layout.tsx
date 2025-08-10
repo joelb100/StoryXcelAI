@@ -491,7 +491,11 @@ const LeftSidebar = ({
   genre,
   onGenreChange,
   subGenre,
-  onSubGenreChange
+  onSubGenreChange,
+  theme,
+  onThemeChange,
+  subTheme,
+  onSubThemeChange
 }: { 
   activeTab: string;
   projectName?: string;
@@ -501,6 +505,10 @@ const LeftSidebar = ({
   onGenreChange?: (value: string) => void;
   subGenre?: string;
   onSubGenreChange?: (value: string) => void;
+  theme?: string;
+  onThemeChange?: (value: string) => void;
+  subTheme?: string;
+  onSubThemeChange?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -613,7 +621,7 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-theme" className="text-sm font-medium text-white block mb-1">Theme</Label>
-            <Select>
+            <Select value={theme} onValueChange={onThemeChange}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
@@ -662,7 +670,7 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-subTheme" className="text-sm font-medium text-white block mb-1">Sub Theme</Label>
-            <Select>
+            <Select value={subTheme} onValueChange={onSubThemeChange}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Sub Theme" />
               </SelectTrigger>
@@ -1116,6 +1124,12 @@ export default function DashboardLayout() {
   // Sub-Genre state for auto-insertion into overview block (single selection)
   const [subGenre, setSubGenre] = useState<string>('');
   
+  // Theme state for auto-insertion into overview block
+  const [theme, setTheme] = useState<string>('');
+  
+  // Sub Theme state for auto-insertion into overview block
+  const [subTheme, setSubTheme] = useState<string>('');
+  
   // Genre definitions map (matches the definitions in the UI)
   const GENRE_DEFS: Record<string, string> = {
     'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
@@ -1214,29 +1228,91 @@ export default function DashboardLayout() {
     'survival': 'Survival'
   };
 
-  // Sub-Genre options for the multi-select
-  const SUBGENRE_OPTIONS = [
-    { value: 'acid', label: 'Acid' },
-    { value: 'buddy', label: 'Buddy' },
-    { value: 'classic', label: 'Classic' },
-    { value: 'comedy', label: 'Comedy' },
-    { value: 'contemporary', label: 'Contemporary' },
-    { value: 'family', label: 'Family' },
-    { value: 'feminist', label: 'Feminist' },
-    { value: 'gunslinger', label: 'Gunslinger' },
-    { value: 'historical', label: 'Historical' },
-    { value: 'horror', label: 'Horror' },
-    { value: 'martial-arts', label: 'Martial Arts' },
-    { value: 'musical', label: 'Musical' },
-    { value: 'noir', label: 'Noir' },
-    { value: 'psychological', label: 'Psychological' },
-    { value: 'railroad', label: 'Railroad' },
-    { value: 'revisionist', label: 'Revisionist' },
-    { value: 'sci-fi', label: 'Sci Fi' },
-    { value: 'southern-gothic', label: 'Southern Gothic' },
-    { value: 'spaghetti', label: 'Spaghetti' },
-    { value: 'survival', label: 'Survival' }
-  ];
+  // Theme definitions map (matches the definitions in the UI)
+  const THEME_DEFS: Record<string, string> = {
+    'abandonment': 'The emotional struggle or consequences of being left behind or deserted.',
+    'acceptance': 'The journey toward embracing oneself or others despite differences or flaws.',
+    'adultery': 'The betrayal of trust through infidelity in relationships.',
+    'adventure': 'The pursuit of thrilling experiences or quests filled with danger and discovery.',
+    'alienation': 'The feeling of being isolated or disconnected from society or oneself.',
+    'ambition': 'The drive to achieve greatness, often at a personal or ethical cost.',
+    'betrayal': 'The breaking of trust or loyalty, leading to conflict or emotional pain.',
+    'coming-of-age': 'The transition from youth to adulthood, marked by personal growth.',
+    'death': 'The exploration of mortality and its impact on characters.',
+    'discovery': 'The act of uncovering hidden truths about the world or oneself.',
+    'escape': 'The desire to break free from confinement, danger, or oppression.',
+    'forbidden-love': 'A romance that defies social, cultural, or moral boundaries.',
+    'forgiveness': 'The journey of letting go of resentment to heal emotional wounds.',
+    'freedom': 'The struggle to achieve personal, political, or spiritual liberation.',
+    'friendship': 'The bonds of loyalty, trust, and support between individuals.',
+    'greed': 'The excessive desire for wealth, power, or material gain.',
+    'justice': 'The pursuit of fairness, moral rightness, or legal retribution.',
+    'legacy': 'The lasting impact one leaves on future generations or society.',
+    'loneliness': 'The emotional void of isolation, either physical or emotional.',
+    'love': 'The profound emotional connection between individuals, romantic or otherwise.',
+    'morality': 'The internal or societal struggle between right and wrong.',
+    'obsession': 'An overpowering fixation on an idea, person, or goal.',
+    'overcoming': 'The triumph over personal flaws, fears, or external obstacles.',
+    'patriot': 'A theme centered on devotion and sacrifice for one\'s country.',
+    'poverty': 'The harsh realities and struggles associated with economic deprivation.',
+    'prejudice': 'The exploration of bias, discrimination, and its consequences.',
+    'redemption': 'The quest to atone for past sins or mistakes.',
+    'revenge': 'The pursuit of retribution for a personal or moral wrongdoing.',
+    'rivalry': 'The competitive conflict between individuals or groups.',
+    'sacrifice': 'The act of giving up something valuable for a greater cause or person.',
+    'survival': 'The primal struggle to stay alive against overwhelming odds.',
+    'temptation': 'The internal conflict between desire and moral restraint.',
+    'the-right': 'The defense or pursuit of what is morally or legally correct.',
+    'tradition': 'The importance and challenges of preserving cultural or familial customs.',
+    'transformation': 'A profound change in character, perspective, or circumstances.',
+    'war': 'The brutal realities, strategies, and consequences of armed conflict.',
+    'wealth-found': 'The discovery of fortune and its transformative effects.',
+    'war-zone': 'The personal and collective experiences of life amidst conflict zones.'
+  };
+
+  // Sub Theme definitions map (matches the definitions in the UI)
+  const SUBTHEME_DEFS: Record<string, string> = {
+    'abduction': 'A character is kidnapped or taken against their will, sparking conflict or rescue.',
+    'adventure': 'The protagonist embarks on an exciting journey full of risks and discoveries.',
+    'adultery': 'A betrayal of romantic commitment, leading to emotional fallout.',
+    'ambition': 'A character\'s relentless pursuit of power, success, or personal goals.',
+    'ascension': 'A rise to power, enlightenment, or higher status.',
+    'deliverance': 'Being rescued or freed from a dire situation.',
+    'descension': 'A fall from grace, status, or moral standing.',
+    'disaster': 'A catastrophic event upends lives and environments.',
+    'discovery': 'Unveiling hidden truths, objects, or aspects of oneself.',
+    'escape': 'A character\'s struggle to break free from confinement or danger.',
+    'forbidden-love': 'A romance that defies societal, cultural, or moral boundaries.',
+    'forgiveness': 'Characters confront emotional wounds to offer or seek redemption.',
+    'freedom': 'The pursuit of autonomy from oppression or control.',
+    'honor': 'Upholding personal or cultural codes of ethics and duty.',
+    'justice': 'The moral quest to right a wrong or balance fairness.',
+    'love': 'Emotional connection driving character motivation and conflicts.',
+    'loyalty': 'Allegiance to a person, cause, or belief, even at great cost.',
+    'madness': 'Descent into insanity, blurring reality and delusion.',
+    'maturation': 'A coming-of-age journey of personal growth and responsibility.',
+    'metamorphosis': 'A profound transformation in identity, form, or perspective.',
+    'moral-ambiguity': 'A blurred line between right and wrong in character choices.',
+    'obtaining': 'The relentless pursuit to acquire a prized object or goal.',
+    'ownership': 'Themes of control, possession, or claiming what one believes is theirs.',
+    'pursuit': 'A relentless chase, whether for justice, revenge, or desire.',
+    'quest': 'A character\'s journey to achieve a nearly impossible objective.',
+    'redemption': 'Atonement for past sins through sacrifice or good deeds.',
+    'remorse': 'A character grapples with guilt and regret.',
+    'rescue': 'Saving someone from imminent peril.',
+    'respect': 'Earning recognition and dignity through actions or perseverance.',
+    'revenge': 'Retribution for a past wrong, regardless of consequence.',
+    'revolt': 'An uprising against authority or oppressive forces.',
+    'rivalry': 'Intense competition between two characters or factions.',
+    'sacrifice': 'Giving up something of great personal value for a higher cause.',
+    'supplication': 'A desperate plea for aid, mercy, or forgiveness.',
+    'survival': 'Battling overwhelming odds to stay alive.',
+    'temptation': 'A character is lured toward desires that conflict with their morals.',
+    'the-riddle': 'Solving a complex mystery or intellectual challenge.',
+    'transformation': 'A fundamental change in a character\'s nature or circumstances.',
+    'underdog': 'A lesser-powered character defies expectations against stronger opponents.',
+    'wretched-excess': 'Characters driven to ruin by indulgence, greed, or obsession.'
+  };
   
   // state that stores the authoritative raw text (with hidden markers)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
@@ -1261,8 +1337,12 @@ export default function DashboardLayout() {
     genreDef?: string | null;
     subGenreLabel?: string | null;
     subGenreDef?: string | null;
+    themeLabel?: string | null;
+    themeDef?: string | null;
+    subThemeLabel?: string | null;
+    subThemeDef?: string | null;
   }) {
-    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenreLabel, subGenreDef } = opts;
+    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef } = opts;
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
@@ -1290,6 +1370,22 @@ export default function DashboardLayout() {
       lines.push(`Sub Genre — ${subGenreLabel}`);
       if (subGenreDef?.trim()) {
         lines.push(`  ${subGenreLabel} : ${subGenreDef.trim()}`);
+      }
+    }
+
+    // ---- Theme ----
+    if (themeLabel) {
+      lines.push(`Theme — ${themeLabel}`);
+      if (themeDef?.trim()) {
+        lines.push(`  ${themeLabel} : ${themeDef.trim()}`);
+      }
+    }
+
+    // ---- Sub Theme ----
+    if (subThemeLabel) {
+      lines.push(`Sub Theme — ${subThemeLabel}`);
+      if (subThemeDef?.trim()) {
+        lines.push(`  ${subThemeLabel} : ${subThemeDef.trim()}`);
       }
     }
 
@@ -1323,7 +1419,9 @@ export default function DashboardLayout() {
         !l.startsWith('Project Type —') &&
         !l.startsWith('Genre —') &&
         !l.startsWith('Sub Genre —') &&
-        !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented "<Genre/SubGenre> : def" line
+        !l.startsWith('Theme —') &&
+        !l.startsWith('Sub Theme —') &&
+        !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented "<Genre/SubGenre/Theme/SubTheme> : def" line
       )
       .join('\n')
       .trimStart();
@@ -1376,6 +1474,14 @@ export default function DashboardLayout() {
   const subGenreLabel = subGenre ? (SUBGENRE_LABELS[subGenre] ?? subGenre) : null;
   const subGenreDef = subGenreLabel ? (SUBGENRE_DEFS[subGenre] ?? '') : '';
 
+  // Derive theme label and definition  
+  const themeLabel = theme ? (theme.charAt(0).toUpperCase() + theme.slice(1).replace(/-/g, ' ')) : null;
+  const themeDef = themeLabel ? (THEME_DEFS[theme] ?? '') : '';
+
+  // Derive sub-theme label and definition
+  const subThemeLabel = subTheme ? (subTheme.charAt(0).toUpperCase() + subTheme.slice(1).replace(/-/g, ' ')) : null;  
+  const subThemeDef = subThemeLabel ? (SUBTHEME_DEFS[subTheme] ?? '') : '';
+
   // on type, update ONLY the "display" portion; we'll reinsert markers on save
   const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // we keep the current overview block we last computed
@@ -1387,7 +1493,11 @@ export default function DashboardLayout() {
       genreLabel,
       genreDef,
       subGenreLabel,
-      subGenreDef
+      subGenreDef,
+      themeLabel,
+      themeDef,
+      subThemeLabel,
+      subThemeDef
     });
     const merged = ensureMarkersBeforeSave(e.target.value, block);
     setRawStoryText(merged);
@@ -1405,10 +1515,14 @@ export default function DashboardLayout() {
       genreDef: genreDef || null,
       subGenreLabel: subGenreLabel || null,
       subGenreDef: subGenreDef || null,
+      themeLabel: themeLabel || null,
+      themeDef: themeDef || null,
+      subThemeLabel: subThemeLabel || null,
+      subThemeDef: subThemeDef || null,
     });
 
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -1588,6 +1702,10 @@ export default function DashboardLayout() {
               onGenreChange={setGenre}
               subGenre={subGenre}
               onSubGenreChange={handleSubGenreChange}
+              theme={theme}
+              onThemeChange={setTheme}
+              subTheme={subTheme}
+              onSubThemeChange={setSubTheme}
             />
           </div>
           
@@ -1975,6 +2093,10 @@ export default function DashboardLayout() {
                   onGenreChange={setGenre}
                   subGenre={subGenre}
                   onSubGenreChange={handleSubGenreChange}
+                  theme={theme}
+                  onThemeChange={setTheme}
+                  subTheme={subTheme}
+                  onSubThemeChange={setSubTheme}
                 />
               </div>
             </div>
