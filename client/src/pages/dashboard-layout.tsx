@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
+import StoryRightSidebar from "@/components/layout/right-sidebar";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -945,8 +946,8 @@ const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }:
   </div>
 );
 
-// Right Content Sidebar Component - Yellow from grid (Columns 24-26)
-const RightSidebar = () => (
+// Dashboard Right Content Sidebar Component - Yellow from grid (Columns 24-26)
+const DashboardRightSidebar = () => (
   <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {/* Friends List */}
     <div className="p-4 flex-1">
@@ -1476,7 +1477,7 @@ export default function DashboardLayout() {
           {/* Right Rail - Dashboard shows fixed Friends panel, Story shows dynamic stacked panels */}
           {activeTab === 'dashboard' ? (
             <div className="col-span-3 relative z-40">
-              <RightSidebar showSiteLinks={true} />
+              <DashboardRightSidebar />
             </div>
           ) : (
             activeTab === 'story' && (isFriendsListOpen || isSiteLinksOpen) && (
@@ -1486,7 +1487,7 @@ export default function DashboardLayout() {
                   <div className={`flex-1 overflow-y-auto transition-transform duration-300 ${
                     isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
                   }`}>
-                    <RightSidebar />
+                    <StoryRightSidebar />
                   </div>
 
                   {/* SITE LINKS (bottom, fixed height) */}
@@ -1627,7 +1628,7 @@ export default function DashboardLayout() {
                 </Button>
               </div>
               <div className="h-full overflow-hidden flex pt-16">
-                <RightSidebar />
+                <DashboardRightSidebar />
                 <RightIconSidebar 
                   onFriendsListToggle={() => setIsFriendsListOpen(!isFriendsListOpen)}
                   onSiteLinksToggle={() => setIsSiteLinksOpen(!isSiteLinksOpen)}
