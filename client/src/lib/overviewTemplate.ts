@@ -1,0 +1,63 @@
+import type { StoryOverview } from '@/state/storyOverview';
+import { genreDef } from './genreDefinitions';
+import { themeDef } from './themeDefinitions';
+import { subThemeDef } from './subThemeDefinitions';
+
+export const MARK_START = '<!-- STORYX_OVERVIEW_START -->';
+export const MARK_END   = '<!-- STORYX_OVERVIEW_END -->';
+
+export function renderOverview(o: StoryOverview) {
+  const gDef = o.genre ? genreDef[o.genre] : '';
+  const tDef = o.theme ? themeDef[o.theme] : '';
+
+  const subGenreLines = (o.subGenres || []).map(sg => `**Sub Genre** — ${sg}`);
+  const subThemeLines = (o.subThemes || []).map(st => {
+    const d = subThemeDef[st] || '';
+    return `**Sub Theme** — ${st}${d ? ` : ${d}` : ''}`;
+  });
+
+  const lines: string[] = [];
+
+  if (o.title) lines.push(`**Story Title** — ${o.title}`);
+  const projectTypeLine = [o.projectType || '', o.runtime || ''].filter(Boolean).join(' / ');
+  if (projectTypeLine) lines.push(`**Project Type** — ${projectTypeLine}`);
+
+  if (o.genre) {
+    lines.push(`**Genre** — ${o.genre}${gDef ? ` : ${gDef}` : ''}`);
+  }
+  lines.push(...subGenreLines);
+
+  if (o.theme) {
+    lines.push(`**Theme** — ${o.theme}${tDef ? ` : ${tDef}` : ''}`);
+  }
+  lines.push(...subThemeLines);
+
+  if (o.centralConflict) {
+    lines.push(`**Central Conflict** — ${o.centralConflict}`);
+  } else {
+    lines.push(`**Central Conflict** —`);
+  }
+
+  lines.push(
+    `**Plot A** —`,
+    `**+ Add Plot A** — Add an additional plot point to the A storyline`,
+    `**Sub Plot B** —`,
+    `**+ Add Sub Plot B** — Add an additional plot point to the B storyline`,
+    `**Sub Plot C** —`,
+    `**+ Add Sub Plot C** — Add an additional plot point to the C storyline`,
+    `**Plot Twists** —`,
+    `**+ Add Plot Twist** — Automatically add another box after plot box has been filled`,
+    `**Emotional Hook** —`,
+    `**+ Add Emotional Hook** — Add an additional hook`
+  );
+
+  // Markdown-like layout; editor remains editable
+  const md = lines.map(l => l.trim()).join('\n\n');
+
+  // Wrap with markers; add blank line after block
+  return `${MARK_START}
+${md}
+${MARK_END}
+
+`;
+}

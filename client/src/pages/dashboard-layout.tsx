@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
+import { useStoryOverview } from '@/state/storyOverview';
+import { renderOverview } from '@/lib/overviewTemplate';
+import { upsertOverviewBlock } from '@/lib/editorWriter';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -70,6 +73,7 @@ import {
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 import StoryBuilder from "@/components/story-builder";
 import AIStoryAssistant from "@/components/ai-story-assistant";
+import RuntimePicker from "@/components/runtime-picker";
 
 // Import tab icons
 import worldBuilderIcon from "@assets/worldBuilder_1754280588370.png";
@@ -112,6 +116,9 @@ const friendsList = [
   "Bob Dylan",
   "Ned Flanders"
 ];
+
+// Runtime options for Story Builder - used by the imported component
+const runtimeOptions = ["60 mins","87 mins","90 mins","100 mins","110 mins","120 mins"];
 
 // Friends List Component
 const FriendsListSidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
@@ -480,7 +487,10 @@ const IconSidebar = ({
 );
 
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
-const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
+const LeftSidebar = ({ activeTab }: { activeTab: string }) => {
+  const { overview, setField } = useStoryOverview();
+  
+  return (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
       // Story Overview with structured elements
@@ -500,12 +510,14 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
               type="text"
               placeholder="Enter project name..."
               className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+              value={overview.title}
+              onChange={(e) => setField('title', e.target.value)}
             />
           </div>
 
           <div>
             <Label htmlFor="story-projectType" className="text-sm font-medium text-white block mb-1">Project Type</Label>
-            <Select>
+            <Select value={overview.projectType} onValueChange={(v) => setField('projectType', v)}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
@@ -519,8 +531,13 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
           </div>
 
           <div>
+            <Label htmlFor="story-runtime" className="text-sm font-medium text-white block mb-1">Runtime</Label>
+            <RuntimePicker />
+          </div>
+
+          <div>
             <Label htmlFor="story-genre" className="text-sm font-medium text-white block mb-1">Genre</Label>
-            <Select>
+            <Select value={overview.genre} onValueChange={(v) => setField('genre', v)}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
@@ -559,7 +576,7 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
 
           <div>
             <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
-            <Select>
+            <Select value={overview.subTheme} onValueChange={(v) => setField('subTheme', v)}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
@@ -590,7 +607,7 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
 
           <div>
             <Label htmlFor="story-theme" className="text-sm font-medium text-white block mb-1">Theme</Label>
-            <Select>
+            <Select value={overview.theme} onValueChange={(v) => setField('theme', v)}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
@@ -690,21 +707,13 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
 
           <div>
             <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
-            <Select>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
-                <SelectValue placeholder="Select Central Conflict" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="man-vs-man">[Wo]Man vs. [Wo]Man</SelectItem>
-                <SelectItem value="man-vs-nature">[Wo]Man vs. Nature</SelectItem>
-                <SelectItem value="man-vs-environment">[Wo]Man vs. the Environment</SelectItem>
-                <SelectItem value="man-vs-machines">[Wo]Man vs. Machines / Technology</SelectItem>
-                <SelectItem value="man-vs-supernatural">[Wo]Man vs. the Supernatural</SelectItem>
-                <SelectItem value="man-vs-self">[Wo]Man vs. Self</SelectItem>
-                <SelectItem value="man-vs-god">[Wo]Man vs. God / Religion</SelectItem>
-                <SelectItem value="man-vs-society">[Wo]Man vs. Society</SelectItem>
-              </SelectContent>
-            </Select>
+            <Textarea
+              id="story-centralConflict"
+              placeholder="Describe the central conflict..."
+              className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+              value={overview.centralConflict || ''}
+              onChange={(e) => setField('centralConflict', e.target.value)}
+            />
           </div>
 
           <div>
@@ -830,6 +839,123 @@ const SiteLinksSidebar = () => (
   </div>
 );
 
+
+
+// Dashboard Right Content Sidebar Component - Yellow from grid (Columns 24-26)
+const DashboardRightSidebar = () => (
+  <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
+    {/* Friends List using shared component */}
+    <div className="flex-1">
+      <DashboardLookFriendsList
+        friends={friendsList.map((name, idx) => ({
+          id: String(idx),
+          name,
+          initials: name
+            .split(" ")
+            .map(p => p[0])
+            .join("")
+            .slice(0,2)
+        }))}
+        className="border-l-0" // Remove left border since parent has it
+      />
+    </div>
+
+    {/* Site Links */}
+    <div className="border-t-2 border-slate-400 p-4" style={{ backgroundColor: '#758595' }}>
+      <h3 className="text-sm font-semibold text-white mb-4">Site Links</h3>
+      <div className="grid grid-cols-4 gap-2">
+        {Array.from({length: 16}, (_, i) => (
+          <button
+            key={i}
+            className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity"
+            style={{ backgroundColor: '#47566b' }}
+          >
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+
+
+// Main Dashboard Content
+interface DashboardContentProps {
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  currentProjectSlide: number;
+  setCurrentProjectSlide: (value: number | ((prev: number) => number)) => void;
+  navigate: (to: string) => void;
+}
+
+const DashboardContent = ({ 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress,
+  currentProjectSlide,
+  setCurrentProjectSlide,
+  navigate 
+}: DashboardContentProps) => (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Dashboard Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Dashboard</h2>
+    </div>
+
+    {/* Constrained Content Container - 15.25 inches max width */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        {/* Main Dashboard Section - Red Box takes up upper portion */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <Card className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
+            {/* Main dashboard content area */}
+          </Card>
+        </div>
+
+        {/* Bottom section - scales to remaining 40% of screen */}
+        <div className="flex-1 flex flex-col justify-start pt-4">
+          {/* Project Name Section */}
+          <div className="flex justify-center mb-4">
+            <div className="w-full max-w-[14.5in]">
+              {/* Project Name label */}
+              <div className="mb-2">
+                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+              </div>
+              
+              {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
+              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+                {/* First project card */}
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+                
+                {/* Second project card */}
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+                
+                {/* Third project card */}
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Chat Window - takes remaining space */}
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  );
+};
+
 // Right Icon Sidebar Component - Blue from grid (Columns 27-28)
 const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }: { 
   onFriendsListToggle?: () => void; 
@@ -947,118 +1073,6 @@ const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }:
   </div>
 );
 
-// Dashboard Right Content Sidebar Component - Yellow from grid (Columns 24-26)
-const DashboardRightSidebar = () => (
-  <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
-    {/* Friends List using shared component */}
-    <div className="flex-1">
-      <DashboardLookFriendsList
-        friends={friendsList.map((name, idx) => ({
-          id: String(idx),
-          name,
-          initials: name
-            .split(" ")
-            .map(p => p[0])
-            .join("")
-            .slice(0,2)
-        }))}
-        className="border-l-0" // Remove left border since parent has it
-      />
-    </div>
-
-    {/* Site Links */}
-    <div className="border-t-2 border-slate-400 p-4" style={{ backgroundColor: '#758595' }}>
-      <h3 className="text-sm font-semibold text-white mb-4">Site Links</h3>
-      <div className="grid grid-cols-4 gap-2">
-        {Array.from({length: 16}, (_, i) => (
-          <button
-            key={i}
-            className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: '#47566b' }}
-          >
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-// Main Dashboard Content
-interface DashboardContentProps {
-  chatMessages: any[];
-  chatMessage: string;
-  setChatMessage: (value: string) => void;
-  handleSendMessage: () => void;
-  handleKeyPress: (e: React.KeyboardEvent) => void;
-  currentProjectSlide: number;
-  setCurrentProjectSlide: (value: number | ((prev: number) => number)) => void;
-  navigate: (to: string) => void;
-}
-
-const DashboardContent = ({ 
-  chatMessages, 
-  chatMessage, 
-  setChatMessage, 
-  handleSendMessage, 
-  handleKeyPress,
-  currentProjectSlide,
-  setCurrentProjectSlide,
-  navigate 
-}: DashboardContentProps) => (
-  <div className="bg-gray-100 flex flex-col h-full">
-    {/* Dashboard Header */}
-    <div className="bg-white border-b border-gray-200 px-4 pb-4">
-      <h2 className="text-lg font-semibold text-slate-800">Dashboard</h2>
-    </div>
-
-    {/* Constrained Content Container - 15.25 inches max width */}
-    <div className="flex-1 flex justify-center overflow-hidden">
-      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Main Dashboard Section - Red Box takes up upper portion */}
-        <div className="flex justify-center items-center" style={{ height: '60%' }}>
-          <Card className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
-            {/* Main dashboard content area */}
-          </Card>
-        </div>
-
-        {/* Bottom section - scales to remaining 40% of screen */}
-        <div className="flex-1 flex flex-col justify-start pt-4">
-          {/* Project Name Section */}
-          <div className="flex justify-center mb-4">
-            <div className="w-full max-w-[14.5in]">
-              {/* Project Name label */}
-              <div className="mb-2">
-                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-              </div>
-              
-              {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
-              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-                {/* First project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                
-                {/* Second project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                
-                {/* Third project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              </div>
-            </div>
-          </div>
-
-          {/* AI Chat Window - takes remaining space */}
-          <AIStoryAssistant 
-            chatMessages={chatMessages}
-            chatMessage={chatMessage}
-            setChatMessage={setChatMessage}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
 // Main Dashboard Layout
 export default function DashboardLayout() {
   const [location, navigate] = useLocation();
@@ -1083,6 +1097,16 @@ export default function DashboardLayout() {
   };
   
   const activeTab = getActiveTab();
+  
+  // Story Overview editor ref and live sync
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+  const { overview, live } = useStoryOverview();
+  const overviewBlock = renderOverview(overview);
+
+  useEffect(() => {
+    if (!live || activeTab !== 'story') return;
+    upsertOverviewBlock(editorRef, overviewBlock);
+  }, [live, overviewBlock, activeTab]);
 
   const handleTabChange = (tabId: string) => {
     navigate(`/builder/${tabId}`);
@@ -1429,7 +1453,12 @@ export default function DashboardLayout() {
                           
                           {/* Document Content */}
                           <div className="flex-1 p-8">
-                            <Textarea
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="text-sm opacity-70">Story Overview • live-sync is ON</div>
+                            </div>
+                            <textarea
+                              ref={editorRef}
+                              data-story-builder
                               className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
                               placeholder="Start writing your story here..."
                               style={{ 
@@ -1491,7 +1520,21 @@ export default function DashboardLayout() {
                   <div className={`transition-transform duration-300 border-t border-slate-600 ${
                     isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
                   }`} style={{ height: '240px' }}>
-                    <SiteLinksSidebar />
+                    <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
+                      <h3 className="text-white text-sm font-semibold mb-4">Site Links</h3>
+                      
+                      {/* Grid of circular icons matching Dashboard appearance */}
+                      <div className="grid grid-cols-4 gap-2">
+                        {Array.from({ length: 16 }, (_, index) => (
+                          <div
+                            key={index}
+                            className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity cursor-pointer flex items-center justify-center"
+                            style={{ backgroundColor: '#47566b' }}
+                          >
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
