@@ -489,7 +489,9 @@ const LeftSidebar = ({
   onProjectNameChange,
   onProjectTypeChange,
   genre,
-  onGenreChange
+  onGenreChange,
+  subGenres,
+  onSubGenreToggle
 }: { 
   activeTab: string;
   projectName?: string;
@@ -497,6 +499,8 @@ const LeftSidebar = ({
   onProjectTypeChange?: (value: string) => void;
   genre?: string;
   onGenreChange?: (value: string) => void;
+  subGenres?: string[];
+  onSubGenreToggle?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -578,33 +582,43 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
-            <Select>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
-                <SelectValue placeholder="Select Sub Genre" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="acid" title="Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.">Acid</SelectItem>
-                <SelectItem value="buddy" title="Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.">Buddy</SelectItem>
-                <SelectItem value="classic" title="Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.">Classic</SelectItem>
-                <SelectItem value="comedy" title="Stories designed to entertain and amuse through humor, wit, and exaggerated situations.">Comedy</SelectItem>
-                <SelectItem value="contemporary" title="Set in the present day, focusing on modern societal issues, relationships, or environments.">Contemporary</SelectItem>
-                <SelectItem value="family" title="Themes of familial bonds, responsibilities, and conflicts are central to the plot.">Family</SelectItem>
-                <SelectItem value="feminist" title="Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.">Feminist</SelectItem>
-                <SelectItem value="gunslinger" title="Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.">Gunslinger</SelectItem>
-                <SelectItem value="historical" title="Set in a specific historical era, emphasizing period-accurate settings, characters, and events.">Historical</SelectItem>
-                <SelectItem value="horror" title="Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.">Horror</SelectItem>
-                <SelectItem value="martial-arts" title="Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.">Martial Arts</SelectItem>
-                <SelectItem value="musical" title="Integrates songs and dance as a primary method of storytelling and emotional expression.">Musical</SelectItem>
-                <SelectItem value="noir" title="Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.">Noir</SelectItem>
-                <SelectItem value="psychological" title="Explores the inner workings of characters' minds, delving into mental struggles, paranoia, or psychological manipulation.">Psychological</SelectItem>
-                <SelectItem value="railroad" title="Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.">Railroad</SelectItem>
-                <SelectItem value="revisionist" title="Reinterprets established genres or historical events by challenging traditional perspectives or myths.">Revisionist</SelectItem>
-                <SelectItem value="sci-fi" title="Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.">Sci Fi</SelectItem>
-                <SelectItem value="southern-gothic" title="Combines Gothic elements with the American South's decayed grandeur, eccentric characters, and dark social themes.">Southern Gothic</SelectItem>
-                <SelectItem value="spaghetti" title="A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.">Spaghetti</SelectItem>
-                <SelectItem value="survival" title="Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.">Survival</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2 max-h-40 overflow-y-auto bg-slate-600 border border-slate-500 rounded p-2">
+              {[
+                { value: 'acid', label: 'Acid', title: 'Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.' },
+                { value: 'buddy', label: 'Buddy', title: 'Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.' },
+                { value: 'classic', label: 'Classic', title: 'Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.' },
+                { value: 'comedy', label: 'Comedy', title: 'Stories designed to entertain and amuse through humor, wit, and exaggerated situations.' },
+                { value: 'contemporary', label: 'Contemporary', title: 'Set in the present day, focusing on modern societal issues, relationships, or environments.' },
+                { value: 'family', label: 'Family', title: 'Themes of familial bonds, responsibilities, and conflicts are central to the plot.' },
+                { value: 'feminist', label: 'Feminist', title: 'Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.' },
+                { value: 'gunslinger', label: 'Gunslinger', title: 'Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.' },
+                { value: 'historical', label: 'Historical', title: 'Set in a specific historical era, emphasizing period-accurate settings, characters, and events.' },
+                { value: 'horror', label: 'Horror', title: 'Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.' },
+                { value: 'martial-arts', label: 'Martial Arts', title: 'Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.' },
+                { value: 'musical', label: 'Musical', title: 'Integrates songs and dance as a primary method of storytelling and emotional expression.' },
+                { value: 'noir', label: 'Noir', title: 'Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.' },
+                { value: 'psychological', label: 'Psychological', title: 'Explores the inner workings of characters\' minds, delving into mental struggles, paranoia, or psychological manipulation.' },
+                { value: 'railroad', label: 'Railroad', title: 'Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.' },
+                { value: 'revisionist', label: 'Revisionist', title: 'Reinterprets established genres or historical events by challenging traditional perspectives or myths.' },
+                { value: 'sci-fi', label: 'Sci Fi', title: 'Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.' },
+                { value: 'southern-gothic', label: 'Southern Gothic', title: 'Combines Gothic elements with the American South\'s decayed grandeur, eccentric characters, and dark social themes.' },
+                { value: 'spaghetti', label: 'Spaghetti', title: 'A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.' },
+                { value: 'survival', label: 'Survival', title: 'Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.' }
+              ].map(option => (
+                <div key={option.value} className="flex items-center space-x-2" title={option.title}>
+                  <input
+                    type="checkbox"
+                    id={`subgenre-${option.value}`}
+                    checked={subGenres?.includes(option.value) ?? false}
+                    onChange={() => onSubGenreToggle?.(option.value)}
+                    className="rounded border-slate-400 bg-slate-700 text-teal-500 focus:ring-teal-500"
+                  />
+                  <label htmlFor={`subgenre-${option.value}`} className="text-sm text-white cursor-pointer">
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div>
@@ -1109,6 +1123,9 @@ export default function DashboardLayout() {
   // Genre state for auto-insertion into overview block
   const [genre, setGenre] = useState<string>('');
   
+  // Sub-Genre state for auto-insertion into overview block (supports multiple selections)
+  const [subGenres, setSubGenres] = useState<string[]>([]);
+  
   // Genre definitions map (matches the definitions in the UI)
   const GENRE_DEFS: Record<string, string> = {
     'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
@@ -1158,6 +1175,54 @@ export default function DashboardLayout() {
     'tragedy': 'Tragedy',
     'western': 'Western'
   };
+
+  // Sub-Genre definitions map (matches the definitions in the UI)
+  const SUBGENRE_DEFS: Record<string, string> = {
+    'acid': 'Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.',
+    'buddy': 'Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.',
+    'classic': 'Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.',
+    'comedy': 'Stories designed to entertain and amuse through humor, wit, and exaggerated situations.',
+    'contemporary': 'Set in the present day, focusing on modern societal issues, relationships, or environments.',
+    'family': 'Themes of familial bonds, responsibilities, and conflicts are central to the plot.',
+    'feminist': 'Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.',
+    'gunslinger': 'Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.',
+    'historical': 'Set in a specific historical era, emphasizing period-accurate settings, characters, and events.',
+    'horror': 'Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.',
+    'martial-arts': 'Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.',
+    'musical': 'Integrates songs and dance as a primary method of storytelling and emotional expression.',
+    'noir': 'Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.',
+    'psychological': 'Explores the inner workings of characters\' minds, delving into mental struggles, paranoia, or psychological manipulation.',
+    'railroad': 'Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.',
+    'revisionist': 'Reinterprets established genres or historical events by challenging traditional perspectives or myths.',
+    'sci-fi': 'Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.',
+    'southern-gothic': 'Combines Gothic elements with the American South\'s decayed grandeur, eccentric characters, and dark social themes.',
+    'spaghetti': 'A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.',
+    'survival': 'Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.'
+  };
+
+  // Sub-Genre label mapping (value to display name)
+  const SUBGENRE_LABELS: Record<string, string> = {
+    'acid': 'Acid',
+    'buddy': 'Buddy',
+    'classic': 'Classic',
+    'comedy': 'Comedy',
+    'contemporary': 'Contemporary',
+    'family': 'Family',
+    'feminist': 'Feminist',
+    'gunslinger': 'Gunslinger',
+    'historical': 'Historical',
+    'horror': 'Horror',
+    'martial-arts': 'Martial Arts',
+    'musical': 'Musical',
+    'noir': 'Noir',
+    'psychological': 'Psychological',
+    'railroad': 'Railroad',
+    'revisionist': 'Revisionist',
+    'sci-fi': 'Sci Fi',
+    'southern-gothic': 'Southern Gothic',
+    'spaghetti': 'Spaghetti',
+    'survival': 'Survival'
+  };
   
   // state that stores the authoritative raw text (with hidden markers)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
@@ -1180,8 +1245,9 @@ export default function DashboardLayout() {
     minutes?: number | null;
     genreLabel?: string | null;
     genreDef?: string | null;
+    subGenres?: Array<{ label: string; def?: string }> | null;
   }) {
-    const { title, projectType, pages, minutes, genreLabel, genreDef } = opts;
+    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenres } = opts;
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
@@ -1195,13 +1261,23 @@ export default function DashboardLayout() {
       lines.push(`Project Type — ${parts.join(' / ')}`);
     }
 
-    // ---- Genre (NEW) ----
+    // ---- Genre ----
     if (genreLabel) {
       lines.push(`Genre — ${genreLabel}`);
       if (genreDef?.trim()) {
         // keep the "indented second line" look from your reference
         lines.push(`  ${genreLabel} : ${genreDef.trim()}`);
       }
+    }
+
+    // ---- Sub Genre (NEW) ----
+    if (subGenres && subGenres.length) {
+      const list = subGenres.map(s => s.label).join(', ');
+      lines.push(`Sub Genre — ${list}`);
+      subGenres.forEach(s => {
+        const d = (s.def ?? '').trim();
+        if (d) lines.push(`  ${s.label} : ${d}`);
+      });
     }
 
     return [SX_START, ...lines, SX_END].join('\n');
@@ -1233,7 +1309,8 @@ export default function DashboardLayout() {
         !l.startsWith('Story Title —') &&
         !l.startsWith('Project Type —') &&
         !l.startsWith('Genre —') &&
-        !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented "<Genre> : def" line
+        !l.startsWith('Sub Genre —') &&
+        !l.trim().match(/^([A-Za-z].*?)\s:\s/) // strips indented "<Genre/SubGenre> : def" line
       )
       .join('\n')
       .trimStart();
@@ -1282,6 +1359,13 @@ export default function DashboardLayout() {
   const genreLabel = genre ? (GENRE_LABELS[genre] ?? null) : null;
   const genreDef = genreLabel ? (GENRE_DEFS[genre] ?? '') : '';
 
+  // Derive sub-genre labels and definitions
+  const subGenreLabels = Array.isArray(subGenres) ? subGenres.filter(Boolean) : [];
+  const subGenreDefs = subGenreLabels.map(value => ({
+    label: SUBGENRE_LABELS[value] ?? value,
+    def: SUBGENRE_DEFS[value] ?? ''
+  }));
+
   // on type, update ONLY the "display" portion; we'll reinsert markers on save
   const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // we keep the current overview block we last computed
@@ -1291,7 +1375,8 @@ export default function DashboardLayout() {
       pages: typeof lengthPages === 'number' ? lengthPages : null, 
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
       genreLabel,
-      genreDef
+      genreDef,
+      subGenres: subGenreDefs.length ? subGenreDefs : null
     });
     const merged = ensureMarkersBeforeSave(e.target.value, block);
     setRawStoryText(merged);
@@ -1307,10 +1392,20 @@ export default function DashboardLayout() {
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
       genreLabel: genreLabel || null,
       genreDef: genreDef || null,
+      subGenres: subGenreDefs.length ? subGenreDefs : null,
     });
 
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreDefs]);
+
+  // Handle sub-genre toggle (add/remove from array)
+  const handleSubGenreToggle = (value: string) => {
+    setSubGenres(prev => 
+      prev.includes(value) 
+        ? prev.filter(v => v !== value)
+        : [...prev, value]
+    );
+  };
 
   const handleProjectTypeChange = (val: string) => {
     setProjectType(val);
@@ -1483,6 +1578,8 @@ export default function DashboardLayout() {
               onProjectTypeChange={handleProjectTypeChange}
               genre={genre}
               onGenreChange={setGenre}
+              subGenres={subGenres}
+              onSubGenreToggle={handleSubGenreToggle}
             />
           </div>
           
@@ -1868,6 +1965,8 @@ export default function DashboardLayout() {
                   onProjectTypeChange={handleProjectTypeChange}
                   genre={genre}
                   onGenreChange={setGenre}
+                  subGenres={subGenres}
+                  onSubGenreToggle={handleSubGenreToggle}
                 />
               </div>
             </div>
