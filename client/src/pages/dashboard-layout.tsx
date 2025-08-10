@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useLocation } from "wouter";
 import { upsertStoryTitleInText } from '@/lib/storyTitleUpsert';
 import { Card } from "@/components/ui/card";
@@ -1092,15 +1092,83 @@ export default function DashboardLayout() {
   // Project name state for live-sync with Story Builder
   const [projectName, setProjectName] = useState('');
   
+  // --- StoryXcel Overview block control ---
+  const SX_START = '// STORYXCEL_OVERVIEW_START';
+  const SX_END   = '// STORYXCEL_OVERVIEW_END';
+
   // --- NEW STATE ---
   const [projectType, setProjectType] = useState<string>('');
   const [lengthModalOpen, setLengthModalOpen] = useState(false);
   const [lengthPages, setLengthPages] = useState<number | ''>('');
   const [lengthMinutes, setLengthMinutes] = useState<number | ''>('');
-  const storyTextRef = useRef<HTMLTextAreaElement | null>(null);
   
+  // state that stores the authoritative raw text (with hidden markers)
+  const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
+  
+  // derived text shown to the user (no markers)
+  const displayText = useMemo(() => stripOverviewMarkers(rawStoryText), [rawStoryText]);
+
+  function stripOverviewMarkers(text: string) {
+    // what the user sees in the textarea (markers removed)
+    return text
+      .split('\n')
+      .filter(line => line.trim() !== SX_START && line.trim() !== SX_END)
+      .join('\n');
+  }
+
+  function buildOverviewBlock(opts: {
+    title?: string;
+    projectType?: string; // e.g., "Screenplay"
+    pages?: number | null;
+    minutes?: number | null;
+  }) {
+    const { title, projectType, pages, minutes } = opts;
+
+    // SINGLE title line only — never duplicate
+    const lines: string[] = [];
+    if (title?.trim()) lines.push(`Story Title — ${title.trim()}`);
+
+    // Project Type line (only when we have a type)
+    if (projectType) {
+      const parts: string[] = [projectType];
+      if (typeof pages === 'number')   parts.push(`${pages} pages`);
+      if (typeof minutes === 'number') parts.push(`${minutes} mins`);
+      lines.push(`Project Type — ${parts.join(' / ')}`);
+    }
+
+    return [SX_START, ...lines, SX_END].join('\n');
+  }
+
+  function upsertOverviewBlock(rawText: string, block: string) {
+    const startIdx = rawText.indexOf(SX_START);
+    const endIdx = rawText.indexOf(SX_END);
+
+    if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+      // replace current block
+      const before = rawText.slice(0, startIdx);
+      const after  = rawText.slice(endIdx + SX_END.length);
+      // ensure we keep neat spacing around the block
+      return `${before.trimEnd()}\n${block}\n${after.trimStart()}`;
+    }
+    // no markers yet — inject at top
+    return `${block}\n\n${rawText}`.trimEnd();
+  }
+
+  /** Reinsert markers before persisting, in case user removed them */
+  function ensureMarkersBeforeSave(displayText: string, currentOverviewBlock: string) {
+    // If display already contains the block lines (without markers), we still write the
+    // official block (with markers) on top and then the user text below (sans the block),
+    // to avoid duplication.
+    const withoutBlock = displayText
+      .split('\n')
+      .filter(l => !l.startsWith('Story Title —') && !l.startsWith('Project Type —'))
+      .join('\n')
+      .trimStart();
+
+    return `${currentOverviewBlock}\n\n${withoutBlock}`.trimEnd();
+  }
+
   // Determine active tab from current route
-  // Presets (pages/minutes)
   const LENGTH_PRESETS: Record<string, Array<{label:string; pages:number; mins:number}>> = {
     Worldbuilding: [{ label: 'N/A', pages: 0, mins: 0 }],
     Novel: [
@@ -1119,33 +1187,10 @@ export default function DashboardLayout() {
     ],
   };
 
-  function patchOverviewHeaderProjectType(text: string, type: string, pages: number | '', mins: number | '') {
-    const START = '// STORYXCEL_OVERVIEW_START';
-    const END   = '// STORYXCEL_OVERVIEW_END';
-    if (!text.includes(START) || !text.includes(END)) return text;
-
-    const [before, rest] = text.split(START);
-    const [overview, after] = rest.split(END);
-
-    const ptLineRegex = /^Project Type\s*—.*$/m;
-    const line = `Project Type — ${type}${pages ? ` / ${pages} pages` : ''}${mins ? ` / ${mins} mins` : ''}`;
-
-    let newOverview = overview;
-    newOverview = ptLineRegex.test(overview)
-      ? overview.replace(ptLineRegex, line)
-      : overview.replace(/^(Story Title.*\n)/m, `$1${line}\n`);
-
-    return `${before}${START}${newOverview}${END}${after ?? ''}`;
-  }
-
   function applyProjectTypeToBuilder(type: string, pages: number | '', mins: number | '') {
-    const el = storyTextRef.current;
-    if (!el) return;
-    const updated = patchOverviewHeaderProjectType(el.value ?? '', type, pages, mins);
-    if (updated !== el.value) {
-      el.value = updated;
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }
+    setProjectType(type);
+    setLengthPages(pages);
+    setLengthMinutes(mins);
   }
 
   const getActiveTab = () => {
@@ -1159,6 +1204,32 @@ export default function DashboardLayout() {
   const handleTabChange = (tabId: string) => {
     navigate(`/builder/${tabId}`);
   };
+
+  // on type, update ONLY the "display" portion; we'll reinsert markers on save
+  const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // we keep the current overview block we last computed
+    const block = buildOverviewBlock({ 
+      title: projectName, 
+      projectType, 
+      pages: typeof lengthPages === 'number' ? lengthPages : null, 
+      minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null 
+    });
+    const merged = ensureMarkersBeforeSave(e.target.value, block);
+    setRawStoryText(merged);
+  };
+
+  // Keep the overview single-title and invisible markers during updates
+  useEffect(() => {
+    // whenever any overview field changes, rebuild the block and upsert into raw
+    const newBlock = buildOverviewBlock({
+      title: projectName || '',
+      projectType: projectType || undefined,
+      pages: typeof lengthPages === 'number' ? lengthPages : null,
+      minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
+    });
+
+    setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
+  }, [projectName, projectType, lengthPages, lengthMinutes]);
 
   const handleProjectTypeChange = (val: string) => {
     setProjectType(val);
@@ -1215,16 +1286,7 @@ export default function DashboardLayout() {
   };
 
   // Live-sync project name to Story Builder textarea
-  useEffect(() => {
-    const el = document.querySelector<HTMLTextAreaElement>('textarea[data-story-builder]');
-    if (!el) return;
 
-    const next = upsertStoryTitleInText(el.value || '', projectName || '');
-    if (next !== el.value) {
-      // Preserve undo stack in most browsers by assigning .value (not innerText)
-      el.value = next;
-    }
-  }, [projectName]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1540,16 +1602,11 @@ export default function DashboardLayout() {
                           {/* Document Content */}
                           <div className="flex-1 p-8">
                             <Textarea
-                              ref={storyTextRef}
                               data-story-builder
+                              value={displayText}
+                              onChange={onChangeDisplay}
                               className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
                               placeholder="Start writing your story here..."
-                              defaultValue={`// STORYXCEL_OVERVIEW_START
-Story Title — 
-
-// STORYXCEL_OVERVIEW_END
-
-Your story begins here...`}
                               style={{ 
                                 fontSize: '14px',
                                 lineHeight: '1.6',

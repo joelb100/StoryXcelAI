@@ -1,0 +1,63 @@
+// --- StoryXcel Overview block control ---
+const SX_START = '// STORYXCEL_OVERVIEW_START';
+const SX_END   = '// STORYXCEL_OVERVIEW_END';
+
+function stripOverviewMarkers(text: string) {
+  // what the user sees in the textarea (markers removed)
+  return text
+    .split('\n')
+    .filter(line => line.trim() !== SX_START && line.trim() !== SX_END)
+    .join('\n');
+}
+
+function buildOverviewBlock(opts: {
+  title?: string;
+  projectType?: string; // e.g., "Screenplay"
+  pages?: number | null;
+  minutes?: number | null;
+}) {
+  const { title, projectType, pages, minutes } = opts;
+
+  // SINGLE title line only — never duplicate
+  const lines: string[] = [];
+  if (title?.trim()) lines.push(`Story Title — ${title.trim()}`);
+
+  // Project Type line (only when we have a type)
+  if (projectType) {
+    const parts: string[] = [projectType];
+    if (typeof pages === 'number')   parts.push(`${pages} pages`);
+    if (typeof minutes === 'number') parts.push(`${minutes} mins`);
+    lines.push(`Project Type — ${parts.join(' / ')}`);
+  }
+
+  return [SX_START, ...lines, SX_END].join('\n');
+}
+
+function upsertOverviewBlock(rawText: string, block: string) {
+  const startIdx = rawText.indexOf(SX_START);
+  const endIdx = rawText.indexOf(SX_END);
+
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    // replace current block
+    const before = rawText.slice(0, startIdx);
+    const after  = rawText.slice(endIdx + SX_END.length);
+    // ensure we keep neat spacing around the block
+    return `${before.trimEnd()}\n${block}\n${after.trimStart()}`;
+  }
+  // no markers yet — inject at top
+  return `${block}\n\n${rawText}`.trimEnd();
+}
+
+/** Reinsert markers before persisting, in case user removed them */
+function ensureMarkersBeforeSave(displayText: string, currentOverviewBlock: string) {
+  // If display already contains the block lines (without markers), we still write the
+  // official block (with markers) on top and then the user text below (sans the block),
+  // to avoid duplication.
+  const withoutBlock = displayText
+    .split('\n')
+    .filter(l => !l.startsWith('Story Title —') && !l.startsWith('Project Type —'))
+    .join('\n')
+    .trimStart();
+
+  return `${currentOverviewBlock}\n\n${withoutBlock}`.trimEnd();
+}
