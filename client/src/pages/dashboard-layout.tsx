@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { upsertStoryTitleInText } from '@/lib/storyTitleUpsert';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -480,7 +481,15 @@ const IconSidebar = ({
 );
 
 // Left Content Sidebar Component - Purple from grid (Columns 4-7)
-const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
+const LeftSidebar = ({ 
+  activeTab, 
+  projectName, 
+  onProjectNameChange 
+}: { 
+  activeTab: string;
+  projectName?: string;
+  onProjectNameChange?: (value: string) => void;
+}) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
       // Story Overview with structured elements
@@ -498,6 +507,8 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
             <Input
               id="story-projectName"
               type="text"
+              value={projectName ?? ''}
+              onChange={(e) => onProjectNameChange?.(e.target.value)}
               placeholder="Enter project name..."
               className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
             />
@@ -1074,6 +1085,8 @@ export default function DashboardLayout() {
   // Story tab specific panel states (default both open as shown in first image)
   const [isFriendsListOpen, setIsFriendsListOpen] = useState(true);
   const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(true);
+  // Project name state for live-sync with Story Builder
+  const [projectName, setProjectName] = useState('');
   
   // Determine active tab from current route
   const getActiveTab = () => {
@@ -1120,6 +1133,18 @@ export default function DashboardLayout() {
       return "I'm here to help with your creative project! I can assist with character development, plot structure, dialogue, world building, and more. What specific aspect would you like to explore?";
     }
   };
+
+  // Live-sync project name to Story Builder textarea
+  useEffect(() => {
+    const el = document.querySelector<HTMLTextAreaElement>('textarea[data-story-builder]');
+    if (!el) return;
+
+    const next = upsertStoryTitleInText(el.value || '', projectName || '');
+    if (next !== el.value) {
+      // Preserve undo stack in most browsers by assigning .value (not innerText)
+      el.value = next;
+    }
+  }, [projectName]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1228,7 +1253,11 @@ export default function DashboardLayout() {
           
           {/* Left Content Sidebar - Columns 2-5 */}
           <div className="col-span-4">
-            <LeftSidebar activeTab={activeTab} />
+            <LeftSidebar 
+              activeTab={activeTab}
+              projectName={projectName}
+              onProjectNameChange={setProjectName}
+            />
           </div>
           
           {/* Main Content - Dashboard fixed, Story tab dynamic, other tabs static */}
@@ -1430,6 +1459,7 @@ export default function DashboardLayout() {
                           {/* Document Content */}
                           <div className="flex-1 p-8">
                             <Textarea
+                              data-story-builder
                               className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
                               placeholder="Start writing your story here..."
                               style={{ 
@@ -1603,7 +1633,11 @@ export default function DashboardLayout() {
                   setAccountMenuOpen={setAccountMenuOpen}
                   onSignOut={handleSignOut}
                 />
-                <LeftSidebar activeTab={activeTab} />
+                <LeftSidebar 
+                  activeTab={activeTab}
+                  projectName={projectName}
+                  onProjectNameChange={setProjectName}
+                />
               </div>
             </div>
           </div>
