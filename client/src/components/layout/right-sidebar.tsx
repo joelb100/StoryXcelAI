@@ -5,28 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { 
   Lightbulb, 
-  UserPlus,
-  MessageCircle,
-  Github,
-  Youtube,
-  Twitter,
-  Palette,
-  Figma,
-  Gamepad
+  UserPlus
 } from "lucide-react";
-import { FaDiscord } from "react-icons/fa";
 import type { FriendWithUser } from "@shared/schema";
 
-const utilityLinks = [
-  { icon: FaDiscord, bgClass: "bg-blue-500 hover:bg-blue-600", name: "Discord" },
-  { icon: FaDiscord, bgClass: "bg-indigo-600 hover:bg-indigo-700", name: "Discord Alt" },
-  { icon: Github, bgClass: "bg-gray-800 hover:bg-gray-900", name: "GitHub" },
-  { icon: Youtube, bgClass: "bg-red-600 hover:bg-red-700", name: "YouTube" },
-  { icon: Twitter, bgClass: "bg-blue-400 hover:bg-blue-500", name: "Twitter" },
-  { icon: Palette, bgClass: "bg-gray-700 hover:bg-gray-800", name: "Design Tools" },
-  { icon: Figma, bgClass: "bg-purple-600 hover:bg-purple-700", name: "Figma" },
-  { icon: Gamepad, bgClass: "bg-gray-900 hover:bg-black", name: "Gaming" },
-];
+
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
@@ -41,11 +24,7 @@ const getStatusText = (status: string) => {
   return status.charAt(0).toUpperCase() + status.slice(1);
 };
 
-type RightSidebarProps = {
-  showSiteLinks?: boolean; // default true keeps dashboard behavior
-};
-
-export default function RightSidebar({ showSiteLinks = false }: RightSidebarProps) {
+export default function RightSidebar() {
   // Mock friends data for demo
   const mockFriends: FriendWithUser[] = [
     {
@@ -209,32 +188,7 @@ export default function RightSidebar({ showSiteLinks = false }: RightSidebarProp
         </Button>
       </div>
 
-      {/* Utility Links Section - conditionally rendered */}
-      {showSiteLinks && (
-        <div className="border-t border-slate-600 pt-4">
-          <h3 className="font-semibold text-lg mb-4 text-white">Site Links</h3>
-          <div className="grid grid-cols-4 gap-3">
-            {utilityLinks.map((link, index) => (
-              <div
-                key={index}
-                className={`${link.bgClass} rounded-lg p-3 flex items-center justify-center transition-colors cursor-pointer`}
-                title={link.name}
-              >
-                <link.icon className="text-white text-xl" />
-              </div>
-            ))}
-          </div>
-          
-          <Card className="mt-4 p-3 border-dashed border-2 bg-slate-600 border-slate-500">
-            <div className="text-center">
-              <MessageCircle className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <p className="text-xs text-slate-400">
-                More integrations coming soon
-              </p>
-            </div>
-          </Card>
-        </div>
-      )}
+
     </aside>
   );
 }
