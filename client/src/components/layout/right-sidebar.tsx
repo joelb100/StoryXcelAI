@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -109,11 +109,9 @@ export default function RightSidebar() {
     }
   ];
 
-  const { data: friends, isLoading: friendsLoading } = useQuery<FriendWithUser[]>({
-    queryKey: ["/api/friends"],
-    retry: false,
-    placeholderData: mockFriends,
-  });
+  // Use mock friends data directly for consistent display like Dashboard
+  const friends = mockFriends;
+  const friendsLoading = false;
 
   // Mock online status for demo (in production, this would come from real-time data)
   const mockFriendStatuses = ['online', 'offline', 'away', 'online', 'busy'];
