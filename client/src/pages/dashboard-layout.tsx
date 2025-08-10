@@ -1478,49 +1478,26 @@ export default function DashboardLayout() {
             <div className="col-span-3 relative z-40">
               <RightSidebar showSiteLinks={true} />
             </div>
-          ) : null}
+          ) : (
+            activeTab === 'story' && (isFriendsListOpen || isSiteLinksOpen) && (
+              <div className="col-span-3 relative z-40">
+                <div className="h-full flex flex-col" style={{ width: '280px' }}>
+                  {/* FRIENDS LIST (top, fills available space) */}
+                  <div className={`flex-1 overflow-y-auto transition-transform duration-300 ${
+                    isFriendsListOpen ? 'translate-x-0' : 'translate-x-full'
+                  }`}>
+                    <RightSidebar />
+                  </div>
 
-          {/* RIGHT RAIL: Friends (top) + Site Links (bottom) stacked in ONE column */}
-          {activeTab !== 'dashboard' && (isFriendsListOpen || isSiteLinksOpen) && (
-            <div className="col-span-3 overflow-hidden transition-all duration-300">
-              {/* Slide container: when both closed, don't render this column at all (above) */}
-              <div
-                className={`
-                  h-full flex flex-col transition-transform duration-300
-                  ${isFriendsListOpen || isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'}
-                `}
-                style={{ width: 280 }}
-              >
-                {/* FRIENDS LIST (top) — flex-1, scrollable */}
-                {isFriendsListOpen && (
-                  <section
-                    className={`
-                      flex-1 overflow-y-auto
-                      bg-slate-700 text-white
-                    `}
-                  >
-                    <RightSidebar /> {/* existing Friends content */}
-                  </section>
-                )}
-
-                {/* Divider (same as Dashboard hairline) */}
-                {isFriendsListOpen && isSiteLinksOpen && (
-                  <div className="h-px bg-slate-600/40" />
-                )}
-
-                {/* SITE LINKS (bottom) — only one instance, NOT inside friends */}
-                {isSiteLinksOpen && (
-                  <section
-                    className={`
-                      shrink-0
-                      bg-slate-700 text-white
-                    `}
-                  >
-                    <SiteLinksSidebar /> {/* existing Site Links grid */}
-                  </section>
-                )}
+                  {/* SITE LINKS (bottom, fixed height) */}
+                  <div className={`transition-transform duration-300 border-t border-slate-600 ${
+                    isSiteLinksOpen ? 'translate-x-0' : 'translate-x-full'
+                  }`} style={{ height: '240px' }}>
+                    <SiteLinksSidebar />
+                  </div>
+                </div>
               </div>
-            </div>
+            )
           )}
           
           {/* Right Icon Sidebar - Always visible */}
