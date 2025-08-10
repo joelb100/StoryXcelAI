@@ -809,22 +809,10 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
   </div>
 );
 
-// Site Links Sidebar Component - Purple panel showing site links
+// Site Links Sidebar Component - Purple panel (now empty to match Dashboard look)
 const SiteLinksSidebar = () => (
-  <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#29415d' }}>
-    <h3 className="text-white text-sm font-semibold mb-4">Site Links</h3>
-    
-    {/* Grid of circular icons as shown in purple panel */}
-    <div className="grid grid-cols-4 gap-2">
-      {Array.from({ length: 16 }, (_, index) => (
-        <div
-          key={index}
-          className="w-8 h-8 rounded-full bg-slate-600 hover:bg-slate-500 cursor-pointer flex items-center justify-center"
-        >
-          <div className="w-4 h-4 bg-slate-400 rounded-full"></div>
-        </div>
-      ))}
-    </div>
+  <div className="h-full border-l border-slate-600 overflow-y-auto" style={{ backgroundColor: '#29415d' }}>
+    {/* Empty panel to maintain layout consistency */}
   </div>
 );
 
