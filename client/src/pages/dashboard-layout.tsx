@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
+import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -949,24 +950,20 @@ const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }:
 // Dashboard Right Content Sidebar Component - Yellow from grid (Columns 24-26)
 const DashboardRightSidebar = () => (
   <div className="h-full border-l border-slate-500 flex flex-col" style={{ backgroundColor: '#47566b' }}>
-    {/* Friends List */}
-    <div className="p-4 flex-1">
-      <h3 className="text-sm font-semibold text-white mb-4">Friends List</h3>
-      <div className="space-y-2">
-        {friendsList.map((friendName, index) => (
-          <div key={index} className="flex items-center space-x-3 p-2 rounded hover:bg-slate-500 cursor-pointer">
-            <div className="relative">
-              <div className="w-8 h-8 bg-slate-400 rounded-full flex items-center justify-center text-sm">
-                {friendName.split(' ').map(n => n[0]).join('')}
-              </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-600 bg-blue-400"></div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{friendName}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+    {/* Friends List using shared component */}
+    <div className="flex-1">
+      <DashboardLookFriendsList
+        friends={friendsList.map((name, idx) => ({
+          id: String(idx),
+          name,
+          initials: name
+            .split(" ")
+            .map(p => p[0])
+            .join("")
+            .slice(0,2)
+        }))}
+        className="border-l-0" // Remove left border since parent has it
+      />
     </div>
 
     {/* Site Links */}
