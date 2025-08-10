@@ -811,19 +811,19 @@ const LeftSidebar = ({ activeTab }: { activeTab: string }) => (
   </div>
 );
 
-// Site Links Sidebar Component - Purple panel showing site links
+// Site Links Sidebar Component - Now matches Dashboard Site Links color
 const SiteLinksSidebar = () => (
-  <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#29415d' }}>
+  <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
     <h3 className="text-white text-sm font-semibold mb-4">Site Links</h3>
     
-    {/* Grid of circular icons as shown in purple panel */}
+    {/* Grid of circular icons matching Dashboard appearance */}
     <div className="grid grid-cols-4 gap-2">
       {Array.from({ length: 16 }, (_, index) => (
         <div
           key={index}
-          className="w-8 h-8 rounded-full bg-slate-600 hover:bg-slate-500 cursor-pointer flex items-center justify-center"
+          className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity cursor-pointer flex items-center justify-center"
+          style={{ backgroundColor: '#47566b' }}
         >
-          <div className="w-4 h-4 bg-slate-400 rounded-full"></div>
         </div>
       ))}
     </div>
