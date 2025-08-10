@@ -968,7 +968,20 @@ const RightSidebar = () => (
       </div>
     </div>
 
-
+    {/* Site Links */}
+    <div className="border-t-2 border-slate-400 p-4" style={{ backgroundColor: '#758595' }}>
+      <h3 className="text-sm font-semibold text-white mb-4">Site Links</h3>
+      <div className="grid grid-cols-4 gap-2">
+        {Array.from({length: 16}, (_, i) => (
+          <button
+            key={i}
+            className="w-10 h-10 rounded-full hover:opacity-80 transition-opacity"
+            style={{ backgroundColor: '#47566b' }}
+          >
+          </button>
+        ))}
+      </div>
+    </div>
   </div>
 );
 
