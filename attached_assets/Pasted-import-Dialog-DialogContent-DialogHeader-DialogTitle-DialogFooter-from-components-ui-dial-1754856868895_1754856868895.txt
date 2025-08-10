@@ -1,0 +1,65 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+<Dialog open={lengthModalOpen} onOpenChange={setLengthModalOpen}>
+  <DialogContent className="sm:max-w-[520px]">
+    <DialogHeader>
+      <DialogTitle>Set length for {projectType}</DialogTitle>
+    </DialogHeader>
+
+    <div className="space-y-4">
+      <RadioGroup
+        onValueChange={(v) => {
+          const [p, m] = v.split("|");
+          setLengthPages(p === '' ? '' : Number(p));
+          setLengthMinutes(m === '' ? '' : Number(m));
+        }}
+        defaultValue={
+          typeof lengthPages === 'number' || typeof lengthMinutes === 'number'
+            ? `${lengthPages || ''}|${lengthMinutes || ''}` : ''
+        }
+      >
+        {(LENGTH_PRESETS[projectType] ?? []).map((opt) => (
+          <div key={opt.label} className="flex items-center space-x-2 rounded-md border p-2">
+            <RadioGroupItem id={opt.label} value={`${opt.pages}|${opt.mins}`} />
+            <Label htmlFor={opt.label}>{opt.label}</Label>
+          </div>
+        ))}
+      </RadioGroup>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label htmlFor="customPages">Custom pages</Label>
+          <Input
+            id="customPages" type="number" min={0} placeholder="e.g., 95"
+            value={lengthPages === '' ? '' : lengthPages}
+            onChange={(e) => setLengthPages(e.target.value === '' ? '' : Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <Label htmlFor="customMins">Custom minutes</Label>
+          <Input
+            id="customMins" type="number" min={0} placeholder="e.g., 95"
+            value={lengthMinutes === '' ? '' : lengthMinutes}
+            onChange={(e) => setLengthMinutes(e.target.value === '' ? '' : Number(e.target.value))}
+          />
+        </div>
+      </div>
+    </div>
+
+    <DialogFooter className="mt-4">
+      <Button variant="outline" onClick={() => setLengthModalOpen(false)}>Cancel</Button>
+      <Button
+        onClick={() => {
+          applyProjectTypeToBuilder(projectType, lengthPages, lengthMinutes);
+          setLengthModalOpen(false);
+        }}
+      >
+        Save
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>

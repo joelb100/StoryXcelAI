@@ -1,0 +1,54 @@
+// --- NEW STATE ---
+const [projectType, setProjectType] = useState<string>('');
+const [lengthModalOpen, setLengthModalOpen] = useState(false);
+const [lengthPages, setLengthPages] = useState<number | ''>('');
+const [lengthMinutes, setLengthMinutes] = useState<number | ''>('');
+const storyTextRef = useRef<HTMLTextAreaElement | null>(null);
+
+// Presets (pages/minutes)
+const LENGTH_PRESETS: Record<string, Array<{label:string; pages:number; mins:number}>> = {
+  Worldbuilding: [{ label: 'N/A', pages: 0, mins: 0 }],
+  Novel: [
+    { label: 'Short (200 pages / n/a)', pages: 200, mins: 0 },
+    { label: 'Standard (300 pages / n/a)', pages: 300, mins: 0 },
+    { label: 'Long (400 pages / n/a)', pages: 400, mins: 0 },
+  ],
+  Script: [
+    { label: 'Half‑hour TV (30 / 30)', pages: 30, mins: 30 },
+    { label: 'Hour TV (60 / 60)', pages: 60, mins: 60 },
+  ],
+  Screenplay: [
+    { label: 'Feature Short (80 / 80)', pages: 80, mins: 80 },
+    { label: 'Feature Standard (100 / 100)', pages: 100, mins: 100 },
+    { label: 'Feature Long (120 / 120)', pages: 120, mins: 120 },
+  ],
+};
+
+function patchOverviewHeaderProjectType(text: string, type: string, pages: number | '', mins: number | '') {
+  const START = '// STORYXCEL_OVERVIEW_START';
+  const END   = '// STORYXCEL_OVERVIEW_END';
+  if (!text.includes(START) || !text.includes(END)) return text;
+
+  const [before, rest] = text.split(START);
+  const [overview, after] = rest.split(END);
+
+  const ptLineRegex = /^Project Type\s*—.*$/m;
+  const line = `Project Type — ${type}${pages ? ` / ${pages} pages` : ''}${mins ? ` / ${mins} mins` : ''}`;
+
+  let newOverview = overview;
+  newOverview = ptLineRegex.test(overview)
+    ? overview.replace(ptLineRegex, line)
+    : overview.replace(/^(Story Title.*\n)/m, `$1${line}\n`);
+
+  return `${before}${START}${newOverview}${END}${after ?? ''}`;
+}
+
+function applyProjectTypeToBuilder(type: string, pages: number | '', mins: number | '') {
+  const el = storyTextRef.current;
+  if (!el) return;
+  const updated = patchOverviewHeaderProjectType(el.value ?? '', type, pages, mins);
+  if (updated !== el.value) {
+    el.value = updated;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+}

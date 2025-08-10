@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { upsertStoryTitleInText } from '@/lib/storyTitleUpsert';
 import { Card } from "@/components/ui/card";
@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
@@ -484,11 +486,13 @@ const IconSidebar = ({
 const LeftSidebar = ({ 
   activeTab, 
   projectName, 
-  onProjectNameChange 
+  onProjectNameChange,
+  onProjectTypeChange
 }: { 
   activeTab: string;
   projectName?: string;
   onProjectNameChange?: (value: string) => void;
+  onProjectTypeChange?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -516,15 +520,15 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-projectType" className="text-sm font-medium text-white block mb-1">Project Type</Label>
-            <Select>
+            <Select onValueChange={onProjectTypeChange}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="worldbuilding" title="Worldbuilding - The process of creating detailed fictional universes, including their cultures, geography, history, and rules.">Worldbuilding</SelectItem>
-                <SelectItem value="novel" title="Novel - A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose.">Novel</SelectItem>
-                <SelectItem value="script" title="Script - A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions.">Script</SelectItem>
-                <SelectItem value="screenplay" title="Screenplay - A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue.">Screenplay</SelectItem>
+                <SelectItem value="Worldbuilding" title="Worldbuilding - The process of creating detailed fictional universes, including their cultures, geography, history, and rules.">Worldbuilding</SelectItem>
+                <SelectItem value="Novel" title="Novel - A long-form narrative work of fiction that explores characters, plots, and themes through descriptive prose.">Novel</SelectItem>
+                <SelectItem value="Script" title="Script - A written blueprint for stage plays, TV shows, or other media, focusing on dialogue and scene directions.">Script</SelectItem>
+                <SelectItem value="Screenplay" title="Screenplay - A formatted script specifically for film or television, detailing visual actions, camera cues, and spoken dialogue.">Screenplay</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1088,7 +1092,62 @@ export default function DashboardLayout() {
   // Project name state for live-sync with Story Builder
   const [projectName, setProjectName] = useState('');
   
+  // --- NEW STATE ---
+  const [projectType, setProjectType] = useState<string>('');
+  const [lengthModalOpen, setLengthModalOpen] = useState(false);
+  const [lengthPages, setLengthPages] = useState<number | ''>('');
+  const [lengthMinutes, setLengthMinutes] = useState<number | ''>('');
+  const storyTextRef = useRef<HTMLTextAreaElement | null>(null);
+  
   // Determine active tab from current route
+  // Presets (pages/minutes)
+  const LENGTH_PRESETS: Record<string, Array<{label:string; pages:number; mins:number}>> = {
+    Worldbuilding: [{ label: 'N/A', pages: 0, mins: 0 }],
+    Novel: [
+      { label: 'Short (200 pages / n/a)', pages: 200, mins: 0 },
+      { label: 'Standard (300 pages / n/a)', pages: 300, mins: 0 },
+      { label: 'Long (400 pages / n/a)', pages: 400, mins: 0 },
+    ],
+    Script: [
+      { label: 'Half‑hour TV (30 / 30)', pages: 30, mins: 30 },
+      { label: 'Hour TV (60 / 60)', pages: 60, mins: 60 },
+    ],
+    Screenplay: [
+      { label: 'Feature Short (80 / 80)', pages: 80, mins: 80 },
+      { label: 'Feature Standard (100 / 100)', pages: 100, mins: 100 },
+      { label: 'Feature Long (120 / 120)', pages: 120, mins: 120 },
+    ],
+  };
+
+  function patchOverviewHeaderProjectType(text: string, type: string, pages: number | '', mins: number | '') {
+    const START = '// STORYXCEL_OVERVIEW_START';
+    const END   = '// STORYXCEL_OVERVIEW_END';
+    if (!text.includes(START) || !text.includes(END)) return text;
+
+    const [before, rest] = text.split(START);
+    const [overview, after] = rest.split(END);
+
+    const ptLineRegex = /^Project Type\s*—.*$/m;
+    const line = `Project Type — ${type}${pages ? ` / ${pages} pages` : ''}${mins ? ` / ${mins} mins` : ''}`;
+
+    let newOverview = overview;
+    newOverview = ptLineRegex.test(overview)
+      ? overview.replace(ptLineRegex, line)
+      : overview.replace(/^(Story Title.*\n)/m, `$1${line}\n`);
+
+    return `${before}${START}${newOverview}${END}${after ?? ''}`;
+  }
+
+  function applyProjectTypeToBuilder(type: string, pages: number | '', mins: number | '') {
+    const el = storyTextRef.current;
+    if (!el) return;
+    const updated = patchOverviewHeaderProjectType(el.value ?? '', type, pages, mins);
+    if (updated !== el.value) {
+      el.value = updated;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
+
   const getActiveTab = () => {
     if (location === '/dashboard') return 'dashboard';
     const match = location.match(/\/builder\/(.+)/);
@@ -1099,6 +1158,27 @@ export default function DashboardLayout() {
 
   const handleTabChange = (tabId: string) => {
     navigate(`/builder/${tabId}`);
+  };
+
+  const handleProjectTypeChange = (val: string) => {
+    setProjectType(val);
+    const presets = LENGTH_PRESETS[val] ?? [];
+
+    if (val === 'Worldbuilding') {
+      // N/A — apply immediately with no modal
+      setLengthPages(0); setLengthMinutes(0);
+      applyProjectTypeToBuilder(val, '', ''); // no pages/mins in header
+      return;
+    }
+
+    // Preselect first preset then open modal
+    if (presets.length) {
+      setLengthPages(presets[0].pages);
+      setLengthMinutes(presets[0].mins);
+    } else {
+      setLengthPages(''); setLengthMinutes('');
+    }
+    setLengthModalOpen(true);
   };
 
   const handleSendMessage = () => {
@@ -1257,6 +1337,7 @@ export default function DashboardLayout() {
               activeTab={activeTab}
               projectName={projectName}
               onProjectNameChange={setProjectName}
+              onProjectTypeChange={handleProjectTypeChange}
             />
           </div>
           
@@ -1459,9 +1540,16 @@ export default function DashboardLayout() {
                           {/* Document Content */}
                           <div className="flex-1 p-8">
                             <Textarea
+                              ref={storyTextRef}
                               data-story-builder
                               className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
                               placeholder="Start writing your story here..."
+                              defaultValue={`// STORYXCEL_OVERVIEW_START
+Story Title — 
+
+// STORYXCEL_OVERVIEW_END
+
+Your story begins here...`}
                               style={{ 
                                 fontSize: '14px',
                                 lineHeight: '1.6',
@@ -1637,6 +1725,7 @@ export default function DashboardLayout() {
                   activeTab={activeTab}
                   projectName={projectName}
                   onProjectNameChange={setProjectName}
+                  onProjectTypeChange={handleProjectTypeChange}
                 />
               </div>
             </div>
@@ -1669,6 +1758,67 @@ export default function DashboardLayout() {
             </div>
           </div>
         )}
+
+        {/* Project Type Length Modal */}
+        <Dialog open={lengthModalOpen} onOpenChange={setLengthModalOpen}>
+          <DialogContent className="sm:max-w-[520px]">
+            <DialogHeader>
+              <DialogTitle>Set length for {projectType}</DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <RadioGroup
+                onValueChange={(v) => {
+                  const [p, m] = v.split("|");
+                  setLengthPages(p === '' ? '' : Number(p));
+                  setLengthMinutes(m === '' ? '' : Number(m));
+                }}
+                defaultValue={
+                  typeof lengthPages === 'number' || typeof lengthMinutes === 'number'
+                    ? `${lengthPages || ''}|${lengthMinutes || ''}` : ''
+                }
+              >
+                {(LENGTH_PRESETS[projectType] ?? []).map((opt) => (
+                  <div key={opt.label} className="flex items-center space-x-2 rounded-md border p-2">
+                    <RadioGroupItem id={opt.label} value={`${opt.pages}|${opt.mins}`} />
+                    <Label htmlFor={opt.label}>{opt.label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="customPages">Custom pages</Label>
+                  <Input
+                    id="customPages" type="number" min={0} placeholder="e.g., 95"
+                    value={lengthPages === '' ? '' : lengthPages}
+                    onChange={(e) => setLengthPages(e.target.value === '' ? '' : Number(e.target.value))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="customMins">Custom minutes</Label>
+                  <Input
+                    id="customMins" type="number" min={0} placeholder="e.g., 95"
+                    value={lengthMinutes === '' ? '' : lengthMinutes}
+                    onChange={(e) => setLengthMinutes(e.target.value === '' ? '' : Number(e.target.value))}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="mt-4">
+              <Button variant="outline" onClick={() => setLengthModalOpen(false)}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  applyProjectTypeToBuilder(projectType, lengthPages, lengthMinutes);
+                  setLengthModalOpen(false);
+                }}
+              >
+                Save
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
