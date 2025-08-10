@@ -491,7 +491,7 @@ const LeftSidebar = ({
   genre,
   onGenreChange,
   subGenres,
-  onSubGenreToggle
+  onSubGenreChange
 }: { 
   activeTab: string;
   projectName?: string;
@@ -500,7 +500,7 @@ const LeftSidebar = ({
   genre?: string;
   onGenreChange?: (value: string) => void;
   subGenres?: string[];
-  onSubGenreToggle?: (value: string) => void;
+  onSubGenreChange?: (values: string[]) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -581,44 +581,43 @@ const LeftSidebar = ({
           </div>
 
           <div>
-            <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
-            <div className="space-y-2 max-h-40 overflow-y-auto bg-slate-600 border border-slate-500 rounded p-2">
+            <label className="block text-slate-200 text-sm mb-2">Sub Genre</label>
+            <select
+              multiple
+              value={subGenres || []}
+              onChange={(e) => {
+                const values = Array.from(e.target.selectedOptions).map(o => o.value);
+                onSubGenreChange?.(values);
+              }}
+              className="w-full h-52 bg-slate-700 text-slate-100 rounded-md border border-slate-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            >
               {[
-                { value: 'acid', label: 'Acid', title: 'Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.' },
-                { value: 'buddy', label: 'Buddy', title: 'Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.' },
-                { value: 'classic', label: 'Classic', title: 'Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.' },
-                { value: 'comedy', label: 'Comedy', title: 'Stories designed to entertain and amuse through humor, wit, and exaggerated situations.' },
-                { value: 'contemporary', label: 'Contemporary', title: 'Set in the present day, focusing on modern societal issues, relationships, or environments.' },
-                { value: 'family', label: 'Family', title: 'Themes of familial bonds, responsibilities, and conflicts are central to the plot.' },
-                { value: 'feminist', label: 'Feminist', title: 'Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.' },
-                { value: 'gunslinger', label: 'Gunslinger', title: 'Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.' },
-                { value: 'historical', label: 'Historical', title: 'Set in a specific historical era, emphasizing period-accurate settings, characters, and events.' },
-                { value: 'horror', label: 'Horror', title: 'Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.' },
-                { value: 'martial-arts', label: 'Martial Arts', title: 'Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.' },
-                { value: 'musical', label: 'Musical', title: 'Integrates songs and dance as a primary method of storytelling and emotional expression.' },
-                { value: 'noir', label: 'Noir', title: 'Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.' },
-                { value: 'psychological', label: 'Psychological', title: 'Explores the inner workings of characters\' minds, delving into mental struggles, paranoia, or psychological manipulation.' },
-                { value: 'railroad', label: 'Railroad', title: 'Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.' },
-                { value: 'revisionist', label: 'Revisionist', title: 'Reinterprets established genres or historical events by challenging traditional perspectives or myths.' },
-                { value: 'sci-fi', label: 'Sci Fi', title: 'Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.' },
-                { value: 'southern-gothic', label: 'Southern Gothic', title: 'Combines Gothic elements with the American South\'s decayed grandeur, eccentric characters, and dark social themes.' },
-                { value: 'spaghetti', label: 'Spaghetti', title: 'A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.' },
-                { value: 'survival', label: 'Survival', title: 'Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.' }
-              ].map(option => (
-                <div key={option.value} className="flex items-center space-x-2" title={option.title}>
-                  <input
-                    type="checkbox"
-                    id={`subgenre-${option.value}`}
-                    checked={subGenres?.includes(option.value) ?? false}
-                    onChange={() => onSubGenreToggle?.(option.value)}
-                    className="rounded border-slate-400 bg-slate-700 text-teal-500 focus:ring-teal-500"
-                  />
-                  <label htmlFor={`subgenre-${option.value}`} className="text-sm text-white cursor-pointer">
-                    {option.label}
-                  </label>
-                </div>
+                { value: 'acid', label: 'Acid' },
+                { value: 'buddy', label: 'Buddy' },
+                { value: 'classic', label: 'Classic' },
+                { value: 'comedy', label: 'Comedy' },
+                { value: 'contemporary', label: 'Contemporary' },
+                { value: 'family', label: 'Family' },
+                { value: 'feminist', label: 'Feminist' },
+                { value: 'gunslinger', label: 'Gunslinger' },
+                { value: 'historical', label: 'Historical' },
+                { value: 'horror', label: 'Horror' },
+                { value: 'martial-arts', label: 'Martial Arts' },
+                { value: 'musical', label: 'Musical' },
+                { value: 'noir', label: 'Noir' },
+                { value: 'psychological', label: 'Psychological' },
+                { value: 'railroad', label: 'Railroad' },
+                { value: 'revisionist', label: 'Revisionist' },
+                { value: 'sci-fi', label: 'Sci Fi' },
+                { value: 'southern-gothic', label: 'Southern Gothic' },
+                { value: 'spaghetti', label: 'Spaghetti' },
+                { value: 'survival', label: 'Survival' }
+              ].map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
 
           <div>
@@ -1223,6 +1222,30 @@ export default function DashboardLayout() {
     'spaghetti': 'Spaghetti',
     'survival': 'Survival'
   };
+
+  // Sub-Genre options for the multi-select
+  const SUBGENRE_OPTIONS = [
+    { value: 'acid', label: 'Acid' },
+    { value: 'buddy', label: 'Buddy' },
+    { value: 'classic', label: 'Classic' },
+    { value: 'comedy', label: 'Comedy' },
+    { value: 'contemporary', label: 'Contemporary' },
+    { value: 'family', label: 'Family' },
+    { value: 'feminist', label: 'Feminist' },
+    { value: 'gunslinger', label: 'Gunslinger' },
+    { value: 'historical', label: 'Historical' },
+    { value: 'horror', label: 'Horror' },
+    { value: 'martial-arts', label: 'Martial Arts' },
+    { value: 'musical', label: 'Musical' },
+    { value: 'noir', label: 'Noir' },
+    { value: 'psychological', label: 'Psychological' },
+    { value: 'railroad', label: 'Railroad' },
+    { value: 'revisionist', label: 'Revisionist' },
+    { value: 'sci-fi', label: 'Sci Fi' },
+    { value: 'southern-gothic', label: 'Southern Gothic' },
+    { value: 'spaghetti', label: 'Spaghetti' },
+    { value: 'survival', label: 'Survival' }
+  ];
   
   // state that stores the authoritative raw text (with hidden markers)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
@@ -1398,13 +1421,9 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreDefs]);
 
-  // Handle sub-genre toggle (add/remove from array)
-  const handleSubGenreToggle = (value: string) => {
-    setSubGenres(prev => 
-      prev.includes(value) 
-        ? prev.filter(v => v !== value)
-        : [...prev, value]
-    );
+  // Handle sub-genre change (set entire array)
+  const handleSubGenreChange = (values: string[]) => {
+    setSubGenres(values);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -1579,7 +1598,7 @@ export default function DashboardLayout() {
               genre={genre}
               onGenreChange={setGenre}
               subGenres={subGenres}
-              onSubGenreToggle={handleSubGenreToggle}
+              onSubGenreChange={handleSubGenreChange}
             />
           </div>
           
@@ -1966,7 +1985,7 @@ export default function DashboardLayout() {
                   genre={genre}
                   onGenreChange={setGenre}
                   subGenres={subGenres}
-                  onSubGenreToggle={handleSubGenreToggle}
+                  onSubGenreChange={handleSubGenreChange}
                 />
               </div>
             </div>
