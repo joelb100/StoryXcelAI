@@ -309,15 +309,8 @@ function insertOrReplaceConflictBlock(conflictKey: string) {
   const block = renderConflictHTML(conflictKey);
   if (!block) return;
 
-  const OVERVIEW_END = '<span class="sx-hidden" data-sx-marker="overview-end"></span>';
-  const ovEndIdx = html.indexOf(OVERVIEW_END);
-
-  if (ovEndIdx !== -1) {
-    const insertPos = ovEndIdx + OVERVIEW_END.length;
-    html = html.slice(0, insertPos) + '\n' + block + '\n' + html.slice(insertPos);
-  } else {
-    html = block + '\n' + html;
-  }
+  // Always insert at the very top of the editor content
+  html = block + '\n' + html;
 
   editor.innerHTML = html;
 }
