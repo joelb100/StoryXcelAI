@@ -739,86 +739,70 @@ const LeftSidebar = ({
                   <SelectValue placeholder="Select Central Conflict" />
                 </SelectTrigger>
                 <SelectContent className="max-h-[280px]">
-                  <SelectItem value="man-vs-man">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. [Wo]Man</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. [Wo]Man']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-nature">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. Nature</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Nature']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-environment">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. the Environment</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Environment']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-machines">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. Machines / Technology</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Machines / Technology']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-supernatural">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. the Supernatural</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Supernatural']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-self">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. Self</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Self']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-god">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. God / Religion</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. God / Religion']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
-                  <SelectItem value="man-vs-society">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex w-full items-center">[Wo]Man vs. Society</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
-                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Society']}
-                      </TooltipContent>
-                    </Tooltip>
-                  </SelectItem>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-man">[Wo]Man vs. [Wo]Man</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. [Wo]Man']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-nature">[Wo]Man vs. Nature</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Nature']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-environment">[Wo]Man vs. the Environment</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Environment']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-machines">[Wo]Man vs. Machines / Technology</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Machines / Technology']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-supernatural">[Wo]Man vs. the Supernatural</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Supernatural']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-self">[Wo]Man vs. Self</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Self']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-god">[Wo]Man vs. God / Religion</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. God / Religion']}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <SelectItem value="man-vs-society">[Wo]Man vs. Society</SelectItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
+                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Society']}
+                    </TooltipContent>
+                  </Tooltip>
                 </SelectContent>
               </Select>
             </TooltipProvider>
