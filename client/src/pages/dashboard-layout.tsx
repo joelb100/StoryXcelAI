@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
-import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
+import RichEditor from '@/components/editor/RichEditor';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -70,9 +70,11 @@ import {
   Bell
 } from "lucide-react";
 
-// ----- Conflict templates and DOM manipulation -----
-const CONFLICT_START = '<!-- STORYXCEL_CONFLICT_START -->';
-const CONFLICT_END   = '<!-- STORYXCEL_CONFLICT_END -->';
+// ----- Editor section markers -----
+const OVERVIEW_START = '<!-- STORYXCEL_OVERVIEW_START -->';
+const OVERVIEW_END   = '<!-- STORYXCEL_OVERVIEW_END -->';
+const BEATS_START    = '<!-- STORYXCEL_BEATS_START -->';
+const BEATS_END      = '<!-- STORYXCEL_BEATS_END -->';
 
 type ConflictBlock = {
   plotA: string[];
@@ -269,16 +271,78 @@ const CONFLICT_TEMPLATES: Record<string, ConflictBlock> = {
   }
 };
 
-function renderConflictHTML(key: string) {
-  const t = CONFLICT_TEMPLATES[key];
+// Helper to strip any old blocks
+function stripBlock(html: string, start: string, end: string) {
+  const s = html.indexOf(start);
+  const e = html.indexOf(end);
+  if (s !== -1 && e !== -1 && e > s) {
+    return html.slice(0, s) + html.slice(e + end.length);
+  }
+  return html;
+}
+
+// Build Overview HTML from form state
+function buildOverviewHTML(formState: {
+  projectName: string;
+  projectType: string;
+  genre: string;
+  subGenre: string;
+  theme: string;
+  subTheme: string;
+  centralConflict: string;
+  lengthPages: string | number;
+  lengthMinutes: string | number;
+}) {
+  const { projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes } = formState;
+  
+  let html = '';
+  
+  if (projectName) {
+    html += `<p><strong>Story Title —</strong> ${projectName}</p>`;
+  }
+  
+  if (projectType) {
+    const lengthText = projectType !== 'Worldbuilding' && (lengthPages || lengthMinutes)
+      ? ` / ${lengthPages} pages / ${lengthMinutes} mins`
+      : '';
+    html += `<p><strong>Project Type —</strong> ${projectType}${lengthText}</p>`;
+  }
+  
+  if (genre) {
+    html += `<p><strong>Genre —</strong> ${genre}</p>`;
+  }
+  
+  if (subGenre) {
+    html += `<p><strong>Sub Genre —</strong> ${subGenre}</p>`;
+  }
+  
+  if (theme) {
+    html += `<p><strong>Theme —</strong> ${theme}</p>`;
+  }
+  
+  if (subTheme) {
+    html += `<p><strong>Sub Theme —</strong> ${subTheme}</p>`;
+  }
+  
+  if (centralConflict) {
+    const conflictOption = CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict);
+    const label = conflictOption?.label || centralConflict;
+    html += `<p><strong>Central Conflict —</strong> ${label}</p>`;
+  }
+  
+  return html;
+}
+
+// Build Story Beats HTML from conflict key
+function buildBeatsHTML(conflictKey: string) {
+  const t = CONFLICT_TEMPLATES[conflictKey];
   if (!t) return '';
 
   const toUL = (items: string[]) =>
     `<ul style="margin:4px 0 12px 18px; padding:0;">${items.map(li => `<li>${li}</li>`).join('')}</ul>`;
 
   return (
-    `${CONFLICT_START}
-<strong>Story Beats</strong><br/>
+    `<strong>Story Beats</strong><br/>
 <strong>Plot A —</strong> The high level description of the story's key sequential events of the main story
 ${toUL(t.plotA)}
 <strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships
@@ -288,38 +352,47 @@ ${toUL(t.plotC)}
 <strong>Plot Twists —</strong>
 ${toUL(t.twists)}
 <strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings
-${toUL(t.hook)}
-${CONFLICT_END}`
+${toUL(t.hook)}`
   );
 }
 
-function insertOrReplaceConflictBlock(conflictKey: string) {
-  const editor = document.getElementById('story-editor') as HTMLElement | null;
+// Single function that composes the editor content with the correct order
+function updateEditorSections(overviewHTML: string, beatsHTML: string, storyHtml: string, setStoryHtml: (html: string) => void) {
+  const editor = document.querySelector('#story-editor .ql-editor') as HTMLElement | null;
   if (!editor) return;
 
+  // Get current HTML from Quill
   let html = editor.innerHTML;
 
-  // Strip any existing conflict block (prevents duplicates)
-  const startIdx = html.indexOf(CONFLICT_START);
-  const endIdx   = html.indexOf(CONFLICT_END);
-  if (startIdx !== -1 && endIdx !== -1) {
-    html = html.slice(0, startIdx) + html.slice(endIdx + CONFLICT_END.length);
-  }
+  // Remove any existing Overview/Beats blocks (prevents duplicates)
+  html = stripBlock(html, OVERVIEW_START, OVERVIEW_END);
+  html = stripBlock(html, BEATS_START, BEATS_END);
 
-  const block = renderConflictHTML(conflictKey);
-  if (!block) return;
+  // Build fresh blocks (both are NORMAL editable HTML)
+  const overviewBlock = overviewHTML ? `${OVERVIEW_START}
+<div class="stx-overview">
+  ${overviewHTML}
+</div>
+${OVERVIEW_END}` : '';
 
-  const OVERVIEW_END = '<span class="sx-hidden" data-sx-marker="overview-end"></span>';
-  const ovEndIdx = html.indexOf(OVERVIEW_END);
+  const beatsBlock = beatsHTML ? `${BEATS_START}
+<div class="stx-beats">
+  ${beatsHTML}
+</div>
+${BEATS_END}` : '';
 
-  if (ovEndIdx !== -1) {
-    const insertPos = ovEndIdx + OVERVIEW_END.length;
-    html = html.slice(0, insertPos) + '\n' + block + '\n' + html.slice(insertPos);
-  } else {
-    html = block + '\n' + html;
-  }
+  // Ensure OVERVIEW is on top, BEATS directly beneath it, then the remainder
+  // If editor is otherwise empty, keep a friendly "Your story begins here..." paragraph after the two blocks.
+  const remainder = html.trim().length ? html : `<p>Your story begins here...</p>`;
 
-  editor.innerHTML = html;
+  const composed = [
+    overviewBlock,
+    beatsBlock,
+    remainder
+  ].filter(Boolean).join('\n\n');
+
+  editor.innerHTML = composed;
+  setStoryHtml(composed);
 }
 
 // Import logo and components
@@ -1970,6 +2043,10 @@ export default function DashboardLayout() {
 
   // Central Conflict state and last applied tracking
   const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
+  
+  // Keep track of latest HTML content for sections
+  const [latestOverviewHTML, setLatestOverviewHTML] = useState<string>('');
+  const [latestBeatsHTML, setLatestBeatsHTML] = useState<string>('');
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -1980,21 +2057,34 @@ export default function DashboardLayout() {
   const handleCentralConflictChange = (value: string) => {
     setCentralConflict(value);
 
-    // Map dropdown value to template key
-    const templateKey = value; // Keys already match: 'man-v-man', 'man-v-nature', etc.
-    
     // If there is no template or same conflict already applied, do nothing.
-    if (!CONFLICT_TEMPLATES[templateKey]) return;
+    if (!CONFLICT_TEMPLATES[value]) return;
 
-    // Check if there is already a conflict block; if present and lastApplied matches, skip
-    const editor = document.getElementById('story-editor') as HTMLElement | null;
-    const hasBlock = editor?.innerHTML.includes(CONFLICT_START);
+    if (lastAppliedConflict === value) return;
 
-    if (hasBlock && lastAppliedConflict === templateKey) return;
+    // Generate new beats HTML and update editor
+    const newBeatsHTML = buildBeatsHTML(value);
+    setLatestBeatsHTML(newBeatsHTML);
+    updateEditorSections(latestOverviewHTML, newBeatsHTML, storyHtml, setStoryHtml);
+    setLastAppliedConflict(value);
+  };
 
-    // Insert or replace the block once
-    insertOrReplaceConflictBlock(templateKey);
-    setLastAppliedConflict(templateKey);
+  // Handle Overview changes (project name, type, genre, etc.)
+  const updateOverviewSection = () => {
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    };
+    const newOverviewHTML = buildOverviewHTML(formState);
+    setLatestOverviewHTML(newOverviewHTML);
+    updateEditorSections(newOverviewHTML, latestBeatsHTML, storyHtml, setStoryHtml);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2051,7 +2141,10 @@ export default function DashboardLayout() {
     }
   };
 
-  // Live-sync project name to Story Builder textarea
+  // Live-sync project data to Story Builder overview section
+  useEffect(() => {
+    updateOverviewSection();
+  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes]);
 
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
