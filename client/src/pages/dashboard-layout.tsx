@@ -15,7 +15,6 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
-import type Quill from 'quill';
 import debounce from 'lodash.debounce';
 
 // --- Quill header writer (replace top header, preserve the rest) ---
@@ -2123,28 +2122,11 @@ export default function DashboardLayout() {
       lengthPages,
       lengthMinutes
     };
-    const overviewHTML = buildOverviewHTML(formState);
-    writerRef.current?.(overviewHTML);
+    // Overview HTML sync is now handled by the useEffect above
     setLastAppliedConflict(value);
   };
 
-  // Handle Overview changes (project name, type, genre, etc.)
-  const updateOverviewSection = () => {
-    const formState = {
-      projectName,
-      projectType,
-      genre,
-      subGenre,
-      theme,
-      subTheme,
-      centralConflict,
-      lengthPages,
-      lengthMinutes
-    };
-    const newOverviewHTML = buildOverviewHTML(formState);
-    setLatestOverviewHTML(newOverviewHTML);
-    writerRef.current?.(newOverviewHTML);
-  };
+  // Overview changes are now automatically handled by useEffect
 
   const handleProjectTypeChange = (val: string) => {
     setProjectType(val);
@@ -2200,35 +2182,7 @@ export default function DashboardLayout() {
     }
   };
 
-  // Live-sync overview to editor (focus-safe with typing detection)
-  useEffect(() => {
-    if (!quillRef.current) return;
-
-    const html = buildOverviewHTML({
-      projectName,
-      projectType,
-      genre,
-      subGenre,
-      theme,
-      subTheme,
-      centralConflict,
-      lengthPages,
-      lengthMinutes,
-    });
-
-    console.log("[SYNC] schedule write; typing=", typingRef.current);
-    writerRef.current?.(html);
-  }, [
-    projectName,
-    projectType,
-    genre,
-    subGenre,
-    theme,
-    subTheme,
-    centralConflict,
-    lengthPages,
-    lengthMinutes,
-  ]);
+  // Old Quill sync logic removed - now using controlled ReactQuill component
 
 
 
