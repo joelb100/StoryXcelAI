@@ -2053,6 +2053,12 @@ export default function DashboardLayout() {
   
   // Use the existing storyHtml state from above
 
+  // Add overviewInputProps for LeftSidebar compatibility
+  const overviewInputProps = {
+    onFocus: () => console.log("[OVERVIEW] focus"),
+    onBlur: () => console.log("[OVERVIEW] blur")
+  };
+
   // Synchronize overview changes to the editor
   useEffect(() => {
     const overviewData = {
