@@ -17,6 +17,247 @@ import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsL
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
 import debounce from 'lodash.debounce';
 
+// --- Story Beats System ---
+type Beats = { plotA: string[]; plotB: string[]; plotC: string[]; twists: string[]; hook: string[] };
+
+const CONFLICT_BEATS: Record<string, Beats> = {
+  "[Wo]Man vs. [Wo]Man": {
+    plotA: [
+      "Rival's goals directly threaten the protagonist.",
+      "Escalating tit‑for‑tat forces a public confrontation.",
+      "A line is crossed that demands a reckoning."
+    ],
+    plotB: [
+      "Allies pick sides; loyalties strain under pressure.",
+      "Romance/friendship complicates the main conflict.",
+      "Power dynamics shift after a small victory."
+    ],
+    plotC: [
+      "Rumors, reputation, or status become weapons.",
+      "Institutions (school, job, team) amplify the feud.",
+      "A past slight resurfaces with new consequences."
+    ],
+    twists: [
+      "The rival wanted the same 'good' outcome all along.",
+      "A mentor betrays the protagonist—or vice versa."
+    ],
+    hook: [
+      "What you win costs who you are.",
+      "The truest victory isn't crushing them; it's changing you."
+    ]
+  },
+  "[Wo]Man vs. Nature": {
+    plotA: [
+      "Environment threatens survival; adapt or perish.",
+      "A safe path fails; a risky path appears.",
+      "Weather/terrain escalates into catastrophe."
+    ],
+    plotB: [
+      "Team fractures over tactics and trust.",
+      "A companion's injury or loss forces hard trade‑offs.",
+      "Old skills prove useless; new ones emerge."
+    ],
+    plotC: [
+      "Limited resources become moral dilemmas.",
+      "Local wildlife/ecosystem reacts unexpectedly.",
+      "A map/myth misleads; the land 'refuses' them."
+    ],
+    twists: [
+      "The 'threat' is a pattern the hero misread.",
+      "The rescue is the real danger."
+    ],
+    hook: [
+      "The wild doesn't forgive—only teaches.",
+      "To live here, you must become of here."
+    ]
+  },
+  "[Wo]Man vs. the Environment": {
+    plotA: [
+      "Systems force adaptation or extinction.",
+      "A breaking point demands radical action.",
+      "Rules shift mid‑story, invalidating old strategies."
+    ],
+    plotB: [
+      "Personal relationships strain under systemic stress.",
+      "Survival needs clash with values.",
+      "Someone pays a price for 'playing by the rules'."
+    ],
+    plotC: [
+      "Infrastructure failure cascades into larger crises.",
+      "Gatekeepers tighten control to hide cracks.",
+      "Scarcity creates new hierarchies of power."
+    ],
+    twists: [
+      "The system 'fix' produces worse harms.",
+      "An insider becomes a whistleblower."
+    ],
+    hook: [
+      "What you built to protect you became your prison.",
+      "Reforming a machine that eats reformers."
+    ]
+  },
+  "[Wo]Man vs. Machines / Technology": {
+    plotA: [
+      "Automation outpaces human control.",
+      "Convenience erodes privacy and choice.",
+      "A black‑box decision endangers someone the hero loves."
+    ],
+    plotB: [
+      "Teammates disagree: unplug or retrain?",
+      "A clone/AI 'copy' competes for trust.",
+      "Dependency makes rebellion costly."
+    ],
+    plotC: [
+      "An obsolete tool holds the real fix.",
+      "A failsafe has a human catch.",
+      "Glitches reveal the machine's hidden bias."
+    ],
+    twists: [
+      "The model learned from the hero's worst day.",
+      "Killing it kills livelihoods."
+    ],
+    hook: [
+      "If it thinks like us, it inherits our ghosts.",
+      "We programmed the future with our fears."
+    ]
+  },
+  "[Wo]Man vs. the Supernatural": {
+    plotA: [
+      "Uncanny signs escalate from nuisance to threat.",
+      "Rules of the curse/creature slowly surface.",
+      "A ritual or threshold must be crossed."
+    ],
+    plotB: [
+      "Skeptics vs believers fracture the group.",
+      "A legacy ties the hero to the haunting.",
+      "Protection requires a personal sacrifice."
+    ],
+    plotC: [
+      "Sacred/profane spaces invert power.",
+      "Old folklore hides practical instructions.",
+      "The mundane world refuses to see the horror."
+    ],
+    twists: [
+      "The monster wants witness, not blood.",
+      "Breaking the curse fulfills it."
+    ],
+    hook: [
+      "What hunts you knows your name.",
+      "Faith is a door; doubt is a lock."
+    ]
+  },
+  "[Wo]Man vs. Self": {
+    plotA: [
+      "An old wound triggers self‑sabotage.",
+      "A chance at growth collides with comfort.",
+      "The mask cracks in public."
+    ],
+    plotB: [
+      "A relationship mirrors the hero's flaw.",
+      "A mentor pushes the wrong lesson.",
+      "Relapse or regression tempts at the midpoint."
+    ],
+    plotC: [
+      "Past and present collide in a hard choice.",
+      "A false victory hides the real rot.",
+      "A small kindness opens a bigger door."
+    ],
+    twists: [
+      "The 'antagonist' was a projection.",
+      "Winning the external fight feels hollow."
+    ],
+    hook: [
+      "You can't outrun the person in your footprints.",
+      "To become new, something must die."
+    ]
+  },
+  "[Wo]Man vs. God / Religion": {
+    plotA: [
+      "Doctrine clashes with lived reality.",
+      "A miracle or scandal shatters certainty.",
+      "Exile or heresy becomes unavoidable."
+    ],
+    plotB: [
+      "Community love turns conditional.",
+      "A sacred text yields a dangerous reading.",
+      "An elder's faith quietly breaks."
+    ],
+    plotC: [
+      "Ritual becomes protest.",
+      "Power protects piety—or vice versa.",
+      "Silence is demanded where truth is owed."
+    ],
+    twists: [
+      "The 'voice of God' was forged by men.",
+      "Faith returns in a different form."
+    ],
+    hook: [
+      "When you ask the heavens, the echo is you.",
+      "Reverence without mercy is cruelty."
+    ]
+  },
+  "[Wo]Man vs. Society": {
+    plotA: [
+      "Oppressive norms punish non‑conformity.",
+      "Law/order is used to maintain injustice.",
+      "Collective action becomes the only path."
+    ],
+    plotB: [
+      "Allies disagree on tactics: reform vs revolt.",
+      "Public sentiment swings; costs mount.",
+      "Betrayal from within endangers many."
+    ],
+    plotC: [
+      "Media narrative warps the truth.",
+      "An unlikely coalition forms.",
+      "Small local wins unlock bigger doors."
+    ],
+    twists: [
+      "A 'villain' shares the hero's origin story.",
+      "Victory exposes a deeper system beneath."
+    ],
+    hook: [
+      "Change the rules, or the rules change you.",
+      "Freedom is contagious—and costly."
+    ]
+  }
+};
+
+const BEATS_START = "<!-- STORYXCEL_BEATS_START -->";
+const BEATS_END = "<!-- STORYXCEL_BEATS_END -->";
+
+// Helper functions for Story Beats
+function escapeHtml(s: string) {
+  return s.replace(/[&<>"']/g, ch =>
+    ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" } as any)[ch]
+  );
+}
+
+function beatsToHTML(beats: Beats) {
+  const li = (xs: string[]) => xs.map(s => `<li>${escapeHtml(s)}</li>`).join("");
+
+  return `
+    ${BEATS_START}
+    <p><strong>Story Beats</strong></p>
+
+    <p><strong>Plot A —</strong> The high level description of the story's key sequential events of the main story</p>
+    <ul>${li(beats.plotA)}</ul>
+
+    <p><strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships</p>
+    <ul>${li(beats.plotB)}</ul>
+
+    <p><strong>Sub Plot C —</strong> The storyline's Tertiary sequential story points that focus on background elements</p>
+    <ul>${li(beats.plotC)}</ul>
+
+    <p><strong>Plot Twists —</strong></p>
+    <ul>${li(beats.twists)}</ul>
+
+    <p><strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings</p>
+    <ul>${li(beats.hook)}</ul>
+    ${BEATS_END}
+  `.trim();
+}
+
 // --- Quill header writer (replace top header, preserve the rest) ---
 type OverviewState = {
   projectName: string;
@@ -2101,28 +2342,39 @@ export default function DashboardLayout() {
   const handleCentralConflictChange = (value: string) => {
     setCentralConflict(value);
 
-    // If there is no template or same conflict already applied, do nothing.
-    if (!CONFLICT_TEMPLATES[value]) return;
+    // If there is no beats template for this conflict, do nothing.
+    if (!CONFLICT_BEATS[value]) return;
 
     if (lastAppliedConflict === value) return;
 
-    // Generate new beats HTML and update editor
-    const newBeatsHTML = buildBeatsHTML(value);
+    // Generate new beats HTML using the conflict beats data
+    const beats = CONFLICT_BEATS[value];
+    const newBeatsHTML = beatsToHTML(beats);
     setLatestBeatsHTML(newBeatsHTML);
     
-    // For now, just trigger a re-sync with the new beats (Story Beats system will be enhanced later)
-    const formState = {
-      projectName,
-      projectType,
-      genre,
-      subGenre,
-      theme,
-      subTheme,
-      centralConflict,
-      lengthPages,
-      lengthMinutes
-    };
-    // Overview HTML sync is now handled by the useEffect above
+    // Update the editor content immediately by adding beats to current content
+    setStoryHtml(currentHtml => {
+      const hasBeats = currentHtml.includes(BEATS_START) && currentHtml.includes(BEATS_END);
+      
+      if (hasBeats) {
+        // Replace existing beats block
+        return currentHtml.replace(
+          new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`), 
+          newBeatsHTML
+        );
+      } else {
+        // Append beats after overview (or at end if no overview)
+        if (currentHtml.includes(OVERVIEW_END)) {
+          return currentHtml.replace(
+            OVERVIEW_END,
+            `${OVERVIEW_END}\n\n${newBeatsHTML}`
+          );
+        } else {
+          return `${currentHtml}\n\n${newBeatsHTML}`;
+        }
+      }
+    });
+    
     setLastAppliedConflict(value);
   };
 
