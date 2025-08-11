@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide our markers safely inside the Quill editor */
+.ql-editor .sx-hidden { 
+  display: none; 
+}
+
 /* Ensure all dynamic column spans are available */
 .col-span-16 { grid-column: span 16 / span 16; }
 .col-span-19 { grid-column: span 19 / span 19; }

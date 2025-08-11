@@ -1366,74 +1366,63 @@ export default function DashboardLayout() {
       .join('\n');
   }
 
-  // HTML overview generation functions
-  function buildOverviewHTML({
-    title,
-    projectType, // e.g., "Screenplay / 87 pages / 90 mins"
-    genreLabel,  // e.g., "Western"
-    genreDef,    // definition text
-    subGenreLabel,
-    subGenreDef,
-    themeLabel,
-    themeDef,
-    subThemeLabel,
-    subThemeDef,
-    conflictLabel,
-    conflictDef,
-  }: {
+  // Build overview HTML with TRUE bold labels
+  function line(label?: string, value?: string) {
+    return label && value
+      ? `<p><strong>${label}</strong> — ${value}</p>`
+      : label
+      ? `<p><strong>${label}</strong></p>`
+      : '';
+  }
+
+  function buildOverviewHTML(data: {
     title?: string;
-    projectType?: string;
+    projectType?: string;          // e.g. "Screenplay / 120 pages / 120 mins"
     genreLabel?: string; genreDef?: string;
     subGenreLabel?: string; subGenreDef?: string;
     themeLabel?: string; themeDef?: string;
     subThemeLabel?: string; subThemeDef?: string;
     conflictLabel?: string; conflictDef?: string;
   }) {
-    const line = (label?: string, value?: string) =>
-      label && value
-        ? `<p><strong>${label}</strong> — ${value}</p>`
-        : label
-        ? `<p><strong>${label}</strong></p>`
-        : '';
+    const {
+      title, projectType,
+      genreLabel, genreDef,
+      subGenreLabel, subGenreDef,
+      themeLabel, themeDef,
+      subThemeLabel, subThemeDef,
+      conflictLabel, conflictDef,
+    } = data;
 
     return [
       line('Story Title', title),
       line('Project Type', projectType),
-      // Genre and its definition
       genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
       genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
-      // Sub Genre
       subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
       subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
-      // Theme
       themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
       themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
-      // Sub Theme
       subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
       subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
-      // Central Conflict
       conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
       conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
-    ]
-      .filter(Boolean)
-      .join('');
+    ].filter(Boolean).join('');
   }
 
   function replaceOverview(html: string, overviewHTML: string) {
-    // Replace content between the invisible markers
     const start = /<span[^>]+data-sx-marker="overview-start"[^>]*><\/span>/i;
     const end   = /<span[^>]+data-sx-marker="overview-end"[^>]*><\/span>/i;
 
-    // Ensure both markers exist (first load or if user deleted)
     if (!start.test(html) || !end.test(html)) {
+      // Re‑seed markers if user deleted them
       return `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}${html}`;
     }
 
-    // Replace the middle
-    return html.replace(
-      new RegExp(`${start.source}([\\s\\S]*?)${end.source}`,'i'),
-      `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}`
+    const pattern = new RegExp(
+      `${start.source}([\\s\\S]*?)${end.source}`,
+      'i'
     );
+    return html.replace(pattern, `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}`);
   }
 
   function buildOverviewBlock(opts: {
@@ -1651,35 +1640,41 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
-  // Update rich text editor with HTML overview
+  // Update rich text editor with HTML overview  
   useEffect(() => {
     // Build project type string
-    const projectTypeStr = projectType ? (() => {
+    const projectTypeDisplay = projectType ? (() => {
       const parts: string[] = [projectType];
       if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
       if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
       return parts.join(' / ');
     })() : undefined;
 
-    // Generate HTML overview
     const overviewHTML = buildOverviewHTML({
-      title: projectName || undefined,
-      projectType: projectTypeStr,
-      genreLabel: genreLabel || undefined,
-      genreDef: genreDef || undefined,
-      subGenreLabel: subGenreLabel || undefined,
-      subGenreDef: subGenreDef || undefined,
-      themeLabel: themeLabel || undefined,
-      themeDef: themeDef || undefined,
-      subThemeLabel: subThemeLabel || undefined,
-      subThemeDef: subThemeDef || undefined,
-      conflictLabel: centralConflictLabel || undefined,
-      conflictDef: centralConflictDef || undefined,
+      title: projectName,
+      projectType: projectTypeDisplay,
+      genreLabel: genreLabel,
+      genreDef: genreDef,
+      subGenreLabel: subGenreLabel,
+      subGenreDef: subGenreDef,
+      themeLabel: themeLabel,
+      themeDef: themeDef,
+      subThemeLabel: subThemeLabel,
+      subThemeDef: subThemeDef,
+      conflictLabel: centralConflictLabel,
+      conflictDef: centralConflictDef,
     });
 
-    // Update the rich text content
     setStoryHtml(prev => replaceOverview(prev, overviewHTML));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
+  }, [
+    projectName,
+    projectType, lengthPages, lengthMinutes,
+    genreLabel, genreDef,
+    subGenreLabel, subGenreDef,
+    themeLabel, themeDef,
+    subThemeLabel, subThemeDef,
+    centralConflictLabel, centralConflictDef
+  ]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2071,6 +2066,12 @@ export default function DashboardLayout() {
                               onChange={setStoryHtml}
                               className="w-full h-full"
                             />
+                            {/* Temporary debug - remove later */}
+                            {process.env.NODE_ENV === 'development' && (
+                              <div className="text-xs text-gray-400 mt-2">
+                                Debug: HTML length: {storyHtml.length}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
