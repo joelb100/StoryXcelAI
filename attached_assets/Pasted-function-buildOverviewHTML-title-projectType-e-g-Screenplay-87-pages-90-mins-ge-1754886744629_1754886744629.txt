@@ -1,0 +1,68 @@
+function buildOverviewHTML({
+  title,
+  projectType, // e.g., "Screenplay / 87 pages / 90 mins"
+  genreLabel,  // e.g., "Western"
+  genreDef,    // definition text
+  subGenreLabel,
+  subGenreDef,
+  themeLabel,
+  themeDef,
+  subThemeLabel,
+  subThemeDef,
+  conflictLabel,
+  conflictDef,
+}: {
+  title?: string;
+  projectType?: string;
+  genreLabel?: string; genreDef?: string;
+  subGenreLabel?: string; subGenreDef?: string;
+  themeLabel?: string; themeDef?: string;
+  subThemeLabel?: string; subThemeDef?: string;
+  conflictLabel?: string; conflictDef?: string;
+}) {
+  const line = (label?: string, value?: string) =>
+    label && value
+      ? `<p><strong>${label}</strong> — ${value}</p>`
+      : label
+      ? `<p><strong>${label}</strong></p>`
+      : '';
+
+  return [
+    line('Story Title', title),
+    line('Project Type', projectType),
+    // Genre and its definition
+    genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
+    genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
+    // Sub Genre
+    subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
+    subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
+    // Theme
+    themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
+    themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
+    // Sub Theme
+    subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
+    subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
+    // Central Conflict
+    conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
+    conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
+  ]
+    .filter(Boolean)
+    .join('');
+}
+
+function replaceOverview(html: string, overviewHTML: string) {
+  // Replace content between the invisible markers
+  const start = /<span[^>]+data-sx-marker="overview-start"[^>]*><\/span>/i;
+  const end   = /<span[^>]+data-sx-marker="overview-end"[^>]*><\/span>/i;
+
+  // Ensure both markers exist (first load or if user deleted)
+  if (!start.test(html) || !end.test(html)) {
+    return `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}${html}`;
+  }
+
+  // Replace the middle
+  return html.replace(
+    new RegExp(`${start.source}([\\s\\S]*?)${end.source}`,'i'),
+    `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}`
+  );
+}

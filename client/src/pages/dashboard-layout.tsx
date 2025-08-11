@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
+import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -1345,7 +1346,13 @@ export default function DashboardLayout() {
     'wretched-excess': 'Characters driven to ruin by indulgence, greed, or obsession.'
   };
   
-  // state that stores the authoritative raw text (with hidden markers)
+  // Rich text editor state for HTML content  
+  const [storyHtml, setStoryHtml] = useState<string>(() => {
+    // Initial empty doc with invisible markers pre-seeded so we can replace between them.
+    return `${OVERVIEW_START}${OVERVIEW_END}<p>Your story begins here...</p>`;
+  });
+
+  // Legacy state (keeping for reference during migration)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
   
   // derived text shown to the user (no markers)
@@ -1357,6 +1364,76 @@ export default function DashboardLayout() {
       .split('\n')
       .filter(line => line.trim() !== SX_START && line.trim() !== SX_END)
       .join('\n');
+  }
+
+  // HTML overview generation functions
+  function buildOverviewHTML({
+    title,
+    projectType, // e.g., "Screenplay / 87 pages / 90 mins"
+    genreLabel,  // e.g., "Western"
+    genreDef,    // definition text
+    subGenreLabel,
+    subGenreDef,
+    themeLabel,
+    themeDef,
+    subThemeLabel,
+    subThemeDef,
+    conflictLabel,
+    conflictDef,
+  }: {
+    title?: string;
+    projectType?: string;
+    genreLabel?: string; genreDef?: string;
+    subGenreLabel?: string; subGenreDef?: string;
+    themeLabel?: string; themeDef?: string;
+    subThemeLabel?: string; subThemeDef?: string;
+    conflictLabel?: string; conflictDef?: string;
+  }) {
+    const line = (label?: string, value?: string) =>
+      label && value
+        ? `<p><strong>${label}</strong> — ${value}</p>`
+        : label
+        ? `<p><strong>${label}</strong></p>`
+        : '';
+
+    return [
+      line('Story Title', title),
+      line('Project Type', projectType),
+      // Genre and its definition
+      genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
+      genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
+      // Sub Genre
+      subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
+      subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
+      // Theme
+      themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
+      themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
+      // Sub Theme
+      subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
+      subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
+      // Central Conflict
+      conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
+      conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
+    ]
+      .filter(Boolean)
+      .join('');
+  }
+
+  function replaceOverview(html: string, overviewHTML: string) {
+    // Replace content between the invisible markers
+    const start = /<span[^>]+data-sx-marker="overview-start"[^>]*><\/span>/i;
+    const end   = /<span[^>]+data-sx-marker="overview-end"[^>]*><\/span>/i;
+
+    // Ensure both markers exist (first load or if user deleted)
+    if (!start.test(html) || !end.test(html)) {
+      return `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}${html}`;
+    }
+
+    // Replace the middle
+    return html.replace(
+      new RegExp(`${start.source}([\\s\\S]*?)${end.source}`,'i'),
+      `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}`
+    );
   }
 
   function buildOverviewBlock(opts: {
@@ -1574,6 +1651,36 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
+  // Update rich text editor with HTML overview
+  useEffect(() => {
+    // Build project type string
+    const projectTypeStr = projectType ? (() => {
+      const parts: string[] = [projectType];
+      if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
+      if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
+      return parts.join(' / ');
+    })() : undefined;
+
+    // Generate HTML overview
+    const overviewHTML = buildOverviewHTML({
+      title: projectName || undefined,
+      projectType: projectTypeStr,
+      genreLabel: genreLabel || undefined,
+      genreDef: genreDef || undefined,
+      subGenreLabel: subGenreLabel || undefined,
+      subGenreDef: subGenreDef || undefined,
+      themeLabel: themeLabel || undefined,
+      themeDef: themeDef || undefined,
+      subThemeLabel: subThemeLabel || undefined,
+      subThemeDef: subThemeDef || undefined,
+      conflictLabel: centralConflictLabel || undefined,
+      conflictDef: centralConflictDef || undefined,
+    });
+
+    // Update the rich text content
+    setStoryHtml(prev => replaceOverview(prev, overviewHTML));
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
+
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
     setSubGenre(value);
@@ -1784,8 +1891,8 @@ export default function DashboardLayout() {
                       <div className="w-full max-w-[14.5in] h-full">
                         {/* Story Content Editor - Full width document style */}
                         <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
-                          {/* Enhanced Toolbar - Google Docs Style */}
-                          <div className="border-b border-gray-200 px-4 py-2">
+                          {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
+                          <div className="border-b border-gray-200 px-4 py-2 hidden">
                             <div className="flex items-center space-x-1 text-sm flex-wrap">
                               {/* Undo/Redo */}
                               <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
@@ -1957,19 +2064,12 @@ export default function DashboardLayout() {
                             </div>
                           </div>
                           
-                          {/* Document Content */}
-                          <div className="flex-1 p-8">
-                            <Textarea
-                              data-story-builder
-                              value={displayText}
-                              onChange={onChangeDisplay}
-                              className="w-full h-full resize-none border-none shadow-none text-slate-700 leading-relaxed text-sm focus:outline-none"
-                              placeholder="Start writing your story here..."
-                              style={{ 
-                                fontSize: '14px',
-                                lineHeight: '1.6',
-                                fontFamily: 'Arial, sans-serif'
-                              }}
+                          {/* Rich Text Editor Content */}
+                          <div className="flex-1 p-4">
+                            <RichEditor
+                              value={storyHtml}
+                              onChange={setStoryHtml}
+                              className="w-full h-full"
                             />
                           </div>
                         </div>
