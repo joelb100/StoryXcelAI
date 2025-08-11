@@ -816,7 +816,8 @@ const LeftSidebar = ({
   subTheme,
   onSubThemeChange,
   centralConflict,
-  onCentralConflictChange
+  onCentralConflictChange,
+  overviewInputProps
 }: { 
   activeTab: string;
   projectName?: string;
@@ -832,6 +833,7 @@ const LeftSidebar = ({
   onSubThemeChange?: (value: string) => void;
   centralConflict?: string;
   onCentralConflictChange?: (value: string) => void;
+  overviewInputProps?: { onFocus: () => void; onBlur: () => void; };
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -854,7 +856,7 @@ const LeftSidebar = ({
               onChange={(e) => onProjectNameChange?.(e.target.value)}
               placeholder="Enter project name..."
               className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
-              {...overviewInputProps}
+              {...(overviewInputProps || {})}
             />
           </div>
 
@@ -2294,6 +2296,7 @@ export default function DashboardLayout() {
               onSubThemeChange={setSubTheme}
               centralConflict={centralConflict}
               onCentralConflictChange={handleCentralConflictChange}
+              overviewInputProps={overviewInputProps}
             />
           </div>
           
