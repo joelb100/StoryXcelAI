@@ -2852,8 +2852,8 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Story Assistant - Use flex-1 like dashboard version */}
-                    <div className="flex-1">
+                    {/* AI Story Assistant - Match exact dashboard height */}
+                    <div className="h-32 border-t border-gray-200 bg-gray-50 p-4">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
@@ -2962,8 +2962,8 @@ export default function DashboardLayout() {
                   </div>
                 </div>
 
-                {/* AI Story Assistant - Use flex-1 like dashboard version */}
-                <div className="flex-1">
+                {/* AI Story Assistant - Match exact dashboard height */}
+                <div className="h-32 border-t border-gray-200 bg-gray-50 p-4">
                   <AIStoryAssistant 
                     chatMessages={chatMessages}
                     chatMessage={chatMessage}
