@@ -116,16 +116,27 @@ const friendsList = [
   "Ned Flanders"
 ];
 
-// Central Conflict definitions map - moved outside component for global access
+// Central Conflict options and definitions
+const CENTRAL_CONFLICT_OPTIONS = [
+  { value: "man-vs-man", label: "[Wo]Man vs. [Wo]Man" },
+  { value: "man-vs-nature", label: "[Wo]Man vs. Nature" },
+  { value: "man-vs-environment", label: "[Wo]Man vs. the Environment" },
+  { value: "man-vs-tech", label: "[Wo]Man vs. Machines / Technology" },
+  { value: "man-vs-supernatural", label: "[Wo]Man vs. the Supernatural" },
+  { value: "man-vs-self", label: "[Wo]Man vs. Self" },
+  { value: "man-vs-god", label: "[Wo]Man vs. God / Religion" },
+  { value: "man-vs-society", label: "[Wo]Man vs. Society" },
+];
+
 const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
-  '[Wo]Man vs. [Wo]Man': 'A conflict where the protagonist\'s main opposition comes from another individual or group with clashing goals, values, or desires.',
-  '[Wo]Man vs. Nature': 'A struggle between the protagonist and natural forces such as weather, animals, disasters, or the wilderness.',
-  '[Wo]Man vs. the Environment': 'A broader battle against living or working conditions shaped by surroundings, systems, or society\'s physical structures.',
-  '[Wo]Man vs. Machines / Technology': 'Conflict driven by challenges, dangers, or ethical dilemmas posed by machines, artificial intelligence, or technological advancement.',
-  '[Wo]Man vs. the Supernatural': 'A clash between the protagonist and forces beyond the natural world, such as ghosts, gods, magic, or mythical beings.',
-  '[Wo]Man vs. Self': 'An internal struggle where the protagonist\'s main obstacle is their own fears, doubts, desires, or moral dilemmas.',
-  '[Wo]Man vs. God / Religion': 'A confrontation with divine authority, religious institutions, or personal beliefs about faith and morality.',
-  '[Wo]Man vs. Society': 'A rebellion or resistance against societal norms, laws, traditions, or systems of power that restrict personal freedom or justice.'
+  "man-vs-man": "A conflict where the main opposition is another person or group with clashing goals, values, or power.",
+  "man-vs-nature": "The protagonist struggles against natural forces like weather, wilderness, or disease.",
+  "man-vs-environment": "The setting itself poses the challenge—hostile worlds, harsh landscapes, or broken systems.",
+  "man-vs-tech": "Conflict arises from machines, AI, or technology that threatens, controls, or outpaces humanity.",
+  "man-vs-supernatural": "Opposition comes from forces beyond the natural world—spirits, magic, curses, or cosmic entities.",
+  "man-vs-self": "The protagonist's greatest obstacle is internal—fear, guilt, addiction, identity, or beliefs.",
+  "man-vs-god": "The character wrestles with fate, divine will, or religious doctrine and its demands.",
+  "man-vs-society": "The hero confronts unjust norms, institutions, or cultural expectations enforced by the collective."
 };
 
 // Friends List Component
@@ -507,7 +518,9 @@ const LeftSidebar = ({
   theme,
   onThemeChange,
   subTheme,
-  onSubThemeChange
+  onSubThemeChange,
+  centralConflict,
+  onCentralConflictChange
 }: { 
   activeTab: string;
   projectName?: string;
@@ -521,6 +534,8 @@ const LeftSidebar = ({
   onThemeChange?: (value: string) => void;
   subTheme?: string;
   onSubThemeChange?: (value: string) => void;
+  centralConflict?: string;
+  onCentralConflictChange?: (value: string) => void;
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -733,79 +748,22 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
-            <TooltipProvider delayDuration={200}>
-              <Select>
-                <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
-                  <SelectValue placeholder="Select Central Conflict" />
-                </SelectTrigger>
-                <SelectContent className="max-h-[280px]">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-man">[Wo]Man vs. [Wo]Man</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. [Wo]Man']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-nature">[Wo]Man vs. Nature</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Nature']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-environment">[Wo]Man vs. the Environment</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Environment']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-machines">[Wo]Man vs. Machines / Technology</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Machines / Technology']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-supernatural">[Wo]Man vs. the Supernatural</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Supernatural']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-self">[Wo]Man vs. Self</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Self']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-god">[Wo]Man vs. God / Religion</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. God / Religion']}
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <SelectItem value="man-vs-society">[Wo]Man vs. Society</SelectItem>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600" portalled>
-                      {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Society']}
-                    </TooltipContent>
-                  </Tooltip>
-                </SelectContent>
-              </Select>
-            </TooltipProvider>
+            <Select value={centralConflict} onValueChange={onCentralConflictChange}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                <SelectValue placeholder="Select Central Conflict" />
+              </SelectTrigger>
+              <SelectContent>
+                {CENTRAL_CONFLICT_OPTIONS.map((opt) => (
+                  <SelectItem
+                    key={opt.value}
+                    value={opt.value}
+                    title={CENTRAL_CONFLICT_DEFS[opt.value]}
+                  >
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -1199,6 +1157,9 @@ export default function DashboardLayout() {
   
   // Sub Theme state for auto-insertion into overview block
   const [subTheme, setSubTheme] = useState<string>('');
+
+  // Central Conflict state for auto-insertion into overview block
+  const [centralConflict, setCentralConflict] = useState<string>('');
   
   // Genre definitions map (matches the definitions in the UI)
   const GENRE_DEFS: Record<string, string> = {
@@ -1411,8 +1372,10 @@ export default function DashboardLayout() {
     themeDef?: string | null;
     subThemeLabel?: string | null;
     subThemeDef?: string | null;
+    centralConflictLabel?: string | null;
+    centralConflictDef?: string | null;
   }) {
-    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef } = opts;
+    const { title, projectType, pages, minutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef } = opts;
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
@@ -1456,6 +1419,14 @@ export default function DashboardLayout() {
       lines.push(`Sub Theme — ${subThemeLabel}`);
       if (subThemeDef?.trim()) {
         lines.push(`  ${subThemeLabel} : ${subThemeDef.trim()}`);
+      }
+    }
+
+    // ---- Central Conflict ----
+    if (centralConflictLabel) {
+      lines.push(`Central Conflict — ${centralConflictLabel}`);
+      if (centralConflictDef?.trim()) {
+        lines.push(`  ${centralConflictLabel} : ${centralConflictDef.trim()}`);
       }
     }
 
@@ -1552,6 +1523,11 @@ export default function DashboardLayout() {
   const subThemeLabel = subTheme ? (subTheme.charAt(0).toUpperCase() + subTheme.slice(1).replace(/-/g, ' ')) : null;  
   const subThemeDef = subThemeLabel ? (SUBTHEME_DEFS[subTheme] ?? '') : '';
 
+  // Derive central conflict label and definition
+  const centralConflictOption = CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict);
+  const centralConflictLabel = centralConflictOption?.label || null;
+  const centralConflictDef = centralConflict ? (CENTRAL_CONFLICT_DEFS[centralConflict] ?? '') : '';
+
   // on type, update ONLY the "display" portion; we'll reinsert markers on save
   const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // we keep the current overview block we last computed
@@ -1567,7 +1543,9 @@ export default function DashboardLayout() {
       themeLabel,
       themeDef,
       subThemeLabel,
-      subThemeDef
+      subThemeDef,
+      centralConflictLabel,
+      centralConflictDef
     });
     const merged = ensureMarkersBeforeSave(e.target.value, block);
     setRawStoryText(merged);
@@ -1589,10 +1567,12 @@ export default function DashboardLayout() {
       themeDef: themeDef || null,
       subThemeLabel: subThemeLabel || null,
       subThemeDef: subThemeDef || null,
+      centralConflictLabel: centralConflictLabel || null,
+      centralConflictDef: centralConflictDef || null,
     });
 
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -1776,6 +1756,8 @@ export default function DashboardLayout() {
               onThemeChange={setTheme}
               subTheme={subTheme}
               onSubThemeChange={setSubTheme}
+              centralConflict={centralConflict}
+              onCentralConflictChange={setCentralConflict}
             />
           </div>
           
@@ -2167,6 +2149,8 @@ export default function DashboardLayout() {
                   onThemeChange={setTheme}
                   subTheme={subTheme}
                   onSubThemeChange={setSubTheme}
+                  centralConflict={centralConflict}
+                  onCentralConflictChange={setCentralConflict}
                 />
               </div>
             </div>
