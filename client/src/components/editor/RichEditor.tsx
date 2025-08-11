@@ -1,66 +1,45 @@
-import { useEffect, useRef } from "react";
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
+import React, { useMemo } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-export const OVERVIEW_START = '<!-- STORYXCEL_OVERVIEW_START -->';
-export const OVERVIEW_END = '<!-- STORYXCEL_OVERVIEW_END -->';
-export const BEATS_START = '<!-- STORYXCEL_BEATS_START -->';
-export const BEATS_END = '<!-- STORYXCEL_BEATS_END -->';
+export const OVERVIEW_START =
+  '<span class="sx-hidden" data-sx-marker="overview-start"></span>';
+export const OVERVIEW_END =
+  '<span class="sx-hidden" data-sx-marker="overview-end"></span>';
 
-type Props = { 
-  onReady?: (q: Quill) => void;
+type Props = {
+  value: string;
+  onChange: (html: string) => void;
   className?: string;
 };
 
-export default function RichEditor({ onReady, className }: Props) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const qRef = useRef<Quill | null>(null);
-
-  useEffect(() => {
-    if (!hostRef.current || qRef.current) return;
-
-    const q = new Quill(hostRef.current, {
-      theme: "snow",
-      readOnly: false,
-      placeholder: "Your story begins here...",
-      modules: {
-        toolbar: [
-          [{ size: ['small', false, 'large', 'huge'] }],
-          [{ font: [] }],
-          ['bold', 'italic', 'underline'],
-          [{ align: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['clean'],
-        ],
-        clipboard: { matchVisual: true },
-      },
-      formats: ["bold", "italic", "underline", "strike", "list", "align", "header"],
-    });
-
-    qRef.current = q;
-    (window as any).__quill = q;
-    (window as any).__quillReady = true;
-    onReady?.(q);
-
-    return () => {
-      // Clean disposal
-      if (qRef.current) {
-        try {
-          if (qRef.current.off) {
-            qRef.current.off("text-change");
-            qRef.current.off("selection-change");
-          }
-        } catch {}
-        qRef.current = null;
-      }
-      (window as any).__quill = null;
-      (window as any).__quillReady = false;
-    };
-  }, []);
+const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
+  const modules = useMemo(
+    () => ({
+      toolbar: [
+        [{ size: ['small', false, 'large', 'huge'] }],
+        [{ font: [] }],
+        ['bold', 'italic', 'underline'],
+        [{ align: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['clean'],
+      ],
+      clipboard: { matchVisual: true },
+    }),
+    []
+  );
 
   return (
     <div className={className}>
-      <div ref={hostRef} className="rounded-md border border-slate-200" style={{ minHeight: '200px' }} />
+      <ReactQuill
+        theme="snow"
+        modules={modules}
+        value={value}
+        onChange={onChange}
+        className="rounded-md border border-slate-200"
+      />
     </div>
   );
-}
+};
+
+export default RichEditor;

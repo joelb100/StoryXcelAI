@@ -243,3 +243,8 @@
 .module-fonts {
   background: linear-gradient(135deg, hsl(220, 13%, 18%), hsl(220, 13%, 8%));
 }
+
+/* Hide our markers safely inside the Quill editor */
+.ql-editor .sx-hidden { 
+  display: none; 
+}

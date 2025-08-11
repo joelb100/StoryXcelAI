@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
-import RichEditor from '@/components/editor/RichEditor';
+import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
 import type Quill from 'quill';
 import debounce from 'lodash.debounce';
 
@@ -31,43 +31,109 @@ type OverviewState = {
   lengthMinutes: string | number;
 };
 
-function buildOverviewHTML(o: OverviewState) {
+function buildOverviewHTML(data: {
+  title?: string;
+  projectType?: string;
+  genreLabel?: string;
+  genreDef?: string;
+  subGenreLabel?: string;
+  subGenreDef?: string;
+  themeLabel?: string;
+  themeDef?: string;
+  subThemeLabel?: string;
+  subThemeDef?: string;
+  conflictLabel?: string;
+  conflictDef?: string;
+}) {
+  const {
+    title,
+    projectType,
+    genreLabel,
+    genreDef,
+    subGenreLabel,
+    subGenreDef,
+    themeLabel,
+    themeDef,
+    subThemeLabel,
+    subThemeDef,
+    conflictLabel,
+    conflictDef,
+  } = data;
+
   return [
-    o.projectName && `<p><strong>Story Title</strong> — ${o.projectName}</p>`,
-    o.projectType && `<p><strong>Project Type</strong> — ${o.projectType}${o.lengthPages ? ` / ${o.lengthPages} pages` : ""}${o.lengthMinutes ? ` / ${o.lengthMinutes} mins` : ""}</p>`,
-    o.genre && `<p><strong>Genre</strong> — ${o.genre}</p>`,
-    o.subGenre && `<p><strong>Sub Genre</strong> — ${o.subGenre}</p>`,
-    o.theme && `<p><strong>Theme</strong> — ${o.theme}</p>`,
-    o.subTheme && `<p><strong>Sub Theme</strong> — ${o.subTheme}</p>`,
-    o.centralConflict && `<p><strong>Central Conflict</strong> — ${o.centralConflict}</p>`,
-    `<p>Your story begins here...</p>`
-  ].filter(Boolean).join("");
+    line('Story Title', title),
+    line('Project Type', projectType),
+    genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
+    genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
+    subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
+    subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
+    themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
+    themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
+    subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
+    subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
+    conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
+    conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
+  ].filter(Boolean).join('');
 }
 
-// Focus-safe writer that preserves cursor position and active element focus
-function writeOverviewHtmlSafe(q: Quill, html: string) {
-  const active = document.activeElement as HTMLElement | null;
-  const editorRoot = q.root as HTMLElement;
-  const editorHadFocus = active === editorRoot;
+/**
+ * Returns HTML from container start until (but not including) the 'untilNode'
+ * or from 'fromNode' to the end if untilNode is null.
+ */
+function sliceOuterHTML(container: HTMLElement, fromNode: ChildNode | null, untilNode: ChildNode | null) {
+  const frag = document.createDocumentFragment();
+  let cur = fromNode ?? container.firstChild;
 
-  const prevRange = editorHadFocus ? q.getSelection() : null;
-
-  const delta = q.clipboard.convert({ html });
-  q.setContents(delta, "silent");
-
-  if (editorHadFocus && prevRange) {
-    q.setSelection(prevRange, "silent");
+  while (cur && cur !== untilNode) {
+    const clone = cur.cloneNode(true);
+    frag.appendChild(clone);
+    cur = cur.nextSibling;
   }
 
-  // restore focus to whatever had it before (e.g., Project Name input)
-  if (!editorHadFocus && active && typeof active.focus === "function") {
-    active.focus({ preventScroll: true });
+  const div = document.createElement('div');
+  div.appendChild(frag);
+  return div.innerHTML;
+}
+
+/**
+ * Replaces the HTML between our start/end markers.
+ * If markers are missing, we re-seed them and drop any previously duplicated block.
+ */
+function replaceOverviewSafe(editorHtml: string, overviewHTML: string) {
+  // Normalize: Quill always wraps block content in <p>…</p>
+  // We parse as DOM so wrapper tags don't break us.
+  const container = document.createElement('div');
+  container.innerHTML = editorHtml || '';
+
+  let start = container.querySelector('span[data-sx-marker="overview-start"]');
+  let end   = container.querySelector('span[data-sx-marker="overview-end"]');
+
+  // If markers are missing OR out of order, re-seed a clean header
+  if (!start || !end) {
+    const clean = document.createElement('div');
+    clean.innerHTML = `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}<p>Your story begins here...</p>`;
+    return clean.innerHTML;
   }
 
-  // DEBUG:
-  console.log("[SAFE-WRITE] len=", html?.length ?? 0, 
-              "active=", active?.id || active?.tagName, 
-              "editorHadFocus=", editorHadFocus);
+  // Build a range that covers everything between markers
+  // We'll rebuild innerHTML with three slices: [before][header][after]
+  const beforeHtml = sliceOuterHTML(container, container.firstChild, start);
+  const afterHtml  = sliceOuterHTML(container, end, null);
+
+  const nextHtml =
+    beforeHtml +
+    OVERVIEW_START + overviewHTML + OVERVIEW_END +
+    afterHtml;
+
+  return nextHtml;
+}
+
+function line(label?: string, value?: string) {
+  return label && value
+    ? `<p><strong>${label}</strong> — ${value}</p>`
+    : label
+    ? `<p><strong>${label}</strong></p>`
+    : '';
 }
 
 
@@ -127,11 +193,7 @@ import {
   Bell
 } from "lucide-react";
 
-// ----- Editor section markers -----
-const OVERVIEW_START = '<!-- STORYXCEL_OVERVIEW_START -->';
-const OVERVIEW_END   = '<!-- STORYXCEL_OVERVIEW_END -->';
-const BEATS_START    = '<!-- STORYXCEL_BEATS_START -->';
-const BEATS_END      = '<!-- STORYXCEL_BEATS_END -->';
+// Editor section markers are imported from RichEditor component
 
 type ConflictBlock = {
   plotA: string[];
@@ -1989,48 +2051,39 @@ export default function DashboardLayout() {
   const [latestOverviewHTML, setLatestOverviewHTML] = useState<string>('');
   const [latestBeatsHTML, setLatestBeatsHTML] = useState<string>('');
   
-  // Quill instance reference
-  const quillRef = useRef<Quill | null>(null);
+  // Use the existing storyHtml state from above
 
-  // Track whether the user is typing in the Overview (to delay writes)
-  const typingRef = useRef(false);
-  const lastHtmlRef = useRef<string | null>(null);
-
-  // Attach onFocus/onBlur to ALL overview inputs (Project Name, Project Type, Genre, Theme, etc.)
-  const overviewInputProps = {
-    onFocus: () => { typingRef.current = true; console.log("[OVERVIEW] focus"); },
-    onBlur: () => {
-      typingRef.current = false;
-      console.log("[OVERVIEW] blur; flushing queued html");
-      const q = quillRef.current;
-      if (q && lastHtmlRef.current) {
-        writeOverviewHtmlSafe(q, lastHtmlRef.current);
-        lastHtmlRef.current = null;
-      }
-    }
-  };
-
-  // Stable debounced writer that never changes identity
-  const writerRef = useRef<(html: string) => void>();
+  // Synchronize overview changes to the editor
   useEffect(() => {
-    // Debounce once; identity stays stable.
-    const debounced = debounce((html: string) => {
-      const q = quillRef.current;
-      if (!q) return;
+    const overviewData = {
+      title: projectName,
+      projectType: projectType && lengthPages && lengthMinutes 
+        ? `${projectType} / ${lengthPages} pages / ${lengthMinutes} mins`
+        : projectType,
+      genreLabel: genreLabel,
+      genreDef: genreDef,
+      subGenreLabel: subGenreLabel,
+      subGenreDef: subGenreDef,
+      themeLabel: themeLabel,
+      themeDef: themeDef,
+      subThemeLabel: subThemeLabel,
+      subThemeDef: subThemeDef,
+      conflictLabel: centralConflictLabel,
+      conflictDef: centralConflictDef,
+    };
 
-      // If user is actively typing, just queue the html.
-      if (typingRef.current) {
-        lastHtmlRef.current = html;
-        console.log("[DEBOUNCED] queued (typing)");
-        return;
-      }
-
-      writeOverviewHtmlSafe(q, html);
-    }, 350);
-
-    writerRef.current = debounced;
-    return () => debounced.cancel();
-  }, []);
+    const overviewHTML = buildOverviewHTML(overviewData);
+    const updatedHtml = replaceOverviewSafe(storyHtml, overviewHTML);
+    
+    if (updatedHtml !== storyHtml) {
+      setStoryHtml(updatedHtml);
+    }
+  }, [
+    projectName, projectType, lengthPages, lengthMinutes,
+    genreLabel, genreDef, subGenreLabel, subGenreDef,
+    themeLabel, themeDef, subThemeLabel, subThemeDef,
+    centralConflictLabel, centralConflictDef, storyHtml
+  ]);
   
 
 
@@ -2500,27 +2553,8 @@ export default function DashboardLayout() {
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <div id="story-editor">
                               <RichEditor
-                                onReady={(q) => {
-                                  quillRef.current = q;
-
-                                  const html = buildOverviewHTML({
-                                    projectName,
-                                    projectType,
-                                    genre,
-                                    subGenre,
-                                    theme,
-                                    subTheme,
-                                    centralConflict,
-                                    lengthPages,
-                                    lengthMinutes,
-                                  });
-
-                                  if (html.trim()) {
-                                    writeOverviewHtmlSafe(q, html);
-                                  }
-
-                                  // DO NOT call q.focus() here.
-                                }}
+                                value={storyHtml}
+                                onChange={(html) => setStoryHtml(html)}
                                 className="w-full h-full"
                               />
                             </div>
