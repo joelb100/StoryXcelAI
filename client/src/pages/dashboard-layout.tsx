@@ -14,7 +14,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
-import RichEditor from '@/components/editor/RichEditor';
+import RichEditor, { setHtml } from '@/components/editor/RichEditor';
+import type { default as Quill } from 'quill';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -357,12 +358,11 @@ ${toUL(t.hook)}`
 }
 
 // Single function that composes the editor content with the correct order
-function updateEditorSections(overviewHTML: string, beatsHTML: string, storyHtml: string, setStoryHtml: (html: string) => void) {
-  const editor = document.querySelector('#story-editor .ql-editor') as HTMLElement | null;
-  if (!editor) return;
+function updateEditorSections(quill: Quill | null, overviewHTML: string, beatsHTML: string) {
+  if (!quill) return; // ✅ guard
 
   // Get current HTML from Quill
-  let html = editor.innerHTML;
+  let html = quill.root.innerHTML;
 
   // Remove any existing Overview/Beats blocks (prevents duplicates)
   html = stripBlock(html, OVERVIEW_START, OVERVIEW_END);
@@ -391,8 +391,7 @@ ${BEATS_END}` : '';
     remainder
   ].filter(Boolean).join('\n\n');
 
-  editor.innerHTML = composed;
-  setStoryHtml(composed);
+  setHtml(quill, composed);
 }
 
 // Import logo and components
@@ -2047,6 +2046,9 @@ export default function DashboardLayout() {
   // Keep track of latest HTML content for sections
   const [latestOverviewHTML, setLatestOverviewHTML] = useState<string>('');
   const [latestBeatsHTML, setLatestBeatsHTML] = useState<string>('');
+  
+  // Quill instance reference
+  const quillRef = useRef<Quill | null>(null);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2065,7 +2067,7 @@ export default function DashboardLayout() {
     // Generate new beats HTML and update editor
     const newBeatsHTML = buildBeatsHTML(value);
     setLatestBeatsHTML(newBeatsHTML);
-    updateEditorSections(latestOverviewHTML, newBeatsHTML, storyHtml, setStoryHtml);
+    updateEditorSections(quillRef.current, latestOverviewHTML, newBeatsHTML);
     setLastAppliedConflict(value);
   };
 
@@ -2084,7 +2086,7 @@ export default function DashboardLayout() {
     };
     const newOverviewHTML = buildOverviewHTML(formState);
     setLatestOverviewHTML(newOverviewHTML);
-    updateEditorSections(newOverviewHTML, latestBeatsHTML, storyHtml, setStoryHtml);
+    updateEditorSections(quillRef.current, newOverviewHTML, latestBeatsHTML);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2472,8 +2474,13 @@ export default function DashboardLayout() {
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <div id="story-editor">
                               <RichEditor
-                                value={storyHtml}
-                                onChange={setStoryHtml}
+                                onReady={(q) => { 
+                                  quillRef.current = q;
+                                  // Initialize with initial content if needed
+                                  if (latestOverviewHTML || latestBeatsHTML) {
+                                    updateEditorSections(q, latestOverviewHTML, latestBeatsHTML);
+                                  }
+                                }}
                                 className="w-full h-full"
                               />
                             </div>
