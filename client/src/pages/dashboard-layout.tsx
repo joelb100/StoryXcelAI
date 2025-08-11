@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
@@ -721,21 +721,95 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
-            <Select>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
-                <SelectValue placeholder="Select Central Conflict" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="man-vs-man">[Wo]Man vs. [Wo]Man</SelectItem>
-                <SelectItem value="man-vs-nature">[Wo]Man vs. Nature</SelectItem>
-                <SelectItem value="man-vs-environment">[Wo]Man vs. the Environment</SelectItem>
-                <SelectItem value="man-vs-machines">[Wo]Man vs. Machines / Technology</SelectItem>
-                <SelectItem value="man-vs-supernatural">[Wo]Man vs. the Supernatural</SelectItem>
-                <SelectItem value="man-vs-self">[Wo]Man vs. Self</SelectItem>
-                <SelectItem value="man-vs-god">[Wo]Man vs. God / Religion</SelectItem>
-                <SelectItem value="man-vs-society">[Wo]Man vs. Society</SelectItem>
-              </SelectContent>
-            </Select>
+            <TooltipProvider delayDuration={200}>
+              <Select>
+                <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                  <SelectValue placeholder="Select Central Conflict" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[280px]">
+                  <SelectItem value="man-vs-man">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. [Wo]Man</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. [Wo]Man']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-nature">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. Nature</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Nature']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-environment">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. the Environment</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Environment']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-machines">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. Machines / Technology</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Machines / Technology']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-supernatural">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. the Supernatural</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. the Supernatural']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-self">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. Self</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Self']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-god">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. God / Religion</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. God / Religion']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                  <SelectItem value="man-vs-society">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="inline-flex w-full items-center">[Wo]Man vs. Society</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="start" className="max-w-[320px] text-xs leading-snug bg-slate-700 text-white border-slate-600">
+                        {CENTRAL_CONFLICT_DEFS['[Wo]Man vs. Society']}
+                      </TooltipContent>
+                    </Tooltip>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </TooltipProvider>
           </div>
 
           <div>
@@ -1268,6 +1342,18 @@ export default function DashboardLayout() {
     'war': 'The brutal realities, strategies, and consequences of armed conflict.',
     'wealth-found': 'The discovery of fortune and its transformative effects.',
     'war-zone': 'The personal and collective experiences of life amidst conflict zones.'
+  };
+
+  // Central Conflict definitions map
+  const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
+    '[Wo]Man vs. [Wo]Man': 'A conflict where the protagonist\'s main opposition comes from another individual or group with clashing goals, values, or desires.',
+    '[Wo]Man vs. Nature': 'A struggle between the protagonist and natural forces such as weather, animals, disasters, or the wilderness.',
+    '[Wo]Man vs. the Environment': 'A broader battle against living or working conditions shaped by surroundings, systems, or society\'s physical structures.',
+    '[Wo]Man vs. Machines / Technology': 'Conflict driven by challenges, dangers, or ethical dilemmas posed by machines, artificial intelligence, or technological advancement.',
+    '[Wo]Man vs. the Supernatural': 'A clash between the protagonist and forces beyond the natural world, such as ghosts, gods, magic, or mythical beings.',
+    '[Wo]Man vs. Self': 'An internal struggle where the protagonist\'s main obstacle is their own fears, doubts, desires, or moral dilemmas.',
+    '[Wo]Man vs. God / Religion': 'A confrontation with divine authority, religious institutions, or personal beliefs about faith and morality.',
+    '[Wo]Man vs. Society': 'A rebellion or resistance against societal norms, laws, traditions, or systems of power that restrict personal freedom or justice.'
   };
 
   // Sub Theme definitions map (matches the definitions in the UI)
