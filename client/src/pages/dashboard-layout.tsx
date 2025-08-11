@@ -726,6 +726,18 @@ const CENTRAL_CONFLICT_OPTIONS = [
   { value: "man-v-society", label: "[Wo]Man vs. Society" },
 ];
 
+// Mapping from dropdown values to CONFLICT_BEATS keys
+const CONFLICT_VALUE_TO_BEATS_KEY: Record<string, string> = {
+  "man-v-man": "[Wo]Man vs. [Wo]Man",
+  "man-v-nature": "[Wo]Man vs. Nature", 
+  "man-v-environment": "[Wo]Man vs. the Environment",
+  "man-v-tech": "[Wo]Man vs. Machines / Technology",
+  "man-v-supernatural": "[Wo]Man vs. the Supernatural",
+  "man-v-self": "[Wo]Man vs. Self",
+  "man-v-god": "[Wo]Man vs. God / Religion",
+  "man-v-society": "[Wo]Man vs. Society",
+};
+
 const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
   "man-v-man": "A conflict where the main opposition is another person or group with clashing goals, values, or power.",
   "man-v-nature": "The protagonist struggles against natural forces like weather, wilderness, or disease.",
@@ -2343,9 +2355,10 @@ export default function DashboardLayout() {
     console.log('[CC onChange]', value);
     setCentralConflict(value);
 
-    // If there is no beats template for this conflict, do nothing.
-    if (!CONFLICT_BEATS[value]) {
-      console.log('[CC] No beats template for', value);
+    // Map dropdown value to CONFLICT_BEATS key
+    const beatsKey = CONFLICT_VALUE_TO_BEATS_KEY[value];
+    if (!beatsKey || !CONFLICT_BEATS[beatsKey]) {
+      console.log('[CC] No beats template for', value, 'mapped to', beatsKey);
       return;
     }
 
@@ -2354,9 +2367,9 @@ export default function DashboardLayout() {
       return;
     }
 
-    console.log('[CC] Generating beats for', value);
+    console.log('[CC] Generating beats for', value, 'using key', beatsKey);
     // Generate new beats HTML using the conflict beats data
-    const beats = CONFLICT_BEATS[value];
+    const beats = CONFLICT_BEATS[beatsKey];
     const newBeatsHTML = beatsToHTML(beats);
     setLatestBeatsHTML(newBeatsHTML);
     
@@ -2455,8 +2468,9 @@ export default function DashboardLayout() {
     console.log('[CC effect] centralConflict:', centralConflict);
     console.log('[CC effect] lastAppliedConflict:', lastAppliedConflict);
     
-    if (!centralConflict || !CONFLICT_BEATS[centralConflict]) {
-      console.log('[CC effect] No conflict or no beats for:', centralConflict);
+    const beatsKey = CONFLICT_VALUE_TO_BEATS_KEY[centralConflict];
+    if (!centralConflict || !beatsKey || !CONFLICT_BEATS[beatsKey]) {
+      console.log('[CC effect] No conflict or no beats for:', centralConflict, 'mapped to', beatsKey);
       return;
     }
 
@@ -2465,8 +2479,8 @@ export default function DashboardLayout() {
       return;
     }
 
-    console.log('[CC effect] Applying beats for:', centralConflict);
-    const beats = CONFLICT_BEATS[centralConflict];
+    console.log('[CC effect] Applying beats for:', centralConflict, 'using key', beatsKey);
+    const beats = CONFLICT_BEATS[beatsKey];
     const newBeatsHTML = beatsToHTML(beats);
     
     setStoryHtml(currentHtml => {
