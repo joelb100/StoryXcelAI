@@ -55,7 +55,7 @@ export const CONFLICT_BEATS: Record<string, Beats> = {
       "Earn every breath."
     ]
   },
-  "[Wo]Man vs. Environment": {
+  "[Wo]Man vs. the Environment": {
     plotA: [
       "Systemic pressures force adaptation or extinction.",
       "A breaking point demands radical action despite consequences.",
@@ -78,7 +78,7 @@ export const CONFLICT_BEATS: Record<string, Beats> = {
       "Adaptation costs identity."
     ]
   },
-  "[Wo]Man vs. Technology": {
+  "[Wo]Man vs. Machines / Technology": {
     plotA: [
       "Technological dependence reveals fatal vulnerabilities.",
       "A system malfunction forces manual intervention beyond training.",
@@ -101,7 +101,7 @@ export const CONFLICT_BEATS: Record<string, Beats> = {
       "The tools reshape the user."
     ]
   },
-  "[Wo]Man vs. Supernatural": {
+  "[Wo]Man vs. the Supernatural": {
     plotA: [
       "Supernatural rules operate by alien logic that punishes assumption.",
       "A bargain or curse escalates beyond the protagonist's control.",
@@ -147,7 +147,7 @@ export const CONFLICT_BEATS: Record<string, Beats> = {
       "Freedom requires facing what you've been running from."
     ]
   },
-  "[Wo]Man vs. God/Religion": {
+  "[Wo]Man vs. God / Religion": {
     plotA: [
       "Divine command conflicts with human morality or logic.",
       "Faith is tested by suffering that challenges core beliefs.",

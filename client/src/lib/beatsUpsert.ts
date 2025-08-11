@@ -11,7 +11,11 @@ export async function upsertBeatsAfterOverview(
   if (!conflictLabel) return html; // leave existing, per product rules
 
   const beats = CONFLICT_BEATS[conflictLabel];
-  if (!beats) return html;
+  console.log('Beats map hit?', !!beats);
+  if (!beats) {
+    console.log('Available keys:', Object.keys(CONFLICT_BEATS));
+    return html;
+  }
 
   const container = document.createElement("div");
   container.innerHTML = html || "";

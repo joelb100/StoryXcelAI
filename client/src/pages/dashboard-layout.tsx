@@ -1721,6 +1721,8 @@ export default function DashboardLayout() {
   useEffect(() => {
     if (!centralConflictLabel) return; // leave existing beats if conflict cleared
     
+    console.log('CentralConflict change =>', centralConflictLabel);
+    
     const id = setTimeout(async () => {
       const confirmReplace = async (): Promise<boolean> => {
         return new Promise((resolve) => {
@@ -1739,6 +1741,7 @@ export default function DashboardLayout() {
         );
         
         if (updatedHtml !== storyHtml) {
+          console.log('Upserted beats. html length:', updatedHtml.length);
           setStoryHtml(updatedHtml);
         }
       } catch (error) {
