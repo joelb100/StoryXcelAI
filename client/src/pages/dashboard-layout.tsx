@@ -15,7 +15,7 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
-import { upsertBeatsAfterOverview } from '@/lib/beatsUpsert';
+// Removed beats auto-insert import - feature reverted per user request
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -1717,50 +1717,8 @@ export default function DashboardLayout() {
     centralConflictLabel, centralConflictDef
   ]);
 
-  // Generate Story Beats when Central Conflict is selected (debounced)
-  // Use ref to track last processed conflict to prevent re-renders from duplicating
-  const lastConflictRef = useRef<string | null>(null);
-  
-  useEffect(() => {
-    if (!centralConflictLabel) return; // leave existing beats if conflict cleared
-    if (centralConflictLabel === lastConflictRef.current) return; // no change
-    
-    lastConflictRef.current = centralConflictLabel;
-    
-    const id = setTimeout(async () => {
-      const confirmReplace = async (): Promise<boolean> => {
-        return new Promise((resolve) => {
-          const result = window.confirm(
-            "You've edited the generated story beats. Replace them with new conflict-based suggestions?"
-          );
-          resolve(result);
-        });
-      };
-
-      try {
-        const updatedHtml = await upsertBeatsAfterOverview(
-          storyHtml,
-          centralConflictLabel,
-          confirmReplace
-        );
-        
-        if (updatedHtml !== storyHtml) {
-          setStoryHtml(updatedHtml);
-        }
-      } catch (error) {
-        console.error('Error updating story beats:', error);
-      }
-    }, 150);
-    
-    return () => clearTimeout(id);
-  }, [centralConflictLabel]);
-
-  // Remove debug logs once duplication is fixed
-  useEffect(() => {
-    if (storyHtml.length > 50000) {
-      console.warn('HTML size getting large:', storyHtml.length, 'characters - possible duplication issue');
-    }
-  }, [storyHtml.length]);
+  // Central Conflict auto-insert feature has been removed as requested
+  // Only Overview auto-fill remains active (Project Name, Type, Genre, Theme, etc.)
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2145,27 +2103,20 @@ export default function DashboardLayout() {
                             </div>
                           </div>
                           
-                          {/* Rich Text Editor Content */}
-                          <div className="flex-1 p-4">
+                          {/* Rich Text Editor Content - Fixed height to prevent AI assistant movement */}
+                          <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <RichEditor
                               value={storyHtml}
                               onChange={setStoryHtml}
                               className="w-full h-full"
                             />
-                            {/* Temporary debug - remove later */}
-                            {process.env.NODE_ENV === 'development' && (
-                              <div className="text-xs text-gray-400 mt-2">
-                                Debug: HTML length: {storyHtml.length}
-                              </div>
-                            )}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Bottom section - Reduced by 10% to match Dashboard proportions */}
-                    <div style={{ height: 'calc(40% - 1in - 8.336% + 1.35in)' }} className="flex flex-col justify-start pt-4">
-                      {/* AI Chat Window - reduced by 10% to match Dashboard height */}
+                    {/* AI Story Assistant - Fixed position at bottom */}
+                    <div className="h-64 border-t border-gray-200 bg-gray-50 p-4">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
