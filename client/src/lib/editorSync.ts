@@ -1,34 +1,36 @@
-import Quill from "quill";
+import type Quill from "quill";
 
-export function debounce<T extends (...a: any[]) => void>(fn: T, ms = 250) {
+export function debounce<T extends (...args: any) => void>(fn: T, ms = 250) {
   let t: any;
-  return (...args: Parameters<T>) => {
+  return (...a: Parameters<T>) => {
     clearTimeout(t);
-    t = setTimeout(() => fn(...args), ms);
+    t = setTimeout(() => fn(...a), ms);
   };
 }
 
-export function writeHtml(q: Quill, html: string) {
+export function setHtmlPreserveFocus(q: Quill, html: string) {
   if (!q || !q.clipboard) return;
   
   try {
-    // Convert HTML to Delta (works across Quill versions)
     const delta = q.clipboard.convert({ html });
     q.setContents(delta, "silent");
-
-    // preserve caret if the user is typing
+    
+    // Only set selection if Quill currently has focus
     if (q.hasFocus?.()) {
       q.setSelection(q.getLength(), 0, "silent");
     }
-
+    
+    // Debug helpers
+    (window as any).__lastHTML = html;
     (window as any).__lastOverviewHTML = html;
-    console.log('✓ writeHtml: Updated editor with HTML length:', html.length);
+    console.log('✓ setHtmlPreserveFocus: Updated editor with HTML length:', html.length);
   } catch (error) {
-    console.warn('writeHtml error:', error);
+    console.warn('setHtmlPreserveFocus error:', error);
     // Fallback to direct HTML if convert fails
     try {
       if (q.root) {
         q.root.innerHTML = html;
+        (window as any).__lastHTML = html;
         (window as any).__lastOverviewHTML = html;
       }
     } catch (fallbackError) {

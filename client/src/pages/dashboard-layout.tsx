@@ -14,369 +14,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
-import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
-import debounce from 'lodash.debounce';
-
-// --- Story Beats System ---
-type Beats = { plotA: string[]; plotB: string[]; plotC: string[]; twists: string[]; hook: string[] };
-
-const CONFLICT_BEATS: Record<string, Beats> = {
-  "[Wo]Man vs. [Wo]Man": {
-    plotA: [
-      "Rival's goals directly threaten the protagonist.",
-      "Escalating tit‑for‑tat forces a public confrontation.",
-      "A line is crossed that demands a reckoning."
-    ],
-    plotB: [
-      "Allies pick sides; loyalties strain under pressure.",
-      "Romance/friendship complicates the main conflict.",
-      "Power dynamics shift after a small victory."
-    ],
-    plotC: [
-      "Rumors, reputation, or status become weapons.",
-      "Institutions (school, job, team) amplify the feud.",
-      "A past slight resurfaces with new consequences."
-    ],
-    twists: [
-      "The rival wanted the same 'good' outcome all along.",
-      "A mentor betrays the protagonist—or vice versa."
-    ],
-    hook: [
-      "What you win costs who you are.",
-      "The truest victory isn't crushing them; it's changing you."
-    ]
-  },
-  "[Wo]Man vs. Nature": {
-    plotA: [
-      "Environment threatens survival; adapt or perish.",
-      "A safe path fails; a risky path appears.",
-      "Weather/terrain escalates into catastrophe."
-    ],
-    plotB: [
-      "Team fractures over tactics and trust.",
-      "A companion's injury or loss forces hard trade‑offs.",
-      "Old skills prove useless; new ones emerge."
-    ],
-    plotC: [
-      "Limited resources become moral dilemmas.",
-      "Local wildlife/ecosystem reacts unexpectedly.",
-      "A map/myth misleads; the land 'refuses' them."
-    ],
-    twists: [
-      "The 'threat' is a pattern the hero misread.",
-      "The rescue is the real danger."
-    ],
-    hook: [
-      "The wild doesn't forgive—only teaches.",
-      "To live here, you must become of here."
-    ]
-  },
-  "[Wo]Man vs. the Environment": {
-    plotA: [
-      "Systems force adaptation or extinction.",
-      "A breaking point demands radical action.",
-      "Rules shift mid‑story, invalidating old strategies."
-    ],
-    plotB: [
-      "Personal relationships strain under systemic stress.",
-      "Survival needs clash with values.",
-      "Someone pays a price for 'playing by the rules'."
-    ],
-    plotC: [
-      "Infrastructure failure cascades into larger crises.",
-      "Gatekeepers tighten control to hide cracks.",
-      "Scarcity creates new hierarchies of power."
-    ],
-    twists: [
-      "The system 'fix' produces worse harms.",
-      "An insider becomes a whistleblower."
-    ],
-    hook: [
-      "What you built to protect you became your prison.",
-      "Reforming a machine that eats reformers."
-    ]
-  },
-  "[Wo]Man vs. Machines / Technology": {
-    plotA: [
-      "Automation outpaces human control.",
-      "Convenience erodes privacy and choice.",
-      "A black‑box decision endangers someone the hero loves."
-    ],
-    plotB: [
-      "Teammates disagree: unplug or retrain?",
-      "A clone/AI 'copy' competes for trust.",
-      "Dependency makes rebellion costly."
-    ],
-    plotC: [
-      "An obsolete tool holds the real fix.",
-      "A failsafe has a human catch.",
-      "Glitches reveal the machine's hidden bias."
-    ],
-    twists: [
-      "The model learned from the hero's worst day.",
-      "Killing it kills livelihoods."
-    ],
-    hook: [
-      "If it thinks like us, it inherits our ghosts.",
-      "We programmed the future with our fears."
-    ]
-  },
-  "[Wo]Man vs. the Supernatural": {
-    plotA: [
-      "Uncanny signs escalate from nuisance to threat.",
-      "Rules of the curse/creature slowly surface.",
-      "A ritual or threshold must be crossed."
-    ],
-    plotB: [
-      "Skeptics vs believers fracture the group.",
-      "A legacy ties the hero to the haunting.",
-      "Protection requires a personal sacrifice."
-    ],
-    plotC: [
-      "Sacred/profane spaces invert power.",
-      "Old folklore hides practical instructions.",
-      "The mundane world refuses to see the horror."
-    ],
-    twists: [
-      "The monster wants witness, not blood.",
-      "Breaking the curse fulfills it."
-    ],
-    hook: [
-      "What hunts you knows your name.",
-      "Faith is a door; doubt is a lock."
-    ]
-  },
-  "[Wo]Man vs. Self": {
-    plotA: [
-      "An old wound triggers self‑sabotage.",
-      "A chance at growth collides with comfort.",
-      "The mask cracks in public."
-    ],
-    plotB: [
-      "A relationship mirrors the hero's flaw.",
-      "A mentor pushes the wrong lesson.",
-      "Relapse or regression tempts at the midpoint."
-    ],
-    plotC: [
-      "Past and present collide in a hard choice.",
-      "A false victory hides the real rot.",
-      "A small kindness opens a bigger door."
-    ],
-    twists: [
-      "The 'antagonist' was a projection.",
-      "Winning the external fight feels hollow."
-    ],
-    hook: [
-      "You can't outrun the person in your footprints.",
-      "To become new, something must die."
-    ]
-  },
-  "[Wo]Man vs. God / Religion": {
-    plotA: [
-      "Doctrine clashes with lived reality.",
-      "A miracle or scandal shatters certainty.",
-      "Exile or heresy becomes unavoidable."
-    ],
-    plotB: [
-      "Community love turns conditional.",
-      "A sacred text yields a dangerous reading.",
-      "An elder's faith quietly breaks."
-    ],
-    plotC: [
-      "Ritual becomes protest.",
-      "Power protects piety—or vice versa.",
-      "Silence is demanded where truth is owed."
-    ],
-    twists: [
-      "The 'voice of God' was forged by men.",
-      "Faith returns in a different form."
-    ],
-    hook: [
-      "When you ask the heavens, the echo is you.",
-      "Reverence without mercy is cruelty."
-    ]
-  },
-  "[Wo]Man vs. Society": {
-    plotA: [
-      "Oppressive norms punish non‑conformity.",
-      "Law/order is used to maintain injustice.",
-      "Collective action becomes the only path."
-    ],
-    plotB: [
-      "Allies disagree on tactics: reform vs revolt.",
-      "Public sentiment swings; costs mount.",
-      "Betrayal from within endangers many."
-    ],
-    plotC: [
-      "Media narrative warps the truth.",
-      "An unlikely coalition forms.",
-      "Small local wins unlock bigger doors."
-    ],
-    twists: [
-      "A 'villain' shares the hero's origin story.",
-      "Victory exposes a deeper system beneath."
-    ],
-    hook: [
-      "Change the rules, or the rules change you.",
-      "Freedom is contagious—and costly."
-    ]
-  }
-};
-
-const BEATS_START = "<!-- STORYXCEL_BEATS_START -->";
-const BEATS_END = "<!-- STORYXCEL_BEATS_END -->";
-
-// Helper functions for Story Beats
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, ch =>
-    ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" } as any)[ch]
-  );
-}
-
-function beatsToHTML(beats: Beats) {
-  const li = (xs: string[]) => xs.map(s => `<li>${escapeHtml(s)}</li>`).join("");
-
-  return `
-    ${BEATS_START}
-    <p><strong>Story Beats</strong></p>
-
-    <p><strong>Plot A —</strong> The high level description of the story's key sequential events of the main story</p>
-    <ul>${li(beats.plotA)}</ul>
-
-    <p><strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships</p>
-    <ul>${li(beats.plotB)}</ul>
-
-    <p><strong>Sub Plot C —</strong> The storyline's Tertiary sequential story points that focus on background elements</p>
-    <ul>${li(beats.plotC)}</ul>
-
-    <p><strong>Plot Twists —</strong></p>
-    <ul>${li(beats.twists)}</ul>
-
-    <p><strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings</p>
-    <ul>${li(beats.hook)}</ul>
-    ${BEATS_END}
-  `.trim();
-}
-
-// --- Quill header writer (replace top header, preserve the rest) ---
-type OverviewState = {
-  projectName: string;
-  projectType: string;
-  genre: string;
-  subGenre: string;
-  theme: string;
-  subTheme: string;
-  centralConflict: string;
-  lengthPages: string | number;
-  lengthMinutes: string | number;
-};
-
-function buildOverviewHTML(data: {
-  title?: string;
-  projectType?: string;
-  genreLabel?: string;
-  genreDef?: string;
-  subGenreLabel?: string;
-  subGenreDef?: string;
-  themeLabel?: string;
-  themeDef?: string;
-  subThemeLabel?: string;
-  subThemeDef?: string;
-  conflictLabel?: string;
-  conflictDef?: string;
-}) {
-  const {
-    title,
-    projectType,
-    genreLabel,
-    genreDef,
-    subGenreLabel,
-    subGenreDef,
-    themeLabel,
-    themeDef,
-    subThemeLabel,
-    subThemeDef,
-    conflictLabel,
-    conflictDef,
-  } = data;
-
-  return [
-    line('Story Title', title),
-    line('Project Type', projectType),
-    genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
-    genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
-    subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
-    subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
-    themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
-    themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
-    subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
-    subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
-    conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
-    conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
-  ].filter(Boolean).join('');
-}
-
-/**
- * Returns HTML from container start until (but not including) the 'untilNode'
- * or from 'fromNode' to the end if untilNode is null.
- */
-function sliceOuterHTML(container: HTMLElement, fromNode: ChildNode | null, untilNode: ChildNode | null) {
-  const frag = document.createDocumentFragment();
-  let cur = fromNode ?? container.firstChild;
-
-  while (cur && cur !== untilNode) {
-    const clone = cur.cloneNode(true);
-    frag.appendChild(clone);
-    cur = cur.nextSibling;
-  }
-
-  const div = document.createElement('div');
-  div.appendChild(frag);
-  return div.innerHTML;
-}
-
-/**
- * Replaces the HTML between our start/end markers.
- * If markers are missing, we re-seed them and drop any previously duplicated block.
- */
-function replaceOverviewSafe(editorHtml: string, overviewHTML: string) {
-  // Normalize: Quill always wraps block content in <p>…</p>
-  // We parse as DOM so wrapper tags don't break us.
-  const container = document.createElement('div');
-  container.innerHTML = editorHtml || '';
-
-  let start = container.querySelector('span[data-sx-marker="overview-start"]');
-  let end   = container.querySelector('span[data-sx-marker="overview-end"]');
-
-  // If markers are missing OR out of order, re-seed a clean header
-  if (!start || !end) {
-    const clean = document.createElement('div');
-    clean.innerHTML = `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}<p>Your story begins here...</p>`;
-    return clean.innerHTML;
-  }
-
-  // Build a range that covers everything between markers
-  // We'll rebuild innerHTML with three slices: [before][header][after]
-  const beforeHtml = sliceOuterHTML(container, container.firstChild, start);
-  const afterHtml  = sliceOuterHTML(container, end, null);
-
-  const nextHtml =
-    beforeHtml +
-    OVERVIEW_START + overviewHTML + OVERVIEW_END +
-    afterHtml;
-
-  return nextHtml;
-}
-
-function line(label?: string, value?: string) {
-  return label && value
-    ? `<p><strong>${label}</strong> — ${value}</p>`
-    : label
-    ? `<p><strong>${label}</strong></p>`
-    : '';
-}
-
-
+import RichEditor from '@/components/editor/RichEditor';
+import { debounce, setHtmlPreserveFocus } from '@/lib/editorSync';
+import type Quill from 'quill';
 
 import { 
   ChevronLeft, 
@@ -433,7 +73,11 @@ import {
   Bell
 } from "lucide-react";
 
-// Editor section markers are imported from RichEditor component
+// ----- Editor section markers -----
+const OVERVIEW_START = '<!-- STORYXCEL_OVERVIEW_START -->';
+const OVERVIEW_END   = '<!-- STORYXCEL_OVERVIEW_END -->';
+const BEATS_START    = '<!-- STORYXCEL_BEATS_START -->';
+const BEATS_END      = '<!-- STORYXCEL_BEATS_END -->';
 
 type ConflictBlock = {
   plotA: string[];
@@ -640,7 +284,57 @@ function stripBlock(html: string, start: string, end: string) {
   return html;
 }
 
-
+// Build Overview HTML from form state
+function buildOverviewHTML(formState: {
+  projectName: string;
+  projectType: string;
+  genre: string;
+  subGenre: string;
+  theme: string;
+  subTheme: string;
+  centralConflict: string;
+  lengthPages: string | number;
+  lengthMinutes: string | number;
+}) {
+  const { projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes } = formState;
+  
+  let html = '';
+  
+  if (projectName) {
+    html += `<p><strong>Story Title —</strong> ${projectName}</p>`;
+  }
+  
+  if (projectType) {
+    const lengthText = projectType !== 'Worldbuilding' && (lengthPages || lengthMinutes)
+      ? ` / ${lengthPages} pages / ${lengthMinutes} mins`
+      : '';
+    html += `<p><strong>Project Type —</strong> ${projectType}${lengthText}</p>`;
+  }
+  
+  if (genre) {
+    html += `<p><strong>Genre —</strong> ${genre}</p>`;
+  }
+  
+  if (subGenre) {
+    html += `<p><strong>Sub Genre —</strong> ${subGenre}</p>`;
+  }
+  
+  if (theme) {
+    html += `<p><strong>Theme —</strong> ${theme}</p>`;
+  }
+  
+  if (subTheme) {
+    html += `<p><strong>Sub Theme —</strong> ${subTheme}</p>`;
+  }
+  
+  if (centralConflict) {
+    const conflictOption = CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict);
+    const label = conflictOption?.label || centralConflict;
+    html += `<p><strong>Central Conflict —</strong> ${label}</p>`;
+  }
+  
+  return html;
+}
 
 // Build Story Beats HTML from conflict key
 function buildBeatsHTML(conflictKey: string) {
@@ -725,18 +419,6 @@ const CENTRAL_CONFLICT_OPTIONS = [
   { value: "man-v-god", label: "[Wo]Man vs. God / Religion" },
   { value: "man-v-society", label: "[Wo]Man vs. Society" },
 ];
-
-// Mapping from dropdown values to CONFLICT_BEATS keys
-const CONFLICT_VALUE_TO_BEATS_KEY: Record<string, string> = {
-  "man-v-man": "[Wo]Man vs. [Wo]Man",
-  "man-v-nature": "[Wo]Man vs. Nature", 
-  "man-v-environment": "[Wo]Man vs. the Environment",
-  "man-v-tech": "[Wo]Man vs. Machines / Technology",
-  "man-v-supernatural": "[Wo]Man vs. the Supernatural",
-  "man-v-self": "[Wo]Man vs. Self",
-  "man-v-god": "[Wo]Man vs. God / Religion",
-  "man-v-society": "[Wo]Man vs. Society",
-};
 
 const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
   "man-v-man": "A conflict where the main opposition is another person or group with clashing goals, values, or power.",
@@ -1130,8 +812,7 @@ const LeftSidebar = ({
   subTheme,
   onSubThemeChange,
   centralConflict,
-  onCentralConflictChange,
-  overviewInputProps
+  onCentralConflictChange
 }: { 
   activeTab: string;
   projectName?: string;
@@ -1147,7 +828,6 @@ const LeftSidebar = ({
   onSubThemeChange?: (value: string) => void;
   centralConflict?: string;
   onCentralConflictChange?: (value: string) => void;
-  overviewInputProps?: { onFocus: () => void; onBlur: () => void; };
 }) => (
   <div className="h-full border-r border-slate-600 flex flex-col" style={{ backgroundColor: '#47566b' }}>
     {activeTab === 'story' ? (
@@ -1170,14 +850,13 @@ const LeftSidebar = ({
               onChange={(e) => onProjectNameChange?.(e.target.value)}
               placeholder="Enter project name..."
               className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
-              {...(overviewInputProps || {})}
             />
           </div>
 
           <div>
             <Label htmlFor="story-projectType" className="text-sm font-medium text-white block mb-1">Project Type</Label>
             <Select onValueChange={onProjectTypeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
@@ -1192,7 +871,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-genre" className="text-sm font-medium text-white block mb-1">Genre</Label>
             <Select value={genre} onValueChange={onGenreChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
               <SelectContent>
@@ -1231,7 +910,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
             <Select value={subGenre || ''} onValueChange={onSubGenreChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
               <SelectContent>
@@ -1262,7 +941,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-theme" className="text-sm font-medium text-white block mb-1">Theme</Label>
             <Select value={theme} onValueChange={onThemeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
               <SelectContent>
@@ -1311,7 +990,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-subTheme" className="text-sm font-medium text-white block mb-1">Sub Theme</Label>
             <Select value={subTheme} onValueChange={onSubThemeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Sub Theme" />
               </SelectTrigger>
               <SelectContent>
@@ -1362,7 +1041,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
             <Select value={centralConflict} onValueChange={onCentralConflictChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Central Conflict" />
               </SelectTrigger>
               <SelectContent>
@@ -1735,7 +1414,9 @@ const DashboardContent = ({
 export default function DashboardLayout() {
   const [location, navigate] = useLocation();
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState([
+    { id: 1, type: 'ai', content: 'Hello! I\'m your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.' }
+  ]);
   const [chatMessage, setChatMessage] = useState("");
   const [mobileLeftOpen, setMobileLeftOpen] = useState(false);
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
@@ -1985,7 +1666,39 @@ export default function DashboardLayout() {
       : '';
   }
 
+  function buildOverviewHTML(data: {
+    title?: string;
+    projectType?: string;          // e.g. "Screenplay / 120 pages / 120 mins"
+    genreLabel?: string; genreDef?: string;
+    subGenreLabel?: string; subGenreDef?: string;
+    themeLabel?: string; themeDef?: string;
+    subThemeLabel?: string; subThemeDef?: string;
+    conflictLabel?: string; conflictDef?: string;
+  }) {
+    const {
+      title, projectType,
+      genreLabel, genreDef,
+      subGenreLabel, subGenreDef,
+      themeLabel, themeDef,
+      subThemeLabel, subThemeDef,
+      conflictLabel, conflictDef,
+    } = data;
 
+    return [
+      line('Story Title', title),
+      line('Project Type', projectType),
+      genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
+      genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
+      subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
+      subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
+      themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
+      themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
+      subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
+      subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
+      conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
+      conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
+    ].filter(Boolean).join('');
+  }
 
   /**
    * Returns HTML from container start until (but not including) the 'untilNode'
@@ -2301,45 +2014,8 @@ export default function DashboardLayout() {
   const [latestOverviewHTML, setLatestOverviewHTML] = useState<string>('');
   const [latestBeatsHTML, setLatestBeatsHTML] = useState<string>('');
   
-  // Use the existing storyHtml state from above
-
-  // Add overviewInputProps for LeftSidebar compatibility
-  const overviewInputProps = {
-    onFocus: () => console.log("[OVERVIEW] focus"),
-    onBlur: () => console.log("[OVERVIEW] blur")
-  };
-
-  // Synchronize overview changes to the editor
-  useEffect(() => {
-    const overviewData = {
-      title: projectName,
-      projectType: projectType && lengthPages && lengthMinutes 
-        ? `${projectType} / ${lengthPages} pages / ${lengthMinutes} mins`
-        : projectType,
-      genreLabel: genreLabel,
-      genreDef: genreDef,
-      subGenreLabel: subGenreLabel,
-      subGenreDef: subGenreDef,
-      themeLabel: themeLabel,
-      themeDef: themeDef,
-      subThemeLabel: subThemeLabel,
-      subThemeDef: subThemeDef,
-      conflictLabel: centralConflictLabel,
-      conflictDef: centralConflictDef,
-    };
-
-    const overviewHTML = buildOverviewHTML(overviewData);
-    const updatedHtml = replaceOverviewSafe(storyHtml, overviewHTML);
-    
-    if (updatedHtml !== storyHtml) {
-      setStoryHtml(updatedHtml);
-    }
-  }, [
-    projectName, projectType, lengthPages, lengthMinutes,
-    genreLabel, genreDef, subGenreLabel, subGenreDef,
-    themeLabel, themeDef, subThemeLabel, subThemeDef,
-    centralConflictLabel, centralConflictDef, storyHtml
-  ]);
+  // Quill instance reference
+  const quillRef = useRef<Quill | null>(null);
   
 
 
@@ -2350,62 +2026,51 @@ export default function DashboardLayout() {
 
   // Handle Central Conflict change with conflict-based story beats insertion
   const handleCentralConflictChange = (value: string) => {
-    console.log('[CC onChange]', value);
     setCentralConflict(value);
 
-    // Map dropdown value to CONFLICT_BEATS key
-    const beatsKey = CONFLICT_VALUE_TO_BEATS_KEY[value];
-    if (!beatsKey || !CONFLICT_BEATS[beatsKey]) {
-      console.log('[CC] No beats template for', value, 'mapped to', beatsKey);
-      return;
-    }
+    // If there is no template or same conflict already applied, do nothing.
+    if (!CONFLICT_TEMPLATES[value]) return;
 
-    if (lastAppliedConflict === value) {
-      console.log('[CC] Already applied conflict', value);
-      return;
-    }
+    if (lastAppliedConflict === value) return;
 
-    console.log('[CC] Generating beats for', value, 'using key', beatsKey);
-    // Generate new beats HTML using the conflict beats data
-    const beats = CONFLICT_BEATS[beatsKey];
-    const newBeatsHTML = beatsToHTML(beats);
+    // Generate new beats HTML and update editor
+    const newBeatsHTML = buildBeatsHTML(value);
     setLatestBeatsHTML(newBeatsHTML);
     
-    // Update the editor content immediately by adding beats to current content
-    setStoryHtml(currentHtml => {
-      console.log('[CC] Current HTML length:', currentHtml.length);
-      const hasBeats = currentHtml.includes(BEATS_START) && currentHtml.includes(BEATS_END);
-      console.log('[CC] Has existing beats:', hasBeats);
-      
-      if (hasBeats) {
-        // Replace existing beats block
-        const updatedHtml = currentHtml.replace(
-          new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`), 
-          newBeatsHTML
-        );
-        console.log('[CC] Replaced beats, new length:', updatedHtml.length);
-        return updatedHtml;
-      } else {
-        // Append beats after overview (or at end if no overview)
-        if (currentHtml.includes(OVERVIEW_END)) {
-          const updatedHtml = currentHtml.replace(
-            OVERVIEW_END,
-            `${OVERVIEW_END}\n\n${newBeatsHTML}`
-          );
-          console.log('[CC] Added beats after overview, new length:', updatedHtml.length);
-          return updatedHtml;
-        } else {
-          const updatedHtml = `${currentHtml}\n\n${newBeatsHTML}`;
-          console.log('[CC] Appended beats at end, new length:', updatedHtml.length);
-          return updatedHtml;
-        }
-      }
-    });
-    
+    // For now, just trigger a re-sync with the new beats (Story Beats system will be enhanced later)
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    };
+    const overviewHTML = buildOverviewHTML(formState);
+    writeOverview(overviewHTML);
     setLastAppliedConflict(value);
   };
 
-  // Overview changes are now automatically handled by useEffect
+  // Handle Overview changes (project name, type, genre, etc.)
+  const updateOverviewSection = () => {
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    };
+    const newOverviewHTML = buildOverviewHTML(formState);
+    setLatestOverviewHTML(newOverviewHTML);
+    writeOverview(newOverviewHTML);
+  };
 
   const handleProjectTypeChange = (val: string) => {
     setProjectType(val);
@@ -2461,57 +2126,34 @@ export default function DashboardLayout() {
     }
   };
 
-  // Central Conflict beats effect
+  // Create debounced writer for overview updates
+  const writeOverview = useMemo(() =>
+    debounce((html: string) => {
+      const q = quillRef.current;
+      if (!q) return;
+      setHtmlPreserveFocus(q, html);
+    }, 300),
+  []);
+
+  // Live-sync project data to Story Builder overview section (debounced)
   useEffect(() => {
-    console.log('[CC effect] centralConflict:', centralConflict);
-    console.log('[CC effect] lastAppliedConflict:', lastAppliedConflict);
+    if (!quillRef.current) return; // wait for Quill
     
-    const beatsKey = CONFLICT_VALUE_TO_BEATS_KEY[centralConflict];
-    if (!centralConflict || !beatsKey || !CONFLICT_BEATS[beatsKey]) {
-      console.log('[CC effect] No conflict or no beats for:', centralConflict, 'mapped to', beatsKey);
-      return;
-    }
-
-    if (lastAppliedConflict === centralConflict) {
-      console.log('[CC effect] Already applied this conflict');
-      return;
-    }
-
-    console.log('[CC effect] Applying beats for:', centralConflict, 'using key', beatsKey);
-    const beats = CONFLICT_BEATS[beatsKey];
-    const newBeatsHTML = beatsToHTML(beats);
-    
-    setStoryHtml(currentHtml => {
-      console.log('[CC effect] Current HTML length:', currentHtml.length);
-      const hasBeats = currentHtml.includes(BEATS_START) && currentHtml.includes(BEATS_END);
-      console.log('[CC effect] Has existing beats:', hasBeats);
-      
-      if (hasBeats) {
-        const updatedHtml = currentHtml.replace(
-          new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`), 
-          newBeatsHTML
-        );
-        console.log('[CC effect] Replaced beats, new length:', updatedHtml.length);
-        return updatedHtml;
-      } else {
-        if (currentHtml.includes(OVERVIEW_END)) {
-          const updatedHtml = currentHtml.replace(
-            OVERVIEW_END,
-            `${OVERVIEW_END}\n\n${newBeatsHTML}`
-          );
-          console.log('[CC effect] Added beats after overview, new length:', updatedHtml.length);
-          return updatedHtml;
-        } else {
-          const updatedHtml = `${currentHtml}\n\n${newBeatsHTML}`;
-          console.log('[CC effect] Appended beats at end, new length:', updatedHtml.length);
-          return updatedHtml;
-        }
-      }
-    });
-    
-  }, [centralConflict]);
-
-  // Old Quill sync logic removed - now using controlled ReactQuill component
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    };
+    const newOverviewHTML = buildOverviewHTML(formState);
+    setLatestOverviewHTML(newOverviewHTML);
+    writeOverview(newOverviewHTML); // debounced push
+  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, writeOverview]);
 
 
 
@@ -2638,7 +2280,6 @@ export default function DashboardLayout() {
               onSubThemeChange={setSubTheme}
               centralConflict={centralConflict}
               onCentralConflictChange={handleCentralConflictChange}
-              overviewInputProps={overviewInputProps}
             />
           </div>
           
@@ -2842,8 +2483,27 @@ export default function DashboardLayout() {
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <div id="story-editor">
                               <RichEditor
-                                value={storyHtml}
-                                onChange={(html) => setStoryHtml(html)}
+                                onReady={(q) => { 
+                                  quillRef.current = q;
+                                  (window as any).__quillReady = true;
+                                  
+                                  // Initialize with overview content if we have it
+                                  const formState = {
+                                    projectName,
+                                    projectType,
+                                    genre,
+                                    subGenre,
+                                    theme,
+                                    subTheme,
+                                    centralConflict,
+                                    lengthPages,
+                                    lengthMinutes
+                                  };
+                                  const initialHTML = buildOverviewHTML(formState);
+                                  if (initialHTML.trim()) {
+                                    setHtmlPreserveFocus(q, initialHTML);
+                                  }
+                                }}
                                 className="w-full h-full"
                               />
                             </div>
@@ -2852,8 +2512,8 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Story Assistant - Match exact dashboard height */}
-                    <div className="h-32 border-t border-gray-200 bg-gray-50 p-4">
+                    {/* AI Story Assistant - Fixed position at bottom */}
+                    <div className="h-64 border-t border-gray-200 bg-gray-50 p-4">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
@@ -2962,8 +2622,8 @@ export default function DashboardLayout() {
                   </div>
                 </div>
 
-                {/* AI Story Assistant - Match exact dashboard height */}
-                <div className="h-32 border-t border-gray-200 bg-gray-50 p-4">
+                {/* AI Story Assistant - Bottom Section */}
+                <div className="h-64 border-t border-gray-200 bg-gray-50 p-4">
                   <AIStoryAssistant 
                     chatMessages={chatMessages}
                     chatMessage={chatMessage}

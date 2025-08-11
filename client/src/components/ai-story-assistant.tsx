@@ -30,30 +30,17 @@ export default function AIStoryAssistant({
         {/* Chat Messages Area */}
         <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
           <div className="space-y-3">
-            {chatMessages.length === 0 ? (
-              <div className="text-sm text-slate-600">
-                Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-start">
-                  <div className="max-w-[80%] p-2 rounded-lg text-sm bg-gray-100 text-slate-700 rounded-bl-none">
-                    Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
-                  </div>
+            {chatMessages.map((message) => (
+              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                  message.type === 'user' 
+                    ? 'bg-blue-500 text-white rounded-br-none' 
+                    : 'bg-gray-100 text-slate-700 rounded-bl-none'
+                }`}>
+                  {message.content}
                 </div>
-                {chatMessages.map((message) => (
-                  <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                      message.type === 'user' 
-                        ? 'bg-blue-500 text-white rounded-br-none' 
-                        : 'bg-gray-100 text-slate-700 rounded-bl-none'
-                    }`}>
-                      {message.content}
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
+              </div>
+            ))}
           </div>
         </div>
         
