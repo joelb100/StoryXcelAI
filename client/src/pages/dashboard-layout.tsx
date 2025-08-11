@@ -15,8 +15,50 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor from '@/components/editor/RichEditor';
-import { debounce, writeHtml } from '@/lib/editorSync';
 import type Quill from 'quill';
+
+// --- Quill header writer (replace top header, preserve the rest) ---
+type OverviewState = {
+  projectName: string;
+  projectType: string;
+  genre: string;
+  subGenre: string;
+  theme: string;
+  subTheme: string;
+  centralConflict: string;
+  lengthPages: string | number;
+  lengthMinutes: string | number;
+};
+
+function buildOverviewHTML(o: OverviewState) {
+  return [
+    o.projectName && `<p><strong>Story Title</strong> — ${o.projectName}</p>`,
+    o.projectType && `<p><strong>Project Type</strong> — ${o.projectType}${o.lengthPages ? ` / ${o.lengthPages} pages` : ""}${o.lengthMinutes ? ` / ${o.lengthMinutes} mins` : ""}</p>`,
+    o.genre && `<p><strong>Genre</strong> — ${o.genre}</p>`,
+    o.subGenre && `<p><strong>Sub Genre</strong> — ${o.subGenre}</p>`,
+    o.theme && `<p><strong>Theme</strong> — ${o.theme}</p>`,
+    o.subTheme && `<p><strong>Sub Theme</strong> — ${o.subTheme}</p>`,
+    o.centralConflict && `<p><strong>Central Conflict</strong> — ${o.centralConflict}</p>`,
+    `<p>Your story begins here...</p>`
+  ].filter(Boolean).join("");
+}
+
+// Replace the header text at the top of the editor without touching the body.
+const lastHeaderLenRef = { current: 0 };
+
+function replaceHeaderHTML(q: Quill, html: string) {
+  const headerDelta = q.clipboard.convert({ html });
+  // Remove previous header (if any)
+  if (lastHeaderLenRef.current > 0) {
+    q.deleteText(0, lastHeaderLenRef.current, "silent");
+  }
+  // Paste new header at index 0
+  q.clipboard.dangerouslyPasteHTML(0, html, "silent");
+  // Update recorded header length (length counts trailing newline Quill inserts)
+  lastHeaderLenRef.current = q.getLength() - q.getText().length + q.getText().substring(0).length; // simple recompute
+  // Safer: directly read the headerDelta length:
+  // lastHeaderLenRef.current = headerDelta.length();
+}
 
 import { 
   ChevronLeft, 
@@ -284,57 +326,7 @@ function stripBlock(html: string, start: string, end: string) {
   return html;
 }
 
-// Build Overview HTML from form state
-function buildOverviewHTML(formState: {
-  projectName: string;
-  projectType: string;
-  genre: string;
-  subGenre: string;
-  theme: string;
-  subTheme: string;
-  centralConflict: string;
-  lengthPages: string | number;
-  lengthMinutes: string | number;
-}) {
-  const { projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes } = formState;
-  
-  let html = '';
-  
-  if (projectName) {
-    html += `<p><strong>Story Title —</strong> ${projectName}</p>`;
-  }
-  
-  if (projectType) {
-    const lengthText = projectType !== 'Worldbuilding' && (lengthPages || lengthMinutes)
-      ? ` / ${lengthPages} pages / ${lengthMinutes} mins`
-      : '';
-    html += `<p><strong>Project Type —</strong> ${projectType}${lengthText}</p>`;
-  }
-  
-  if (genre) {
-    html += `<p><strong>Genre —</strong> ${genre}</p>`;
-  }
-  
-  if (subGenre) {
-    html += `<p><strong>Sub Genre —</strong> ${subGenre}</p>`;
-  }
-  
-  if (theme) {
-    html += `<p><strong>Theme —</strong> ${theme}</p>`;
-  }
-  
-  if (subTheme) {
-    html += `<p><strong>Sub Theme —</strong> ${subTheme}</p>`;
-  }
-  
-  if (centralConflict) {
-    const conflictOption = CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict);
-    const label = conflictOption?.label || centralConflict;
-    html += `<p><strong>Central Conflict —</strong> ${label}</p>`;
-  }
-  
-  return html;
-}
+
 
 // Build Story Beats HTML from conflict key
 function buildBeatsHTML(conflictKey: string) {
@@ -1666,39 +1658,7 @@ export default function DashboardLayout() {
       : '';
   }
 
-  function buildOverviewHTML(data: {
-    title?: string;
-    projectType?: string;          // e.g. "Screenplay / 120 pages / 120 mins"
-    genreLabel?: string; genreDef?: string;
-    subGenreLabel?: string; subGenreDef?: string;
-    themeLabel?: string; themeDef?: string;
-    subThemeLabel?: string; subThemeDef?: string;
-    conflictLabel?: string; conflictDef?: string;
-  }) {
-    const {
-      title, projectType,
-      genreLabel, genreDef,
-      subGenreLabel, subGenreDef,
-      themeLabel, themeDef,
-      subThemeLabel, subThemeDef,
-      conflictLabel, conflictDef,
-    } = data;
 
-    return [
-      line('Story Title', title),
-      line('Project Type', projectType),
-      genreLabel ? `<p><strong>Genre</strong> — ${genreLabel}</p>` : '',
-      genreDef ? `<p style="margin-left:1rem;">${genreDef}</p>` : '',
-      subGenreLabel ? `<p><strong>Sub Genre</strong> — ${subGenreLabel}</p>` : '',
-      subGenreDef ? `<p style="margin-left:1rem;">${subGenreDef}</p>` : '',
-      themeLabel ? `<p><strong>Theme</strong> — ${themeLabel}</p>` : '',
-      themeDef ? `<p style="margin-left:1rem;">${themeDef}</p>` : '',
-      subThemeLabel ? `<p><strong>Sub Theme</strong> — ${subThemeLabel}</p>` : '',
-      subThemeDef ? `<p style="margin-left:1rem;">${subThemeDef}</p>` : '',
-      conflictLabel ? `<p><strong>Central Conflict</strong> — ${conflictLabel}</p>` : '',
-      conflictDef ? `<p style="margin-left:1rem;">${conflictDef}</p>` : '',
-    ].filter(Boolean).join('');
-  }
 
   /**
    * Returns HTML from container start until (but not including) the 'untilNode'
@@ -2016,6 +1976,24 @@ export default function DashboardLayout() {
   
   // Quill instance reference
   const quillRef = useRef<Quill | null>(null);
+
+  // Stable debounced writer kept in a ref
+  const debouncedWriteRef = useRef<(html: string) => void>();
+  useEffect(() => {
+    // lightweight debounce (no lodash dependency)
+    let t: number | null = null;
+    debouncedWriteRef.current = (html: string) => {
+      if (t) window.clearTimeout(t);
+      t = window.setTimeout(() => {
+        const q = quillRef.current;
+        if (!q) return;
+        replaceHeaderHTML(q, html);
+      }, 150);
+    };
+    return () => {
+      if (t) window.clearTimeout(t);
+    };
+  }, []);
   
 
 
@@ -2050,7 +2028,7 @@ export default function DashboardLayout() {
       lengthMinutes
     };
     const overviewHTML = buildOverviewHTML(formState);
-    debouncedWrite(overviewHTML);
+    debouncedWriteRef.current?.(overviewHTML);
     setLastAppliedConflict(value);
   };
 
@@ -2069,7 +2047,7 @@ export default function DashboardLayout() {
     };
     const newOverviewHTML = buildOverviewHTML(formState);
     setLatestOverviewHTML(newOverviewHTML);
-    debouncedWrite(newOverviewHTML);
+    debouncedWriteRef.current?.(newOverviewHTML);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2126,68 +2104,21 @@ export default function DashboardLayout() {
     }
   };
 
-  // Build overview HTML from current state
-  function buildOverviewHTML(o: {
-    projectName: string;
-    projectType: string;
-    genre: string;
-    subGenre: string;
-    theme: string;
-    subTheme: string;
-    centralConflict: string;
-    lengthPages: string | number;
-    lengthMinutes: string | number;
-  }) {
-    return [
-      o.projectName && `<p><strong>Story Title</strong> — ${o.projectName}</p>`,
-      o.projectType && `<p><strong>Project Type</strong> — ${o.projectType}${o.lengthPages ? ` / ${o.lengthPages} pages` : ""}${o.lengthMinutes ? ` / ${o.lengthMinutes} mins` : ""}</p>`,
-      o.genre && `<p><strong>Genre</strong> — ${o.genre}</p>`,
-      o.subGenre && `<p><strong>Sub Genre</strong> — ${o.subGenre}</p>`,
-      o.theme && `<p><strong>Theme</strong> — ${o.theme}</p>`,
-      o.subTheme && `<p><strong>Sub Theme</strong> — ${o.subTheme}</p>`,
-      o.centralConflict && `<p><strong>Central Conflict</strong> — ${o.centralConflict}</p>`,
-      `<p>Your story begins here...</p>`
-    ].filter(Boolean).join("");
-  }
+  // Build a serialized snapshot so the effect only runs when values change
+  const overviewSnapshot = JSON.stringify({
+    projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
+  });
 
-  const debouncedWrite = useMemo(
-    () => debounce((html: string) => {
-      const q = quillRef.current;
-      if (!q) return;
-      writeHtml(q, html);
-    }, 300),
-    []
-  );
-
-  // TEMP TEST: write only project name into the editor
   useEffect(() => {
-    const q = (window as any).__quill;
-    if (!q || !projectName) return;
-    const html = `<p><strong>Story Title</strong> — ${projectName}</p>`;
-    const delta = q.clipboard.convert({ html });
-    q.setContents(delta, "silent");
-    (window as any).__lastOverviewHTML = html;
-  }, [projectName]);
+    const q = quillRef.current;
+    if (!q) return;
 
-  // Live-sync project data to Story Builder overview section (debounced)
-  useEffect(() => {
-    if (!quillRef.current) return; // wait for Quill onReady
-    
-    const overviewState = {
-      projectName,
-      projectType,
-      genre,
-      subGenre,
-      theme,
-      subTheme,
-      centralConflict,
-      lengthPages,
-      lengthMinutes
+    const state: OverviewState = {
+      projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
     };
-    const html = buildOverviewHTML(overviewState);
-    setLatestOverviewHTML(html);
-    debouncedWrite(html);
-  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, debouncedWrite]);
+    const html = buildOverviewHTML(state);
+    debouncedWriteRef.current?.(html);
+  }, [overviewSnapshot]);
 
 
 
@@ -2517,25 +2448,17 @@ export default function DashboardLayout() {
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <div id="story-editor">
                               <RichEditor
-                                onReady={(q) => { 
+                                onReady={(q) => {
                                   quillRef.current = q;
                                   (window as any).__quillReady = true;
-                                  
-                                  // Initialize with overview content if we have it
-                                  const overviewState = {
-                                    projectName,
-                                    projectType,
-                                    genre,
-                                    subGenre,
-                                    theme,
-                                    subTheme,
-                                    centralConflict,
-                                    lengthPages,
-                                    lengthMinutes
+
+                                  // On first paint, write whatever we already have
+                                  const state: OverviewState = {
+                                    projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
                                   };
-                                  const initialHTML = buildOverviewHTML(overviewState);
+                                  const initialHTML = buildOverviewHTML(state);
                                   if (initialHTML.trim()) {
-                                    writeHtml(q, initialHTML);
+                                    replaceHeaderHTML(q, initialHTML);
                                   }
                                 }}
                                 className="w-full h-full"
