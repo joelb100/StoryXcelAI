@@ -70,48 +70,30 @@ import {
   Bell
 } from "lucide-react";
 
-// ----- Marker constants (keep them stable) -----
-const BEATS_START = '<!-- SX_BEATS_START -->';
-const BEATS_END   = '<!-- SX_BEATS_END -->';
+// ----- Conflict templates and DOM manipulation -----
+const CONFLICT_START = '<!-- STORYXCEL_CONFLICT_START -->';
+const CONFLICT_END   = '<!-- STORYXCEL_CONFLICT_END -->';
 
-// Get/set HTML helpers for Quill (assumes quillRef.current?.editor)
-function getEditorHtml(quillRef: any): string {
-  return quillRef.current?.editor?.root?.innerHTML ?? '';
-}
-
-function setEditorHtml(quillRef: any, html: string) {
-  if (!quillRef.current?.editor) return;
-  quillRef.current.editor.root.innerHTML = html;
-}
-
-type ConflictKey =
-  | 'man_man'
-  | 'man_nature' 
-  | 'man_environment'
-  | 'man_technology'
-  | 'man_supernatural'
-  | 'man_self'
-  | 'man_god'
-  | 'man_society';
-
-const BEATS_BY_CONFLICT: Record<ConflictKey, {
+type ConflictBlock = {
   plotA: string[];
-  subB: string[];
-  subC: string[];
+  plotB: string[];
+  plotC: string[];
   twists: string[];
   hook: string[];
-}> = {
-  man_man: {
+};
+
+const CONFLICT_TEMPLATES: Record<string, ConflictBlock> = {
+  'man-v-man': {
     plotA: [
       'Opposing goals create inevitable confrontation.',
       'Power dynamics shift, forcing alliance or betrayal.',
       'Personal history complicates present conflict.'
     ],
-    subB: [
-      'Allies question the protagonist\'s methods or motives.'
+    plotB: [
+      'Allies question the protagonist\'s methods or motives.',
+      'Collateral damage affects innocent parties.'
     ],
-    subC: [
-      'Collateral damage affects innocent parties.',
+    plotC: [
       'Past relationships resurface at critical moments.',
       'The opponent\'s perspective reveals uncomfortable truths.'
     ],
@@ -124,17 +106,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'Defeating them means losing who you are.'
     ]
   },
-  man_nature: {
+  'man-v-nature': {
     plotA: [
       'Natural forces operate beyond human control or understanding.',
       'Survival instincts conflict with civilized behavior.',
       'The environment punishes human arrogance or negligence.'
     ],
-    subB: [
-      'Group dynamics fracture under natural pressure.'
+    plotB: [
+      'Group dynamics fracture under natural pressure.',
+      'Nature reveals hidden aspects of character.'
     ],
-    subC: [
-      'Nature reveals hidden aspects of character.',
+    plotC: [
       'Technology fails when most needed.',
       'Animals or natural phenomena become active obstacles.'
     ],
@@ -147,17 +129,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'Earn every breath.'
     ]
   },
-  man_environment: {
+  'man-v-environment': {
     plotA: [
       'Systems pressure force adaptation or extinction.',
       'A breaking point demands radical action despite consequences.',
       'The environment\'s "rules" shift mid-story, invalidating old strategies.'
     ],
-    subB: [
-      'Personal relationships strain under environmental stress.'
+    plotB: [
+      'Personal relationships strain under environmental stress.',
+      'Old loyalties conflict with survival needs.'
     ],
-    subC: [
-      'Old loyalties conflict with survival needs.',
+    plotC: [
       'Infrastructure failures cascade into larger crises.',
       'Resource scarcity creates new hierarchies of power.'
     ],
@@ -170,17 +152,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'Adaptation costs identity.'
     ]
   },
-  man_technology: {
+  'man-v-tech': {
     plotA: [
       'Technological dependence reveals fatal vulnerabilities.',
       'A system malfunction forces manual intervention beyond training.',
       'The technology "evolves" beyond its original programming.'
     ],
-    subB: [
-      'Human connections weaken as technology strengthens.'
+    plotB: [
+      'Human connections weaken as technology strengthens.',
+      'Old skills become invaluable when systems fail.'
     ],
-    subC: [
-      'Old skills become invaluable when systems fail.',
+    plotC: [
       'Data privacy breaches expose personal secrets.',
       'Automation eliminates human agency in critical decisions.'
     ],
@@ -193,17 +175,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'The tools reshape the user.'
     ]
   },
-  man_supernatural: {
+  'man-v-supernatural': {
     plotA: [
       'Supernatural rules operate by alien logic that punishes assumption.',
       'A bargain or curse escalates beyond the protagonist\'s control.',
       'The supernatural force demands a sacrifice that defines character.'
     ],
-    subB: [
-      'Loved ones are affected by supernatural consequences.'
+    plotB: [
+      'Loved ones are affected by supernatural consequences.',
+      'Reality becomes unreliable as supernatural influence grows.'
     ],
-    subC: [
-      'Reality becomes unreliable as supernatural influence grows.',
+    plotC: [
       'Ancient knowledge conflicts with modern understanding.',
       'The supernatural bleeds into mundane life unpredictably.'
     ],
@@ -216,17 +198,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'The price of power is paid by others.'
     ]
   },
-  man_self: {
+  'man-v-self': {
     plotA: [
       'Internal contradictions create paralysis at crucial moments.',
       'Past trauma resurfaces to sabotage present progress.',
       'Core beliefs are challenged by undeniable evidence.'
     ],
-    subB: [
-      'External relationships mirror internal conflicts.'
+    plotB: [
+      'External relationships mirror internal conflicts.',
+      'Self-sabotage patterns repeat despite awareness.'
     ],
-    subC: [
-      'Self-sabotage patterns repeat despite awareness.',
+    plotC: [
       'Identity crises manifest in changing behavior.',
       'Fear of success competes with fear of failure.'
     ],
@@ -239,17 +221,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'Freedom requires facing what you\'ve been running from.'
     ]
   },
-  man_god: {
+  'man-v-god': {
     plotA: [
       'Divine command conflicts with human morality or logic.',
       'Faith is tested by suffering that challenges core beliefs.',
       'Religious duty demands sacrifice that questions worthiness.'
     ],
-    subB: [
-      'Community faith wavers, creating isolation or solidarity.'
+    plotB: [
+      'Community faith wavers, creating isolation or solidarity.',
+      'Miracles have terrible costs or conditions.'
     ],
-    subC: [
-      'Miracles have terrible costs or conditions.',
+    plotC: [
       'Religious hierarchy conflicts with spiritual truth.',
       'Sacred texts are reinterpreted under pressure.'
     ],
@@ -262,17 +244,17 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'True faith questions everything.'
     ]
   },
-  man_society: {
+  'man-v-society': {
     plotA: [
       'Social norms criminalize necessary actions.',
       'Institutional power protects itself through individual sacrifice.',
       'Cultural change requires personal rebellion with social costs.'
     ],
-    subB: [
-      'Family loyalties divide over social issues.'
+    plotB: [
+      'Family loyalties divide over social issues.',
+      'Legal systems fail to deliver justice.'
     ],
-    subC: [
-      'Legal systems fail to deliver justice.',
+    plotC: [
       'Public opinion shifts unpredictably.',
       'Economic pressure enforces social conformity.'
     ],
@@ -285,49 +267,59 @@ const BEATS_BY_CONFLICT: Record<ConflictKey, {
       'Standing alone requires the courage of your convictions.'
     ]
   }
-} as const;
+};
 
-function buildBeatsHtml(conflictKey: ConflictKey): string {
-  const d = BEATS_BY_CONFLICT[conflictKey];
-  if (!d) return '';
+function renderConflictHTML(key: string) {
+  const t = CONFLICT_TEMPLATES[key];
+  if (!t) return '';
 
-  const section = (title: string, lines: string[]) =>
-    `<p><strong>${title}</strong></p><ul>${lines.map(li=>`<li>${li}</li>`).join('')}</ul>`;
+  const toUL = (items: string[]) =>
+    `<ul style="margin:4px 0 12px 18px; padding:0;">${items.map(li => `<li>${li}</li>`).join('')}</ul>`;
 
-  const html =
-    `<p><strong>Story Beats</strong></p>` +
-    section('Plot A —', d.plotA) +
-    section('Sub Plot B —', d.subB) +
-    section('Sub Plot C —', d.subC) +
-    section('Plot Twists —', d.twists) +
-    section('Emotional Hook —', d.hook);
-
-  // Wrap with markers so we can replace in-place
-  return `${BEATS_START}${html}${BEATS_END}`;
+  return (
+    `${CONFLICT_START}
+<strong>Story Beats</strong><br/>
+<strong>Plot A —</strong> The high level description of the story's key sequential events of the main story
+${toUL(t.plotA)}
+<strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships
+${toUL(t.plotB)}
+<strong>Sub Plot C —</strong> The storyline's Tertiary sequential story points that focus on background elements
+${toUL(t.plotC)}
+<strong>Plot Twists —</strong>
+${toUL(t.twists)}
+<strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings
+${toUL(t.hook)}
+${CONFLICT_END}`
+  );
 }
 
-function upsertBeatsBlock(quillRef: any, beatsHtml: string) {
-  const html = getEditorHtml(quillRef);
-  if (!html) return;
+function insertOrReplaceConflictBlock(conflictKey: string) {
+  const editor = document.getElementById('story-editor') as HTMLElement | null;
+  if (!editor) return;
 
-  const hasBlock = html.includes(BEATS_START) && html.includes(BEATS_END);
-  if (hasBlock) {
-    const newHtml = html.replace(
-      new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`),
-      beatsHtml
-    );
-    setEditorHtml(quillRef, newHtml);
-    return;
+  let html = editor.innerHTML;
+
+  // Strip any existing conflict block (prevents duplicates)
+  const startIdx = html.indexOf(CONFLICT_START);
+  const endIdx   = html.indexOf(CONFLICT_END);
+  if (startIdx !== -1 && endIdx !== -1) {
+    html = html.slice(0, startIdx) + html.slice(endIdx + CONFLICT_END.length);
   }
 
-  // Insert after overview end marker if present, else append
+  const block = renderConflictHTML(conflictKey);
+  if (!block) return;
+
   const OVERVIEW_END = '<span class="sx-hidden" data-sx-marker="overview-end"></span>';
-  if (html.includes(OVERVIEW_END)) {
-    const newHtml = html.replace(OVERVIEW_END, `${OVERVIEW_END}${beatsHtml}`);
-    setEditorHtml(quillRef, newHtml);
+  const ovEndIdx = html.indexOf(OVERVIEW_END);
+
+  if (ovEndIdx !== -1) {
+    const insertPos = ovEndIdx + OVERVIEW_END.length;
+    html = html.slice(0, insertPos) + '\n' + block + '\n' + html.slice(insertPos);
   } else {
-    setEditorHtml(quillRef, `${html}${beatsHtml}`);
+    html = block + '\n' + html;
   }
+
+  editor.innerHTML = html;
 }
 
 // Import logo and components
@@ -379,25 +371,25 @@ const friendsList = [
 
 // Central Conflict options and definitions
 const CENTRAL_CONFLICT_OPTIONS = [
-  { value: "man-vs-man", label: "[Wo]Man vs. [Wo]Man" },
-  { value: "man-vs-nature", label: "[Wo]Man vs. Nature" },
-  { value: "man-vs-environment", label: "[Wo]Man vs. the Environment" },
-  { value: "man-vs-tech", label: "[Wo]Man vs. Machines / Technology" },
-  { value: "man-vs-supernatural", label: "[Wo]Man vs. the Supernatural" },
-  { value: "man-vs-self", label: "[Wo]Man vs. Self" },
-  { value: "man-vs-god", label: "[Wo]Man vs. God / Religion" },
-  { value: "man-vs-society", label: "[Wo]Man vs. Society" },
+  { value: "man-v-man", label: "[Wo]Man vs. [Wo]Man" },
+  { value: "man-v-nature", label: "[Wo]Man vs. Nature" },
+  { value: "man-v-environment", label: "[Wo]Man vs. the Environment" },
+  { value: "man-v-tech", label: "[Wo]Man vs. Machines / Technology" },
+  { value: "man-v-supernatural", label: "[Wo]Man vs. the Supernatural" },
+  { value: "man-v-self", label: "[Wo]Man vs. Self" },
+  { value: "man-v-god", label: "[Wo]Man vs. God / Religion" },
+  { value: "man-v-society", label: "[Wo]Man vs. Society" },
 ];
 
 const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
-  "man-vs-man": "A conflict where the main opposition is another person or group with clashing goals, values, or power.",
-  "man-vs-nature": "The protagonist struggles against natural forces like weather, wilderness, or disease.",
-  "man-vs-environment": "The setting itself poses the challenge—hostile worlds, harsh landscapes, or broken systems.",
-  "man-vs-tech": "Conflict arises from machines, AI, or technology that threatens, controls, or outpaces humanity.",
-  "man-vs-supernatural": "Opposition comes from forces beyond the natural world—spirits, magic, curses, or cosmic entities.",
-  "man-vs-self": "The protagonist's greatest obstacle is internal—fear, guilt, addiction, identity, or beliefs.",
-  "man-vs-god": "The character wrestles with fate, divine will, or religious doctrine and its demands.",
-  "man-vs-society": "The hero confronts unjust norms, institutions, or cultural expectations enforced by the collective."
+  "man-v-man": "A conflict where the main opposition is another person or group with clashing goals, values, or power.",
+  "man-v-nature": "The protagonist struggles against natural forces like weather, wilderness, or disease.",
+  "man-v-environment": "The setting itself poses the challenge—hostile worlds, harsh landscapes, or broken systems.",
+  "man-v-tech": "Conflict arises from machines, AI, or technology that threatens, controls, or outpaces humanity.",
+  "man-v-supernatural": "Opposition comes from forces beyond the natural world—spirits, magic, curses, or cosmic entities.",
+  "man-v-self": "The protagonist's greatest obstacle is internal—fear, guilt, addiction, identity, or beliefs.",
+  "man-v-god": "The character wrestles with fate, divine will, or religious doctrine and its demands.",
+  "man-v-society": "The hero confronts unjust norms, institutions, or cultural expectations enforced by the collective."
 };
 
 // Friends List Component
@@ -1976,41 +1968,33 @@ export default function DashboardLayout() {
     centralConflictLabel, centralConflictDef
   ]);
 
-  // Story Beats auto-generation with controlled effect to prevent duplication
-  const quillRef = useRef<any>(null);
-
-  // Map selected central conflict to ConflictKey
-  const conflictKey: ConflictKey | null = useMemo(() => {
-    switch (centralConflictLabel) {
-      case '[Wo]Man vs. [Wo]Man': return 'man_man';
-      case '[Wo]Man vs. Nature': return 'man_nature';
-      case '[Wo]Man vs. the Environment': return 'man_environment';
-      case '[Wo]Man vs. Machines / Technology': return 'man_technology';
-      case '[Wo]Man vs. the Supernatural': return 'man_supernatural';
-      case '[Wo]Man vs. Self': return 'man_self';
-      case '[Wo]Man vs. God / Religion': return 'man_god';
-      case '[Wo]Man vs. Society': return 'man_society';
-      default: return null;
-    }
-  }, [centralConflictLabel]);
-
-  // Remember what we last applied so we don't re-run on same value
-  const lastAppliedConflictRef = useRef<ConflictKey | null>(null);
-
-  useEffect(() => {
-    if (!conflictKey) return;
-    if (lastAppliedConflictRef.current === conflictKey) return; // no-op same value
-
-    const beats = buildBeatsHtml(conflictKey);
-    if (beats) {
-      upsertBeatsBlock(quillRef, beats);
-      lastAppliedConflictRef.current = conflictKey;
-    }
-  }, [conflictKey]);
+  // Central Conflict state and last applied tracking
+  const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
     setSubGenre(value);
+  };
+
+  // Handle Central Conflict change with conflict-based story beats insertion
+  const handleCentralConflictChange = (value: string) => {
+    setCentralConflict(value);
+
+    // Map dropdown value to template key
+    const templateKey = value; // Keys already match: 'man-v-man', 'man-v-nature', etc.
+    
+    // If there is no template or same conflict already applied, do nothing.
+    if (!CONFLICT_TEMPLATES[templateKey]) return;
+
+    // Check if there is already a conflict block; if present and lastApplied matches, skip
+    const editor = document.getElementById('story-editor') as HTMLElement | null;
+    const hasBlock = editor?.innerHTML.includes(CONFLICT_START);
+
+    if (hasBlock && lastAppliedConflict === templateKey) return;
+
+    // Insert or replace the block once
+    insertOrReplaceConflictBlock(templateKey);
+    setLastAppliedConflict(templateKey);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2191,7 +2175,7 @@ export default function DashboardLayout() {
               subTheme={subTheme}
               onSubThemeChange={setSubTheme}
               centralConflict={centralConflict}
-              onCentralConflictChange={setCentralConflict}
+              onCentralConflictChange={handleCentralConflictChange}
             />
           </div>
           
@@ -2393,12 +2377,13 @@ export default function DashboardLayout() {
                           
                           {/* Rich Text Editor Content - Fixed height to prevent AI assistant movement */}
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
-                            <RichEditor
-                              ref={quillRef}
-                              value={storyHtml}
-                              onChange={setStoryHtml}
-                              className="w-full h-full"
-                            />
+                            <div id="story-editor">
+                              <RichEditor
+                                value={storyHtml}
+                                onChange={setStoryHtml}
+                                className="w-full h-full"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2577,7 +2562,7 @@ export default function DashboardLayout() {
                   subTheme={subTheme}
                   onSubThemeChange={setSubTheme}
                   centralConflict={centralConflict}
-                  onCentralConflictChange={setCentralConflict}
+                  onCentralConflictChange={handleCentralConflictChange}
                 />
               </div>
             </div>
