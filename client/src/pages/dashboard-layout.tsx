@@ -14,8 +14,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
-import RichEditor, { setHtml } from '@/components/editor/RichEditor';
-import type { default as Quill } from 'quill';
+import RichEditor from '@/components/editor/RichEditor';
+import { debounce, setHtmlPreserveFocus } from '@/lib/editorSync';
+import type Quill from 'quill';
 
 import { 
   ChevronLeft, 
@@ -358,47 +359,7 @@ ${toUL(t.hook)}`
   );
 }
 
-// Single function that composes the editor content with the correct order
-function updateEditorSections(quill: Quill | null, overviewHTML: string, beatsHTML: string) {
-  if (!quill) return; // ✅ guard
-  if (!quill.root) return; // ✅ additional guard for root
 
-  try {
-    // Get current HTML from Quill
-    let html = quill.root.innerHTML;
-
-    // Remove any existing Overview/Beats blocks (prevents duplicates)
-    html = stripBlock(html, OVERVIEW_START, OVERVIEW_END);
-    html = stripBlock(html, BEATS_START, BEATS_END);
-
-    // Build fresh blocks (both are NORMAL editable HTML)
-    const overviewBlock = overviewHTML ? `${OVERVIEW_START}
-<div class="stx-overview">
-  ${overviewHTML}
-</div>
-${OVERVIEW_END}` : '';
-
-    const beatsBlock = beatsHTML ? `${BEATS_START}
-<div class="stx-beats">
-  ${beatsHTML}
-</div>
-${BEATS_END}` : '';
-
-    // Ensure OVERVIEW is on top, BEATS directly beneath it, then the remainder
-    // If editor is otherwise empty, keep a friendly "Your story begins here..." paragraph after the two blocks.
-    const remainder = html.trim().length ? html : `<p>Your story begins here...</p>`;
-
-    const composed = [
-      overviewBlock,
-      beatsBlock,
-      remainder
-    ].filter(Boolean).join('\n\n');
-
-    setHtml(quill, composed, true); // preserveFocus = true to avoid stealing focus from inputs
-  } catch (error) {
-    console.warn('updateEditorSections error:', error);
-  }
-}
 
 // Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
@@ -2056,8 +2017,7 @@ export default function DashboardLayout() {
   // Quill instance reference
   const quillRef = useRef<Quill | null>(null);
   
-  // Debounce timer for editor updates
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2076,7 +2036,21 @@ export default function DashboardLayout() {
     // Generate new beats HTML and update editor
     const newBeatsHTML = buildBeatsHTML(value);
     setLatestBeatsHTML(newBeatsHTML);
-    updateEditorSections(quillRef.current, latestOverviewHTML, newBeatsHTML);
+    
+    // For now, just trigger a re-sync with the new beats (Story Beats system will be enhanced later)
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    };
+    const overviewHTML = buildOverviewHTML(formState);
+    writeOverview(overviewHTML);
     setLastAppliedConflict(value);
   };
 
@@ -2152,45 +2126,36 @@ export default function DashboardLayout() {
     }
   };
 
-  // Debounced function to update overview section
-  const debouncedUpdateOverview = useCallback(() => {
-    // Clear any existing timer
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-    
-    // Set a new timer to update after 250ms
-    debounceTimerRef.current = setTimeout(() => {
-      const formState = {
-        projectName,
-        projectType,
-        genre,
-        subGenre,
-        theme,
-        subTheme,
-        centralConflict,
-        lengthPages,
-        lengthMinutes
-      };
-      const newOverviewHTML = buildOverviewHTML(formState);
-      setLatestOverviewHTML(newOverviewHTML);
-      updateEditorSections(quillRef.current, newOverviewHTML, latestBeatsHTML);
-    }, 250);
-  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, latestBeatsHTML]);
+  // Create debounced writer for overview updates
+  const writeOverview = useMemo(() =>
+    debounce((html: string) => {
+      const q = quillRef.current;
+      if (!q) return;
+      setHtmlPreserveFocus(q, html);
+    }, 300),
+  []);
 
   // Live-sync project data to Story Builder overview section (debounced)
   useEffect(() => {
-    debouncedUpdateOverview();
-  }, [debouncedUpdateOverview]);
-
-  // Cleanup debounce timer on unmount
-  useEffect(() => {
-    return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
+    if (!quillRef.current) return; // wait for Quill
+    
+    const formState = {
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
     };
-  }, []);
+    const newOverviewHTML = buildOverviewHTML(formState);
+    setLatestOverviewHTML(newOverviewHTML);
+    writeOverview(newOverviewHTML); // debounced push
+  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, writeOverview]);
+
+
 
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -2520,9 +2485,23 @@ export default function DashboardLayout() {
                               <RichEditor
                                 onReady={(q) => { 
                                   quillRef.current = q;
-                                  // Initialize with initial content if needed
-                                  if (latestOverviewHTML || latestBeatsHTML) {
-                                    updateEditorSections(q, latestOverviewHTML, latestBeatsHTML);
+                                  (window as any).__quillReady = true;
+                                  
+                                  // Initialize with overview content if we have it
+                                  const formState = {
+                                    projectName,
+                                    projectType,
+                                    genre,
+                                    subGenre,
+                                    theme,
+                                    subTheme,
+                                    centralConflict,
+                                    lengthPages,
+                                    lengthMinutes
+                                  };
+                                  const initialHTML = buildOverviewHTML(formState);
+                                  if (initialHTML.trim()) {
+                                    setHtmlPreserveFocus(q, initialHTML);
                                   }
                                 }}
                                 className="w-full h-full"

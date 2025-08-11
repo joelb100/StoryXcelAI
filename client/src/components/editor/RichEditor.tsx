@@ -13,17 +13,14 @@ type Props = {
 };
 
 const RichEditor: React.FC<Props> = ({ onReady, className }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const quillRef = useRef<Quill | null>(null);
+  const elRef = useRef<HTMLDivElement | null>(null);
+  const qRef = useRef<Quill | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    if (quillRef.current) return; // ✅ don't double‑init
+    if (!elRef.current || qRef.current) return; // ✅ don't double‑init
 
-    let q: Quill | null = null;
-    
     try {
-      q = new Quill(containerRef.current, {
+      const q = new Quill(elRef.current, {
         theme: "snow",
         readOnly: false,
         placeholder: "Your story begins here...",
@@ -38,31 +35,31 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
           ],
           clipboard: { matchVisual: true },
         },
+        formats: ["bold", "italic", "underline", "strike", "list", "align", "header", "size", "font"],
       });
 
-      quillRef.current = q;
+      qRef.current = q;
       
-      // Only call onReady after Quill is fully initialized
-      setTimeout(() => {
-        if (q && quillRef.current === q) {
-          onReady?.(q);
-        }
-      }, 0);
+      // Debug helpers
+      (window as any).__quill = q;
+      (window as any).__quillReady = true;
+      
+      // Call onReady callback
+      onReady?.(q);
       
     } catch (error) {
       console.error('Quill initialization error:', error);
-      quillRef.current = null;
+      qRef.current = null;
     }
 
     return () => {
       // ✅ cleanly dispose to avoid half‑alive instances
+      const q = qRef.current;
       if (q) {
         try { 
           // Remove all listeners
-          if (q.off) {
-            q.off("text-change");
-            q.off("selection-change");
-          }
+          q.off("text-change");
+          q.off("selection-change");
         } catch {}
         
         try {
@@ -71,43 +68,22 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
         } catch {}
       }
       
-      // Clear the ref
-      quillRef.current = null;
+      // Clear refs and debug helpers
+      qRef.current = null;
+      (window as any).__quill = null;
+      (window as any).__quillReady = false;
     };
-  }, []); // Remove onReady from dependencies to prevent re-initialization
+  }, []); // No dependencies to prevent re-initialization
 
   return (
     <div className={className}>
-      <div ref={containerRef} className="rounded-md border border-slate-200" style={{ minHeight: '200px' }} />
+      <div id="story-editor">
+        <div ref={elRef} className="rounded-md border border-slate-200" style={{ minHeight: '200px' }} />
+      </div>
     </div>
   );
 };
 
-// ---- Helper you call elsewhere (ALWAYS guard the ref) ----
-export function setHtml(q: Quill | null, html: string, preserveFocus: boolean = true) {
-  if (!q) return; // ✅ guard
-  if (!q.clipboard) return; // ✅ additional guard for clipboard
-  
-  try {
-    // safer than touching innerHTML during updates:
-    const delta = q.clipboard.convert({ html });
-    q.setContents(delta, "silent");
-    
-    // Only set selection if Quill currently has focus OR preserveFocus is false
-    if (!preserveFocus || (q.hasFocus && q.hasFocus())) {
-      q.setSelection(q.getLength(), 0, "silent");
-    }
-  } catch (error) {
-    console.warn('Quill setHtml error:', error);
-    // Fallback to direct HTML if convert fails
-    try {
-      if (q.root) {
-        q.root.innerHTML = html;
-      }
-    } catch (fallbackError) {
-      console.warn('Fallback HTML assignment failed:', fallbackError);
-    }
-  }
-}
+
 
 export default RichEditor;
