@@ -2159,6 +2159,16 @@ export default function DashboardLayout() {
     []
   );
 
+  // TEMP TEST: write only project name into the editor
+  useEffect(() => {
+    const q = (window as any).__quill;
+    if (!q || !projectName) return;
+    const html = `<p><strong>Story Title</strong> — ${projectName}</p>`;
+    const delta = q.clipboard.convert({ html });
+    q.setContents(delta, "silent");
+    (window as any).__lastOverviewHTML = html;
+  }, [projectName]);
+
   // Live-sync project data to Story Builder overview section (debounced)
   useEffect(() => {
     if (!quillRef.current) return; // wait for Quill onReady
