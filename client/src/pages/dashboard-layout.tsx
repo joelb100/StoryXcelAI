@@ -15,6 +15,7 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
+import { upsertBeatsAfterOverview } from '@/lib/beatsUpsert';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -1715,6 +1716,38 @@ export default function DashboardLayout() {
     subThemeLabel, subThemeDef,
     centralConflictLabel, centralConflictDef
   ]);
+
+  // Generate Story Beats when Central Conflict is selected (debounced)
+  useEffect(() => {
+    if (!centralConflictLabel) return; // leave existing beats if conflict cleared
+    
+    const id = setTimeout(async () => {
+      const confirmReplace = async (): Promise<boolean> => {
+        return new Promise((resolve) => {
+          const result = window.confirm(
+            "You've edited the generated story beats. Replace them with new conflict-based suggestions?"
+          );
+          resolve(result);
+        });
+      };
+
+      try {
+        const updatedHtml = await upsertBeatsAfterOverview(
+          storyHtml,
+          centralConflictLabel,
+          confirmReplace
+        );
+        
+        if (updatedHtml !== storyHtml) {
+          setStoryHtml(updatedHtml);
+        }
+      } catch (error) {
+        console.error('Error updating story beats:', error);
+      }
+    }, 150);
+    
+    return () => clearTimeout(id);
+  }, [centralConflictLabel, storyHtml]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {

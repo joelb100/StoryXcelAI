@@ -1,0 +1,71 @@
+// beatsUpsert.ts
+import { CONFLICT_BEATS } from "./conflictBeats";
+import { buildBeatsHTML, BEATS_START, BEATS_END } from "./beatsRender";
+
+export function upsertBeatsAfterOverview(html: string, conflictLabel: string, confirmReplace: () => Promise<boolean>) {
+  if (!conflictLabel) return html; // leave existing, per product rules
+
+  const beats = CONFLICT_BEATS[conflictLabel];
+  if (!beats) return html;
+
+  const container = document.createElement("div");
+  container.innerHTML = html || "";
+
+  const start = container.querySelector('span[data-sx-marker="beats-start"]');
+  const end   = container.querySelector('span[data-sx-marker="beats-end"]');
+
+  const newHTML = buildBeatsHTML(conflictLabel, beats);
+
+  if (start && end) {
+    // Detect edits: compare stored fp vs current inner text
+    const meta = start.nextElementSibling as HTMLElement | null;
+    let edited = false;
+
+    try {
+      const stored = meta?.getAttribute("data-sx-beats-meta");
+      const parsed = stored ? JSON.parse(stored) : null;
+      // If we can’t parse meta, assume edited to be safe
+      edited = !parsed;
+    } catch { edited = true; }
+
+    if (edited) {
+      // Ask user
+      return confirmReplace().then(ok => {
+        if (!ok) return html; // abort
+        // Replace range
+        replaceRange(start, end, newHTML);
+        return container.innerHTML;
+      });
+    }
+
+    // Not edited -> safe replace
+    replaceRange(start, end, newHTML);
+    return container.innerHTML;
+  }
+
+  // No existing block: insert after overview-end
+  const overviewEnd = container.querySelector('span[data-sx-marker="overview-end"]');
+  if (!overviewEnd) {
+    // Fallback: append
+    container.insertAdjacentHTML("beforeend", newHTML);
+    return container.innerHTML;
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = newHTML;
+  overviewEnd.parentElement?.insertBefore(wrapper, overviewEnd.nextSibling);
+  return container.innerHTML;
+}
+
+function replaceRange(start: Element, end: Element, htmlFragment: string) {
+  const range = document.createRange();
+  range.setStartBefore(start);
+  range.setEndAfter(end);
+  range.deleteContents();
+
+  const holder = document.createElement("div");
+  holder.innerHTML = htmlFragment;
+  const frag = document.createDocumentFragment();
+  while (holder.firstChild) frag.appendChild(holder.firstChild);
+  range.insertNode(frag);
+}
