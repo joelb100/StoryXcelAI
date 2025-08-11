@@ -11,8 +11,8 @@ export async function upsertBeatsAfterOverview(
   if (!conflictLabel) return html; // leave existing, per product rules
 
   const beats = CONFLICT_BEATS[conflictLabel];
-  console.log('Beats map hit?', !!beats);
   if (!beats) {
+    console.warn('No beats found for conflict:', conflictLabel);
     console.log('Available keys:', Object.keys(CONFLICT_BEATS));
     return html;
   }
@@ -95,8 +95,17 @@ export async function upsertBeatsAfterOverview(
     return container.innerHTML;
   }
 
-  // Insert the beats content right after the overview-end marker
-  overviewEnd.insertAdjacentHTML('afterend', newHTML);
+  // Create wrapper div and insert after overview-end marker
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = newHTML;
+  
+  // Insert all the content from wrapper after the overview-end marker
+  const fragment = document.createDocumentFragment();
+  while (wrapper.firstChild) {
+    fragment.appendChild(wrapper.firstChild);
+  }
+  
+  overviewEnd.parentNode?.insertBefore(fragment, overviewEnd.nextSibling);
   return container.innerHTML;
 }
 

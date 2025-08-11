@@ -1718,10 +1718,14 @@ export default function DashboardLayout() {
   ]);
 
   // Generate Story Beats when Central Conflict is selected (debounced)
+  // Use ref to track last processed conflict to prevent re-renders from duplicating
+  const lastConflictRef = useRef<string | null>(null);
+  
   useEffect(() => {
     if (!centralConflictLabel) return; // leave existing beats if conflict cleared
+    if (centralConflictLabel === lastConflictRef.current) return; // no change
     
-    console.log('CentralConflict change =>', centralConflictLabel);
+    lastConflictRef.current = centralConflictLabel;
     
     const id = setTimeout(async () => {
       const confirmReplace = async (): Promise<boolean> => {
@@ -1741,7 +1745,6 @@ export default function DashboardLayout() {
         );
         
         if (updatedHtml !== storyHtml) {
-          console.log('Upserted beats. html length:', updatedHtml.length);
           setStoryHtml(updatedHtml);
         }
       } catch (error) {
@@ -1750,7 +1753,14 @@ export default function DashboardLayout() {
     }, 150);
     
     return () => clearTimeout(id);
-  }, [centralConflictLabel, storyHtml]);
+  }, [centralConflictLabel]);
+
+  // Remove debug logs once duplication is fixed
+  useEffect(() => {
+    if (storyHtml.length > 50000) {
+      console.warn('HTML size getting large:', storyHtml.length, 'characters - possible duplication issue');
+    }
+  }, [storyHtml.length]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
