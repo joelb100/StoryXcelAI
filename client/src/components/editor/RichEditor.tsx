@@ -57,9 +57,11 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
       const q = qRef.current;
       if (q) {
         try { 
-          // Remove all listeners
-          q.off("text-change");
-          q.off("selection-change");
+          // Remove all listeners safely
+          if (q.off) {
+            q.off("text-change", undefined);
+            q.off("selection-change", undefined);
+          }
         } catch {}
         
         try {

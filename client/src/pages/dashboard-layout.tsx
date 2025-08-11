@@ -2069,7 +2069,7 @@ export default function DashboardLayout() {
     };
     const newOverviewHTML = buildOverviewHTML(formState);
     setLatestOverviewHTML(newOverviewHTML);
-    updateEditorSections(quillRef.current, newOverviewHTML, latestBeatsHTML);
+    writeOverview(newOverviewHTML);
   };
 
   const handleProjectTypeChange = (val: string) => {

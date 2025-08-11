@@ -20,14 +20,18 @@ export function setHtmlPreserveFocus(q: Quill, html: string) {
       q.setSelection(q.getLength(), 0, "silent");
     }
     
-    // Debug helper
+    // Debug helpers
     (window as any).__lastHTML = html;
+    (window as any).__lastOverviewHTML = html;
+    console.log('✓ setHtmlPreserveFocus: Updated editor with HTML length:', html.length);
   } catch (error) {
     console.warn('setHtmlPreserveFocus error:', error);
     // Fallback to direct HTML if convert fails
     try {
       if (q.root) {
         q.root.innerHTML = html;
+        (window as any).__lastHTML = html;
+        (window as any).__lastOverviewHTML = html;
       }
     } catch (fallbackError) {
       console.warn('Fallback HTML assignment failed:', fallbackError);
