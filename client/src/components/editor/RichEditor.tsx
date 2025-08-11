@@ -84,7 +84,7 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
 };
 
 // ---- Helper you call elsewhere (ALWAYS guard the ref) ----
-export function setHtml(q: Quill | null, html: string) {
+export function setHtml(q: Quill | null, html: string, preserveFocus: boolean = true) {
   if (!q) return; // ✅ guard
   if (!q.clipboard) return; // ✅ additional guard for clipboard
   
@@ -92,7 +92,11 @@ export function setHtml(q: Quill | null, html: string) {
     // safer than touching innerHTML during updates:
     const delta = q.clipboard.convert({ html });
     q.setContents(delta, "silent");
-    q.setSelection(q.getLength(), 0, "silent");
+    
+    // Only set selection if Quill currently has focus OR preserveFocus is false
+    if (!preserveFocus || (q.hasFocus && q.hasFocus())) {
+      q.setSelection(q.getLength(), 0, "silent");
+    }
   } catch (error) {
     console.warn('Quill setHtml error:', error);
     // Fallback to direct HTML if convert fails

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { upsertStoryTitleInText } from '@/lib/storyTitleUpsert';
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,7 @@ import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { setHtml } from '@/components/editor/RichEditor';
 import type { default as Quill } from 'quill';
+
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -393,7 +394,7 @@ ${BEATS_END}` : '';
       remainder
     ].filter(Boolean).join('\n\n');
 
-    setHtml(quill, composed);
+    setHtml(quill, composed, true); // preserveFocus = true to avoid stealing focus from inputs
   } catch (error) {
     console.warn('updateEditorSections error:', error);
   }
@@ -2054,6 +2055,9 @@ export default function DashboardLayout() {
   
   // Quill instance reference
   const quillRef = useRef<Quill | null>(null);
+  
+  // Debounce timer for editor updates
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2148,10 +2152,45 @@ export default function DashboardLayout() {
     }
   };
 
-  // Live-sync project data to Story Builder overview section
+  // Debounced function to update overview section
+  const debouncedUpdateOverview = useCallback(() => {
+    // Clear any existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    
+    // Set a new timer to update after 250ms
+    debounceTimerRef.current = setTimeout(() => {
+      const formState = {
+        projectName,
+        projectType,
+        genre,
+        subGenre,
+        theme,
+        subTheme,
+        centralConflict,
+        lengthPages,
+        lengthMinutes
+      };
+      const newOverviewHTML = buildOverviewHTML(formState);
+      setLatestOverviewHTML(newOverviewHTML);
+      updateEditorSections(quillRef.current, newOverviewHTML, latestBeatsHTML);
+    }, 250);
+  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, latestBeatsHTML]);
+
+  // Live-sync project data to Story Builder overview section (debounced)
   useEffect(() => {
-    updateOverviewSection();
-  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes]);
+    debouncedUpdateOverview();
+  }, [debouncedUpdateOverview]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
