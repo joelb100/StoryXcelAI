@@ -1379,54 +1379,54 @@ export default function DashboardLayout() {
 
     // SINGLE title line only — never duplicate
     const lines: string[] = [];
-    if (title?.trim()) lines.push(`Story Title — ${title.trim()}`);
+    if (title?.trim()) lines.push(`**Story Title — ${title.trim()}**`);
 
     // Project Type line (only when we have a type)
     if (projectType) {
       const parts: string[] = [projectType];
       if (typeof pages === 'number')   parts.push(`${pages} pages`);
       if (typeof minutes === 'number') parts.push(`${minutes} mins`);
-      lines.push(`Project Type — ${parts.join(' / ')}`);
+      lines.push(`**Project Type — ${parts.join(' / ')}**`);
     }
 
     // ---- Genre ----
     if (genreLabel) {
-      lines.push(`Genre — ${genreLabel}`);
+      lines.push(`**Genre — ${genreLabel}**`);
       if (genreDef?.trim()) {
         // keep the "indented second line" look from your reference
-        lines.push(`  ${genreLabel} : ${genreDef.trim()}`);
+        lines.push(`  **${genreLabel} : ${genreDef.trim()}**`);
       }
     }
 
     // ---- Sub Genre ----
     if (subGenreLabel) {
-      lines.push(`Sub Genre — ${subGenreLabel}`);
+      lines.push(`**Sub Genre — ${subGenreLabel}**`);
       if (subGenreDef?.trim()) {
-        lines.push(`  ${subGenreLabel} : ${subGenreDef.trim()}`);
+        lines.push(`  **${subGenreLabel} : ${subGenreDef.trim()}**`);
       }
     }
 
     // ---- Theme ----
     if (themeLabel) {
-      lines.push(`Theme — ${themeLabel}`);
+      lines.push(`**Theme — ${themeLabel}**`);
       if (themeDef?.trim()) {
-        lines.push(`  ${themeLabel} : ${themeDef.trim()}`);
+        lines.push(`  **${themeLabel} : ${themeDef.trim()}**`);
       }
     }
 
     // ---- Sub Theme ----
     if (subThemeLabel) {
-      lines.push(`Sub Theme — ${subThemeLabel}`);
+      lines.push(`**Sub Theme — ${subThemeLabel}**`);
       if (subThemeDef?.trim()) {
-        lines.push(`  ${subThemeLabel} : ${subThemeDef.trim()}`);
+        lines.push(`  **${subThemeLabel} : ${subThemeDef.trim()}**`);
       }
     }
 
     // ---- Central Conflict ----
     if (centralConflictLabel) {
-      lines.push(`Central Conflict — ${centralConflictLabel}`);
+      lines.push(`**Central Conflict — ${centralConflictLabel}**`);
       if (centralConflictDef?.trim()) {
-        lines.push(`  ${centralConflictLabel} : ${centralConflictDef.trim()}`);
+        lines.push(`  **${centralConflictLabel} : ${centralConflictDef.trim()}**`);
       }
     }
 
