@@ -27,22 +27,37 @@ export default function AIStoryAssistant({
           </Button>
         </div>
         
-        {/* Chat Messages Area */}
-        <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
-          <div className="space-y-3">
-            {chatMessages.map((message) => (
-              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                  message.type === 'user' 
-                    ? 'bg-blue-500 text-white rounded-br-none' 
-                    : 'bg-gray-100 text-slate-700 rounded-bl-none'
-                }`}>
-                  {message.content}
+        {/* Initial greeting message when no chat messages */}
+        {chatMessages.length === 0 ? (
+          <div className="flex-1 bg-white rounded-lg p-3 mb-3 flex items-start">
+            <div className="text-sm text-slate-600">
+              Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
+            </div>
+          </div>
+        ) : (
+          /* Chat Messages Area */
+          <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
+            <div className="space-y-3">
+              {/* Always show greeting as first message */}
+              <div className="flex justify-start">
+                <div className="max-w-[80%] p-2 rounded-lg text-sm bg-gray-100 text-slate-700 rounded-bl-none">
+                  Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
                 </div>
               </div>
-            ))}
+              {chatMessages.map((message) => (
+                <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                    message.type === 'user' 
+                      ? 'bg-blue-500 text-white rounded-br-none' 
+                      : 'bg-gray-100 text-slate-700 rounded-bl-none'
+                  }`}>
+                    {message.content}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         
         {/* Chat Input Area */}
         <div className="flex items-center space-x-2">

@@ -1735,9 +1735,7 @@ const DashboardContent = ({
 export default function DashboardLayout() {
   const [location, navigate] = useLocation();
   const [currentProjectSlide, setCurrentProjectSlide] = useState(0);
-  const [chatMessages, setChatMessages] = useState([
-    { id: 1, type: 'ai', content: 'Hello! I\'m your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.' }
-  ]);
+  const [chatMessages, setChatMessages] = useState([]);
   const [chatMessage, setChatMessage] = useState("");
   const [mobileLeftOpen, setMobileLeftOpen] = useState(false);
   const [mobileRightOpen, setMobileRightOpen] = useState(false);
