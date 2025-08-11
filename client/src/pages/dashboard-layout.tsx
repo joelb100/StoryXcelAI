@@ -43,21 +43,41 @@ function buildOverviewHTML(o: OverviewState) {
   ].filter(Boolean).join("");
 }
 
-// Replace the header text at the top of the editor without touching the body.
-const lastHeaderLenRef = { current: 0 };
+// Focus-safe writer that preserves cursor position and active element focus
+function writeOverviewHtmlSafe(q: Quill, html: string) {
+  // Remember where focus currently is
+  const active = document.activeElement as HTMLElement | null;
+  const editorRoot = q.root as HTMLElement;
+  const editorHadFocus = active === editorRoot;
 
-function replaceHeaderHTML(q: Quill, html: string) {
-  const headerDelta = q.clipboard.convert({ html });
-  // Remove previous header (if any)
-  if (lastHeaderLenRef.current > 0) {
-    q.deleteText(0, lastHeaderLenRef.current, "silent");
+  // Preserve editor selection if the editor had focus
+  const prevRange = editorHadFocus ? q.getSelection() : null;
+
+  // Write without changing focus/selection
+  const delta = q.clipboard.convert({ html });
+  q.setContents(delta, "silent");
+
+  // Restore selection if editor had focus before
+  if (editorHadFocus && prevRange) {
+    q.setSelection(prevRange, "silent");
   }
-  // Paste new header at index 0
-  q.clipboard.dangerouslyPasteHTML(0, html, "silent");
-  // Update recorded header length (length counts trailing newline Quill inserts)
-  lastHeaderLenRef.current = q.getLength() - q.getText().length + q.getText().substring(0).length; // simple recompute
-  // Safer: directly read the headerDelta length:
-  // lastHeaderLenRef.current = headerDelta.length();
+
+  // If some other input had focus, put it back there
+  if (!editorHadFocus && active && typeof active.focus === "function") {
+    active.focus({ preventScroll: true });
+  }
+}
+
+// Simple debounce utility
+function debounce<T extends (...args: any[]) => void>(fn: T, ms: number = 150): T & { cancel?: () => void } {
+  let timeoutId: number;
+  const debounced = ((...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => fn(...args), ms);
+  }) as T & { cancel?: () => void };
+  
+  debounced.cancel = () => clearTimeout(timeoutId);
+  return debounced;
 }
 
 import { 
@@ -1978,21 +1998,15 @@ export default function DashboardLayout() {
   const quillRef = useRef<Quill | null>(null);
 
   // Stable debounced writer kept in a ref
-  const debouncedWriteRef = useRef<(html: string) => void>();
+  const writerRef = useRef<(html: string) => void>();
   useEffect(() => {
-    // lightweight debounce (no lodash dependency)
-    let t: number | null = null;
-    debouncedWriteRef.current = (html: string) => {
-      if (t) window.clearTimeout(t);
-      t = window.setTimeout(() => {
-        const q = quillRef.current;
-        if (!q) return;
-        replaceHeaderHTML(q, html);
-      }, 150);
-    };
-    return () => {
-      if (t) window.clearTimeout(t);
-    };
+    // stable debounced writer; runs only once
+    writerRef.current = debounce((html: string) => {
+      const q = quillRef.current;
+      if (!q) return;
+      writeOverviewHtmlSafe(q, html);
+    }, 150);
+    return () => (writerRef.current as any)?.cancel?.();
   }, []);
   
 
@@ -2028,7 +2042,7 @@ export default function DashboardLayout() {
       lengthMinutes
     };
     const overviewHTML = buildOverviewHTML(formState);
-    debouncedWriteRef.current?.(overviewHTML);
+    writerRef.current?.(overviewHTML);
     setLastAppliedConflict(value);
   };
 
@@ -2047,7 +2061,7 @@ export default function DashboardLayout() {
     };
     const newOverviewHTML = buildOverviewHTML(formState);
     setLatestOverviewHTML(newOverviewHTML);
-    debouncedWriteRef.current?.(newOverviewHTML);
+    writerRef.current?.(newOverviewHTML);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2104,21 +2118,32 @@ export default function DashboardLayout() {
     }
   };
 
-  // Build a serialized snapshot so the effect only runs when values change
-  const overviewSnapshot = JSON.stringify({
-    projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
-  });
-
+  // Live-sync overview to editor (focus-safe)
   useEffect(() => {
-    const q = quillRef.current;
-    if (!q) return;
-
-    const state: OverviewState = {
-      projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
-    };
-    const html = buildOverviewHTML(state);
-    debouncedWriteRef.current?.(html);
-  }, [overviewSnapshot]);
+    if (!quillRef.current) return;
+    const html = buildOverviewHTML({
+      projectName,
+      projectType,
+      genre,
+      subGenre,
+      theme,
+      subTheme,
+      centralConflict,
+      lengthPages,
+      lengthMinutes
+    });
+    writerRef.current?.(html);
+  }, [
+    projectName,
+    projectType,
+    genre,
+    subGenre,
+    theme,
+    subTheme,
+    centralConflict,
+    lengthPages,
+    lengthMinutes
+  ]);
 
 
 
@@ -2452,14 +2477,19 @@ export default function DashboardLayout() {
                                   quillRef.current = q;
                                   (window as any).__quillReady = true;
 
-                                  // On first paint, write whatever we already have
-                                  const state: OverviewState = {
-                                    projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes
-                                  };
-                                  const initialHTML = buildOverviewHTML(state);
-                                  if (initialHTML.trim()) {
-                                    replaceHeaderHTML(q, initialHTML);
-                                  }
+                                  // On first paint, write whatever we already have (no focus)
+                                  const html = buildOverviewHTML({
+                                    projectName,
+                                    projectType,
+                                    genre,
+                                    subGenre,
+                                    theme,
+                                    subTheme,
+                                    centralConflict,
+                                    lengthPages,
+                                    lengthMinutes
+                                  });
+                                  if (html.trim()) writeOverviewHtmlSafe(q, html);
                                 }}
                                 className="w-full h-full"
                               />
