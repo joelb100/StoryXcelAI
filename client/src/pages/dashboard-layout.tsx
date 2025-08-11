@@ -2852,8 +2852,8 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Story Assistant - Fixed position at bottom - Match dashboard size */}
-                    <div className="h-32 border-t border-gray-200 bg-gray-50 p-2">
+                    {/* AI Story Assistant - Fixed position at bottom - Proper dashboard size */}
+                    <div className="h-44 border-t border-gray-200 bg-gray-50 p-3">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
@@ -2962,8 +2962,8 @@ export default function DashboardLayout() {
                   </div>
                 </div>
 
-                {/* AI Story Assistant - Bottom Section - Match desktop size */}
-                <div className="h-32 border-t border-gray-200 bg-gray-50 p-2">
+                {/* AI Story Assistant - Bottom Section - Proper dashboard size */}
+                <div className="h-44 border-t border-gray-200 bg-gray-50 p-3">
                   <AIStoryAssistant 
                     chatMessages={chatMessages}
                     chatMessage={chatMessage}
