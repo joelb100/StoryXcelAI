@@ -1409,20 +1409,56 @@ export default function DashboardLayout() {
     ].filter(Boolean).join('');
   }
 
-  function replaceOverview(html: string, overviewHTML: string) {
-    const start = /<span[^>]+data-sx-marker="overview-start"[^>]*><\/span>/i;
-    const end   = /<span[^>]+data-sx-marker="overview-end"[^>]*><\/span>/i;
+  /**
+   * Returns HTML from container start until (but not including) the 'untilNode'
+   * or from 'fromNode' to the end if untilNode is null.
+   */
+  function sliceOuterHTML(container: HTMLElement, fromNode: ChildNode | null, untilNode: ChildNode | null) {
+    const frag = document.createDocumentFragment();
+    let cur = fromNode ?? container.firstChild;
 
-    if (!start.test(html) || !end.test(html)) {
-      // Re‑seed markers if user deleted them
-      return `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}${html}`;
+    while (cur && cur !== untilNode) {
+      const clone = cur.cloneNode(true);
+      frag.appendChild(clone);
+      cur = cur.nextSibling;
     }
 
-    const pattern = new RegExp(
-      `${start.source}([\\s\\S]*?)${end.source}`,
-      'i'
-    );
-    return html.replace(pattern, `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}`);
+    const div = document.createElement('div');
+    div.appendChild(frag);
+    return div.innerHTML;
+  }
+
+  /**
+   * Replaces the HTML between our start/end markers.
+   * If markers are missing, we re-seed them and drop any previously duplicated block.
+   */
+  function replaceOverviewSafe(editorHtml: string, overviewHTML: string) {
+    // Normalize: Quill always wraps block content in <p>…</p>
+    // We parse as DOM so wrapper tags don't break us.
+    const container = document.createElement('div');
+    container.innerHTML = editorHtml || '';
+
+    let start = container.querySelector('span[data-sx-marker="overview-start"]');
+    let end   = container.querySelector('span[data-sx-marker="overview-end"]');
+
+    // If markers are missing OR out of order, re-seed a clean header
+    if (!start || !end) {
+      const clean = document.createElement('div');
+      clean.innerHTML = `${OVERVIEW_START}${overviewHTML}${OVERVIEW_END}<p>Your story begins here...</p>`;
+      return clean.innerHTML;
+    }
+
+    // Build a range that covers everything between markers
+    // We'll rebuild innerHTML with three slices: [before][header][after]
+    const beforeHtml = sliceOuterHTML(container, container.firstChild, start);
+    const afterHtml  = sliceOuterHTML(container, end, null);
+
+    const nextHtml =
+      beforeHtml +
+      OVERVIEW_START + overviewHTML + OVERVIEW_END +
+      afterHtml;
+
+    return nextHtml;
   }
 
   function buildOverviewBlock(opts: {
@@ -1640,32 +1676,36 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
-  // Update rich text editor with HTML overview  
+  // Update rich text editor with HTML overview (debounced for better UX)
   useEffect(() => {
-    // Build project type string
-    const projectTypeDisplay = projectType ? (() => {
-      const parts: string[] = [projectType];
-      if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
-      if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
-      return parts.join(' / ');
-    })() : undefined;
+    const id = setTimeout(() => {
+      // Build project type string
+      const projectTypeDisplay = projectType ? (() => {
+        const parts: string[] = [projectType];
+        if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
+        if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
+        return parts.join(' / ');
+      })() : undefined;
 
-    const overviewHTML = buildOverviewHTML({
-      title: projectName,
-      projectType: projectTypeDisplay,
-      genreLabel: genreLabel,
-      genreDef: genreDef,
-      subGenreLabel: subGenreLabel,
-      subGenreDef: subGenreDef,
-      themeLabel: themeLabel,
-      themeDef: themeDef,
-      subThemeLabel: subThemeLabel,
-      subThemeDef: subThemeDef,
-      conflictLabel: centralConflictLabel,
-      conflictDef: centralConflictDef,
-    });
+      const overviewHTML = buildOverviewHTML({
+        title: projectName,
+        projectType: projectTypeDisplay,
+        genreLabel: genreLabel || undefined,
+        genreDef: genreDef || undefined,
+        subGenreLabel: subGenreLabel || undefined,
+        subGenreDef: subGenreDef || undefined,
+        themeLabel: themeLabel || undefined,
+        themeDef: themeDef || undefined,
+        subThemeLabel: subThemeLabel || undefined,
+        subThemeDef: subThemeDef || undefined,
+        conflictLabel: centralConflictLabel || undefined,
+        conflictDef: centralConflictDef || undefined,
+      });
 
-    setStoryHtml(prev => replaceOverview(prev, overviewHTML));
+      setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
+    }, 250);
+    
+    return () => clearTimeout(id);
   }, [
     projectName,
     projectType, lengthPages, lengthMinutes,
