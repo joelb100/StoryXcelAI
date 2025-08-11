@@ -15,7 +15,6 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
-// Removed beats auto-insert import - feature reverted per user request
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -70,6 +69,266 @@ import {
   MoreHorizontal,
   Bell
 } from "lucide-react";
+
+// ----- Marker constants (keep them stable) -----
+const BEATS_START = '<!-- SX_BEATS_START -->';
+const BEATS_END   = '<!-- SX_BEATS_END -->';
+
+// Get/set HTML helpers for Quill (assumes quillRef.current?.editor)
+function getEditorHtml(quillRef: any): string {
+  return quillRef.current?.editor?.root?.innerHTML ?? '';
+}
+
+function setEditorHtml(quillRef: any, html: string) {
+  if (!quillRef.current?.editor) return;
+  quillRef.current.editor.root.innerHTML = html;
+}
+
+type ConflictKey =
+  | 'man_man'
+  | 'man_nature' 
+  | 'man_environment'
+  | 'man_technology'
+  | 'man_supernatural'
+  | 'man_self'
+  | 'man_god'
+  | 'man_society';
+
+const BEATS_BY_CONFLICT: Record<ConflictKey, {
+  plotA: string[];
+  subB: string[];
+  subC: string[];
+  twists: string[];
+  hook: string[];
+}> = {
+  man_man: {
+    plotA: [
+      'Opposing goals create inevitable confrontation.',
+      'Power dynamics shift, forcing alliance or betrayal.',
+      'Personal history complicates present conflict.'
+    ],
+    subB: [
+      'Allies question the protagonist\'s methods or motives.'
+    ],
+    subC: [
+      'Collateral damage affects innocent parties.',
+      'Past relationships resurface at critical moments.',
+      'The opponent\'s perspective reveals uncomfortable truths.'
+    ],
+    twists: [
+      'The antagonist was right about something crucial.',
+      'Victory requires becoming what you fought against.'
+    ],
+    hook: [
+      'Your enemy knows you better than you know yourself.',
+      'Defeating them means losing who you are.'
+    ]
+  },
+  man_nature: {
+    plotA: [
+      'Natural forces operate beyond human control or understanding.',
+      'Survival instincts conflict with civilized behavior.',
+      'The environment punishes human arrogance or negligence.'
+    ],
+    subB: [
+      'Group dynamics fracture under natural pressure.'
+    ],
+    subC: [
+      'Nature reveals hidden aspects of character.',
+      'Technology fails when most needed.',
+      'Animals or natural phenomena become active obstacles.'
+    ],
+    twists: [
+      'Humans caused the natural disaster they\'re fleeing.',
+      'Civilization\'s comforts have made survival skills obsolete.'
+    ],
+    hook: [
+      'The land doesn\'t hate you—it doesn\'t care.',
+      'Earn every breath.'
+    ]
+  },
+  man_environment: {
+    plotA: [
+      'Systems pressure force adaptation or extinction.',
+      'A breaking point demands radical action despite consequences.',
+      'The environment\'s "rules" shift mid-story, invalidating old strategies.'
+    ],
+    subB: [
+      'Personal relationships strain under environmental stress.'
+    ],
+    subC: [
+      'Old loyalties conflict with survival needs.',
+      'Infrastructure failures cascade into larger crises.',
+      'Resource scarcity creates new hierarchies of power.'
+    ],
+    twists: [
+      'The environment was shaped by past human choices.',
+      'Adaptation changes the protagonist in unexpected ways.'
+    ],
+    hook: [
+      'What you built to protect you becomes your prison.',
+      'Adaptation costs identity.'
+    ]
+  },
+  man_technology: {
+    plotA: [
+      'Technological dependence reveals fatal vulnerabilities.',
+      'A system malfunction forces manual intervention beyond training.',
+      'The technology "evolves" beyond its original programming.'
+    ],
+    subB: [
+      'Human connections weaken as technology strengthens.'
+    ],
+    subC: [
+      'Old skills become invaluable when systems fail.',
+      'Data privacy breaches expose personal secrets.',
+      'Automation eliminates human agency in critical decisions.'
+    ],
+    twists: [
+      'The technology was designed to fail at this moment.',
+      'Human intuition trumps algorithmic certainty.'
+    ],
+    hook: [
+      'Your convenience becomes your cage.',
+      'The tools reshape the user.'
+    ]
+  },
+  man_supernatural: {
+    plotA: [
+      'Supernatural rules operate by alien logic that punishes assumption.',
+      'A bargain or curse escalates beyond the protagonist\'s control.',
+      'The supernatural force demands a sacrifice that defines character.'
+    ],
+    subB: [
+      'Loved ones are affected by supernatural consequences.'
+    ],
+    subC: [
+      'Reality becomes unreliable as supernatural influence grows.',
+      'Ancient knowledge conflicts with modern understanding.',
+      'The supernatural bleeds into mundane life unpredictably.'
+    ],
+    twists: [
+      'The supernatural was always present, just hidden.',
+      'The protagonist has supernatural heritage or connection.'
+    ],
+    hook: [
+      'Some doors should never be opened.',
+      'The price of power is paid by others.'
+    ]
+  },
+  man_self: {
+    plotA: [
+      'Internal contradictions create paralysis at crucial moments.',
+      'Past trauma resurfaces to sabotage present progress.',
+      'Core beliefs are challenged by undeniable evidence.'
+    ],
+    subB: [
+      'External relationships mirror internal conflicts.'
+    ],
+    subC: [
+      'Self-sabotage patterns repeat despite awareness.',
+      'Identity crises manifest in changing behavior.',
+      'Fear of success competes with fear of failure.'
+    ],
+    twists: [
+      'The flaw was actually a strength misunderstood.',
+      'Others see the protagonist more clearly than they see themselves.'
+    ],
+    hook: [
+      'Your greatest enemy knows all your moves.',
+      'Freedom requires facing what you\'ve been running from.'
+    ]
+  },
+  man_god: {
+    plotA: [
+      'Divine command conflicts with human morality or logic.',
+      'Faith is tested by suffering that challenges core beliefs.',
+      'Religious duty demands sacrifice that questions worthiness.'
+    ],
+    subB: [
+      'Community faith wavers, creating isolation or solidarity.'
+    ],
+    subC: [
+      'Miracles have terrible costs or conditions.',
+      'Religious hierarchy conflicts with spiritual truth.',
+      'Sacred texts are reinterpreted under pressure.'
+    ],
+    twists: [
+      'The divine test was actually human manipulation.',
+      'Doubt becomes a form of deeper faith.'
+    ],
+    hook: [
+      'God\'s silence is not absence.',
+      'True faith questions everything.'
+    ]
+  },
+  man_society: {
+    plotA: [
+      'Social norms criminalize necessary actions.',
+      'Institutional power protects itself through individual sacrifice.',
+      'Cultural change requires personal rebellion with social costs.'
+    ],
+    subB: [
+      'Family loyalties divide over social issues.'
+    ],
+    subC: [
+      'Legal systems fail to deliver justice.',
+      'Public opinion shifts unpredictably.',
+      'Economic pressure enforces social conformity.'
+    ],
+    twists: [
+      'The system was designed to create this specific problem.',
+      'Individual change influences unexpected social transformation.'
+    ],
+    hook: [
+      'The majority can be morally wrong.',
+      'Standing alone requires the courage of your convictions.'
+    ]
+  }
+} as const;
+
+function buildBeatsHtml(conflictKey: ConflictKey): string {
+  const d = BEATS_BY_CONFLICT[conflictKey];
+  if (!d) return '';
+
+  const section = (title: string, lines: string[]) =>
+    `<p><strong>${title}</strong></p><ul>${lines.map(li=>`<li>${li}</li>`).join('')}</ul>`;
+
+  const html =
+    `<p><strong>Story Beats</strong></p>` +
+    section('Plot A —', d.plotA) +
+    section('Sub Plot B —', d.subB) +
+    section('Sub Plot C —', d.subC) +
+    section('Plot Twists —', d.twists) +
+    section('Emotional Hook —', d.hook);
+
+  // Wrap with markers so we can replace in-place
+  return `${BEATS_START}${html}${BEATS_END}`;
+}
+
+function upsertBeatsBlock(quillRef: any, beatsHtml: string) {
+  const html = getEditorHtml(quillRef);
+  if (!html) return;
+
+  const hasBlock = html.includes(BEATS_START) && html.includes(BEATS_END);
+  if (hasBlock) {
+    const newHtml = html.replace(
+      new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`),
+      beatsHtml
+    );
+    setEditorHtml(quillRef, newHtml);
+    return;
+  }
+
+  // Insert after overview end marker if present, else append
+  const OVERVIEW_END = '<span class="sx-hidden" data-sx-marker="overview-end"></span>';
+  if (html.includes(OVERVIEW_END)) {
+    const newHtml = html.replace(OVERVIEW_END, `${OVERVIEW_END}${beatsHtml}`);
+    setEditorHtml(quillRef, newHtml);
+  } else {
+    setEditorHtml(quillRef, `${html}${beatsHtml}`);
+  }
+}
 
 // Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
@@ -1717,8 +1976,37 @@ export default function DashboardLayout() {
     centralConflictLabel, centralConflictDef
   ]);
 
-  // Central Conflict auto-insert feature has been removed as requested
-  // Only Overview auto-fill remains active (Project Name, Type, Genre, Theme, etc.)
+  // Story Beats auto-generation with controlled effect to prevent duplication
+  const quillRef = useRef<any>(null);
+
+  // Map selected central conflict to ConflictKey
+  const conflictKey: ConflictKey | null = useMemo(() => {
+    switch (centralConflictLabel) {
+      case '[Wo]Man vs. [Wo]Man': return 'man_man';
+      case '[Wo]Man vs. Nature': return 'man_nature';
+      case '[Wo]Man vs. the Environment': return 'man_environment';
+      case '[Wo]Man vs. Machines / Technology': return 'man_technology';
+      case '[Wo]Man vs. the Supernatural': return 'man_supernatural';
+      case '[Wo]Man vs. Self': return 'man_self';
+      case '[Wo]Man vs. God / Religion': return 'man_god';
+      case '[Wo]Man vs. Society': return 'man_society';
+      default: return null;
+    }
+  }, [centralConflictLabel]);
+
+  // Remember what we last applied so we don't re-run on same value
+  const lastAppliedConflictRef = useRef<ConflictKey | null>(null);
+
+  useEffect(() => {
+    if (!conflictKey) return;
+    if (lastAppliedConflictRef.current === conflictKey) return; // no-op same value
+
+    const beats = buildBeatsHtml(conflictKey);
+    if (beats) {
+      upsertBeatsBlock(quillRef, beats);
+      lastAppliedConflictRef.current = conflictKey;
+    }
+  }, [conflictKey]);
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2106,6 +2394,7 @@ export default function DashboardLayout() {
                           {/* Rich Text Editor Content - Fixed height to prevent AI assistant movement */}
                           <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
                             <RichEditor
+                              ref={quillRef}
                               value={storyHtml}
                               onChange={setStoryHtml}
                               className="w-full h-full"
