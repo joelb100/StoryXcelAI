@@ -360,38 +360,43 @@ ${toUL(t.hook)}`
 // Single function that composes the editor content with the correct order
 function updateEditorSections(quill: Quill | null, overviewHTML: string, beatsHTML: string) {
   if (!quill) return; // ✅ guard
+  if (!quill.root) return; // ✅ additional guard for root
 
-  // Get current HTML from Quill
-  let html = quill.root.innerHTML;
+  try {
+    // Get current HTML from Quill
+    let html = quill.root.innerHTML;
 
-  // Remove any existing Overview/Beats blocks (prevents duplicates)
-  html = stripBlock(html, OVERVIEW_START, OVERVIEW_END);
-  html = stripBlock(html, BEATS_START, BEATS_END);
+    // Remove any existing Overview/Beats blocks (prevents duplicates)
+    html = stripBlock(html, OVERVIEW_START, OVERVIEW_END);
+    html = stripBlock(html, BEATS_START, BEATS_END);
 
-  // Build fresh blocks (both are NORMAL editable HTML)
-  const overviewBlock = overviewHTML ? `${OVERVIEW_START}
+    // Build fresh blocks (both are NORMAL editable HTML)
+    const overviewBlock = overviewHTML ? `${OVERVIEW_START}
 <div class="stx-overview">
   ${overviewHTML}
 </div>
 ${OVERVIEW_END}` : '';
 
-  const beatsBlock = beatsHTML ? `${BEATS_START}
+    const beatsBlock = beatsHTML ? `${BEATS_START}
 <div class="stx-beats">
   ${beatsHTML}
 </div>
 ${BEATS_END}` : '';
 
-  // Ensure OVERVIEW is on top, BEATS directly beneath it, then the remainder
-  // If editor is otherwise empty, keep a friendly "Your story begins here..." paragraph after the two blocks.
-  const remainder = html.trim().length ? html : `<p>Your story begins here...</p>`;
+    // Ensure OVERVIEW is on top, BEATS directly beneath it, then the remainder
+    // If editor is otherwise empty, keep a friendly "Your story begins here..." paragraph after the two blocks.
+    const remainder = html.trim().length ? html : `<p>Your story begins here...</p>`;
 
-  const composed = [
-    overviewBlock,
-    beatsBlock,
-    remainder
-  ].filter(Boolean).join('\n\n');
+    const composed = [
+      overviewBlock,
+      beatsBlock,
+      remainder
+    ].filter(Boolean).join('\n\n');
 
-  setHtml(quill, composed);
+    setHtml(quill, composed);
+  } catch (error) {
+    console.warn('updateEditorSections error:', error);
+  }
 }
 
 // Import logo and components

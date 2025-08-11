@@ -20,35 +20,61 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
     if (!containerRef.current) return;
     if (quillRef.current) return; // ✅ don't double‑init
 
-    const q = new Quill(containerRef.current, {
-      theme: "snow",
-      readOnly: false,
-      placeholder: "Your story begins here...",
-      modules: {
-        toolbar: [
-          [{ size: ['small', false, 'large', 'huge'] }],
-          [{ font: [] }],
-          ['bold', 'italic', 'underline'],
-          [{ align: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['clean'],
-        ],
-        clipboard: { matchVisual: true },
-      },
-    });
+    let q: Quill | null = null;
+    
+    try {
+      q = new Quill(containerRef.current, {
+        theme: "snow",
+        readOnly: false,
+        placeholder: "Your story begins here...",
+        modules: {
+          toolbar: [
+            [{ size: ['small', false, 'large', 'huge'] }],
+            [{ font: [] }],
+            ['bold', 'italic', 'underline'],
+            [{ align: [] }],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['clean'],
+          ],
+          clipboard: { matchVisual: true },
+        },
+      });
 
-    quillRef.current = q;
-    onReady?.(q);
+      quillRef.current = q;
+      
+      // Only call onReady after Quill is fully initialized
+      setTimeout(() => {
+        if (q && quillRef.current === q) {
+          onReady?.(q);
+        }
+      }, 0);
+      
+    } catch (error) {
+      console.error('Quill initialization error:', error);
+      quillRef.current = null;
+    }
 
     return () => {
       // ✅ cleanly dispose to avoid half‑alive instances
-      try { q.off?.("text-change"); } catch {}
-      // @ts-ignore
-      if (q?.root) q.root.innerHTML = "";
-      // There is no official destroy(), but removing the node + dropping refs avoids HMR ghosts
+      if (q) {
+        try { 
+          // Remove all listeners
+          if (q.off) {
+            q.off("text-change");
+            q.off("selection-change");
+          }
+        } catch {}
+        
+        try {
+          // @ts-ignore
+          if (q.root) q.root.innerHTML = "";
+        } catch {}
+      }
+      
+      // Clear the ref
       quillRef.current = null;
     };
-  }, [onReady]);
+  }, []); // Remove onReady from dependencies to prevent re-initialization
 
   return (
     <div className={className}>
@@ -60,10 +86,24 @@ const RichEditor: React.FC<Props> = ({ onReady, className }) => {
 // ---- Helper you call elsewhere (ALWAYS guard the ref) ----
 export function setHtml(q: Quill | null, html: string) {
   if (!q) return; // ✅ guard
-  // safer than touching innerHTML during updates:
-  const delta = q.clipboard.convert(html);
-  q.setContents(delta, "silent");
-  q.setSelection(q.getLength(), 0, "silent");
+  if (!q.clipboard) return; // ✅ additional guard for clipboard
+  
+  try {
+    // safer than touching innerHTML during updates:
+    const delta = q.clipboard.convert({ html });
+    q.setContents(delta, "silent");
+    q.setSelection(q.getLength(), 0, "silent");
+  } catch (error) {
+    console.warn('Quill setHtml error:', error);
+    // Fallback to direct HTML if convert fails
+    try {
+      if (q.root) {
+        q.root.innerHTML = html;
+      }
+    } catch (fallbackError) {
+      console.warn('Fallback HTML assignment failed:', fallbackError);
+    }
+  }
 }
 
 export default RichEditor;
