@@ -116,6 +116,18 @@ const friendsList = [
   "Ned Flanders"
 ];
 
+// Central Conflict definitions map - moved outside component for global access
+const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
+  '[Wo]Man vs. [Wo]Man': 'A conflict where the protagonist\'s main opposition comes from another individual or group with clashing goals, values, or desires.',
+  '[Wo]Man vs. Nature': 'A struggle between the protagonist and natural forces such as weather, animals, disasters, or the wilderness.',
+  '[Wo]Man vs. the Environment': 'A broader battle against living or working conditions shaped by surroundings, systems, or society\'s physical structures.',
+  '[Wo]Man vs. Machines / Technology': 'Conflict driven by challenges, dangers, or ethical dilemmas posed by machines, artificial intelligence, or technological advancement.',
+  '[Wo]Man vs. the Supernatural': 'A clash between the protagonist and forces beyond the natural world, such as ghosts, gods, magic, or mythical beings.',
+  '[Wo]Man vs. Self': 'An internal struggle where the protagonist\'s main obstacle is their own fears, doubts, desires, or moral dilemmas.',
+  '[Wo]Man vs. God / Religion': 'A confrontation with divine authority, religious institutions, or personal beliefs about faith and morality.',
+  '[Wo]Man vs. Society': 'A rebellion or resistance against societal norms, laws, traditions, or systems of power that restrict personal freedom or justice.'
+};
+
 // Friends List Component
 const FriendsListSidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
   <div className={`fixed top-0 right-0 h-full bg-green-600 border-l border-slate-600 transition-transform duration-300 ease-in-out z-30 ${
@@ -1342,18 +1354,6 @@ export default function DashboardLayout() {
     'war': 'The brutal realities, strategies, and consequences of armed conflict.',
     'wealth-found': 'The discovery of fortune and its transformative effects.',
     'war-zone': 'The personal and collective experiences of life amidst conflict zones.'
-  };
-
-  // Central Conflict definitions map
-  const CENTRAL_CONFLICT_DEFS: Record<string, string> = {
-    '[Wo]Man vs. [Wo]Man': 'A conflict where the protagonist\'s main opposition comes from another individual or group with clashing goals, values, or desires.',
-    '[Wo]Man vs. Nature': 'A struggle between the protagonist and natural forces such as weather, animals, disasters, or the wilderness.',
-    '[Wo]Man vs. the Environment': 'A broader battle against living or working conditions shaped by surroundings, systems, or society\'s physical structures.',
-    '[Wo]Man vs. Machines / Technology': 'Conflict driven by challenges, dangers, or ethical dilemmas posed by machines, artificial intelligence, or technological advancement.',
-    '[Wo]Man vs. the Supernatural': 'A clash between the protagonist and forces beyond the natural world, such as ghosts, gods, magic, or mythical beings.',
-    '[Wo]Man vs. Self': 'An internal struggle where the protagonist\'s main obstacle is their own fears, doubts, desires, or moral dilemmas.',
-    '[Wo]Man vs. God / Religion': 'A confrontation with divine authority, religious institutions, or personal beliefs about faith and morality.',
-    '[Wo]Man vs. Society': 'A rebellion or resistance against societal norms, laws, traditions, or systems of power that restrict personal freedom or justice.'
   };
 
   // Sub Theme definitions map (matches the definitions in the UI)
