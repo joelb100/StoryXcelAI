@@ -16,6 +16,7 @@ import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor from '@/components/editor/RichEditor';
 import type Quill from 'quill';
+import debounce from 'lodash.debounce';
 
 // --- Quill header writer (replace top header, preserve the rest) ---
 type OverviewState = {
@@ -45,40 +46,31 @@ function buildOverviewHTML(o: OverviewState) {
 
 // Focus-safe writer that preserves cursor position and active element focus
 function writeOverviewHtmlSafe(q: Quill, html: string) {
-  // Remember where focus currently is
   const active = document.activeElement as HTMLElement | null;
   const editorRoot = q.root as HTMLElement;
   const editorHadFocus = active === editorRoot;
 
-  // Preserve editor selection if the editor had focus
   const prevRange = editorHadFocus ? q.getSelection() : null;
 
-  // Write without changing focus/selection
   const delta = q.clipboard.convert({ html });
   q.setContents(delta, "silent");
 
-  // Restore selection if editor had focus before
   if (editorHadFocus && prevRange) {
     q.setSelection(prevRange, "silent");
   }
 
-  // If some other input had focus, put it back there
+  // restore focus to whatever had it before (e.g., Project Name input)
   if (!editorHadFocus && active && typeof active.focus === "function") {
     active.focus({ preventScroll: true });
   }
+
+  // DEBUG:
+  console.log("[SAFE-WRITE] len=", html?.length ?? 0, 
+              "active=", active?.id || active?.tagName, 
+              "editorHadFocus=", editorHadFocus);
 }
 
-// Simple debounce utility
-function debounce<T extends (...args: any[]) => void>(fn: T, ms: number = 150): T & { cancel?: () => void } {
-  let timeoutId: number;
-  const debounced = ((...args: Parameters<T>) => {
-    clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => fn(...args), ms);
-  }) as T & { cancel?: () => void };
-  
-  debounced.cancel = () => clearTimeout(timeoutId);
-  return debounced;
-}
+
 
 import { 
   ChevronLeft, 
@@ -862,13 +854,14 @@ const LeftSidebar = ({
               onChange={(e) => onProjectNameChange?.(e.target.value)}
               placeholder="Enter project name..."
               className="bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+              {...overviewInputProps}
             />
           </div>
 
           <div>
             <Label htmlFor="story-projectType" className="text-sm font-medium text-white block mb-1">Project Type</Label>
             <Select onValueChange={onProjectTypeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Project Type" />
               </SelectTrigger>
               <SelectContent>
@@ -883,7 +876,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-genre" className="text-sm font-medium text-white block mb-1">Genre</Label>
             <Select value={genre} onValueChange={onGenreChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Genre" />
               </SelectTrigger>
               <SelectContent>
@@ -922,7 +915,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
             <Select value={subGenre || ''} onValueChange={onSubGenreChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
               <SelectContent>
@@ -953,7 +946,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-theme" className="text-sm font-medium text-white block mb-1">Theme</Label>
             <Select value={theme} onValueChange={onThemeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Theme" />
               </SelectTrigger>
               <SelectContent>
@@ -1002,7 +995,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-subTheme" className="text-sm font-medium text-white block mb-1">Sub Theme</Label>
             <Select value={subTheme} onValueChange={onSubThemeChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Sub Theme" />
               </SelectTrigger>
               <SelectContent>
@@ -1053,7 +1046,7 @@ const LeftSidebar = ({
           <div>
             <Label htmlFor="story-centralConflict" className="text-sm font-medium text-white block mb-1">Central Conflict</Label>
             <Select value={centralConflict} onValueChange={onCentralConflictChange}>
-              <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+              <SelectTrigger className="bg-slate-600 border-slate-500 text-white" {...overviewInputProps}>
                 <SelectValue placeholder="Select Central Conflict" />
               </SelectTrigger>
               <SelectContent>
@@ -1997,16 +1990,44 @@ export default function DashboardLayout() {
   // Quill instance reference
   const quillRef = useRef<Quill | null>(null);
 
-  // Stable debounced writer kept in a ref
+  // Track whether the user is typing in the Overview (to delay writes)
+  const typingRef = useRef(false);
+  const lastHtmlRef = useRef<string | null>(null);
+
+  // Attach onFocus/onBlur to ALL overview inputs (Project Name, Project Type, Genre, Theme, etc.)
+  const overviewInputProps = {
+    onFocus: () => { typingRef.current = true; console.log("[OVERVIEW] focus"); },
+    onBlur: () => {
+      typingRef.current = false;
+      console.log("[OVERVIEW] blur; flushing queued html");
+      const q = quillRef.current;
+      if (q && lastHtmlRef.current) {
+        writeOverviewHtmlSafe(q, lastHtmlRef.current);
+        lastHtmlRef.current = null;
+      }
+    }
+  };
+
+  // Stable debounced writer that never changes identity
   const writerRef = useRef<(html: string) => void>();
   useEffect(() => {
-    // stable debounced writer; runs only once
-    writerRef.current = debounce((html: string) => {
+    // Debounce once; identity stays stable.
+    const debounced = debounce((html: string) => {
       const q = quillRef.current;
       if (!q) return;
+
+      // If user is actively typing, just queue the html.
+      if (typingRef.current) {
+        lastHtmlRef.current = html;
+        console.log("[DEBOUNCED] queued (typing)");
+        return;
+      }
+
       writeOverviewHtmlSafe(q, html);
-    }, 150);
-    return () => (writerRef.current as any)?.cancel?.();
+    }, 350);
+
+    writerRef.current = debounced;
+    return () => debounced.cancel();
   }, []);
   
 
@@ -2118,9 +2139,10 @@ export default function DashboardLayout() {
     }
   };
 
-  // Live-sync overview to editor (focus-safe)
+  // Live-sync overview to editor (focus-safe with typing detection)
   useEffect(() => {
     if (!quillRef.current) return;
+
     const html = buildOverviewHTML({
       projectName,
       projectType,
@@ -2130,8 +2152,10 @@ export default function DashboardLayout() {
       subTheme,
       centralConflict,
       lengthPages,
-      lengthMinutes
+      lengthMinutes,
     });
+
+    console.log("[SYNC] schedule write; typing=", typingRef.current);
     writerRef.current?.(html);
   }, [
     projectName,
@@ -2142,7 +2166,7 @@ export default function DashboardLayout() {
     subTheme,
     centralConflict,
     lengthPages,
-    lengthMinutes
+    lengthMinutes,
   ]);
 
 
@@ -2475,9 +2499,7 @@ export default function DashboardLayout() {
                               <RichEditor
                                 onReady={(q) => {
                                   quillRef.current = q;
-                                  (window as any).__quillReady = true;
 
-                                  // On first paint, write whatever we already have (no focus)
                                   const html = buildOverviewHTML({
                                     projectName,
                                     projectType,
@@ -2487,9 +2509,14 @@ export default function DashboardLayout() {
                                     subTheme,
                                     centralConflict,
                                     lengthPages,
-                                    lengthMinutes
+                                    lengthMinutes,
                                   });
-                                  if (html.trim()) writeOverviewHtmlSafe(q, html);
+
+                                  if (html.trim()) {
+                                    writeOverviewHtmlSafe(q, html);
+                                  }
+
+                                  // DO NOT call q.focus() here.
                                 }}
                                 className="w-full h-full"
                               />
