@@ -2340,13 +2340,21 @@ export default function DashboardLayout() {
 
   // Handle Central Conflict change with conflict-based story beats insertion
   const handleCentralConflictChange = (value: string) => {
+    console.log('[CC onChange]', value);
     setCentralConflict(value);
 
     // If there is no beats template for this conflict, do nothing.
-    if (!CONFLICT_BEATS[value]) return;
+    if (!CONFLICT_BEATS[value]) {
+      console.log('[CC] No beats template for', value);
+      return;
+    }
 
-    if (lastAppliedConflict === value) return;
+    if (lastAppliedConflict === value) {
+      console.log('[CC] Already applied conflict', value);
+      return;
+    }
 
+    console.log('[CC] Generating beats for', value);
     // Generate new beats HTML using the conflict beats data
     const beats = CONFLICT_BEATS[value];
     const newBeatsHTML = beatsToHTML(beats);
@@ -2354,23 +2362,31 @@ export default function DashboardLayout() {
     
     // Update the editor content immediately by adding beats to current content
     setStoryHtml(currentHtml => {
+      console.log('[CC] Current HTML length:', currentHtml.length);
       const hasBeats = currentHtml.includes(BEATS_START) && currentHtml.includes(BEATS_END);
+      console.log('[CC] Has existing beats:', hasBeats);
       
       if (hasBeats) {
         // Replace existing beats block
-        return currentHtml.replace(
+        const updatedHtml = currentHtml.replace(
           new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`), 
           newBeatsHTML
         );
+        console.log('[CC] Replaced beats, new length:', updatedHtml.length);
+        return updatedHtml;
       } else {
         // Append beats after overview (or at end if no overview)
         if (currentHtml.includes(OVERVIEW_END)) {
-          return currentHtml.replace(
+          const updatedHtml = currentHtml.replace(
             OVERVIEW_END,
             `${OVERVIEW_END}\n\n${newBeatsHTML}`
           );
+          console.log('[CC] Added beats after overview, new length:', updatedHtml.length);
+          return updatedHtml;
         } else {
-          return `${currentHtml}\n\n${newBeatsHTML}`;
+          const updatedHtml = `${currentHtml}\n\n${newBeatsHTML}`;
+          console.log('[CC] Appended beats at end, new length:', updatedHtml.length);
+          return updatedHtml;
         }
       }
     });
@@ -2433,6 +2449,55 @@ export default function DashboardLayout() {
       return "I'm here to help with your creative project! I can assist with character development, plot structure, dialogue, world building, and more. What specific aspect would you like to explore?";
     }
   };
+
+  // Central Conflict beats effect
+  useEffect(() => {
+    console.log('[CC effect] centralConflict:', centralConflict);
+    console.log('[CC effect] lastAppliedConflict:', lastAppliedConflict);
+    
+    if (!centralConflict || !CONFLICT_BEATS[centralConflict]) {
+      console.log('[CC effect] No conflict or no beats for:', centralConflict);
+      return;
+    }
+
+    if (lastAppliedConflict === centralConflict) {
+      console.log('[CC effect] Already applied this conflict');
+      return;
+    }
+
+    console.log('[CC effect] Applying beats for:', centralConflict);
+    const beats = CONFLICT_BEATS[centralConflict];
+    const newBeatsHTML = beatsToHTML(beats);
+    
+    setStoryHtml(currentHtml => {
+      console.log('[CC effect] Current HTML length:', currentHtml.length);
+      const hasBeats = currentHtml.includes(BEATS_START) && currentHtml.includes(BEATS_END);
+      console.log('[CC effect] Has existing beats:', hasBeats);
+      
+      if (hasBeats) {
+        const updatedHtml = currentHtml.replace(
+          new RegExp(`${BEATS_START}[\\s\\S]*?${BEATS_END}`), 
+          newBeatsHTML
+        );
+        console.log('[CC effect] Replaced beats, new length:', updatedHtml.length);
+        return updatedHtml;
+      } else {
+        if (currentHtml.includes(OVERVIEW_END)) {
+          const updatedHtml = currentHtml.replace(
+            OVERVIEW_END,
+            `${OVERVIEW_END}\n\n${newBeatsHTML}`
+          );
+          console.log('[CC effect] Added beats after overview, new length:', updatedHtml.length);
+          return updatedHtml;
+        } else {
+          const updatedHtml = `${currentHtml}\n\n${newBeatsHTML}`;
+          console.log('[CC effect] Appended beats at end, new length:', updatedHtml.length);
+          return updatedHtml;
+        }
+      }
+    });
+    
+  }, [centralConflict]);
 
   // Old Quill sync logic removed - now using controlled ReactQuill component
 
