@@ -15,7 +15,7 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor from '@/components/editor/RichEditor';
-import { debounce, setHtmlPreserveFocus } from '@/lib/editorSync';
+import { debounce, writeHtml } from '@/lib/editorSync';
 import type Quill from 'quill';
 
 import { 
@@ -2050,7 +2050,7 @@ export default function DashboardLayout() {
       lengthMinutes
     };
     const overviewHTML = buildOverviewHTML(formState);
-    writeOverview(overviewHTML);
+    debouncedWrite(overviewHTML);
     setLastAppliedConflict(value);
   };
 
@@ -2069,7 +2069,7 @@ export default function DashboardLayout() {
     };
     const newOverviewHTML = buildOverviewHTML(formState);
     setLatestOverviewHTML(newOverviewHTML);
-    writeOverview(newOverviewHTML);
+    debouncedWrite(newOverviewHTML);
   };
 
   const handleProjectTypeChange = (val: string) => {
@@ -2126,20 +2126,44 @@ export default function DashboardLayout() {
     }
   };
 
-  // Create debounced writer for overview updates
-  const writeOverview = useMemo(() =>
-    debounce((html: string) => {
+  // Build overview HTML from current state
+  function buildOverviewHTML(o: {
+    projectName: string;
+    projectType: string;
+    genre: string;
+    subGenre: string;
+    theme: string;
+    subTheme: string;
+    centralConflict: string;
+    lengthPages: string | number;
+    lengthMinutes: string | number;
+  }) {
+    return [
+      o.projectName && `<p><strong>Story Title</strong> — ${o.projectName}</p>`,
+      o.projectType && `<p><strong>Project Type</strong> — ${o.projectType}${o.lengthPages ? ` / ${o.lengthPages} pages` : ""}${o.lengthMinutes ? ` / ${o.lengthMinutes} mins` : ""}</p>`,
+      o.genre && `<p><strong>Genre</strong> — ${o.genre}</p>`,
+      o.subGenre && `<p><strong>Sub Genre</strong> — ${o.subGenre}</p>`,
+      o.theme && `<p><strong>Theme</strong> — ${o.theme}</p>`,
+      o.subTheme && `<p><strong>Sub Theme</strong> — ${o.subTheme}</p>`,
+      o.centralConflict && `<p><strong>Central Conflict</strong> — ${o.centralConflict}</p>`,
+      `<p>Your story begins here...</p>`
+    ].filter(Boolean).join("");
+  }
+
+  const debouncedWrite = useMemo(
+    () => debounce((html: string) => {
       const q = quillRef.current;
       if (!q) return;
-      setHtmlPreserveFocus(q, html);
+      writeHtml(q, html);
     }, 300),
-  []);
+    []
+  );
 
   // Live-sync project data to Story Builder overview section (debounced)
   useEffect(() => {
-    if (!quillRef.current) return; // wait for Quill
+    if (!quillRef.current) return; // wait for Quill onReady
     
-    const formState = {
+    const overviewState = {
       projectName,
       projectType,
       genre,
@@ -2150,10 +2174,10 @@ export default function DashboardLayout() {
       lengthPages,
       lengthMinutes
     };
-    const newOverviewHTML = buildOverviewHTML(formState);
-    setLatestOverviewHTML(newOverviewHTML);
-    writeOverview(newOverviewHTML); // debounced push
-  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, writeOverview]);
+    const html = buildOverviewHTML(overviewState);
+    setLatestOverviewHTML(html);
+    debouncedWrite(html);
+  }, [projectName, projectType, genre, subGenre, theme, subTheme, centralConflict, lengthPages, lengthMinutes, debouncedWrite]);
 
 
 
@@ -2488,7 +2512,7 @@ export default function DashboardLayout() {
                                   (window as any).__quillReady = true;
                                   
                                   // Initialize with overview content if we have it
-                                  const formState = {
+                                  const overviewState = {
                                     projectName,
                                     projectType,
                                     genre,
@@ -2499,9 +2523,9 @@ export default function DashboardLayout() {
                                     lengthPages,
                                     lengthMinutes
                                   };
-                                  const initialHTML = buildOverviewHTML(formState);
+                                  const initialHTML = buildOverviewHTML(overviewState);
                                   if (initialHTML.trim()) {
-                                    setHtmlPreserveFocus(q, initialHTML);
+                                    writeHtml(q, initialHTML);
                                   }
                                 }}
                                 className="w-full h-full"
