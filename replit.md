@@ -31,6 +31,7 @@ Preferred communication style: Simple, everyday language.
 - **Project Management**: Support for multiple builder types (Story, Production, Asset, Script, Deck, World), multi-user collaboration with role-based access, asset management, and project lifecycle tracking.
 - **User Interface**: Comprehensive UI components with a consistent design system, responsive design, light/dark mode, and multi-level navigation.
 - **Real-time Features**: Friend system with status tracking, real-time project sharing, and toast notifications.
+- **Rich Text Editing**: Story Builder with Quill rich text editor, HTML overview injection system, class-based hidden markers, DOM-based content replacement, and automatic synchronization between form fields and editor content.
 
 ## External Dependencies
 
@@ -41,6 +42,8 @@ Preferred communication style: Simple, everyday language.
 - **@radix-ui/***: UI primitives
 - **passport**: Authentication middleware
 - **express-session**: Session management
+- **react-quill**: Rich text editor (Quill integration for React)
+- **quill**: Core rich text editing engine
 
 ### Development Tools
 - **tsx**: TypeScript execution
