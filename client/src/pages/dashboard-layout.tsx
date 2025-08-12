@@ -2180,7 +2180,18 @@ export default function DashboardLayout() {
                 ? (isFriendsListOpen || isSiteLinksOpen ? 'col-span-19' : 'col-span-22')
                 : 'col-span-22' // Other builder tabs without panels
           }`}>
-            {activeTab === 'story' ? (
+            {activeTab === 'dashboard' ? (
+              <DashboardContent 
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+                currentProjectSlide={currentProjectSlide}
+                setCurrentProjectSlide={setCurrentProjectSlide}
+                navigate={navigate}
+              />
+            ) : activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
                 <div className="bg-white border-b border-gray-200 px-4 pb-4">
@@ -2377,32 +2388,57 @@ export default function DashboardLayout() {
                         </div>
                       </div>
 
-                    {/* AI Story Assistant - Card layout below editor */}
+                    {/* AI Story Assistant - Same layout as dashboard */}
                     <div className="w-full max-w-[14.5in] mx-auto">
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-4">
-                        <AIStoryAssistant 
-                          chatMessages={chatMessages}
-                          chatMessage={chatMessage}
-                          setChatMessage={setChatMessage}
-                          handleSendMessage={handleSendMessage}
-                          handleKeyPress={handleKeyPress}
-                        />
-                      </div>
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <DashboardContent 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-                currentProjectSlide={currentProjectSlide}
-                setCurrentProjectSlide={setCurrentProjectSlide}
-                navigate={navigate}
-              />
+              // All other builder tabs (world, production, asset, script, deck)
+              <div className="bg-gray-100 flex flex-col h-full">
+                {/* Builder Header */}
+                <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                  <h2 className="text-lg font-semibold text-slate-800">
+                    {activeTab === 'world' && 'World Builder'}
+                    {activeTab === 'production' && 'Production Builder'}
+                    {activeTab === 'asset' && 'Asset Builder'}
+                    {activeTab === 'script' && 'Script Builder'}
+                    {activeTab === 'deck' && 'Deck Builder'}
+                  </h2>
+                </div>
+                
+                {/* Constrained Content Container - Same layout as dashboard */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Main Builder Section - 60% height like dashboard */}
+                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
+                      <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
+                        {/* Builder content area - placeholder for now */}
+                      </div>
+                    </div>
+
+                    {/* Bottom section - 40% height like dashboard */}
+                    <div className="flex-1 flex flex-col justify-start pt-4">
+                      {/* AI Chat Window - takes remaining space */}
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
           
