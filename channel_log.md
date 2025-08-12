@@ -325,3 +325,49 @@ useEffect(() => {
 - Story Builder now has full rich text editing with overview injection
 - Hidden marker system ensures content synchronization between form fields and editor
 - DOM-based approach prevents regex issues with Quill's HTML structure
+
+### 2025-01-16 07:25:00 - AI Story Assistant Height Optimization Completed
+**Task**: Fine-tune AI Story Assistant proportions across all builder tabs for optimal visual balance
+**Completed Work**:
+- ✅ Implemented precise 70.8%/29.2% height split across all builder tabs
+- ✅ Story Builder: AI assistant optimized to 29.2% height with 70.8% main content area
+- ✅ World Builder: Consistent 29.2% AI assistant height 
+- ✅ Production Builder: Consistent 29.2% AI assistant height
+- ✅ Asset Builder: Consistent 29.2% AI assistant height
+- ✅ Script Builder: Consistent 29.2% AI assistant height
+- ✅ Deck Builder: Consistent 29.2% AI assistant height
+- ✅ Maintained dashboard layout as permanent reference (unchanged)
+- ✅ Achieved optimal balance between main content and AI interaction space
+
+**Technical Implementation**:
+```css
+/* Main Content Areas - 70.8% height */
+.flex.justify-center.items-center { height: 70.8%; }
+
+/* AI Assistant Areas - 29.2% height */
+.flex.flex-col.justify-start.pt-4 { height: 29.2%; }
+```
+
+**Height Adjustment History**:
+1. Started at 28% AI assistant height
+2. Increased to 31% height (+10% scale up)
+3. Reduced to 29.5% height (-5% scale down)
+4. Reduced to 28.9% height (-2% scale down)
+5. **Final**: Increased to 29.2% height (+1% scale up) ✓
+
+**Key Features**:
+- **Consistent Proportions**: All builder tabs maintain identical 70.8%/29.2% split
+- **Visual Balance**: Optimal ratio providing sufficient space for both content creation and AI interaction
+- **Cross-tab Uniformity**: Seamless user experience when switching between builders
+- **Dashboard Preservation**: Reference layout remains untouched as required
+- **Production Ready**: Final proportions confirmed by user as optimal
+
+**Files Modified**:
+- `client/src/pages/dashboard-layout.tsx` (height adjustments for all builder tabs)
+
+**Status**: FULLY COMPLETED - AI Assistant proportions finalized
+**User Confirmation**: Version saved to channel_log.md as requested
+**Architecture Notes**: 
+- 70.8%/29.2% split provides ideal balance for creative workflow
+- Consistent across all six builder types (World, Production, Asset, Story, Script, Deck)
+- Dashboard layout permanently locked and preserved as reference
