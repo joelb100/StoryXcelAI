@@ -2187,14 +2187,12 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - EXACT SAME as Dashboard - 15.25 inches max width */}
-                <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Main Story Builder Section - Expanded as AI Assistant reduced by 10% */}
-                    <div className="flex justify-center items-center" style={{ height: 'calc(60% + 1in + 8.336% - 1.35in)' }}>
-                      <div className="w-full max-w-[14.5in] h-full">
-                        {/* Story Content Editor - Full width document style */}
-                        <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">
+                {/* Constrained Content Container - Full page scroll layout */}
+                <div className="flex-1 overflow-y-auto">
+                  <div className="w-full max-w-[15.25in] mx-auto p-4 space-y-6">
+                    {/* Story Content Editor - Auto height with content */}
+                    <div className="w-full max-w-[14.5in] mx-auto">
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg">
                           {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
                           <div className="border-b border-gray-200 px-4 py-2 hidden">
                             <div className="flex items-center space-x-1 text-sm flex-wrap">
@@ -2368,29 +2366,28 @@ export default function DashboardLayout() {
                             </div>
                           </div>
                           
-                          {/* Rich Text Editor Content - Fixed height to prevent AI assistant movement */}
-                          <div className="h-[520px] md:h-[560px] lg:h-[600px] overflow-auto rounded-md border m-4">
-                            <div id="story-editor">
-                              <RichEditor
-                                value={storyHtml}
-                                onChange={setStoryHtml}
-                                className="w-full h-full"
-                              />
-                            </div>
+                          {/* Rich Text Editor Content - Auto height with content */}
+                          <div id="story-editor" className="p-4">
+                            <RichEditor
+                              value={storyHtml}
+                              onChange={setStoryHtml}
+                              className="w-full min-h-[400px]"
+                            />
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* AI Story Assistant - Fixed position at bottom */}
-                    <div className="h-64 border-t border-gray-200 bg-gray-50 p-4">
-                      <AIStoryAssistant 
-                        chatMessages={chatMessages}
-                        chatMessage={chatMessage}
-                        setChatMessage={setChatMessage}
-                        handleSendMessage={handleSendMessage}
-                        handleKeyPress={handleKeyPress}
-                      />
+                    {/* AI Story Assistant - Card layout below editor */}
+                    <div className="w-full max-w-[14.5in] mx-auto">
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-4">
+                        <AIStoryAssistant 
+                          chatMessages={chatMessages}
+                          chatMessage={chatMessage}
+                          setChatMessage={setChatMessage}
+                          handleSendMessage={handleSendMessage}
+                          handleKeyPress={handleKeyPress}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
