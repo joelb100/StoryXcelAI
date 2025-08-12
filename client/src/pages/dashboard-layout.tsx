@@ -1921,45 +1921,45 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
-  // Update rich text editor with HTML overview (debounced for better UX)
-  useEffect(() => {
-    const id = setTimeout(() => {
-      // Build project type string
-      const projectTypeDisplay = projectType ? (() => {
-        const parts: string[] = [projectType];
-        if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
-        if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
-        return parts.join(' / ');
-      })() : undefined;
+  // DISABLED: Overview HTML injection into editor - now showing in dedicated card above
+  // useEffect(() => {
+  //   const id = setTimeout(() => {
+  //     // Build project type string
+  //     const projectTypeDisplay = projectType ? (() => {
+  //       const parts: string[] = [projectType];
+  //       if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
+  //       if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
+  //       return parts.join(' / ');
+  //     })() : undefined;
 
-      const overviewHTML = buildOverviewHTML({
-        title: projectName,
-        projectType: projectTypeDisplay,
-        genreLabel: genreLabel || undefined,
-        genreDef: genreDef || undefined,
-        subGenreLabel: subGenreLabel || undefined,
-        subGenreDef: subGenreDef || undefined,
-        themeLabel: themeLabel || undefined,
-        themeDef: themeDef || undefined,
-        subThemeLabel: subThemeLabel || undefined,
-        subThemeDef: subThemeDef || undefined,
-        conflictLabel: centralConflictLabel || undefined,
-        conflictDef: centralConflictDef || undefined,
-      });
+  //     const overviewHTML = buildOverviewHTML({
+  //       title: projectName,
+  //       projectType: projectTypeDisplay,
+  //       genreLabel: genreLabel || undefined,
+  //       genreDef: genreDef || undefined,
+  //       subGenreLabel: subGenreLabel || undefined,
+  //       subGenreDef: subGenreDef || undefined,
+  //       themeLabel: themeLabel || undefined,
+  //       themeDef: themeDef || undefined,
+  //       subThemeLabel: subThemeLabel || undefined,
+  //       subThemeDef: subThemeDef || undefined,
+  //       conflictLabel: centralConflictLabel || undefined,
+  //       conflictDef: centralConflictDef || undefined,
+  //     });
 
-      setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
-    }, 250);
+  //     setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
+  //   }, 250);
     
-    return () => clearTimeout(id);
-  }, [
-    projectName,
-    projectType, lengthPages, lengthMinutes,
-    genreLabel, genreDef,
-    subGenreLabel, subGenreDef,
-    themeLabel, themeDef,
-    subThemeLabel, subThemeDef,
-    centralConflictLabel, centralConflictDef
-  ]);
+  //   return () => clearTimeout(id);
+  // }, [
+  //   projectName,
+  //   projectType, lengthPages, lengthMinutes,
+  //   genreLabel, genreDef,
+  //   subGenreLabel, subGenreDef,
+  //   themeLabel, themeDef,
+  //   subThemeLabel, subThemeDef,
+  //   centralConflictLabel, centralConflictDef
+  // ]);
 
   // Central Conflict state and last applied tracking
   const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
@@ -2377,12 +2377,25 @@ export default function DashboardLayout() {
                             </div>
                           </div>
                           
-                        {/* Rich Text Editor Content - Full height */}
-                        <div id="story-editor" className="p-4 h-full">
-                          <RichEditor
-                            value={storyHtml}
-                            onChange={setStoryHtml}
-                            className="w-full h-full"
+                        {/* Story Builder Content - Full height */}
+                        <div className="h-full">
+                          <StoryBuilder 
+                            projectName={projectName}
+                            projectType={projectType}
+                            lengthPages={lengthPages}
+                            lengthMinutes={lengthMinutes}
+                            genre={genreLabel}
+                            genreDef={genreDef}
+                            subGenre={subGenreLabel}
+                            subGenreDef={subGenreDef}
+                            theme={themeLabel}
+                            themeDef={themeDef}
+                            subTheme={subThemeLabel}
+                            subThemeDef={subThemeDef}
+                            centralConflict={centralConflictLabel}
+                            centralConflictDef={centralConflictDef}
+                            storyHtml={storyHtml}
+                            setStoryHtml={setStoryHtml}
                           />
                         </div>
                       </div>

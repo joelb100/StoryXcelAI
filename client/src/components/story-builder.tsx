@@ -3,23 +3,51 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import RichEditor from '@/components/editor/RichEditor';
 
-interface StoryBuilderProps {}
+interface StoryBuilderProps {
+  projectName?: string;
+  projectType?: string;
+  lengthPages?: number;
+  lengthMinutes?: number;
+  genre?: string;
+  genreDef?: string;
+  subGenre?: string;
+  subGenreDef?: string;
+  theme?: string;
+  themeDef?: string;
+  subTheme?: string;
+  subThemeDef?: string;
+  centralConflict?: string;
+  centralConflictDef?: string;
+  storyHtml: string;
+  setStoryHtml: (html: string) => void;
+}
 
-export default function StoryBuilder({}: StoryBuilderProps) {
+export default function StoryBuilder({
+  projectName = "",
+  projectType = "",
+  lengthPages,
+  lengthMinutes,
+  genre = "",
+  genreDef = "",
+  subGenre = "",
+  subGenreDef = "",
+  theme = "",
+  themeDef = "",
+  subTheme = "",
+  subThemeDef = "",
+  centralConflict = "",
+  centralConflictDef = "",
+  storyHtml,
+  setStoryHtml
+}: StoryBuilderProps) {
   const [storyData, setStoryData] = useState({
-    projectName: "",
-    genre: "",
-    subGenre: "",
-    theme: "",
-    subTheme: "",
-    centralConflict: "",
     plotA: "",
     subplotB: "",
     subplotC: "",
     plotTwists: "",
-    emotionalHook: "",
-    storyContent: ""
+    emotionalHook: ""
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -29,154 +57,81 @@ export default function StoryBuilder({}: StoryBuilderProps) {
     }));
   };
 
+  // Build project type display
+  const projectTypeDisplay = projectType ? (() => {
+    const parts: string[] = [projectType];
+    if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
+    if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
+    return parts.join(' / ');
+  })() : 'Screenplay / 90 pages / 90 mins';
+
   return (
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         {/* Main Story Builder Section - 60% like Dashboard main section */}
         <div className="flex justify-center items-center" style={{ height: '60%' }}>
           <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-6 overflow-visible">
-            {/* Story Overview FIRST (correct) */}
+            {/* Story Overview FIRST (correct) - Now displays values like Picture 2 */}
             <Card className="rounded-md border p-4" data-testid="overview-card">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Overview</h3>
-                  
-                <div className="space-y-3">
+              <div className="space-y-3">
+                {projectName && (
                   <div>
-                    <Label htmlFor="projectName" className="text-sm font-medium text-slate-700">Project Name</Label>
-                    <Input
-                      id="projectName"
-                      value={storyData.projectName}
-                      onChange={(e) => handleInputChange('projectName', e.target.value)}
-                      className="mt-1"
-                      placeholder="Enter your project name"
-                    />
+                    <span className="font-semibold">Story Title</span> — {projectName}
                   </div>
-
-                  <div>
-                    <Label htmlFor="genre" className="text-sm font-medium text-slate-700">Genre</Label>
-                    <Input
-                      id="genre"
-                      value={storyData.genre}
-                      onChange={(e) => handleInputChange('genre', e.target.value)}
-                      className="mt-1"
-                      placeholder="e.g., Western, Sci-Fi, Romance"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subGenre" className="text-sm font-medium text-slate-700">Sub-Genre</Label>
-                    <Input
-                      id="subGenre"
-                      value={storyData.subGenre}
-                      onChange={(e) => handleInputChange('subGenre', e.target.value)}
-                      className="mt-1"
-                      placeholder="e.g., Revenge Western, Space Opera"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="theme" className="text-sm font-medium text-slate-700">Theme</Label>
-                    <Input
-                      id="theme"
-                      value={storyData.theme}
-                      onChange={(e) => handleInputChange('theme', e.target.value)}
-                      className="mt-1"
-                      placeholder="Main theme of your story"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="subTheme" className="text-sm font-medium text-slate-700">Sub Theme</Label>
-                    <Input
-                      id="subTheme"
-                      value={storyData.subTheme}
-                      onChange={(e) => handleInputChange('subTheme', e.target.value)}
-                      className="mt-1"
-                      placeholder="Secondary theme"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="centralConflict" className="text-sm font-medium text-slate-700">Central Conflict</Label>
-                    <Textarea
-                      id="centralConflict"
-                      value={storyData.centralConflict}
-                      onChange={(e) => handleInputChange('centralConflict', e.target.value)}
-                      className="mt-1"
-                      placeholder="Describe the main conflict driving your story"
-                      rows={2}
-                    />
-                  </div>
+                )}
+                
+                <div>
+                  <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
                 </div>
+                
+                {genre && (
+                  <div>
+                    <span className="font-semibold">Genre</span> — {genre}
+                    {genreDef && <div className="ml-4 text-sm text-slate-600">{genreDef}</div>}
+                  </div>
+                )}
+                
+                {subGenre && (
+                  <div>
+                    <span className="font-semibold">Sub Genre</span> — {subGenre}
+                    {subGenreDef && <div className="ml-4 text-sm text-slate-600">{subGenreDef}</div>}
+                  </div>
+                )}
+                
+                {theme && (
+                  <div>
+                    <span className="font-semibold">Theme</span> — {theme}
+                    {themeDef && <div className="ml-4 text-sm text-slate-600">{themeDef}</div>}
+                  </div>
+                )}
+                
+                {subTheme && (
+                  <div>
+                    <span className="font-semibold">Sub Theme</span> — {subTheme}
+                    {subThemeDef && <div className="ml-4 text-sm text-slate-600">{subThemeDef}</div>}
+                  </div>
+                )}
+                
+                {centralConflict && (
+                  <div>
+                    <span className="font-semibold">Central Conflict</span> — {centralConflict}
+                    {centralConflictDef && <div className="ml-4 text-sm text-slate-600">{centralConflictDef}</div>}
+                  </div>
+                )}
               </div>
             </Card>
 
-            {/* Story Beats SECOND (correct) */}
+            {/* Story Beats SECOND (correct) - Rich Text Editor */}
             <Card className="rounded-md border p-4" data-testid="beats-card">
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Beats</h3>
                 
-                <div className="space-y-3">
-
-                    <div>
-                      <Label htmlFor="plotA" className="text-sm font-medium text-slate-700">Plot A</Label>
-                      <Textarea
-                        id="plotA"
-                        value={storyData.plotA}
-                        onChange={(e) => handleInputChange('plotA', e.target.value)}
-                        className="mt-1"
-                        placeholder="Main plot line"
-                        rows={2}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="subplotB" className="text-sm font-medium text-slate-700">Subplot B</Label>
-                      <Textarea
-                        id="subplotB"
-                        value={storyData.subplotB}
-                        onChange={(e) => handleInputChange('subplotB', e.target.value)}
-                        className="mt-1"
-                        placeholder="First subplot"
-                        rows={2}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="subplotC" className="text-sm font-medium text-slate-700">Subplot C</Label>
-                      <Textarea
-                        id="subplotC"
-                        value={storyData.subplotC}
-                        onChange={(e) => handleInputChange('subplotC', e.target.value)}
-                        className="mt-1"
-                        placeholder="Second subplot"
-                        rows={2}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="plotTwists" className="text-sm font-medium text-slate-700">Plot Twists</Label>
-                      <Textarea
-                        id="plotTwists"
-                        value={storyData.plotTwists}
-                        onChange={(e) => handleInputChange('plotTwists', e.target.value)}
-                        className="mt-1"
-                        placeholder="Key plot twists and revelations"
-                        rows={2}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="emotionalHook" className="text-sm font-medium text-slate-700">Emotional Hook</Label>
-                      <Textarea
-                        id="emotionalHook"
-                        value={storyData.emotionalHook}
-                        onChange={(e) => handleInputChange('emotionalHook', e.target.value)}
-                        className="mt-1"
-                        placeholder="What emotional connection draws readers in?"
-                        rows={2}
-                      />
-                    </div>
+                <div className="h-[400px]">
+                  <RichEditor
+                    value={storyHtml}
+                    onChange={setStoryHtml}
+                    className="w-full h-full"
+                  />
                 </div>
               </div>
             </Card>
