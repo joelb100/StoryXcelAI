@@ -66,74 +66,69 @@ export default function StoryBuilder({
   })() : 'Screenplay / 90 pages / 90 mins';
 
   return (
-    <div className="flex-1 flex justify-center overflow-hidden">
-      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Main Story Builder Section - 70.8% to match dashboard proportions */}
-        <div className="flex justify-center items-start overflow-hidden" style={{ height: '70.8%' }}>
-          <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-4 h-full">
-            {/* Story Overview FIRST - Fixed height with scroll */}
-            <Card className="rounded-md border p-4 flex-shrink-0 max-h-[40%] overflow-auto" data-testid="overview-card">
-              <div className="space-y-2 text-sm">
-                {projectName && (
-                  <div>
-                    <span className="font-semibold">Story Title</span> — {projectName}
-                  </div>
-                )}
-                
-                <div>
-                  <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
-                </div>
-                
-                {genre && (
-                  <div>
-                    <span className="font-semibold">Genre</span> — {genre}
-                    {genreDef && <div className="ml-4 text-xs text-slate-600">{genreDef}</div>}
-                  </div>
-                )}
-                
-                {subGenre && (
-                  <div>
-                    <span className="font-semibold">Sub Genre</span> — {subGenre}
-                    {subGenreDef && <div className="ml-4 text-xs text-slate-600">{subGenreDef}</div>}
-                  </div>
-                )}
-                
-                {theme && (
-                  <div>
-                    <span className="font-semibold">Theme</span> — {theme}
-                    {themeDef && <div className="ml-4 text-xs text-slate-600">{themeDef}</div>}
-                  </div>
-                )}
-                
-                {subTheme && (
-                  <div>
-                    <span className="font-semibold">Sub Theme</span> — {subTheme}
-                    {subThemeDef && <div className="ml-4 text-xs text-slate-600">{subThemeDef}</div>}
-                  </div>
-                )}
-                
-                {centralConflict && (
-                  <div>
-                    <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                    {centralConflictDef && <div className="ml-4 text-xs text-slate-600">{centralConflictDef}</div>}
-                  </div>
-                )}
+    <div className="w-full h-full overflow-hidden flex flex-col">
+      {/* Story Overview Section - Compact */}
+      {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
+        <div className="flex-shrink-0 p-3 border-b border-gray-200 max-h-[25%] overflow-auto">
+          <div className="space-y-1 text-xs">
+            {projectName && (
+              <div>
+                <span className="font-semibold">Story Title</span> — {projectName}
               </div>
-            </Card>
-
-            {/* Story Beats SECOND - Rich Text Editor takes remaining space */}
-            <Card className="rounded-md border p-4 flex-1 flex flex-col min-h-0 overflow-hidden" data-testid="beats-card">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4 flex-shrink-0">Story Beats</h3>
-              
-              <div className="flex-1 min-h-0 overflow-hidden">
-                <RichEditor
-                  value={storyHtml}
-                  onChange={setStoryHtml}
-                  className="w-full h-full"
-                />
+            )}
+            
+            <div>
+              <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+            </div>
+            
+            {genre && (
+              <div>
+                <span className="font-semibold">Genre</span> — {genre}
+                {genreDef && <div className="ml-3 text-xs text-slate-600">{genreDef}</div>}
               </div>
-            </Card>
+            )}
+            
+            {subGenre && (
+              <div>
+                <span className="font-semibold">Sub Genre</span> — {subGenre}
+                {subGenreDef && <div className="ml-3 text-xs text-slate-600">{subGenreDef}</div>}
+              </div>
+            )}
+            
+            {theme && (
+              <div>
+                <span className="font-semibold">Theme</span> — {theme}
+                {themeDef && <div className="ml-3 text-xs text-slate-600">{themeDef}</div>}
+              </div>
+            )}
+            
+            {subTheme && (
+              <div>
+                <span className="font-semibold">Sub Theme</span> — {subTheme}
+                {subThemeDef && <div className="ml-3 text-xs text-slate-600">{subThemeDef}</div>}
+              </div>
+            )}
+            
+            {centralConflict && (
+              <div>
+                <span className="font-semibold">Central Conflict</span> — {centralConflict}
+                {centralConflictDef && <div className="ml-3 text-xs text-slate-600">{centralConflictDef}</div>}
+              </div>
+            )}
           </div>
+        </div>
+      )}
+
+      {/* Story Beats Section - Takes remaining space */}
+      <div className="flex-1 flex flex-col min-h-0 p-3">
+        <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
+        
+        <div className="flex-1 min-h-0">
+          <RichEditor
+            value={storyHtml}
+            onChange={setStoryHtml}
+            className="w-full h-full"
+          />
         </div>
       </div>
     </div>
