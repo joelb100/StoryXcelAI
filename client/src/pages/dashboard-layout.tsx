@@ -275,11 +275,11 @@ function renderConflictHTML(key: string) {
   if (!t) return '';
 
   const toUL = (items: string[]) =>
-    `<ul style="margin:4px 0 12px 18px; padding:0;">${items.map(li => `<li>${li}</li>`).join('')}</ul>`;
+    `<ul style="margin:8px 0 16px 20px; padding:0; list-style-type: disc;">${items.map(li => `<li style="margin:4px 0;">${li}</li>`).join('')}</ul>`;
 
   return (
     `${CONFLICT_START}
-<strong>Story Beats</strong><br/>
+<strong>Story Beats</strong><br/><br/>
 <strong>Plot A —</strong> The high level description of the story's key sequential events of the main story
 ${toUL(t.plotA)}
 <strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships
@@ -290,6 +290,7 @@ ${toUL(t.plotC)}
 ${toUL(t.twists)}
 <strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings
 ${toUL(t.hook)}
+<p>Your story begins here...</p>
 ${CONFLICT_END}`
   );
 }
