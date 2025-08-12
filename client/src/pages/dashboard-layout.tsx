@@ -294,11 +294,9 @@ ${CONFLICT_END}`
   );
 }
 
-function insertOrReplaceConflictBlock(conflictKey: string) {
-  const editor = document.getElementById('story-editor') as HTMLElement | null;
-  if (!editor) return;
-
-  let html = editor.innerHTML;
+function insertOrReplaceConflictBlock(conflictKey: string, currentHtml: string, updateHtml: (html: string) => void) {
+  // Get the current story HTML from parameter
+  let html = currentHtml || '';
 
   // Strip any existing conflict block (prevents duplicates)
   const startIdx = html.indexOf(CONFLICT_START);
@@ -313,7 +311,8 @@ function insertOrReplaceConflictBlock(conflictKey: string) {
   // Always insert at the very top of the editor content
   html = block + '\n' + html;
 
-  editor.innerHTML = html;
+  // Update the story HTML via callback
+  updateHtml(html);
 }
 
 // Import logo and components
@@ -1980,13 +1979,12 @@ export default function DashboardLayout() {
     if (!CONFLICT_TEMPLATES[templateKey]) return;
 
     // Check if there is already a conflict block; if present and lastApplied matches, skip
-    const editor = document.getElementById('story-editor') as HTMLElement | null;
-    const hasBlock = editor?.innerHTML.includes(CONFLICT_START);
+    const hasBlock = storyHtml?.includes(CONFLICT_START);
 
     if (hasBlock && lastAppliedConflict === templateKey) return;
 
     // Insert or replace the block once
-    insertOrReplaceConflictBlock(templateKey);
+    insertOrReplaceConflictBlock(templateKey, storyHtml, setStoryHtml);
     setLastAppliedConflict(templateKey);
   };
 
@@ -2382,18 +2380,18 @@ export default function DashboardLayout() {
                           <StoryBuilder 
                             projectName={projectName}
                             projectType={projectType}
-                            lengthPages={lengthPages}
-                            lengthMinutes={lengthMinutes}
-                            genre={genreLabel}
-                            genreDef={genreDef}
-                            subGenre={subGenreLabel}
-                            subGenreDef={subGenreDef}
-                            theme={themeLabel}
-                            themeDef={themeDef}
-                            subTheme={subThemeLabel}
-                            subThemeDef={subThemeDef}
-                            centralConflict={centralConflictLabel}
-                            centralConflictDef={centralConflictDef}
+                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                            genre={genreLabel || undefined}
+                            genreDef={genreDef || undefined}
+                            subGenre={subGenreLabel || undefined}
+                            subGenreDef={subGenreDef || undefined}
+                            theme={themeLabel || undefined}
+                            themeDef={themeDef || undefined}
+                            subTheme={subThemeLabel || undefined}
+                            subThemeDef={subThemeDef || undefined}
+                            centralConflict={centralConflictLabel || undefined}
+                            centralConflictDef={centralConflictDef || undefined}
                             storyHtml={storyHtml}
                             setStoryHtml={setStoryHtml}
                           />
