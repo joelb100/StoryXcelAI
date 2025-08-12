@@ -1,0 +1,95 @@
+Run this on the live Story tab (Console). Send back the JSON + a screenshot.
+
+(function () {
+  const vh = (window.visualViewport?.height ?? window.innerHeight);
+  const vw = (window.visualViewport?.width ?? window.innerWidth);
+
+  const frame   = document.querySelector('#story-frame');
+  const aiPanel = document.querySelector('#ai-panel');
+  const toolbar = document.querySelector('.ql-toolbar, .tiptap-toolbar');
+
+  if (!frame || !aiPanel) {
+    return console.warn('Missing #story-frame or #ai-panel');
+  }
+
+  const f = frame.getBoundingClientRect();
+  const a = aiPanel.getBoundingClientRect();
+  const csF = getComputedStyle(frame);
+  const tbH = toolbar ? parseFloat(getComputedStyle(toolbar).height) : 0;
+
+  const out = {
+    viewport: { width: vw, height: vh },
+    FRAME_TOP: Math.round(f.top),
+    FRAME_LEFT: Math.round(f.left),
+    FRAME_RIGHT: Math.round(vw - f.right),
+    FRAME_BOTTOM: Math.round(vh - f.bottom),
+    FRAME_WIDTH: Math.round(f.width),
+    FRAME_HEIGHT: Math.round(f.height),
+
+    AI_TOP: Math.round(a.top),
+    AI_HEIGHT: Math.round(a.height),
+
+    GAP_BELOW: Math.round(a.top - f.bottom),
+
+    TOOLBAR_HEIGHT: Math.round(tbH),
+
+    frame_computed: {
+      marginTop: csF.marginTop, marginBottom: csF.marginBottom,
+      paddingTop: csF.paddingTop, paddingBottom: csF.paddingBottom,
+      borderTop: csF.borderTopWidth, borderBottom: csF.borderBottomWidth,
+      overflow: csF.overflow, overflowY: csF.overflowY
+    }
+  };
+
+  console.log('MEASUREMENTS:', out);
+  return out;
+})();
+
+Also confirm these with a “yes” in the reply:
+
+    Page itself should not scroll.
+
+    All overflow scrolling must be inside #story-frame.
+
+    #ai-panel must never move.
+
+What I’ll return after you give me the numbers
+
+A one-shot CSS patch with the measured values plugged in. It will:
+
+    Freeze the red frame to a viewport-based height so it never scales:
+
+/* values will be filled in from your JSON */
+#story-frame {
+  /* height = viewport minus its top offset minus the AI panel and desired gap */
+  height: calc(100dvh - (FRAME_TOPpx + AI_HEIGHTpx + GAP_BELOWpx));
+  overflow: hidden; /* frame itself doesn’t scroll */
+}
+
+    Make the content inside the frame scroll, not the page:
+
+/* add this class to the frame’s direct content wrapper, or target an existing one */
+#story-frame > .scroll-inner {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+    Cap the editor’s text area using the real toolbar height, so Enter spam only scrolls:
+
+/* Quill/Tiptap internals respect the frame cap */
+#story-frame .ql-container { 
+  flex: 1 1 auto;
+  height: auto;
+  max-height: calc(100% - TOOLBAR_HEIGHTpx);
+  overflow-y: auto;
+}
+#story-frame .ql-editor {
+  min-height: 280px;
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
+}
+
+    Keep the green panel fixed by not including it in the scrollable area. It must be a sibling below the frame, not a child of it. No sticky hacks needed since the page won’t scroll.
