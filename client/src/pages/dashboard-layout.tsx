@@ -1441,6 +1441,40 @@ export default function DashboardLayout() {
     'western': 'Western'
   };
 
+  // Genre definitions mapping (matches the definitions in the UI)
+  const GENRE_DEFS: Record<string, string> = {
+    'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
+    'crime-drama': 'Stories focused on criminal activities, investigations, and the emotional/psychological conflicts surrounding them.',
+    'epic': 'Grand, lengthy narratives involving heroic deeds and large-scale adventures or conflicts.',
+    'fable': 'Short tales with moral lessons, often featuring anthropomorphic animals or mythical creatures.',
+    'fairy-tale': 'Magical stories involving enchantments, fantastical beings, and clear distinctions between good and evil.',
+    'fantasy': 'Fiction set in imaginative worlds where magic, mythical creatures, and supernatural forces are common.',
+    'folktale': 'Traditional stories passed down orally that reflect cultural values, customs, and beliefs.',
+    'gothic-fiction': 'Dark, atmospheric tales blending horror, romance, and mystery, often set in decaying or haunted locations.',
+    'historical-fiction': 'Stories set in a real past era, blending fictional characters with actual historical events and settings.',
+    'horror': 'Fiction designed to evoke fear, dread, and shock through terrifying situations and monstrous antagonists.',
+    'humor': 'Lighthearted, comedic stories intended to entertain through wit, satire, and absurd situations.',
+    'legend': 'Semi-true stories rooted in historical events but embellished with heroic feats or supernatural elements.',
+    'magical-realism': 'Fiction where magical elements seamlessly blend into realistic, everyday settings.',
+    'meta-fiction': 'Self-referential stories that break the fourth wall, acknowledging their own fictional nature.',
+    'mystery': 'Plots centered around solving a crime, uncovering secrets, or piecing together enigmatic puzzles.',
+    'myth': 'Traditional stories explaining natural phenomena, cultural origins, or universal truths through supernatural means.',
+    'romance': 'Narratives focusing on romantic relationships, emotional conflicts, and love as a central theme.',
+    'satire': 'Fiction that uses humor, irony, and exaggeration to critique social norms, politics, or human behavior.',
+    'science-fiction': 'Speculative stories exploring futuristic technology, space, time travel, and scientific possibilities.',
+    'spy-fiction': 'Tales of espionage, secret agents, and covert missions involving political intrigue and deception.',
+    'superhero': 'Stories about individuals with extraordinary abilities who combat villains and protect society.',
+    'swashbuckler': 'Adventure tales filled with sword fights, daring heroes, and high-action exploits, often in historical settings.',
+    'suspense-thriller': 'Fast-paced, tension-filled stories that keep readers on edge through danger and unexpected twists.',
+    'tall-tale': 'Exaggerated, humorous stories featuring larger-than-life characters and impossible feats.',
+    'theological': 'Fiction that explores religious themes, spiritual dilemmas, and the nature of faith and divinity.',
+    'thriller': 'High-stakes narratives focused on tension, danger, and fast-paced action.',
+    'tragicomedy': 'Blends elements of tragedy and comedy, finding humor in sorrowful or serious situations.',
+    'travel': 'Stories that center around journeys, exploration, and discovering new places and cultures.',
+    'tragedy': 'Serious dramas that typically end in the downfall or destruction of the main character.',
+    'western': 'Tales set in the American frontier, often involving cowboys, outlaws, and lawmen in rugged landscapes.'
+  };
+
   // Sub-Genre label mapping (value to display name)
   const SUBGENRE_LABELS: Record<string, string> = {
     'acid': 'Acid',
@@ -1981,6 +2015,18 @@ export default function DashboardLayout() {
   // Central Conflict state and last applied tracking
   const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
 
+  // Derived variables for labels and definitions
+  const genreLabel = genre ? GENRE_LABELS[genre] : null;
+  const genreDef = genre ? GENRE_DEFS[genre] : null;
+  const subGenreLabel = subGenre ? SUBGENRE_LABELS[subGenre] : null;
+  const subGenreDef = subGenre ? SUBTHEME_DEFS[subGenre] : null;
+  const themeLabel = theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null;
+  const themeDef = theme ? THEME_DEFS[theme] : null;
+  const subThemeLabel = subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null;
+  const subThemeDef = subTheme ? SUBTHEME_DEFS[subTheme] : null;
+  const centralConflictLabel = centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null;
+  const centralConflictDef = centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null;
+
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
     setSubGenre(value);
@@ -2072,6 +2118,35 @@ export default function DashboardLayout() {
   const handleSignOut = () => {
     // Navigate to login page (assuming it's the root path when not authenticated)
     window.location.href = '/api/logout';
+  };
+
+  // Missing function definitions
+  const activeTab = location.split('/')[1] || 'dashboard';
+  const handleTabChange = (tabId: string) => {
+    navigate(`/${tabId}`);
+  };
+
+  // Missing preset definitions
+  const LENGTH_PRESETS: Record<string, Array<{ label: string; pages: number; mins: number }>> = {
+    'Screenplay': [
+      { label: 'Short Film (15-30 pages / 15-30 mins)', pages: 25, mins: 25 },
+      { label: 'Feature Film (90-120 pages / 90-120 mins)', pages: 105, mins: 105 },
+      { label: 'TV Episode (22-30 pages / 22-30 mins)', pages: 26, mins: 26 },
+    ],
+    'Script': [
+      { label: 'One Act Play (20-40 pages / 30-60 mins)', pages: 30, mins: 45 },
+      { label: 'Full Length Play (80-120 pages / 90-150 mins)', pages: 100, mins: 120 },
+    ],
+    'Novel': [
+      { label: 'Novella (100-200 pages)', pages: 150, mins: 0 },
+      { label: 'Standard Novel (250-400 pages)', pages: 325, mins: 0 },
+      { label: 'Epic Novel (500+ pages)', pages: 600, mins: 0 },
+    ],
+  };
+
+  const applyProjectTypeToBuilder = (type: string, pages: number | string, minutes: number | string) => {
+    // This function would apply the project type settings to the builder
+    console.log('Applying project type:', type, pages, minutes);
   };
 
   return (
