@@ -68,12 +68,12 @@ export default function StoryBuilder({
   return (
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Main Story Builder Section - 60% like Dashboard main section */}
-        <div className="flex justify-center items-center" style={{ height: '60%' }}>
-          <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-6 overflow-visible">
-            {/* Story Overview FIRST (correct) - Now displays values like Picture 2 */}
-            <Card className="rounded-md border p-4" data-testid="overview-card">
-              <div className="space-y-3">
+        {/* Main Story Builder Section - 70.8% to match dashboard proportions */}
+        <div className="flex justify-center items-start overflow-hidden" style={{ height: '70.8%' }}>
+          <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-4 h-full overflow-auto">
+            {/* Story Overview FIRST - Compact display */}
+            <Card className="rounded-md border p-4 flex-shrink-0" data-testid="overview-card">
+              <div className="space-y-2 text-sm">
                 {projectName && (
                   <div>
                     <span className="font-semibold">Story Title</span> — {projectName}
@@ -87,58 +87,54 @@ export default function StoryBuilder({
                 {genre && (
                   <div>
                     <span className="font-semibold">Genre</span> — {genre}
-                    {genreDef && <div className="ml-4 text-sm text-slate-600">{genreDef}</div>}
+                    {genreDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{genreDef}</div>}
                   </div>
                 )}
                 
                 {subGenre && (
                   <div>
                     <span className="font-semibold">Sub Genre</span> — {subGenre}
-                    {subGenreDef && <div className="ml-4 text-sm text-slate-600">{subGenreDef}</div>}
+                    {subGenreDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{subGenreDef}</div>}
                   </div>
                 )}
                 
                 {theme && (
                   <div>
                     <span className="font-semibold">Theme</span> — {theme}
-                    {themeDef && <div className="ml-4 text-sm text-slate-600">{themeDef}</div>}
+                    {themeDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{themeDef}</div>}
                   </div>
                 )}
                 
                 {subTheme && (
                   <div>
                     <span className="font-semibold">Sub Theme</span> — {subTheme}
-                    {subThemeDef && <div className="ml-4 text-sm text-slate-600">{subThemeDef}</div>}
+                    {subThemeDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{subThemeDef}</div>}
                   </div>
                 )}
                 
                 {centralConflict && (
                   <div>
                     <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                    {centralConflictDef && <div className="ml-4 text-sm text-slate-600">{centralConflictDef}</div>}
+                    {centralConflictDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{centralConflictDef}</div>}
                   </div>
                 )}
               </div>
             </Card>
 
-            {/* Story Beats SECOND (correct) - Rich Text Editor */}
-            <Card className="rounded-md border p-4" data-testid="beats-card">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Beats</h3>
-                
-                <div className="h-[400px]">
-                  <RichEditor
-                    value={storyHtml}
-                    onChange={setStoryHtml}
-                    className="w-full h-full"
-                  />
-                </div>
+            {/* Story Beats SECOND - Rich Text Editor takes remaining space */}
+            <Card className="rounded-md border p-4 flex-1 flex flex-col min-h-0" data-testid="beats-card">
+              <h3 className="text-lg font-semibold text-slate-800 mb-4 flex-shrink-0">Story Beats</h3>
+              
+              <div className="flex-1 min-h-0">
+                <RichEditor
+                  value={storyHtml}
+                  onChange={setStoryHtml}
+                  className="w-full h-full"
+                />
               </div>
             </Card>
           </div>
         </div>
-
-
       </div>
     </div>
   );
