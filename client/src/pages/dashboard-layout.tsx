@@ -326,19 +326,19 @@ import productionBuilderIcon from "@assets/productionBuilder_1754280596376.png";
 import assetBuilderIcon from "@assets/assetBuilder_1754280609014.png";
 import storyBuilderIcon from "@assets/storyBuilder_1754280620526.png";
 import scriptBuilderIcon from "@assets/scriptBuilder_1754280628421.png";
-import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png";
+import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png;
 
 // Import sidebar icons
 import storyOverviewIcon from "@assets/story_1754371104469.png";
 import formatOverviewIcon from "@assets/format_1754371161796.png";
-import assetOverviewIcon from "@assets/Asset_1754371169859.png";
-import pitchIcon from "@assets/pitch_1754371175274.png";
+import assetOverviewIcon from "@assets/Asset_1754371169859.png;
+import pitchIcon from "@assets/pitch_1754371175274.png;
 
 // Import right sidebar icons
-import assetTagIcon from "@assets/AssetTag_1754371518555.png";
-import storyDetailsIcon from "@assets/storyDetails_1754371523841.png";
-import storyMechanicsIcon from "@assets/storyMechanics_1754371530436.png";
-import taskIcon from "@assets/task_1754371536085.png";
+import assetTagIcon from "@assets/AssetTag_1754371518555.png;
+import storyDetailsIcon from "@assets/storyDetails_1754371523841.png;
+import storyMechanicsIcon from "@assets/storyMechanics_1754371530436.png;
+import taskIcon from "@assets/task_1754371536085.png;
 
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
@@ -432,7 +432,7 @@ const dashboardData = {
       {
         id: 1,
         title: "PROJECT GUN SMOKE",
-        description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won't come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive.",
+        description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won\'t come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive.",
         type: "story",
         lastModified: "2024-01-20",
       }
@@ -951,7 +951,7 @@ const LeftSidebar = ({
                 <SelectItem value="abduction" title="A character is kidnapped or taken against their will, sparking conflict or rescue.">Abduction</SelectItem>
                 <SelectItem value="adventure" title="The protagonist embarks on an exciting journey full of risks and discoveries.">Adventure</SelectItem>
                 <SelectItem value="adultery" title="A betrayal of romantic commitment, leading to emotional fallout.">Adultery</SelectItem>
-                <SelectItem value="ambition" title="A character's relentless pursuit of power, success, or personal goals.">Ambition</SelectItem>
+                <SelectItem value="ambition" title="A character\'s relentless pursuit of power, success, or personal goals.">Ambition</SelectItem>
                 <SelectItem value="ascension" title="A rise to power, enlightenment, or higher status.">Ascension</SelectItem>
                 <SelectItem value="deliverance" title="Being rescued or freed from a dire situation.">Deliverance</SelectItem>
                 <SelectItem value="descension" title="A fall from grace, status, or moral standing.">Descension</SelectItem>
@@ -985,7 +985,7 @@ const LeftSidebar = ({
                 <SelectItem value="survival" title="Battling overwhelming odds to stay alive.">Survival</SelectItem>
                 <SelectItem value="temptation" title="A character is lured toward desires that conflict with their morals.">Temptation</SelectItem>
                 <SelectItem value="the-riddle" title="Solving a complex mystery or intellectual challenge.">The Riddle</SelectItem>
-                <SelectItem value="transformation" title="A fundamental change in a character's nature or circumstances.">Transformation</SelectItem>
+                <SelectItem value="transformation" title="A fundamental change in a character\'s nature or circumstances.">Transformation</SelectItem>
                 <SelectItem value="underdog" title="A lesser-powered character defies expectations against stronger opponents.">Underdog</SelectItem>
                 <SelectItem value="wretched-excess" title="Characters driven to ruin by indulgence, greed, or obsession.">Wretched Excess</SelectItem>
               </SelectContent>
@@ -1949,18 +1949,6 @@ export default function DashboardLayout() {
     default: [],
   };
 
-  // Derived variables for labels and definitions (must be declared before useEffect)
-  const genreLabel = genre ? GENRE_LABELS[genre] : null;
-  const genreDef = genre ? GENRE_DEFS[genre] : null;
-  const subGenreLabel = subGenre ? SUBGENRE_LABELS[subGenre] : null;
-  const subGenreDef = subGenre ? SUBTHEME_DEFS[subGenre] : null;
-  const themeLabel = theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null;
-  const themeDef = theme ? THEME_DEFS[theme] : null;
-  const subThemeLabel = subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null;
-  const subThemeDef = subTheme ? SUBTHEME_DEFS[subTheme] : null;
-  const centralConflictLabel = centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null;
-  const centralConflictDef = centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null;
-
   // Central Conflict state and last applied tracking
   const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
 
@@ -1972,19 +1960,19 @@ export default function DashboardLayout() {
       projectType,
       pages: typeof lengthPages === 'number' ? lengthPages : null,
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
-      genreLabel,
-      genreDef,
-      subGenreLabel,
-      subGenreDef,
-      themeLabel,
-      themeDef,
-      subThemeLabel,
-      subThemeDef,
-      centralConflictLabel,
-      centralConflictDef
+      genreLabel: genre ? GENRE_LABELS[genre] : null,
+      genreDef: genre ? GENRE_DEFS[genre] : null,
+      subGenreLabel: subGenre ? SUBGENRE_LABELS[subGenre] : null,
+      subGenreDef: subGenre ? SUBTHEME_DEFS[subGenre] : null,
+      themeLabel: theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null,
+      themeDef: theme ? THEME_DEFS[theme] : null,
+      subThemeLabel: subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null,
+      subThemeDef: subTheme ? SUBTHEME_DEFS[subTheme] : null,
+      centralConflictLabel: centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null,
+      centralConflictDef: centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null
     });
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', block));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
+  }, [projectName, projectType, lengthPages, lengthMinutes, genre, subGenre, theme, subTheme, centralConflict]);
 
   // Update rich text editor with HTML overview (debounced for better UX)
   useEffect(() => {
@@ -2000,16 +1988,16 @@ export default function DashboardLayout() {
       const overviewHTML = buildOverviewHTML({
         title: projectName,
         projectType: projectTypeDisplay,
-        genreLabel: genreLabel || undefined,
-        genreDef: genreDef || undefined,
-        subGenreLabel: subGenreLabel || undefined,
-        subGenreDef: subGenreDef || undefined,
-        themeLabel: themeLabel || undefined,
-        themeDef: themeDef || undefined,
-        subThemeLabel: subThemeLabel || undefined,
-        subThemeDef: subThemeDef || undefined,
-        conflictLabel: centralConflictLabel || undefined,
-        conflictDef: centralConflictDef || undefined,
+        genreLabel: genre ? GENRE_LABELS[genre] : undefined,
+        genreDef: genre ? GENRE_DEFS[genre] : undefined,
+        subGenreLabel: subGenre ? SUBGENRE_LABELS[subGenre] : undefined,
+        subGenreDef: subGenre ? SUBTHEME_DEFS[subGenre] : undefined,
+        themeLabel: theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : undefined,
+        themeDef: theme ? THEME_DEFS[theme] : undefined,
+        subThemeLabel: subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : undefined,
+        subThemeDef: subTheme ? SUBTHEME_DEFS[subTheme] : undefined,
+        conflictLabel: centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : undefined,
+        conflictDef: centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : undefined,
       });
 
       setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
@@ -2019,11 +2007,9 @@ export default function DashboardLayout() {
   }, [
     projectName,
     projectType, lengthPages, lengthMinutes,
-    genreLabel, genreDef,
-    subGenreLabel, subGenreDef,
-    themeLabel, themeDef,
-    subThemeLabel, subThemeDef,
-    centralConflictLabel, centralConflictDef
+    genre, subGenre,
+    theme, subTheme,
+    centralConflict
   ]);
 
   // Handle sub-genre change (single value)
