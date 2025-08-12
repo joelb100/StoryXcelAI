@@ -36,7 +36,7 @@ export default function StoryBuilder({}: StoryBuilderProps) {
         <div className="flex justify-center items-center" style={{ height: '60%' }}>
           <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-6 overflow-visible">
             {/* Story Overview FIRST (correct) */}
-            <Card className="rounded-md border p-4">
+            <Card className="rounded-md border p-4" data-testid="overview-card">
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Overview</h3>
                   
@@ -112,7 +112,7 @@ export default function StoryBuilder({}: StoryBuilderProps) {
             </Card>
 
             {/* Story Beats SECOND (correct) */}
-            <Card className="rounded-md border p-4">
+            <Card className="rounded-md border p-4" data-testid="beats-card">
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800 mb-4">Story Beats</h3>
                 
