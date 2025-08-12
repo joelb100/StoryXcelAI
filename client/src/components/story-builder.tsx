@@ -70,9 +70,9 @@ export default function StoryBuilder({
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         {/* Main Story Builder Section - 70.8% to match dashboard proportions */}
         <div className="flex justify-center items-start overflow-hidden" style={{ height: '70.8%' }}>
-          <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-4 h-full overflow-auto">
-            {/* Story Overview FIRST - Compact display */}
-            <Card className="rounded-md border p-4 flex-shrink-0" data-testid="overview-card">
+          <div className="w-full max-w-[14.5in] mx-auto px-4 flex flex-col gap-4 h-full">
+            {/* Story Overview FIRST - Fixed height with scroll */}
+            <Card className="rounded-md border p-4 flex-shrink-0 max-h-[40%] overflow-auto" data-testid="overview-card">
               <div className="space-y-2 text-sm">
                 {projectName && (
                   <div>
@@ -87,45 +87,45 @@ export default function StoryBuilder({
                 {genre && (
                   <div>
                     <span className="font-semibold">Genre</span> — {genre}
-                    {genreDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{genreDef}</div>}
+                    {genreDef && <div className="ml-4 text-xs text-slate-600">{genreDef}</div>}
                   </div>
                 )}
                 
                 {subGenre && (
                   <div>
                     <span className="font-semibold">Sub Genre</span> — {subGenre}
-                    {subGenreDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{subGenreDef}</div>}
+                    {subGenreDef && <div className="ml-4 text-xs text-slate-600">{subGenreDef}</div>}
                   </div>
                 )}
                 
                 {theme && (
                   <div>
                     <span className="font-semibold">Theme</span> — {theme}
-                    {themeDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{themeDef}</div>}
+                    {themeDef && <div className="ml-4 text-xs text-slate-600">{themeDef}</div>}
                   </div>
                 )}
                 
                 {subTheme && (
                   <div>
                     <span className="font-semibold">Sub Theme</span> — {subTheme}
-                    {subThemeDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{subThemeDef}</div>}
+                    {subThemeDef && <div className="ml-4 text-xs text-slate-600">{subThemeDef}</div>}
                   </div>
                 )}
                 
                 {centralConflict && (
                   <div>
                     <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                    {centralConflictDef && <div className="ml-4 text-xs text-slate-600 line-clamp-2">{centralConflictDef}</div>}
+                    {centralConflictDef && <div className="ml-4 text-xs text-slate-600">{centralConflictDef}</div>}
                   </div>
                 )}
               </div>
             </Card>
 
             {/* Story Beats SECOND - Rich Text Editor takes remaining space */}
-            <Card className="rounded-md border p-4 flex-1 flex flex-col min-h-0" data-testid="beats-card">
+            <Card className="rounded-md border p-4 flex-1 flex flex-col min-h-0 overflow-hidden" data-testid="beats-card">
               <h3 className="text-lg font-semibold text-slate-800 mb-4 flex-shrink-0">Story Beats</h3>
               
-              <div className="flex-1 min-h-0">
+              <div className="flex-1 min-h-0 overflow-hidden">
                 <RichEditor
                   value={storyHtml}
                   onChange={setStoryHtml}
