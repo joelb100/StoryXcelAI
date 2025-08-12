@@ -37,7 +37,7 @@ export default function StoryBuilder({}: StoryBuilderProps) {
           <div className="w-full max-w-[14.5in] h-full flex gap-4">
             {/* Left Side - Story Input Fields (Green box reference) */}
             <div className="w-1/2 flex flex-col">
-              <Card className="flex-1 p-4 overflow-y-auto bg-red-200" style={{ backgroundColor: '#758595' }}>
+              <Card className="flex-1 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white mb-4">Story Elements</h3>
                   

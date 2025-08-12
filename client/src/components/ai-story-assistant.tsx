@@ -18,19 +18,23 @@ export default function AIStoryAssistant({
   handleKeyPress
 }: AIStoryAssistantProps) {
   return (
-    <div className="flex justify-center">
-      <div className="rounded-lg p-4 w-full flex flex-col" style={{ backgroundColor: '#d4dee7' }}>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
-          <Button variant="ghost" size="sm" className="text-slate-600 p-1">
-            <Settings className="w-4 h-4" />
-          </Button>
-        </div>
-        
-        {/* Chat Messages Area */}
-        <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
-          <div className="space-y-3">
-            {chatMessages.map((message) => (
+    <Card className="h-full flex flex-col">
+      <div className="flex items-center justify-between p-4 border-b">
+        <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
+        <Button variant="ghost" size="sm" className="text-slate-600 p-1">
+          <Settings className="w-4 h-4" />
+        </Button>
+      </div>
+      
+      {/* Chat Messages Area */}
+      <div className="flex-1 p-4 overflow-y-auto">
+        <div className="space-y-3">
+          {chatMessages.length === 0 ? (
+            <div className="text-center text-slate-500 text-sm">
+              Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
+            </div>
+          ) : (
+            chatMessages.map((message) => (
               <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
                   message.type === 'user' 
@@ -40,11 +44,13 @@ export default function AIStoryAssistant({
                   {message.content}
                 </div>
               </div>
-            ))}
-          </div>
+            ))
+          )}
         </div>
-        
-        {/* Chat Input Area */}
+      </div>
+      
+      {/* Chat Input Area */}
+      <div className="p-4 border-t">
         <div className="flex items-center space-x-2">
           <div className="flex-1 relative">
             <input
@@ -65,6 +71,6 @@ export default function AIStoryAssistant({
           </button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
