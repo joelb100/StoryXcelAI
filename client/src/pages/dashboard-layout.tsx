@@ -2200,11 +2200,20 @@ export default function DashboardLayout() {
                 {/* Constrained Content Container - Same layout as dashboard */}
                 <div className="flex-1 flex justify-center overflow-hidden">
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Story Editor Section - 70.8% height (decreased from 71.1%) */}
-                    <div className="flex justify-center items-center overflow-hidden" style={{ height: '70.8%' }}>
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full overflow-hidden">
-                        {/* Story Builder Content - Full height with overflow handling */}
-                        <div className="h-full overflow-hidden">
+                    {/* Story Editor Section - Fixed dimensions, never expandable */}
+                    <div className="flex justify-center items-center" style={{ height: '70.8%', minHeight: '70.8%', maxHeight: '70.8%' }}>
+                      <div 
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        style={{ 
+                          width: '100%', 
+                          maxWidth: '14.5in', 
+                          height: '100%',
+                          minHeight: '100%',
+                          maxHeight: '100%'
+                        }}
+                      >
+                        {/* Story Builder Content - Strictly contained */}
+                        <div className="w-full h-full overflow-hidden">
                           <StoryBuilder 
                             projectName={projectName}
                             projectType={projectType}
