@@ -2198,12 +2198,12 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - Full page scroll layout */}
-                <div className="flex-1 overflow-y-auto">
-                  <div className="w-full max-w-[15.25in] mx-auto p-4 space-y-6">
-                    {/* Story Content Editor - Auto height with content */}
-                    <div className="w-full max-w-[14.5in] mx-auto">
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg">
+                {/* Constrained Content Container - Same layout as dashboard */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Story Editor Section - 60% height like dashboard */}
+                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full">
                           {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
                           <div className="border-b border-gray-200 px-4 py-2 hidden">
                             <div className="flex items-center space-x-1 text-sm flex-wrap">
@@ -2377,19 +2377,20 @@ export default function DashboardLayout() {
                             </div>
                           </div>
                           
-                          {/* Rich Text Editor Content - Auto height with content */}
-                          <div id="story-editor" className="p-4">
-                            <RichEditor
-                              value={storyHtml}
-                              onChange={setStoryHtml}
-                              className="w-full min-h-[400px]"
-                            />
-                          </div>
+                        {/* Rich Text Editor Content - Full height */}
+                        <div id="story-editor" className="p-4 h-full">
+                          <RichEditor
+                            value={storyHtml}
+                            onChange={setStoryHtml}
+                            className="w-full h-full"
+                          />
                         </div>
                       </div>
+                    </div>
 
-                    {/* AI Story Assistant - Same layout as dashboard */}
-                    <div className="w-full max-w-[14.5in] mx-auto">
+                    {/* Bottom section - 40% height like dashboard */}
+                    <div className="flex-1 flex flex-col justify-start pt-4">
+                      {/* AI Chat Window - takes remaining space */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
@@ -2427,7 +2428,7 @@ export default function DashboardLayout() {
 
                     {/* Bottom section - 40% height like dashboard */}
                     <div className="flex-1 flex flex-col justify-start pt-4">
-                      {/* AI Chat Window - takes remaining space */}
+                      {/* AI Chat Window - takes remaining space, exactly like dashboard */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}
