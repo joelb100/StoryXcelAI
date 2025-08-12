@@ -67,9 +67,9 @@ export default function StoryBuilder({
 
   return (
     <div className="w-full h-full overflow-hidden flex flex-col">
-      {/* Story Overview Section - Compact */}
+      {/* Story Overview Section - Compact, no scroll */}
       {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
-        <div className="flex-shrink-0 p-3 border-b border-gray-200 max-h-[25%] overflow-auto">
+        <div className="flex-shrink-0 p-3 border-b border-gray-200">
           <div className="space-y-1 text-xs">
             {projectName && (
               <div>
@@ -119,11 +119,11 @@ export default function StoryBuilder({
         </div>
       )}
 
-      {/* Story Beats Section - Takes remaining space */}
-      <div className="flex-1 flex flex-col min-h-0 p-3">
+      {/* Story Beats Section - Takes remaining space with scroll */}
+      <div className="flex-1 flex flex-col min-h-0 p-3 overflow-hidden">
         <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
         
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 overflow-auto">
           <RichEditor
             value={storyHtml}
             onChange={setStoryHtml}
