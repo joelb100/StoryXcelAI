@@ -7,32 +7,23 @@
   display: none; 
 }
 
-/* Strict height constraints for Rich Editor to prevent bounding box expansion */
-.rich-editor-container .rich-editor-quill {
-  height: 100% !important;
-  max-height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.rich-editor-container .ql-container {
-  height: calc(100% - 42px) !important;
-  max-height: calc(100% - 42px) !important;
-  overflow-y: auto !important;
-  flex: 1 !important;
+/* Let the scroll wrapper (#story-scroll) be the limiter */
+.rich-editor-container .ql-container { 
+  flex: 1 1 auto;
+  height: auto;
+  max-height: inherit;
+  overflow-y: auto;
 }
 
 .rich-editor-container .ql-editor {
-  height: 100% !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
+  min-height: 280px;     /* comfortable start */
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
 }
 
 .rich-editor-container .ql-toolbar {
-  flex-shrink: 0 !important;
-  height: 42px !important;
-  min-height: 42px !important;
-  max-height: 42px !important;
+  flex-shrink: 0;
 }
 
 /* Ensure all dynamic column spans are available */
