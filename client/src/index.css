@@ -7,32 +7,32 @@
   display: none; 
 }
 
-/* Strict height constraints for Rich Editor to prevent bounding box expansion */
-.rich-editor-container .rich-editor-quill {
-  height: 100% !important;
-  max-height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.rich-editor-container .ql-container {
-  height: calc(100% - 42px) !important;
-  max-height: calc(100% - 42px) !important;
-  overflow-y: auto !important;
-  flex: 1 !important;
-}
-
-.rich-editor-container .ql-editor {
-  height: 100% !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
+/* Layout, not heights */
+.rich-editor-container { 
+  display: flex; 
+  flex-direction: column; 
 }
 
 .rich-editor-container .ql-toolbar {
-  flex-shrink: 0 !important;
-  height: 42px !important;
-  min-height: 42px !important;
-  max-height: 42px !important;
+  flex-shrink: 0;
+  height: 42px; 
+  min-height: 42px; 
+  max-height: 42px;
+}
+
+/* Let wrapper control the cap (60vh). No !important, no hard 100% chain. */
+.rich-editor-container .ql-container {
+  flex: 1 1 auto;
+  height: auto;
+  max-height: inherit;   /* respects wrapper max-h */
+  overflow-y: auto;
+}
+
+.rich-editor-container .ql-editor {
+  min-height: 280px;     /* nice starting area */
+  height: auto;
+  max-height: none;
+  overflow-y: visible;
 }
 
 /* Ensure all dynamic column spans are available */

@@ -30,8 +30,8 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
   );
 
   return (
-    <div className={`${className} overflow-hidden rich-editor-container`} style={{ height: '100%', maxHeight: '100%' }}>
-      {/* CONTROLLED: use value, not defaultValue with strict height constraints */}
+    <div className={`${className} overflow-visible rich-editor-container`}>
+      {/* CONTROLLED: use value, not defaultValue */}
       <ReactQuill
         theme="snow"
         modules={modules}
@@ -39,8 +39,6 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
         onChange={onChange}
         className="rounded-md border border-slate-200 rich-editor-quill"
         style={{ 
-          height: '100%',
-          maxHeight: '100%',
           display: 'flex',
           flexDirection: 'column'
         }}

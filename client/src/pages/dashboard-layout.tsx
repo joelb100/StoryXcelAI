@@ -2203,13 +2203,10 @@ export default function DashboardLayout() {
                     {/* Story Editor Section - Fixed dimensions, never expandable */}
                     <div className="flex justify-center items-center" style={{ height: '70.8%', minHeight: '70.8%', maxHeight: '70.8%' }}>
                       <div 
-                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-visible" 
                         style={{ 
                           width: '100%', 
-                          maxWidth: '14.5in', 
-                          height: '100%',
-                          minHeight: '100%',
-                          maxHeight: '100%'
+                          maxWidth: '14.5in'
                         }}
                       >
                         {/* Story Builder Content - Strictly contained */}

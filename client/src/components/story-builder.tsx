@@ -78,13 +78,13 @@ export default function StoryBuilder({
       {/* Story Overview Section - Fixed height, never expandable */}
       {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
         <div 
-          className="flex-shrink-0 p-3 border-b border-gray-200 overflow-hidden"
+          className="flex-shrink-0 p-3 border-b border-gray-200 overflow-visible"
           style={{ 
             maxHeight: '25%', 
             minHeight: 'auto'
           }}
         >
-          <div className="space-y-1 text-xs">
+          <div className="space-y-1 text-xs whitespace-pre-wrap break-words">
             {projectName && (
               <div>
                 <span className="font-semibold">Story Title</span> — {projectName}
@@ -98,35 +98,35 @@ export default function StoryBuilder({
             {genre && (
               <div>
                 <span className="font-semibold">Genre</span> — {genre}
-                {genreDef && <div className="ml-3 text-xs text-slate-600 truncate">{genreDef}</div>}
+                {genreDef && <div className="ml-3 text-xs text-slate-600 whitespace-pre-wrap break-words">{genreDef}</div>}
               </div>
             )}
             
             {subGenre && (
               <div>
                 <span className="font-semibold">Sub Genre</span> — {subGenre}
-                {subGenreDef && <div className="ml-3 text-xs text-slate-600 truncate">{subGenreDef}</div>}
+                {subGenreDef && <div className="ml-3 text-xs text-slate-600 whitespace-pre-wrap break-words">{subGenreDef}</div>}
               </div>
             )}
             
             {theme && (
               <div>
                 <span className="font-semibold">Theme</span> — {theme}
-                {themeDef && <div className="ml-3 text-xs text-slate-600 truncate">{themeDef}</div>}
+                {themeDef && <div className="ml-3 text-xs text-slate-600 whitespace-pre-wrap break-words">{themeDef}</div>}
               </div>
             )}
             
             {subTheme && (
               <div>
                 <span className="font-semibold">Sub Theme</span> — {subTheme}
-                {subThemeDef && <div className="ml-3 text-xs text-slate-600 truncate">{subThemeDef}</div>}
+                {subThemeDef && <div className="ml-3 text-xs text-slate-600 whitespace-pre-wrap break-words">{subThemeDef}</div>}
               </div>
             )}
             
             {centralConflict && (
               <div>
                 <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                {centralConflictDef && <div className="ml-3 text-xs text-slate-600 truncate">{centralConflictDef}</div>}
+                {centralConflictDef && <div className="ml-3 text-xs text-slate-600 whitespace-pre-wrap break-words">{centralConflictDef}</div>}
               </div>
             )}
           </div>
@@ -143,13 +143,7 @@ export default function StoryBuilder({
       >
         <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
         
-        <div 
-          className="flex-1 min-h-0 overflow-auto"
-          style={{ 
-            minHeight: 0,
-            maxHeight: '100%'
-          }}
-        >
+        <div className="min-h-[280px] max-h-[60vh] overflow-y-auto">
           <RichEditor
             value={storyHtml}
             onChange={setStoryHtml}
