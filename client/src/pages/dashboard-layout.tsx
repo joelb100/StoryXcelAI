@@ -1949,6 +1949,21 @@ export default function DashboardLayout() {
     default: [],
   };
 
+  // Derived variables for labels and definitions (must be declared before useEffect)
+  const genreLabel = genre ? GENRE_LABELS[genre] : null;
+  const genreDef = genre ? GENRE_DEFS[genre] : null;
+  const subGenreLabel = subGenre ? SUBGENRE_LABELS[subGenre] : null;
+  const subGenreDef = subGenre ? SUBTHEME_DEFS[subGenre] : null;
+  const themeLabel = theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null;
+  const themeDef = theme ? THEME_DEFS[theme] : null;
+  const subThemeLabel = subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null;
+  const subThemeDef = subTheme ? SUBTHEME_DEFS[subTheme] : null;
+  const centralConflictLabel = centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null;
+  const centralConflictDef = centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null;
+
+  // Central Conflict state and last applied tracking
+  const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
+
   // Live-sync project name to Story Builder textarea
   useEffect(() => {
     // This effect will update the rawStoryText when projectName changes
@@ -1970,7 +1985,6 @@ export default function DashboardLayout() {
     });
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', block));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
-
 
   // Update rich text editor with HTML overview (debounced for better UX)
   useEffect(() => {
@@ -2011,21 +2025,6 @@ export default function DashboardLayout() {
     subThemeLabel, subThemeDef,
     centralConflictLabel, centralConflictDef
   ]);
-
-  // Central Conflict state and last applied tracking
-  const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
-
-  // Derived variables for labels and definitions
-  const genreLabel = genre ? GENRE_LABELS[genre] : null;
-  const genreDef = genre ? GENRE_DEFS[genre] : null;
-  const subGenreLabel = subGenre ? SUBGENRE_LABELS[subGenre] : null;
-  const subGenreDef = subGenre ? SUBTHEME_DEFS[subGenre] : null;
-  const themeLabel = theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null;
-  const themeDef = theme ? THEME_DEFS[theme] : null;
-  const subThemeLabel = subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null;
-  const subThemeDef = subTheme ? SUBTHEME_DEFS[subTheme] : null;
-  const centralConflictLabel = centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null;
-  const centralConflictDef = centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null;
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
