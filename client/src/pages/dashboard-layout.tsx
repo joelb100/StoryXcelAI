@@ -15,6 +15,7 @@ import { DefinitionTooltip } from "@/components/definition-tooltip";
 import StoryRightSidebar from "@/components/layout/right-sidebar";
 import DashboardLookFriendsList from "@/components/friends/DashboardLookFriendsList";
 import RichEditor, { OVERVIEW_START, OVERVIEW_END } from '@/components/editor/RichEditor';
+import StoryBuilder from "@/components/story-builder";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -317,7 +318,6 @@ function insertOrReplaceConflictBlock(conflictKey: string) {
 
 // Import logo and components
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
-import StoryBuilder from "@/components/story-builder";
 import AIStoryAssistant from "@/components/ai-story-assistant";
 
 // Import tab icons
