@@ -2203,7 +2203,6 @@ export default function DashboardLayout() {
                     {/* Story Editor Section - Fixed dimensions, never expandable */}
                     <div className="flex justify-center items-center" style={{ height: '70.8%', minHeight: '70.8%', maxHeight: '70.8%' }}>
                       <div 
-                        id="story-frame"
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
                           width: '100%', 
@@ -2237,7 +2236,7 @@ export default function DashboardLayout() {
                     </div>
 
                     {/* Bottom section - 29.2% height (increased 1% from 28.9%) */}
-                    <div id="ai-panel" className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
+                    <div className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
                       {/* AI Chat Window - takes remaining space */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -14,8 +14,6 @@ type Props = {
 };
 
 const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
-  const quillRef = useRef<ReactQuill>(null);
-
   const modules = useMemo(
     () => ({
       toolbar: [
@@ -26,30 +24,20 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
         [{ list: 'ordered' }, { list: 'bullet' }],
         ['clean'],
       ],
-      clipboard: { 
-        matchVisual: false,
-      },
+      clipboard: { matchVisual: true },
     }),
     []
   );
-
-  const formats = [
-    'size', 'font', 'bold', 'italic', 'underline', 
-    'align', 'list', 'bullet'
-  ];
 
   return (
     <div className={`${className} overflow-visible rich-editor-container`}>
       {/* CONTROLLED: use value, not defaultValue */}
       <ReactQuill
-        ref={quillRef}
         theme="snow"
         modules={modules}
-        formats={formats}
         value={value}
         onChange={onChange}
         className="rounded-md border border-slate-200 rich-editor-quill"
-        preserveWhitespace={true}
       />
     </div>
   );
