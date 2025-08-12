@@ -7,29 +7,16 @@
   display: none; 
 }
 
-/* Layout, not heights */
-.rich-editor-container { 
-  display: flex; 
-  flex-direction: column; 
-}
-
-.rich-editor-container .ql-toolbar {
-  flex-shrink: 0;
-  height: 42px; 
-  min-height: 42px; 
-  max-height: 42px;
-}
-
-/* Let wrapper control the cap (60vh). No !important, no hard 100% chain. */
+/* Natural editor layout - no height forcing */
 .rich-editor-container .ql-container {
   flex: 1 1 auto;
   height: auto;
-  max-height: inherit;   /* respects wrapper max-h */
+  max-height: inherit;
   overflow-y: auto;
 }
 
 .rich-editor-container .ql-editor {
-  min-height: 280px;     /* nice starting area */
+  min-height: 280px;
   height: auto;
   max-height: none;
   overflow-y: visible;

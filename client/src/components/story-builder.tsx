@@ -67,23 +67,12 @@ export default function StoryBuilder({
 
   return (
     <div 
-      className="w-full h-full overflow-hidden flex flex-col"
-      style={{ 
-        minWidth: '100%', 
-        maxWidth: '100%', 
-        minHeight: '100%', 
-        maxHeight: '100%' 
-      }}
+      className="h-full overflow-y-auto overscroll-contain"
+      data-testid="story-scroll"
     >
       {/* Story Overview Section - Fixed height, never expandable */}
       {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
-        <div 
-          className="flex-shrink-0 p-3 border-b border-gray-200 overflow-visible"
-          style={{ 
-            maxHeight: '25%', 
-            minHeight: 'auto'
-          }}
-        >
+        <div className="p-3 border-b border-gray-200 overflow-visible whitespace-pre-wrap break-words">
           <div className="space-y-1 text-xs whitespace-pre-wrap break-words">
             {projectName && (
               <div>
@@ -133,23 +122,15 @@ export default function StoryBuilder({
         </div>
       )}
 
-      {/* Story Beats Section - Fixed height with scrolling only */}
-      <div 
-        className="flex-1 flex flex-col min-h-0 p-3 overflow-hidden"
-        style={{ 
-          minHeight: 0,
-          maxHeight: 'calc(100% - 25%)' 
-        }}
-      >
-        <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
+      {/* Story Beats Section */}
+      <div className="p-3">
+        <h3 className="text-lg font-semibold text-slate-800 mb-3">Story Beats</h3>
         
-        <div className="min-h-[280px] max-h-[60vh] overflow-y-auto">
-          <RichEditor
-            value={storyHtml}
-            onChange={setStoryHtml}
-            className="w-full h-full"
-          />
-        </div>
+        <RichEditor
+          value={storyHtml}
+          onChange={setStoryHtml}
+          className="w-full"
+        />
       </div>
     </div>
   );

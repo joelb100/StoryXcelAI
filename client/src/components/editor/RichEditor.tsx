@@ -38,10 +38,6 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
         value={value}
         onChange={onChange}
         className="rounded-md border border-slate-200 rich-editor-quill"
-        style={{ 
-          display: 'flex',
-          flexDirection: 'column'
-        }}
       />
     </div>
   );
