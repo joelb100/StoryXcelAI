@@ -2201,8 +2201,8 @@ export default function DashboardLayout() {
                 {/* Constrained Content Container - Same layout as dashboard */}
                 <div className="flex-1 flex justify-center overflow-hidden">
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Story Editor Section - 69% height (decreased from 78%) */}
-                    <div className="flex justify-center items-center" style={{ height: '69%' }}>
+                    {/* Story Editor Section - 70.5% height (increased from 69%) */}
+                    <div className="flex justify-center items-center" style={{ height: '70.5%' }}>
                       <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full">
                           {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
                           <div className="border-b border-gray-200 px-4 py-2 hidden">
@@ -2388,8 +2388,8 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* Bottom section - 31% height (increased 10% from 28%) */}
-                    <div className="flex flex-col justify-start pt-4" style={{ height: '31%' }}>
+                    {/* Bottom section - 29.5% height (reduced 5% from 31%) */}
+                    <div className="flex flex-col justify-start pt-4" style={{ height: '29.5%' }}>
                       {/* AI Chat Window - takes remaining space */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
@@ -2419,15 +2419,15 @@ export default function DashboardLayout() {
                 {/* Constrained Content Container - Same layout as dashboard */}
                 <div className="flex-1 flex justify-center overflow-hidden">
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Main Builder Section - 69% height (decreased from 72%) */}
-                    <div className="flex justify-center items-center" style={{ height: '69%' }}>
+                    {/* Main Builder Section - 70.5% height (increased from 69%) */}
+                    <div className="flex justify-center items-center" style={{ height: '70.5%' }}>
                       <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
                         {/* Builder content area - placeholder for now */}
                       </div>
                     </div>
 
-                    {/* Bottom section - 31% height (increased 10% from 28%) */}
-                    <div className="flex flex-col justify-start pt-4" style={{ height: '31%' }}>
+                    {/* Bottom section - 29.5% height (reduced 5% from 31%) */}
+                    <div className="flex flex-col justify-start pt-4" style={{ height: '29.5%' }}>
                       {/* AI Chat Window - takes remaining space, exactly like dashboard */}
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
