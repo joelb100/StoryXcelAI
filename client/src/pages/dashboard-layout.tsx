@@ -1593,8 +1593,8 @@ export default function DashboardLayout() {
   
   // Rich text editor state for HTML content  
   const [storyHtml, setStoryHtml] = useState<string>(() => {
-    // Initial empty doc with invisible markers pre-seeded so we can replace between them.
-    return `${OVERVIEW_START}${OVERVIEW_END}<p>Your story begins here...</p>`;
+    // Clean editor with no overview injection - overview is now in separate card
+    return `<p>Your story begins here...</p>`;
   });
 
   // Legacy state (keeping for reference during migration)
@@ -1921,45 +1921,45 @@ export default function DashboardLayout() {
     setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
   }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
-  // Update rich text editor with HTML overview (debounced for better UX)
-  useEffect(() => {
-    const id = setTimeout(() => {
-      // Build project type string
-      const projectTypeDisplay = projectType ? (() => {
-        const parts: string[] = [projectType];
-        if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
-        if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
-        return parts.join(' / ');
-      })() : undefined;
+  // DISABLED: Don't inject overview content into editor - overview is now in separate card
+  // useEffect(() => {
+  //   const id = setTimeout(() => {
+  //     // Build project type string
+  //     const projectTypeDisplay = projectType ? (() => {
+  //       const parts: string[] = [projectType];
+  //       if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
+  //       if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
+  //       return parts.join(' / ');
+  //     })() : undefined;
 
-      const overviewHTML = buildOverviewHTML({
-        title: projectName,
-        projectType: projectTypeDisplay,
-        genreLabel: genreLabel || undefined,
-        genreDef: genreDef || undefined,
-        subGenreLabel: subGenreLabel || undefined,
-        subGenreDef: subGenreDef || undefined,
-        themeLabel: themeLabel || undefined,
-        themeDef: themeDef || undefined,
-        subThemeLabel: subThemeLabel || undefined,
-        subThemeDef: subThemeDef || undefined,
-        conflictLabel: centralConflictLabel || undefined,
-        conflictDef: centralConflictDef || undefined,
-      });
+  //     const overviewHTML = buildOverviewHTML({
+  //       title: projectName,
+  //       projectType: projectTypeDisplay,
+  //       genreLabel: genreLabel || undefined,
+  //       genreDef: genreDef || undefined,
+  //       subGenreLabel: subGenreLabel || undefined,
+  //       subGenreDef: subGenreDef || undefined,
+  //       themeLabel: themeLabel || undefined,
+  //       themeDef: themeDef || undefined,
+  //       subThemeLabel: subThemeLabel || undefined,
+  //       subThemeDef: subThemeDef || undefined,
+  //       conflictLabel: centralConflictLabel || undefined,
+  //       conflictDef: centralConflictDef || undefined,
+  //     });
 
-      setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
-    }, 250);
+  //     setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
+  //   }, 250);
     
-    return () => clearTimeout(id);
-  }, [
-    projectName,
-    projectType, lengthPages, lengthMinutes,
-    genreLabel, genreDef,
-    subGenreLabel, subGenreDef,
-    themeLabel, themeDef,
-    subThemeLabel, subThemeDef,
-    centralConflictLabel, centralConflictDef
-  ]);
+  //   return () => clearTimeout(id);
+  // }, [
+  //   projectName,
+  //   projectType, lengthPages, lengthMinutes,
+  //   genreLabel, genreDef,
+  //   subGenreLabel, subGenreDef,
+  //   themeLabel, themeDef,
+  //   subThemeLabel, subThemeDef,
+  //   centralConflictLabel, centralConflictDef
+  // ]);
 
   // Central Conflict state and last applied tracking
   const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
