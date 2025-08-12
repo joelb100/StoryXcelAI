@@ -2206,10 +2206,11 @@ export default function DashboardLayout() {
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
                           width: '100%', 
-                          maxWidth: '14.5in',
-                          height: 'calc(100dvh - 200px)'
+                          maxWidth: '14.5in', 
+                          height: '100%',
+                          minHeight: '100%',
+                          maxHeight: '100%'
                         }}
-                        data-testid="story-frame"
                       >
                         {/* Story Builder Content - Strictly contained */}
                         <div className="w-full h-full overflow-hidden">
