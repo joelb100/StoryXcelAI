@@ -2180,7 +2180,18 @@ export default function DashboardLayout() {
                 ? (isFriendsListOpen || isSiteLinksOpen ? 'col-span-19' : 'col-span-22')
                 : 'col-span-22' // Other builder tabs without panels
           }`}>
-            {activeTab === 'story' ? (
+            {activeTab === 'dashboard' ? (
+              <DashboardContent 
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+                currentProjectSlide={currentProjectSlide}
+                setCurrentProjectSlide={setCurrentProjectSlide}
+                navigate={navigate}
+              />
+            ) : activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
                 <div className="bg-white border-b border-gray-200 px-4 pb-4">
@@ -2188,198 +2199,25 @@ export default function DashboardLayout() {
                 </div>
                 
                 {/* Constrained Content Container - Full page scroll layout */}
-                <div className="flex-1 overflow-y-auto">
-                  <div className="w-full max-w-[15.25in] mx-auto p-4 space-y-6">
-                    {/* Story Content Editor - Auto height with content */}
-                    <div className="w-full max-w-[14.5in] mx-auto">
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg">
-                          {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
-                          <div className="border-b border-gray-200 px-4 py-2 hidden">
-                            <div className="flex items-center space-x-1 text-sm flex-wrap">
-                              {/* Undo/Redo */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Undo className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Redo className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Print */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Printer className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Format Painter */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <PaintBucket className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Zoom */}
-                              <Select>
-                                <SelectTrigger className="h-7 w-16 text-xs">
-                                  <SelectValue placeholder="100%" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="50">50%</SelectItem>
-                                  <SelectItem value="75">75%</SelectItem>
-                                  <SelectItem value="100">100%</SelectItem>
-                                  <SelectItem value="125">125%</SelectItem>
-                                  <SelectItem value="150">150%</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Format */}
-                              <Select>
-                                <SelectTrigger className="h-7 w-28 text-xs">
-                                  <SelectValue placeholder="Normal text" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="normal">Normal text</SelectItem>
-                                  <SelectItem value="heading1">Heading 1</SelectItem>
-                                  <SelectItem value="heading2">Heading 2</SelectItem>
-                                  <SelectItem value="heading3">Heading 3</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              
-                              {/* Font Family */}
-                              <Select>
-                                <SelectTrigger className="h-7 w-20 text-xs">
-                                  <SelectValue placeholder="Arial" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="arial">Arial</SelectItem>
-                                  <SelectItem value="times">Times</SelectItem>
-                                  <SelectItem value="calibri">Calibri</SelectItem>
-                                  <SelectItem value="helvetica">Helvetica</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Font Size */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Minus className="w-3 h-3" />
-                              </Button>
-                              
-                              <Select>
-                                <SelectTrigger className="h-7 w-12 text-xs">
-                                  <SelectValue placeholder="11" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="8">8</SelectItem>
-                                  <SelectItem value="9">9</SelectItem>
-                                  <SelectItem value="10">10</SelectItem>
-                                  <SelectItem value="11">11</SelectItem>
-                                  <SelectItem value="12">12</SelectItem>
-                                  <SelectItem value="14">14</SelectItem>
-                                  <SelectItem value="16">16</SelectItem>
-                                  <SelectItem value="18">18</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Plus className="w-3 h-3" />
-                              </Button>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Text Formatting */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Bold className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Italic className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Underline className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Text Color */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Type className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Highlight Color */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Highlighter className="w-4 h-4" />
-                              </Button>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Link */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Link className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Comment */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <MessageSquare className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* Image */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Image className="w-4 h-4" />
-                              </Button>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Alignment */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <AlignLeft className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <AlignCenter className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <AlignRight className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <AlignJustify className="w-4 h-4" />
-                              </Button>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Lists */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <List className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <ListOrdered className="w-4 h-4" />
-                              </Button>
-                              
-                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
-                              
-                              {/* Indent */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Indent className="w-4 h-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <Outdent className="w-4 h-4" />
-                              </Button>
-                              
-                              {/* More Options */}
-                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
-                                <MoreHorizontal className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          {/* Rich Text Editor Content - Auto height with content */}
-                          <div id="story-editor" className="p-4">
-                            <RichEditor
-                              value={storyHtml}
-                              onChange={setStoryHtml}
-                              className="w-full min-h-[400px]"
-                            />
-                          </div>
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Story Content Editor - Takes 60% of screen height */}
+                    <div className="w-full max-w-[14.5in] mx-auto" style={{ height: '60%' }}>
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg h-full">
+                        {/* Rich Text Editor Content - Auto height with content */}
+                        <div id="story-editor" className="p-4 h-full overflow-y-auto">
+                          <RichEditor
+                            value={storyHtml}
+                            onChange={setStoryHtml}
+                            className="w-full min-h-full"
+                          />
                         </div>
                       </div>
+                    </div>
 
-                    {/* AI Story Assistant - Card layout below editor */}
-                    <div className="w-full max-w-[14.5in] mx-auto">
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-4">
+                    {/* AI Story Assistant - Takes remaining 40% */}
+                    <div className="flex-1 pt-4">
+                      <div className="w-full max-w-[14.5in] mx-auto h-full">
                         <AIStoryAssistant 
                           chatMessages={chatMessages}
                           chatMessage={chatMessage}
@@ -2393,16 +2231,80 @@ export default function DashboardLayout() {
                 </div>
               </div>
             ) : (
-              <DashboardContent 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-                currentProjectSlide={currentProjectSlide}
-                setCurrentProjectSlide={setCurrentProjectSlide}
-                navigate={navigate}
-              />
+              /* OTHER BUILDERS CONTENT */
+              <div className="bg-gray-100 flex flex-col h-full">
+                {/* Builder Header */}
+                <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                  <h2 className="text-lg font-semibold text-slate-800">
+                    {(() => {
+                      switch(activeTab) {
+                        case "world": return "World Builder";
+                        case "production": return "Production Builder";
+                        case "asset": return "Asset Builder";
+                        case "script": return "Script Builder";
+                        case "deck": return "Deck Builder";
+                        default: return "Builder";
+                      }
+                    })()}
+                  </h2>
+                </div>
+                
+                {/* Constrained Content Container */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    {/* Builder Content - Takes 60% of screen height */}
+                    <div className="w-full max-w-[14.5in] mx-auto" style={{ height: '60%' }}>
+                      <Card className="rounded-lg border-0 w-full h-full flex items-center justify-center" style={{ backgroundColor: '#3f4c5f' }}>
+                        <div className="text-center max-w-2xl text-white">
+                          <h1 className="text-3xl font-bold mb-4">
+                            {(() => {
+                              switch(activeTab) {
+                                case "world": return "World Builder";
+                                case "production": return "Production Builder";
+                                case "asset": return "Asset Builder";
+                                case "script": return "Script Builder";
+                                case "deck": return "Deck Builder";
+                                default: return "Builder";
+                              }
+                            })()}
+                          </h1>
+                          <p className="mb-8 opacity-80">
+                            Welcome to the {(() => {
+                              switch(activeTab) {
+                                case "world": return "World Builder";
+                                case "production": return "Production Builder";
+                                case "asset": return "Asset Builder";
+                                case "script": return "Script Builder";
+                                case "deck": return "Deck Builder";
+                                default: return "Builder";
+                              }
+                            })()} workspace. This interface will contain all the tools specific to this builder type.
+                          </p>
+                          <div className="bg-black/20 rounded-lg p-8">
+                            <p className="text-sm opacity-60">
+                              Builder interface will be customized based on the selected tab.
+                              Each builder will have its own unique toolset and layout.
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* AI Story Assistant - Takes remaining 40% */}
+                    <div className="flex-1 pt-4">
+                      <div className="w-full max-w-[14.5in] mx-auto h-full">
+                        <AIStoryAssistant 
+                          chatMessages={chatMessages}
+                          chatMessage={chatMessage}
+                          setChatMessage={setChatMessage}
+                          handleSendMessage={handleSendMessage}
+                          handleKeyPress={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
           
