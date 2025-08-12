@@ -7,8 +7,8 @@
   display: none; 
 }
 
-/* Let the scroll wrapper (#story-scroll) be the limiter */
-.rich-editor-container .ql-container { 
+/* Natural editor layout - no height forcing */
+.rich-editor-container .ql-container {
   flex: 1 1 auto;
   height: auto;
   max-height: inherit;
@@ -16,14 +16,10 @@
 }
 
 .rich-editor-container .ql-editor {
-  min-height: 280px;     /* comfortable start */
+  min-height: 280px;
   height: auto;
   max-height: none;
   overflow-y: visible;
-}
-
-.rich-editor-container .ql-toolbar {
-  flex-shrink: 0;
 }
 
 /* Ensure all dynamic column spans are available */

@@ -66,11 +66,14 @@ export default function StoryBuilder({
   })() : 'Screenplay / 90 pages / 90 mins';
 
   return (
-    <div className="w-full flex flex-col">
-      {/* Story Overview Section - Always visible, no truncation */}
+    <div 
+      className="h-full overflow-y-auto overscroll-contain"
+      data-testid="story-scroll"
+    >
+      {/* Story Overview Section - Fixed height, never expandable */}
       {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
         <div className="p-3 border-b border-gray-200 overflow-visible whitespace-pre-wrap break-words">
-          <div className="space-y-1 text-xs">
+          <div className="space-y-1 text-xs whitespace-pre-wrap break-words">
             {projectName && (
               <div>
                 <span className="font-semibold">Story Title</span> — {projectName}
@@ -126,6 +129,7 @@ export default function StoryBuilder({
         <RichEditor
           value={storyHtml}
           onChange={setStoryHtml}
+          className="w-full"
         />
       </div>
     </div>

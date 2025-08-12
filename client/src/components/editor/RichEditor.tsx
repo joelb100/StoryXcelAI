@@ -25,14 +25,13 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className }) => {
         ['clean'],
       ],
       clipboard: { matchVisual: true },
-      scrollingContainer: "#story-scroll",
     }),
     []
   );
 
   return (
-    <div className={`w-full overflow-visible rich-editor-container ${className || ''}`}>
-      {/* CONTROLLED: use value, not defaultValue - let the scroll wrapper control size */}
+    <div className={`${className} overflow-visible rich-editor-container`}>
+      {/* CONTROLLED: use value, not defaultValue */}
       <ReactQuill
         theme="snow"
         modules={modules}
