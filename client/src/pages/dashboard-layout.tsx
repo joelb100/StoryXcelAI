@@ -2202,7 +2202,7 @@ export default function DashboardLayout() {
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
                     {/* Story Editor Section - 70.8% height (decreased from 71.1%) */}
                     <div className="flex justify-center items-center overflow-hidden" style={{ height: '70.8%' }}>
-                      <div className="bg-white border-2 border-red-500 shadow-sm rounded-lg w-full max-w-[14.5in] h-full overflow-hidden">
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full overflow-hidden">
                         {/* Story Builder Content - Full height with overflow handling */}
                         <div className="h-full overflow-hidden">
                           <StoryBuilder 
