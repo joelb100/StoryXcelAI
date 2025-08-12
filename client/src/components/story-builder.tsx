@@ -67,6 +67,7 @@ export default function StoryBuilder({
 
   return (
     <div 
+      id="story-frame"
       className="w-full h-full overflow-hidden flex flex-col"
       style={{ 
         minWidth: '100%', 

@@ -1,0 +1,71 @@
+Do not change functionality. Do not edit TSX/JS.
+Open the Story tab, then:
+0) Tag the two boxes (runtime only)
+
+In DevTools → Elements:
+
+    Add id="story-frame" to the element that corresponds to the red-bordered area.
+
+    Add id="ai-panel" to the green AI card.
+    This is a runtime attribute change in DevTools, not a code commit.
+
+1) Run this ONE snippet in the Console and send back the printed JSON + a screenshot
+
+(function () {
+  const vh = (window.visualViewport?.height ?? window.innerHeight);
+  const vw = (window.visualViewport?.width ?? window.innerWidth);
+
+  const frame = document.querySelector('#story-frame');
+  const ai = document.querySelector('#ai-panel');
+  const toolbar = document.querySelector('.ql-toolbar, .tiptap-toolbar');
+
+  if (!frame || !ai) { return console.warn('Missing #story-frame or #ai-panel'); }
+
+  const rf = frame.getBoundingClientRect();
+  const ra = ai.getBoundingClientRect();
+  const csF = getComputedStyle(frame);
+  const csA = getComputedStyle(ai);
+  const tbH = toolbar ? parseFloat(getComputedStyle(toolbar).height) : 0;
+
+  const gapBelow = Math.round(ra.top - rf.bottom);
+
+  const out = {
+    viewport: { width: vw, height: vh },
+    frameRect: {
+      top: Math.round(rf.top), left: Math.round(rf.left),
+      width: Math.round(rf.width), height: Math.round(rf.height),
+      right: Math.round(vw - rf.right), bottom: Math.round(vh - rf.bottom)
+    },
+    frameComputed: {
+      paddingTop: csF.paddingTop, paddingBottom: csF.paddingBottom,
+      paddingLeft: csF.paddingLeft, paddingRight: csF.paddingRight,
+      marginTop: csF.marginTop, marginBottom: csF.marginBottom,
+      borderTop: csF.borderTopWidth, borderBottom: csF.borderBottomWidth,
+      overflow: csF.overflow, overflowY: csF.overflowY
+    },
+    aiRect: {
+      top: Math.round(ra.top), height: Math.round(ra.height)
+    },
+    gapBelowBetweenFrameAndAI: gapBelow,
+    toolbarHeight: tbH
+  };
+
+  console.log('MEASUREMENTS:', out);
+  return out;
+})();
+
+2) Also send these quick “yes/no” confirmations
+
+    Should the page itself ever scroll? yes/no
+
+    When the editor overflows, the scroll should be inside the red frame only. yes (confirm)
+
+    The green AI panel should never move vertically when editing. yes (confirm)
+
+What I’ll do with those numbers:
+I’ll fix the frame height with pure CSS so it never scales:
+
+#story-frame { height: calc(100dvh - (FRAME_TOP + AI_HEIGHT + GAP_BELOW)px); }
+#story-frame > .scroll-inner { height: 100%; overflow-y: auto; }
+
+And I’ll cap the editor text area using the toolbar height so Enter spam scrolls inside the frame, not the page.
