@@ -326,19 +326,19 @@ import productionBuilderIcon from "@assets/productionBuilder_1754280596376.png";
 import assetBuilderIcon from "@assets/assetBuilder_1754280609014.png";
 import storyBuilderIcon from "@assets/storyBuilder_1754280620526.png";
 import scriptBuilderIcon from "@assets/scriptBuilder_1754280628421.png";
-import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png;
+import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png";
 
 // Import sidebar icons
 import storyOverviewIcon from "@assets/story_1754371104469.png";
 import formatOverviewIcon from "@assets/format_1754371161796.png";
-import assetOverviewIcon from "@assets/Asset_1754371169859.png;
-import pitchIcon from "@assets/pitch_1754371175274.png;
+import assetOverviewIcon from "@assets/Asset_1754371169859.png";
+import pitchIcon from "@assets/pitch_1754371175274.png";
 
 // Import right sidebar icons
-import assetTagIcon from "@assets/AssetTag_1754371518555.png;
-import storyDetailsIcon from "@assets/storyDetails_1754371523841.png;
-import storyMechanicsIcon from "@assets/storyMechanics_1754371530436.png;
-import taskIcon from "@assets/task_1754371536085.png;
+import assetTagIcon from "@assets/AssetTag_1754371518555.png";
+import storyDetailsIcon from "@assets/storyDetails_1754371523841.png";
+import storyMechanicsIcon from "@assets/storyMechanics_1754371530436.png";
+import taskIcon from "@assets/task_1754371536085.png";
 
 // Builder tabs configuration - moved inside component to access activeTab
 const getBuilderTabs = (activeTab: string) => [
@@ -432,7 +432,7 @@ const dashboardData = {
       {
         id: 1,
         title: "PROJECT GUN SMOKE",
-        description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won\'t come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive.",
+        description: "Drifting into the dying town of Red Hollow, bounty hunter Eli Graves is hunting the ruthless outlaw Silas Kane. But the town is strangled by corrupt Sheriff Benjamin, who secretly protects Kane's gang in exchange for blood money. When Eli crosses paths with a vengeful widow and a tree bear with a violent past, he realizes justice won't come easy. As tensions rise and bullets fly, the streets fill with gun smoke - where only the fastest draw will decide who walks away alive.",
         type: "story",
         lastModified: "2024-01-20",
       }
@@ -475,7 +475,7 @@ const IconSidebar = ({
           <p>Story Overview</p>
         </TooltipContent>
       </Tooltip>
-
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -494,7 +494,7 @@ const IconSidebar = ({
           <p>Format Overview</p>
         </TooltipContent>
       </Tooltip>
-
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -513,7 +513,7 @@ const IconSidebar = ({
           <p>Asset Overview</p>
         </TooltipContent>
       </Tooltip>
-
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -533,7 +533,7 @@ const IconSidebar = ({
         </TooltipContent>
       </Tooltip>
     </div>
-
+    
     {/* Bottom action icons - From top to bottom: Import, Export, Support, Accounts, Sign Out */}
     <div className="flex flex-col items-center space-y-2 relative">
       <Tooltip>
@@ -554,7 +554,7 @@ const IconSidebar = ({
           <p>Import Files</p>
         </TooltipContent>
       </Tooltip>
-
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -573,7 +573,7 @@ const IconSidebar = ({
           <p>Export Project</p>
         </TooltipContent>
       </Tooltip>
-
+      
       {/* Support Menu */}
       <div className="relative">
         <Tooltip>
@@ -596,7 +596,7 @@ const IconSidebar = ({
             <p>Support Options</p>
           </TooltipContent>
         </Tooltip>
-
+        
         {supportMenuOpen && (
           <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
             <div className="flex flex-col space-y-2 min-w-[120px]">
@@ -652,7 +652,7 @@ const IconSidebar = ({
           </div>
         )}
       </div>
-
+      
       {/* Account Menu */}
       <div className="relative">
         <Tooltip>
@@ -675,7 +675,7 @@ const IconSidebar = ({
             <p>Account Settings</p>
           </TooltipContent>
         </Tooltip>
-
+        
         {accountMenuOpen && (
           <div className="absolute left-12 bottom-0 bg-slate-700 border border-slate-600 rounded-lg shadow-lg p-2 z-50">
             <div className="flex flex-col space-y-2 min-w-[120px]">
@@ -731,7 +731,7 @@ const IconSidebar = ({
           </div>
         )}
       </div>
-
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -793,7 +793,7 @@ const LeftSidebar = ({
             STEP 1
           </div>
         </div>
-
+        
         <div className="space-y-3">
           <div>
             <Label htmlFor="story-projectName" className="text-sm font-medium text-white block mb-1">Project Name</Label>
@@ -863,7 +863,7 @@ const LeftSidebar = ({
 
           <div>
             <Label htmlFor="story-subGenre" className="text-sm font-medium text-white block mb-1">Sub Genre</Label>
-            <Select value={subGenre} onValueChange={onSubGenreChange}>
+            <Select value={subGenre || ''} onValueChange={onSubGenreChange}>
               <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
                 <SelectValue placeholder="Select Sub Genre" />
               </SelectTrigger>
@@ -881,11 +881,11 @@ const LeftSidebar = ({
                 <SelectItem value="martial-arts" title="Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.">Martial Arts</SelectItem>
                 <SelectItem value="musical" title="Integrates songs and dance as a primary method of storytelling and emotional expression.">Musical</SelectItem>
                 <SelectItem value="noir" title="Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.">Noir</SelectItem>
-                <SelectItem value="psychological" title="Explores the inner workings of characters\' minds, delving into mental struggles, paranoia, or psychological manipulation.">Psychological</SelectItem>
+                <SelectItem value="psychological" title="Explores the inner workings of characters' minds, delving into mental struggles, paranoia, or psychological manipulation.">Psychological</SelectItem>
                 <SelectItem value="railroad" title="Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.">Railroad</SelectItem>
                 <SelectItem value="revisionist" title="Reinterprets established genres or historical events by challenging traditional perspectives or myths.">Revisionist</SelectItem>
                 <SelectItem value="sci-fi" title="Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.">Sci Fi</SelectItem>
-                <SelectItem value="southern-gothic" title="Combines Gothic elements with the American South\'s decayed grandeur, eccentric characters, and dark social themes.">Southern Gothic</SelectItem>
+                <SelectItem value="southern-gothic" title="Combines Gothic elements with the American South's decayed grandeur, eccentric characters, and dark social themes.">Southern Gothic</SelectItem>
                 <SelectItem value="spaghetti" title="A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.">Spaghetti</SelectItem>
                 <SelectItem value="survival" title="Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.">Survival</SelectItem>
               </SelectContent>
@@ -951,7 +951,7 @@ const LeftSidebar = ({
                 <SelectItem value="abduction" title="A character is kidnapped or taken against their will, sparking conflict or rescue.">Abduction</SelectItem>
                 <SelectItem value="adventure" title="The protagonist embarks on an exciting journey full of risks and discoveries.">Adventure</SelectItem>
                 <SelectItem value="adultery" title="A betrayal of romantic commitment, leading to emotional fallout.">Adultery</SelectItem>
-                <SelectItem value="ambition" title="A character\'s relentless pursuit of power, success, or personal goals.">Ambition</SelectItem>
+                <SelectItem value="ambition" title="A character's relentless pursuit of power, success, or personal goals.">Ambition</SelectItem>
                 <SelectItem value="ascension" title="A rise to power, enlightenment, or higher status.">Ascension</SelectItem>
                 <SelectItem value="deliverance" title="Being rescued or freed from a dire situation.">Deliverance</SelectItem>
                 <SelectItem value="descension" title="A fall from grace, status, or moral standing.">Descension</SelectItem>
@@ -985,7 +985,7 @@ const LeftSidebar = ({
                 <SelectItem value="survival" title="Battling overwhelming odds to stay alive.">Survival</SelectItem>
                 <SelectItem value="temptation" title="A character is lured toward desires that conflict with their morals.">Temptation</SelectItem>
                 <SelectItem value="the-riddle" title="Solving a complex mystery or intellectual challenge.">The Riddle</SelectItem>
-                <SelectItem value="transformation" title="A fundamental change in a character\'s nature or circumstances.">Transformation</SelectItem>
+                <SelectItem value="transformation" title="A fundamental change in a character's nature or circumstances.">Transformation</SelectItem>
                 <SelectItem value="underdog" title="A lesser-powered character defies expectations against stronger opponents.">Underdog</SelectItem>
                 <SelectItem value="wretched-excess" title="Characters driven to ruin by indulgence, greed, or obsession.">Wretched Excess</SelectItem>
               </SelectContent>
@@ -1059,7 +1059,7 @@ const LeftSidebar = ({
               <Menu className="w-3 h-3" />
             </Button>
           </div>
-
+          
           <div className="rounded-lg p-2 h-4/5 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
             <h4 className="text-xs font-semibold text-white mb-1">Project Name</h4>
             <div className="space-y-1">
@@ -1069,14 +1069,14 @@ const LeftSidebar = ({
                 <span className="text-slate-300 text-xs">— In progress</span>
               </div>
               <div className="text-xs text-slate-400 truncate">Project description</div>
-
+              
               <div className="flex items-center space-x-1 text-xs">
                 <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full flex-shrink-0"></div>
                 <span className="text-yellow-400 truncate">Gun Smoke</span>
                 <span className="text-slate-300 text-xs">— Planning</span>
               </div>
               <div className="text-xs text-slate-400 truncate">Project description</div>
-
+              
               <div className="flex items-center space-x-1 text-xs">
                 <div className="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0"></div>
                 <span className="text-green-400 truncate">Gun Smoke</span>
@@ -1120,7 +1120,7 @@ const LeftSidebar = ({
 const SiteLinksSidebar = () => (
   <div className="h-full border-l border-slate-600 p-4 overflow-y-auto" style={{ backgroundColor: '#758595' }}>
     <h3 className="text-white text-sm font-semibold mb-4">Site Links</h3>
-
+    
     {/* Grid of circular icons matching Dashboard appearance */}
     <div className="grid grid-cols-4 gap-2">
       {Array.from({ length: 16 }, (_, index) => (
@@ -1215,7 +1215,7 @@ const RightIconSidebar = ({ onFriendsListToggle, onSiteLinksToggle, activeTab }:
         />
       </Button>
     </div>
-
+    
     {/* Bottom action icons */}
     <div className="flex flex-col items-center space-y-2">
       <Button
@@ -1335,15 +1335,15 @@ const DashboardContent = ({
               <div className="mb-2">
                 <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
               </div>
-
+              
               {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
               <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
                 {/* First project card */}
                 <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-
+                
                 {/* Second project card */}
                 <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-
+                
                 {/* Third project card */}
                 <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
               </div>
@@ -1381,7 +1381,7 @@ export default function DashboardLayout() {
   const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(true);
   // Project name state for live-sync with Story Builder
   const [projectName, setProjectName] = useState('');
-
+  
   // --- StoryXcel Overview block control ---
   const SX_START = '// STORYXCEL_OVERVIEW_START';
   const SX_END   = '// STORYXCEL_OVERVIEW_END';
@@ -1391,21 +1391,46 @@ export default function DashboardLayout() {
   const [lengthModalOpen, setLengthModalOpen] = useState(false);
   const [lengthPages, setLengthPages] = useState<number | ''>('');
   const [lengthMinutes, setLengthMinutes] = useState<number | ''>('');
-
+  
   // Genre state for auto-insertion into overview block
   const [genre, setGenre] = useState<string>('');
-
+  
   // Sub-Genre state for auto-insertion into overview block (single selection)
   const [subGenre, setSubGenre] = useState<string>('');
-
+  
   // Theme state for auto-insertion into overview block
   const [theme, setTheme] = useState<string>('');
-
+  
   // Sub Theme state for auto-insertion into overview block
   const [subTheme, setSubTheme] = useState<string>('');
 
   // Central Conflict state for auto-insertion into overview block
   const [centralConflict, setCentralConflict] = useState<string>('');
+  
+  // Genre definitions map (matches the definitions in the UI)
+  const GENRE_DEFS: Record<string, string> = {
+    'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
+    'crime-drama': 'Stories focused on criminal activities, investigations, and the emotional/psychological conflicts surrounding them.',
+    'epic': 'Grand, lengthy narratives involving heroic deeds and large-scale adventures or conflicts.',
+    'fable': 'Short tales with moral lessons, often featuring anthropomorphic animals or mythical creatures.',
+    'fairy-tale': 'Magical stories involving enchantments, fantastical beings, and clear distinctions between good and evil.',
+    'fantasy': 'Fiction set in imaginative worlds where magic, mythical creatures, and supernatural forces are common.',
+    'folktale': 'Traditional stories passed down orally that reflect cultural values, customs, and beliefs.',
+    'gothic-fiction': 'Dark, atmospheric tales blending horror, romance, and mystery, often set in decaying or haunted locations.',
+    'historical-fiction': 'Stories set in a real past era, blending fictional characters with actual historical events and settings.',
+    'horror': 'Fiction designed to evoke fear, dread, and shock through terrifying situations and monstrous antagonists.',
+    'humor': 'Lighthearted, comedic stories intended to entertain through wit, satire, and absurd situations.',
+    'legend': 'Semi-true stories rooted in historical events but embellished with heroic feats or supernatural elements.',
+    'magical-realism': 'Fiction where magical elements seamlessly blend into realistic, everyday settings.',
+    'mystery': 'Narratives centered on solving a crime or uncovering hidden truths through clues and deduction.',
+    'myth': 'Sacred tales from ancient cultures explaining the origins of the world, gods, and fundamental human experiences.',
+    'romance': 'Stories centered on romantic relationships, exploring themes of love, attraction, and emotional connection.',
+    'satire': 'Works that use irony, humor, and exaggeration to criticize and expose flaws in human behavior or society.',
+    'science-fiction': 'Imaginative fiction featuring futuristic concepts, advanced technology, space exploration, or alternative realities.',
+    'thriller': 'Fast-paced stories designed to keep readers in constant suspense with high stakes and relentless tension.',
+    'tragedy': 'Serious dramatic works depicting the downfall of a protagonist due to fate, character flaws, or circumstances.',
+    'western': 'Stories typically set in the American Old West and feature themes of rugged individualism, justice, and frontier life.'
+  };
 
   // Genre label mapping (value to display name)
   const GENRE_LABELS: Record<string, string> = {
@@ -1422,57 +1447,38 @@ export default function DashboardLayout() {
     'humor': 'Humor',
     'legend': 'Legend',
     'magical-realism': 'Magical Realism',
-    'meta-fiction': 'Meta Fiction',
     'mystery': 'Mystery',
     'myth': 'Myth',
     'romance': 'Romance',
     'satire': 'Satire',
     'science-fiction': 'Science Fiction',
-    'spy-fiction': 'Spy Fiction',
-    'superhero': 'Superhero',
-    'swashbuckler': 'Swashbuckler',
-    'suspense-thriller': 'Suspense / Thriller',
-    'tall-tale': 'Tall Tale',
-    'theological': 'Theological',
     'thriller': 'Thriller',
-    'tragicomedy': 'Tragicomedy',
-    'travel': 'Travel',
     'tragedy': 'Tragedy',
     'western': 'Western'
   };
 
-  // Genre definitions mapping (matches the definitions in the UI)
-  const GENRE_DEFS: Record<string, string> = {
-    'classic': 'Timeless literary works that have enduring cultural, artistic, or historical significance.',
-    'crime-drama': 'Stories focused on criminal activities, investigations, and the emotional/psychological conflicts surrounding them.',
-    'epic': 'Grand, lengthy narratives involving heroic deeds and large-scale adventures or conflicts.',
-    'fable': 'Short tales with moral lessons, often featuring anthropomorphic animals or mythical creatures.',
-    'fairy-tale': 'Magical stories involving enchantments, fantastical beings, and clear distinctions between good and evil.',
-    'fantasy': 'Fiction set in imaginative worlds where magic, mythical creatures, and supernatural forces are common.',
-    'folktale': 'Traditional stories passed down orally that reflect cultural values, customs, and beliefs.',
-    'gothic-fiction': 'Dark, atmospheric tales blending horror, romance, and mystery, often set in decaying or haunted locations.',
-    'historical-fiction': 'Stories set in a real past era, blending fictional characters with actual historical events and settings.',
-    'horror': 'Fiction designed to evoke fear, dread, and shock through terrifying situations and monstrous antagonists.',
-    'humor': 'Lighthearted, comedic stories intended to entertain through wit, satire, and absurd situations.',
-    'legend': 'Semi-true stories rooted in historical events but embellished with heroic feats or supernatural elements.',
-    'magical-realism': 'Fiction where magical elements seamlessly blend into realistic, everyday settings.',
-    'meta-fiction': 'Self-referential stories that break the fourth wall, acknowledging their own fictional nature.',
-    'mystery': 'Plots centered around solving a crime, uncovering secrets, or piecing together enigmatic puzzles.',
-    'myth': 'Traditional stories explaining natural phenomena, cultural origins, or universal truths through supernatural means.',
-    'romance': 'Narratives focusing on romantic relationships, emotional conflicts, and love as a central theme.',
-    'satire': 'Fiction that uses humor, irony, and exaggeration to critique social norms, politics, or human behavior.',
-    'science-fiction': 'Speculative stories exploring futuristic technology, space, time travel, and scientific possibilities.',
-    'spy-fiction': 'Tales of espionage, secret agents, and covert missions involving political intrigue and deception.',
-    'superhero': 'Stories about individuals with extraordinary abilities who combat villains and protect society.',
-    'swashbuckler': 'Adventure tales filled with sword fights, daring heroes, and high-action exploits, often in historical settings.',
-    'suspense-thriller': 'Fast-paced, tension-filled stories that keep readers on edge through danger and unexpected twists.',
-    'tall-tale': 'Exaggerated, humorous stories featuring larger-than-life characters and impossible feats.',
-    'theological': 'Fiction that explores religious themes, spiritual dilemmas, and the nature of faith and divinity.',
-    'thriller': 'High-stakes narratives focused on tension, danger, and fast-paced action.',
-    'tragicomedy': 'Blends elements of tragedy and comedy, finding humor in sorrowful or serious situations.',
-    'travel': 'Stories that center around journeys, exploration, and discovering new places and cultures.',
-    'tragedy': 'Serious dramas that typically end in the downfall or destruction of the main character.',
-    'western': 'Tales set in the American frontier, often involving cowboys, outlaws, and lawmen in rugged landscapes.'
+  // Sub-Genre definitions map (matches the definitions in the UI)
+  const SUBGENRE_DEFS: Record<string, string> = {
+    'acid': 'Stories that embrace surreal, psychedelic, or mind-bending visuals and narratives, often inspired by counterculture.',
+    'buddy': 'Focuses on two (or more) characters with contrasting personalities who form a strong bond through shared adventures.',
+    'classic': 'Traditional storytelling that follows timeless themes and structures, often paying homage to literary or cinematic classics.',
+    'comedy': 'Stories designed to entertain and amuse through humor, wit, and exaggerated situations.',
+    'contemporary': 'Set in the present day, focusing on modern societal issues, relationships, or environments.',
+    'family': 'Themes of familial bonds, responsibilities, and conflicts are central to the plot.',
+    'feminist': 'Focuses on themes of gender equality, female empowerment, and critiques of patriarchal systems.',
+    'gunslinger': 'Revolves around lone, rugged protagonists who live by the gun, often in lawless frontier settings.',
+    'historical': 'Set in a specific historical era, emphasizing period-accurate settings, characters, and events.',
+    'horror': 'Stories designed to evoke fear, suspense, or dread, often through supernatural or psychological threats.',
+    'martial-arts': 'Focuses on combat disciplines, choreographed fight scenes, and themes of honor, skill, and perseverance.',
+    'musical': 'Integrates songs and dance as a primary method of storytelling and emotional expression.',
+    'noir': 'Dark, cynical crime dramas featuring morally ambiguous characters, often set in gritty urban environments.',
+    'psychological': 'Explores the inner workings of characters\' minds, delving into mental struggles, paranoia, or psychological manipulation.',
+    'railroad': 'Stories centered around trains, railways, or the culture and history surrounding them, often symbolizing journey or progress.',
+    'revisionist': 'Reinterprets established genres or historical events by challenging traditional perspectives or myths.',
+    'sci-fi': 'Focused on futuristic technology, space exploration, and scientific advancements, often exploring ethical dilemmas.',
+    'southern-gothic': 'Combines Gothic elements with the American South\'s decayed grandeur, eccentric characters, and dark social themes.',
+    'spaghetti': 'A sub-genre of Westerns, typically Italian-made, known for stylistic violence, anti-heroes, and morally grey storylines.',
+    'survival': 'Focuses on characters enduring extreme conditions or situations where their survival is constantly at stake.'
   };
 
   // Sub-Genre label mapping (value to display name)
@@ -1584,7 +1590,7 @@ export default function DashboardLayout() {
     'underdog': 'A lesser-powered character defies expectations against stronger opponents.',
     'wretched-excess': 'Characters driven to ruin by indulgence, greed, or obsession.'
   };
-
+  
   // Rich text editor state for HTML content  
   const [storyHtml, setStoryHtml] = useState<string>(() => {
     // Initial empty doc with invisible markers pre-seeded so we can replace between them.
@@ -1593,7 +1599,7 @@ export default function DashboardLayout() {
 
   // Legacy state (keeping for reference during migration)
   const [rawStoryText, setRawStoryText] = useState<string>(`${SX_START}\nStory Title — \n${SX_END}\n\nYour story begins here...`);
-
+  
   // derived text shown to the user (no markers)
   const displayText = useMemo(() => stripOverviewMarkers(rawStoryText), [rawStoryText]);
 
@@ -1811,168 +1817,109 @@ export default function DashboardLayout() {
     return `${currentOverviewBlock}\n\n${withoutOverviewLines}`.trimEnd();
   }
 
-  // Define Project Type Options (move outside component if static)
-  const PROJECT_TYPE_OPTIONS = [
-    { value: "Worldbuilding", label: "Worldbuilding" },
-    { value: "Novel", label: "Novel" },
-    { value: "Script", label: "Script" },
-    { value: "Screenplay", label: "Screenplay" },
-  ];
-
-  // Define Genre Options (move outside component if static)
-  const GENRE_OPTIONS = [
-    { value: "classic", label: "Classic" },
-    { value: "crime-drama", label: "Crime / Drama" },
-    { value: "epic", label: "Epic" },
-    { value: "fable", label: "Fable" },
-    { value: "fairy-tale", label: "Fairy Tale" },
-    { value: "fantasy", label: "Fantasy" },
-    { value: "folktale", label: "Folktale" },
-    { value: "gothic-fiction", label: "Gothic Fiction" },
-    { value: "historical-fiction", label: "Historical Fiction" },
-    { value: "horror", label: "Horror" },
-    { value: "humor", label: "Humor" },
-    { value: "legend", label: "Legend" },
-    { value: "magical-realism", label: "Magical Realism" },
-    { value: "meta-fiction", label: "Meta Fiction" },
-    { value: "mystery", label: "Mystery" },
-    { value: "myth", label: "Myth" },
-    { value: "romance", label: "Romance" },
-    { value: "satire", label: "Satire" },
-    { value: "science-fiction", label: "Science Fiction" },
-    { value: "spy-fiction", label: "Spy Fiction" },
-    { value: "superhero", label: "Superhero" },
-    { value: "swashbuckler", label: "Swashbuckler" },
-    { value: "suspense-thriller", label: "Suspense / Thriller" },
-    { value: "tall-tale", label: "Tall Tale" },
-    { value: "theological", label: "Theological" },
-    { value: "thriller", label: "Thriller" },
-    { value: "tragicomedy", label: "Tragicomedy" },
-    { value: "travel", label: "Travel" },
-    { value: "tragedy", label: "Tragedy" },
-    { value: "western", label: "Western" },
-  ];
-
-  // Define Sub-Genre Options based on Genre
-  const SUB_GENRE_OPTIONS: Record<string, Array<{ value: string; label: string }>> = {
-    fantasy: [
-      { value: "acid", label: "Acid" },
-      { value: "epic", label: "Epic" },
-      { value: "high-fantasy", label: "High Fantasy" },
-      { value: "urban-fantasy", label: "Urban Fantasy" },
+  // Determine active tab from current route
+  const LENGTH_PRESETS: Record<string, Array<{label:string; pages:number; mins:number}>> = {
+    Worldbuilding: [{ label: 'N/A', pages: 0, mins: 0 }],
+    Novel: [
+      { label: 'Short (200 pages / n/a)', pages: 200, mins: 0 },
+      { label: 'Standard (300 pages / n/a)', pages: 300, mins: 0 },
+      { label: 'Long (400 pages / n/a)', pages: 400, mins: 0 },
     ],
-    western: [
-      { value: "gunslinger", label: "Gunslinger" },
-      { value: "railroad", label: "Railroad" },
-      { value: "spaghetti", label: "Spaghetti" },
+    Script: [
+      { label: 'Half‑hour TV (30 / 30)', pages: 30, mins: 30 },
+      { label: 'Hour TV (60 / 60)', pages: 60, mins: 60 },
     ],
-    horror: [
-      { value: "gothic", label: "Gothic" },
-      { value: "psychological", label: "Psychological" },
-      { value: "survival", label: "Survival" },
+    Screenplay: [
+      { label: 'Feature Short (80 / 80)', pages: 80, mins: 80 },
+      { label: 'Feature Standard (100 / 100)', pages: 100, mins: 100 },
+      { label: 'Feature Long (120 / 120)', pages: 120, mins: 120 },
     ],
-    science_fiction: [
-      { value: "sci-fi", label: "Sci Fi" },
-      { value: "space-opera", label: "Space Opera" },
-      { value: "dystopian", label: "Dystopian" },
-    ],
-    historical_fiction: [
-      { value: "historical", label: "Historical" },
-      { value: "period-drama", label: "Period Drama" },
-    ],
-    crime_drama: [
-      { value: "noir", label: "Noir" },
-      { value: "mystery", label: "Mystery" },
-      { value: "thriller", label: "Thriller" },
-    ],
-    // Add more sub-genres for other genres as needed
-    default: [],
   };
 
-  // Define Theme Options (move outside component if static)
-  const THEME_OPTIONS = [
-    { value: "abandonment", label: "Abandonment" },
-    { value: "acceptance", label: "Acceptance" },
-    { value: "adultery", label: "Adultery" },
-    { value: "adventure", label: "Adventure" },
-    { value: "alienation", label: "Alienation" },
-    { value: "ambition", label: "Ambition" },
-    { value: "betrayal", label: "Betrayal" },
-    { value: "coming-of-age", label: "Coming of Age" },
-    { value: "death", label: "Death" },
-    { value: "discovery", label: "Discovery" },
-    { value: "escape", label: "Escape" },
-    { value: "forbidden-love", label: "Forbidden Love" },
-    { value: "forgiveness", label: "Forgiveness" },
-    { value: "freedom", label: "Freedom" },
-    { value: "friendship", label: "Friendship" },
-    { value: "greed", label: "Greed" },
-    { value: "justice", label: "Justice" },
-    { value: "legacy", label: "Legacy" },
-    { value: "loneliness", label: "Loneliness" },
-    { value: "love", label: "Love" },
-    { value: "morality", label: "Morality" },
-    { value: "obsession", label: "Obsession" },
-    { value: "overcoming", label: "Overcoming" },
-    { value: "patriot", label: "Patriot" },
-    { value: "poverty", label: "Poverty" },
-    { value: "prejudice", label: "Prejudice" },
-    { value: "redemption", label: "Redemption" },
-    { value: "revenge", label: "Revenge" },
-    { value: "rivalry", label: "Rivalry" },
-    { value: "sacrifice", label: "Sacrifice" },
-    { value: "survival", label: "Survival" },
-    { value: "temptation", label: "Temptation" },
-    { value: "the-right", label: "The Right" },
-    { value: "tradition", label: "Tradition" },
-    { value: "transformation", label: "Transformation" },
-    { value: "war", label: "War" },
-    { value: "wealth-found", label: "Wealth Found" },
-    { value: "war-zone", label: "War Zone" },
-  ];
+  function applyProjectTypeToBuilder(type: string, pages: number | '', mins: number | '') {
+    setProjectType(type);
+    setLengthPages(pages);
+    setLengthMinutes(mins);
+  }
 
-  // Define Sub Theme Options based on Theme
-  const SUB_THEME_OPTIONS: Record<string, Array<{ value: string; label: string }>> = {
-    'forbidden-love': [
-      { value: "abduction", label: "Abduction" },
-      { value: "love-triangle", label: "Love Triangle" },
-    ],
-    'revenge': [
-      { value: "pursuit", label: "Pursuit" },
-      { value: "vendetta", label: "Vendetta" },
-    ],
-    'survival': [
-      { value: "disaster", label: "Disaster" },
-      { value: "escape", label: "Escape" },
-    ],
-    // Add more sub-themes for other themes as needed
-    default: [],
+  const getActiveTab = () => {
+    if (location === '/dashboard') return 'dashboard';
+    const match = location.match(/\/builder\/(.+)/);
+    return match ? match[1] : 'dashboard';  // Default to dashboard instead of story
+  };
+  
+  const activeTab = getActiveTab();
+
+  const handleTabChange = (tabId: string) => {
+    navigate(`/builder/${tabId}`);
   };
 
-  // Central Conflict state and last applied tracking
-  const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
+  // Derive genre label and definition
+  const genreLabel = genre ? (GENRE_LABELS[genre] ?? null) : null;
+  const genreDef = genreLabel ? (GENRE_DEFS[genre] ?? '') : '';
 
-  // Live-sync project name to Story Builder textarea
+  // Derive sub-genre label and definition
+  const subGenreLabel = subGenre ? (SUBGENRE_LABELS[subGenre] ?? subGenre) : null;
+  const subGenreDef = subGenreLabel ? (SUBGENRE_DEFS[subGenre] ?? '') : '';
+
+  // Derive theme label and definition  
+  const themeLabel = theme ? (theme.charAt(0).toUpperCase() + theme.slice(1).replace(/-/g, ' ')) : null;
+  const themeDef = themeLabel ? (THEME_DEFS[theme] ?? '') : '';
+
+  // Derive sub-theme label and definition
+  const subThemeLabel = subTheme ? (subTheme.charAt(0).toUpperCase() + subTheme.slice(1).replace(/-/g, ' ')) : null;  
+  const subThemeDef = subThemeLabel ? (SUBTHEME_DEFS[subTheme] ?? '') : '';
+
+  // Derive central conflict label and definition
+  const centralConflictOption = CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict);
+  const centralConflictLabel = centralConflictOption?.label || null;
+  const centralConflictDef = centralConflict ? (CENTRAL_CONFLICT_DEFS[centralConflict] ?? '') : '';
+
+  // on type, update ONLY the "display" portion; we'll reinsert markers on save
+  const onChangeDisplay = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // we keep the current overview block we last computed
+    const block = buildOverviewBlock({ 
+      title: projectName, 
+      projectType, 
+      pages: typeof lengthPages === 'number' ? lengthPages : null, 
+      minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
+      genreLabel,
+      genreDef,
+      subGenreLabel,
+      subGenreDef,
+      themeLabel,
+      themeDef,
+      subThemeLabel,
+      subThemeDef,
+      centralConflictLabel,
+      centralConflictDef
+    });
+    const merged = ensureMarkersBeforeSave(e.target.value, block);
+    setRawStoryText(merged);
+  };
+
+  // Keep the overview single-title and invisible markers during updates
   useEffect(() => {
-    // This effect will update the rawStoryText when projectName changes
-    const block = buildOverviewBlock({
-      title: projectName,
-      projectType,
+    // whenever any overview field changes, rebuild the block and upsert into raw
+    const newBlock = buildOverviewBlock({
+      title: projectName || '',
+      projectType: projectType || undefined,
       pages: typeof lengthPages === 'number' ? lengthPages : null,
       minutes: typeof lengthMinutes === 'number' ? lengthMinutes : null,
-      genreLabel: genre ? GENRE_LABELS[genre] : null,
-      genreDef: genre ? GENRE_DEFS[genre] : null,
-      subGenreLabel: subGenre ? SUBGENRE_LABELS[subGenre] : null,
-      subGenreDef: subGenre ? SUBTHEME_DEFS[subGenre] : null,
-      themeLabel: theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : null,
-      themeDef: theme ? THEME_DEFS[theme] : null,
-      subThemeLabel: subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : null,
-      subThemeDef: subTheme ? SUBTHEME_DEFS[subTheme] : null,
-      centralConflictLabel: centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : null,
-      centralConflictDef: centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : null
+      genreLabel: genreLabel || null,
+      genreDef: genreDef || null,
+      subGenreLabel: subGenreLabel || null,
+      subGenreDef: subGenreDef || null,
+      themeLabel: themeLabel || null,
+      themeDef: themeDef || null,
+      subThemeLabel: subThemeLabel || null,
+      subThemeDef: subThemeDef || null,
+      centralConflictLabel: centralConflictLabel || null,
+      centralConflictDef: centralConflictDef || null,
     });
-    setRawStoryText(prev => upsertOverviewBlock(prev ?? '', block));
-  }, [projectName, projectType, lengthPages, lengthMinutes, genre, subGenre, theme, subTheme, centralConflict]);
+
+    setRawStoryText(prev => upsertOverviewBlock(prev ?? '', newBlock));
+  }, [projectName, projectType, lengthPages, lengthMinutes, genreLabel, genreDef, subGenreLabel, subGenreDef, themeLabel, themeDef, subThemeLabel, subThemeDef, centralConflictLabel, centralConflictDef]);
 
   // Update rich text editor with HTML overview (debounced for better UX)
   useEffect(() => {
@@ -1988,29 +1935,34 @@ export default function DashboardLayout() {
       const overviewHTML = buildOverviewHTML({
         title: projectName,
         projectType: projectTypeDisplay,
-        genreLabel: genre ? GENRE_LABELS[genre] : undefined,
-        genreDef: genre ? GENRE_DEFS[genre] : undefined,
-        subGenreLabel: subGenre ? SUBGENRE_LABELS[subGenre] : undefined,
-        subGenreDef: subGenre ? SUBTHEME_DEFS[subGenre] : undefined,
-        themeLabel: theme ? THEME_OPTIONS.find(opt => opt.value === theme)?.label : undefined,
-        themeDef: theme ? THEME_DEFS[theme] : undefined,
-        subThemeLabel: subTheme ? SUB_THEME_OPTIONS.default.find(opt => opt.value === subTheme)?.label || subTheme : undefined,
-        subThemeDef: subTheme ? SUBTHEME_DEFS[subTheme] : undefined,
-        conflictLabel: centralConflict ? CENTRAL_CONFLICT_OPTIONS.find(opt => opt.value === centralConflict)?.label : undefined,
-        conflictDef: centralConflict ? CENTRAL_CONFLICT_DEFS[centralConflict] : undefined,
+        genreLabel: genreLabel || undefined,
+        genreDef: genreDef || undefined,
+        subGenreLabel: subGenreLabel || undefined,
+        subGenreDef: subGenreDef || undefined,
+        themeLabel: themeLabel || undefined,
+        themeDef: themeDef || undefined,
+        subThemeLabel: subThemeLabel || undefined,
+        subThemeDef: subThemeDef || undefined,
+        conflictLabel: centralConflictLabel || undefined,
+        conflictDef: centralConflictDef || undefined,
       });
 
       setStoryHtml(prev => replaceOverviewSafe(prev, overviewHTML));
     }, 250);
-
+    
     return () => clearTimeout(id);
   }, [
     projectName,
     projectType, lengthPages, lengthMinutes,
-    genre, subGenre,
-    theme, subTheme,
-    centralConflict
+    genreLabel, genreDef,
+    subGenreLabel, subGenreDef,
+    themeLabel, themeDef,
+    subThemeLabel, subThemeDef,
+    centralConflictLabel, centralConflictDef
   ]);
+
+  // Central Conflict state and last applied tracking
+  const [lastAppliedConflict, setLastAppliedConflict] = useState<string>('');
 
   // Handle sub-genre change (single value)
   const handleSubGenreChange = (value: string) => {
@@ -2023,7 +1975,7 @@ export default function DashboardLayout() {
 
     // Map dropdown value to template key
     const templateKey = value; // Keys already match: 'man-v-man', 'man-v-nature', etc.
-
+    
     // If there is no template or same conflict already applied, do nothing.
     if (!CONFLICT_TEMPLATES[templateKey]) return;
 
@@ -2066,13 +2018,13 @@ export default function DashboardLayout() {
         type: 'user',
         content: chatMessage.trim()
       };
-
+      
       const aiResponse = {
         id: chatMessages.length + 2,
         type: 'ai',
         content: generateAIResponse(chatMessage.trim())
       };
-
+      
       setChatMessages(prev => [...prev, userMessage, aiResponse]);
       setChatMessage("");
     }
@@ -2080,7 +2032,7 @@ export default function DashboardLayout() {
 
   const generateAIResponse = (userInput: string): string => {
     const input = userInput.toLowerCase();
-
+    
     if (input.includes('character') || input.includes('eli graves')) {
       return "Great question about character development! For character depth, consider exploring their backstory, motivations, flaws, and growth arc. What specific aspect of the character would you like to develop further?";
     } else if (input.includes('plot') || input.includes('story')) {
@@ -2093,6 +2045,8 @@ export default function DashboardLayout() {
   };
 
   // Live-sync project name to Story Builder textarea
+
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -2103,35 +2057,6 @@ export default function DashboardLayout() {
   const handleSignOut = () => {
     // Navigate to login page (assuming it's the root path when not authenticated)
     window.location.href = '/api/logout';
-  };
-
-  // Missing function definitions
-  const activeTab = location.split('/')[1] || 'dashboard';
-  const handleTabChange = (tabId: string) => {
-    navigate(`/${tabId}`);
-  };
-
-  // Missing preset definitions
-  const LENGTH_PRESETS: Record<string, Array<{ label: string; pages: number; mins: number }>> = {
-    'Screenplay': [
-      { label: 'Short Film (15-30 pages / 15-30 mins)', pages: 25, mins: 25 },
-      { label: 'Feature Film (90-120 pages / 90-120 mins)', pages: 105, mins: 105 },
-      { label: 'TV Episode (22-30 pages / 22-30 mins)', pages: 26, mins: 26 },
-    ],
-    'Script': [
-      { label: 'One Act Play (20-40 pages / 30-60 mins)', pages: 30, mins: 45 },
-      { label: 'Full Length Play (80-120 pages / 90-150 mins)', pages: 100, mins: 120 },
-    ],
-    'Novel': [
-      { label: 'Novella (100-200 pages)', pages: 150, mins: 0 },
-      { label: 'Standard Novel (250-400 pages)', pages: 325, mins: 0 },
-      { label: 'Epic Novel (500+ pages)', pages: 600, mins: 0 },
-    ],
-  };
-
-  const applyProjectTypeToBuilder = (type: string, pages: number | string, minutes: number | string) => {
-    // This function would apply the project type settings to the builder
-    console.log('Applying project type:', type, pages, minutes);
   };
 
   return (
@@ -2226,7 +2151,7 @@ export default function DashboardLayout() {
               onSignOut={handleSignOut}
             />
           </div>
-
+          
           {/* Left Content Sidebar - Columns 2-5 */}
           <div className="col-span-4">
             <LeftSidebar 
@@ -2246,7 +2171,7 @@ export default function DashboardLayout() {
               onCentralConflictChange={handleCentralConflictChange}
             />
           </div>
-
+          
           {/* Main Content - Dashboard fixed, Story tab dynamic, other tabs static */}
           <div className={`transition-all duration-300 ${
             activeTab === 'dashboard' 
@@ -2255,44 +2180,206 @@ export default function DashboardLayout() {
                 ? (isFriendsListOpen || isSiteLinksOpen ? 'col-span-19' : 'col-span-22')
                 : 'col-span-22' // Other builder tabs without panels
           }`}>
-            {activeTab === 'dashboard' ? (
-              <DashboardContent 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-                currentProjectSlide={currentProjectSlide}
-                setCurrentProjectSlide={setCurrentProjectSlide}
-                navigate={navigate}
-              />
-            ) : activeTab === 'story' ? (
+            {activeTab === 'story' ? (
               <div className="bg-gray-100 flex flex-col h-full">
                 {/* Story Builder Header */}
                 <div className="bg-white border-b border-gray-200 px-4 pb-4">
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
-
-                {/* Constrained Content Container */}
-                <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Story Content Editor - Takes 60% of screen height */}
-                    <div className="w-full max-w-[14.5in] mx-auto" style={{ height: '60%' }}>
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg h-full">
-                        {/* Rich Text Editor Content - Auto height with content */}
-                        <div id="story-editor" className="p-4 h-full overflow-y-auto">
-                          <RichEditor
-                            value={storyHtml}
-                            onChange={setStoryHtml}
-                            className="w-full min-h-full"
-                          />
+                
+                {/* Constrained Content Container - Full page scroll layout */}
+                <div className="flex-1 overflow-y-auto">
+                  <div className="w-full max-w-[15.25in] mx-auto p-4 space-y-6">
+                    {/* Story Content Editor - Auto height with content */}
+                    <div className="w-full max-w-[14.5in] mx-auto">
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg">
+                          {/* Enhanced Toolbar - Google Docs Style - Hidden for now, using Quill's built-in toolbar */}
+                          <div className="border-b border-gray-200 px-4 py-2 hidden">
+                            <div className="flex items-center space-x-1 text-sm flex-wrap">
+                              {/* Undo/Redo */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Undo className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Redo className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Print */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Printer className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Format Painter */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <PaintBucket className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Zoom */}
+                              <Select>
+                                <SelectTrigger className="h-7 w-16 text-xs">
+                                  <SelectValue placeholder="100%" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="50">50%</SelectItem>
+                                  <SelectItem value="75">75%</SelectItem>
+                                  <SelectItem value="100">100%</SelectItem>
+                                  <SelectItem value="125">125%</SelectItem>
+                                  <SelectItem value="150">150%</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Format */}
+                              <Select>
+                                <SelectTrigger className="h-7 w-28 text-xs">
+                                  <SelectValue placeholder="Normal text" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="normal">Normal text</SelectItem>
+                                  <SelectItem value="heading1">Heading 1</SelectItem>
+                                  <SelectItem value="heading2">Heading 2</SelectItem>
+                                  <SelectItem value="heading3">Heading 3</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              {/* Font Family */}
+                              <Select>
+                                <SelectTrigger className="h-7 w-20 text-xs">
+                                  <SelectValue placeholder="Arial" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="arial">Arial</SelectItem>
+                                  <SelectItem value="times">Times</SelectItem>
+                                  <SelectItem value="calibri">Calibri</SelectItem>
+                                  <SelectItem value="helvetica">Helvetica</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Font Size */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Minus className="w-3 h-3" />
+                              </Button>
+                              
+                              <Select>
+                                <SelectTrigger className="h-7 w-12 text-xs">
+                                  <SelectValue placeholder="11" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="8">8</SelectItem>
+                                  <SelectItem value="9">9</SelectItem>
+                                  <SelectItem value="10">10</SelectItem>
+                                  <SelectItem value="11">11</SelectItem>
+                                  <SelectItem value="12">12</SelectItem>
+                                  <SelectItem value="14">14</SelectItem>
+                                  <SelectItem value="16">16</SelectItem>
+                                  <SelectItem value="18">18</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Plus className="w-3 h-3" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Text Formatting */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Bold className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Italic className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Underline className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Text Color */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Type className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Highlight Color */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Highlighter className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Link */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Link className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Comment */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <MessageSquare className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* Image */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Image className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Alignment */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignLeft className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignCenter className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignRight className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <AlignJustify className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Lists */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <List className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <ListOrdered className="w-4 h-4" />
+                              </Button>
+                              
+                              <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                              
+                              {/* Indent */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Indent className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <Outdent className="w-4 h-4" />
+                              </Button>
+                              
+                              {/* More Options */}
+                              <Button variant="ghost" size="sm" className="h-7 px-2 text-slate-600 hover:bg-gray-100">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {/* Rich Text Editor Content - Auto height with content */}
+                          <div id="story-editor" className="p-4">
+                            <RichEditor
+                              value={storyHtml}
+                              onChange={setStoryHtml}
+                              className="w-full min-h-[400px]"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* AI Story Assistant - Takes remaining 40% */}
-                    <div className="flex-1 pt-4">
-                      <div className="w-full max-w-[14.5in] mx-auto h-full">
+                    {/* AI Story Assistant - Card layout below editor */}
+                    <div className="w-full max-w-[14.5in] mx-auto">
+                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-4">
                         <AIStoryAssistant 
                           chatMessages={chatMessages}
                           chatMessage={chatMessage}
@@ -2306,83 +2393,19 @@ export default function DashboardLayout() {
                 </div>
               </div>
             ) : (
-              /* OTHER BUILDERS CONTENT */
-              <div className="bg-gray-100 flex flex-col h-full">
-                {/* Builder Header */}
-                <div className="bg-white border-b border-gray-200 px-4 pb-4">
-                  <h2 className="text-lg font-semibold text-slate-800">
-                    {(() => {
-                      switch(activeTab) {
-                        case "world": return "World Builder";
-                        case "production": return "Production Builder";
-                        case "asset": return "Asset Builder";
-                        case "script": return "Script Builder";
-                        case "deck": return "Deck Builder";
-                        default: return "Builder";
-                      }
-                    })()}
-                  </h2>
-                </div>
-
-                {/* Constrained Content Container */}
-                <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Builder Content - Takes 60% of screen height */}
-                    <div className="w-full max-w-[14.5in] mx-auto" style={{ height: '60%' }}>
-                      <Card className="rounded-lg border-0 w-full h-full flex items-center justify-center" style={{ backgroundColor: '#3f4c5f' }}>
-                        <div className="text-center max-w-2xl text-white">
-                          <h1 className="text-3xl font-bold mb-4">
-                            {(() => {
-                              switch(activeTab) {
-                                case "world": return "World Builder";
-                                case "production": return "Production Builder";
-                                case "asset": return "Asset Builder";
-                                case "script": return "Script Builder";
-                                case "deck": return "Deck Builder";
-                                default: return "Builder";
-                              }
-                            })()}
-                          </h1>
-                          <p className="mb-8 opacity-80">
-                            Welcome to the {(() => {
-                              switch(activeTab) {
-                                case "world": return "World Builder";
-                                case "production": return "Production Builder";
-                                case "asset": return "Asset Builder";
-                                case "script": return "Script Builder";
-                                case "deck": return "Deck Builder";
-                                default: return "Builder";
-                              }
-                            })()} workspace. This interface will contain all the tools specific to this builder type.
-                          </p>
-                          <div className="bg-black/20 rounded-lg p-8">
-                            <p className="text-sm opacity-60">
-                              Builder interface will be customized based on the selected tab.
-                              Each builder will have its own unique toolset and layout.
-                            </p>
-                          </div>
-                        </div>
-                      </Card>
-                    </div>
-
-                    {/* AI Story Assistant - Takes remaining 40% */}
-                    <div className="flex-1 pt-4">
-                      <div className="w-full max-w-[14.5in] mx-auto h-full">
-                        <AIStoryAssistant 
-                          chatMessages={chatMessages}
-                          chatMessage={chatMessage}
-                          setChatMessage={setChatMessage}
-                          handleSendMessage={handleSendMessage}
-                          handleKeyPress={handleKeyPress}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <DashboardContent 
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+                currentProjectSlide={currentProjectSlide}
+                setCurrentProjectSlide={setCurrentProjectSlide}
+                navigate={navigate}
+              />
             )}
           </div>
-
+          
           {/* Right Rail - Dashboard shows fixed Friends panel, Story shows dynamic stacked panels */}
           {activeTab === 'dashboard' ? (
             <div className="col-span-3 relative z-40">
@@ -2409,7 +2432,7 @@ export default function DashboardLayout() {
               </div>
             )
           )}
-
+          
           {/* Right Icon Sidebar - Always visible */}
           <div className="col-span-1 relative z-50 h-full">
             <RightIconSidebar 
@@ -2430,7 +2453,7 @@ export default function DashboardLayout() {
               <div className="bg-white border-b border-gray-200 px-4 pb-4">
                 <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
               </div>
-
+              
               {/* Mobile Story Builder Content */}
               <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Simple Mobile Toolbar */}
@@ -2447,7 +2470,7 @@ export default function DashboardLayout() {
                     </Button>
                   </div>
                 </div>
-
+                
                 {/* Full Document Writing Area */}
                 <div className="flex-1 bg-gray-50 p-4">
                   <div className="h-full bg-white border border-gray-200 shadow-sm flex flex-col">

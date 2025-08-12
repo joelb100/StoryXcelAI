@@ -18,41 +18,33 @@ export default function AIStoryAssistant({
   handleKeyPress
 }: AIStoryAssistantProps) {
   return (
-    <Card className="bg-gray-200 rounded-lg h-full flex flex-col border-0">
-      <div className="flex items-center justify-between p-4 border-b border-gray-300">
-        <h3 className="text-sm font-medium text-gray-700">AI Story Assistant</h3>
-        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-      </div>
-      
-      {/* Chat Messages Area */}
-      <div className="flex-1 bg-white rounded-lg p-3 m-4 mb-0 overflow-y-auto min-h-0" style={{scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9'}}>
-        <div className="space-y-3">
-          {chatMessages.length === 0 ? (
-            <div className="rounded-lg p-3 bg-blue-100 max-w-[85%]">
-              <p className="text-sm text-gray-800">
-                Hello! I'm your StoryXcel AI assistant. I can help you with character development, backstory creation, and creative writing suggestions for your western project.
-              </p>
-            </div>
-          ) : (
-            chatMessages.map((message) => (
-              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : ''}`}>
-                <div className={`rounded-lg p-3 max-w-[85%] ${
-                  message.type === 'ai' 
-                    ? 'bg-blue-100' 
-                    : 'bg-gray-100'
+    <div className="flex justify-center">
+      <div className="rounded-lg p-4 w-full flex flex-col" style={{ backgroundColor: '#d4dee7' }}>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-medium text-slate-700">AI Story Assistant</h3>
+          <Button variant="ghost" size="sm" className="text-slate-600 p-1">
+            <Settings className="w-4 h-4" />
+          </Button>
+        </div>
+        
+        {/* Chat Messages Area */}
+        <div className="flex-1 bg-white rounded-lg p-3 mb-3 overflow-y-auto">
+          <div className="space-y-3">
+            {chatMessages.map((message) => (
+              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                  message.type === 'user' 
+                    ? 'bg-blue-500 text-white rounded-br-none' 
+                    : 'bg-gray-100 text-slate-700 rounded-bl-none'
                 }`}>
-                  <p className="text-sm text-gray-800 whitespace-pre-line">
-                    {message.content}
-                  </p>
+                  {message.content}
                 </div>
               </div>
-            ))
-          )}
+            ))}
+          </div>
         </div>
-      </div>
-      
-      {/* Chat Input Area */}
-      <div className="p-4">
+        
+        {/* Chat Input Area */}
         <div className="flex items-center space-x-2">
           <div className="flex-1 relative">
             <input
@@ -73,6 +65,6 @@ export default function AIStoryAssistant({
           </button>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
