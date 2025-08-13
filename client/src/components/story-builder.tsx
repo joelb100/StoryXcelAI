@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect } from "react";
 import RichEditor from "@/components/editor/RichEditor";
 
 interface StoryBuilderProps {
@@ -20,118 +20,122 @@ interface StoryBuilderProps {
   setStoryHtml: (html: string) => void;
 }
 
-export default function StoryBuilder(props: StoryBuilderProps) {
-  const {
-    projectName = "",
-    projectType = "Screenplay",
-    lengthPages,
-    lengthMinutes,
-    genre = "",
-    genreDef = "",
-    subGenre = "",
-    subGenreDef = "",
-    theme = "",
-    themeDef = "",
-    subTheme = "",
-    subThemeDef = "",
-    centralConflict = "",
-    centralConflictDef = "",
-    storyHtml,
-    setStoryHtml,
-  } = props;
+export default function StoryBuilder({
+  projectName = "",
+  projectType = "",
+  lengthPages,
+  lengthMinutes,
+  genre = "",
+  genreDef = "",
+  subGenre = "",
+  subGenreDef = "",
+  theme = "",
+  themeDef = "",
+  subTheme = "",
+  subThemeDef = "",
+  centralConflict = "",
+  centralConflictDef = "",
+  storyHtml,
+  setStoryHtml,
+}: StoryBuilderProps) {
+  const projectTypeDisplay = (() => {
+    if (!projectType) return "Screenplay / 90 pages / 90 mins";
+    const parts = [projectType];
+    if (typeof lengthPages === "number") parts.push(`${lengthPages} pages`);
+    if (typeof lengthMinutes === "number") parts.push(`${lengthMinutes} mins`);
+    return parts.join(" / ");
+  })();
 
-  const projectTypeDisplay = useMemo(() => {
-    const bits = [projectType];
-    if (typeof lengthPages === "number") bits.push(`${lengthPages} pages`);
-    if (typeof lengthMinutes === "number") bits.push(`${lengthMinutes} mins`);
-    return bits.join(" / ");
-  }, [projectType, lengthPages, lengthMinutes]);
-
+  // Ensure the editor never pushes layout: the outer wrapper is a fixed-height grid
   return (
-    /**
-     * IMPORTANT: min-h-0 on every flex ancestor prevents the "push down on Enter"
-     * behavior and keeps scroll inside the intended pane only.
-     */
-    <div id="story-frame" className="w-full h-[calc(100vh-120px)] flex flex-col min-h-0">
-      {/* OVERVIEW (locked area with its own scrollbar) */}
-      <section className="shrink-0 border-b border-slate-200 bg-white">
-        <div className="p-3">
-          <h3 className="text-sm font-semibold text-slate-800 mb-2">Story Overview</h3>
-
-          {/* This is the only scrollable thing in the overview area */}
-          <div className="max-h-48 overflow-y-auto rounded-md border border-slate-200 p-3 text-[13px] leading-relaxed">
-            {projectName && (
-              <div className="mb-1">
-                <span className="font-semibold">Story Title</span> — {projectName}
-              </div>
-            )}
-
-            <div className="mb-1">
-              <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+    <div
+      className="
+        grid grid-rows-[auto_1fr]
+        h-[calc(100vh-220px)]    /* fits your top nav + margins; adjust 220 if needed */
+        w-full
+        overflow-hidden
+      "
+    >
+      {/* Story Overview — auto height; no truncation; full text visible */}
+      <div className="px-4 pt-3 pb-2 border-b border-slate-200 overflow-visible">
+        <div className="space-y-2 text-[13px] leading-snug text-slate-800">
+          {projectName && (
+            <div>
+              <span className="font-semibold">Story Title</span> — {projectName}
             </div>
+          )}
 
-            {genre && (
-              <div className="mb-1">
-                <span className="font-semibold">Genre</span> — {genre}
-                {genreDef && (
-                  <div className="ml-3 text-slate-600">{genreDef}</div>
-                )}
-              </div>
-            )}
-
-            {subGenre && (
-              <div className="mb-1">
-                <span className="font-semibold">Sub Genre</span> — {subGenre}
-                {subGenreDef && (
-                  <div className="ml-3 text-slate-600">{subGenreDef}</div>
-                )}
-              </div>
-            )}
-
-            {theme && (
-              <div className="mb-1">
-                <span className="font-semibold">Theme</span> — {theme}
-                {themeDef && (
-                  <div className="ml-3 text-slate-600">{themeDef}</div>
-                )}
-              </div>
-            )}
-
-            {subTheme && (
-              <div className="mb-1">
-                <span className="font-semibold">Sub Theme</span> — {subTheme}
-                {subThemeDef && (
-                  <div className="ml-3 text-slate-600">{subThemeDef}</div>
-                )}
-              </div>
-            )}
-
-            {centralConflict && (
-              <div>
-                <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                {centralConflictDef && (
-                  <div className="ml-3 text-slate-600">{centralConflictDef}</div>
-                )}
-              </div>
-            )}
+          <div>
+            <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
           </div>
-        </div>
-      </section>
 
-      {/* EDITOR (fills the space, only this scrolls while typing) */}
-      <section className="flex-1 min-h-0 flex flex-col">
-        <div className="px-3 pt-3 pb-2 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-800">Story Beats</h3>
+          {genre && (
+            <div>
+              <span className="font-semibold">Genre</span> — {genre}
+              {genreDef && (
+                <div className="ml-4 text-slate-600 whitespace-normal">
+                  {genreDef}
+                </div>
+              )}
+            </div>
+          )}
+
+          {subGenre && (
+            <div>
+              <span className="font-semibold">Sub Genre</span> — {subGenre}
+              {subGenreDef && (
+                <div className="ml-4 text-slate-600 whitespace-normal">
+                  {subGenreDef}
+                </div>
+              )}
+            </div>
+          )}
+
+          {theme && (
+            <div>
+              <span className="font-semibold">Theme</span> — {theme}
+              {themeDef && (
+                <div className="ml-4 text-slate-600 whitespace-normal">
+                  {themeDef}
+                </div>
+              )}
+            </div>
+          )}
+
+          {subTheme && (
+            <div>
+              <span className="font-semibold">Sub Theme</span> — {subTheme}
+              {subThemeDef && (
+                <div className="ml-4 text-slate-600 whitespace-normal">
+                  {subThemeDef}
+                </div>
+              )}
+            </div>
+          )}
+
+          {centralConflict && (
+            <div>
+              <span className="font-semibold">Central Conflict</span> — {centralConflict}
+              {centralConflictDef && (
+                <div className="ml-4 text-slate-600 whitespace-normal">
+                  {centralConflictDef}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Story Beats editor — fixed row that scrolls internally */}
+      <div className="min-h-0 overflow-hidden flex flex-col">
+        <div className="px-4 py-2 text-lg font-semibold text-slate-800 flex-shrink-0">
+          Story Beats
         </div>
 
-        {/* The editor's parent MUST have min-h-0 and overflow-hidden;
-            the editor itself gets h-full so Quill consumes all space. */}
-        <div className="flex-1 min-h-0 overflow-hidden px-3 pb-3">
-          <div className="h-full rounded-md border border-slate-200">
-            <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full" />
-          </div>
+        <div className="flex-1 min-h-0 overflow-auto px-4 pb-3">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full" />
         </div>
-      </section>
+      </div>
     </div>
   );
 }
