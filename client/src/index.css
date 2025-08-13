@@ -9,19 +9,7 @@
 
 /* Quill editor height constraints to prevent bounding box expansion */
 .ql-container {
-  height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.ql-editor {
-  height: 100% !important;
-  overflow-y: auto !important;
-  flex: 1 !important;
-}
-
-.ql-toolbar {
-  flex-shrink: 0 !important;
+  height: calc(100% - 42px) !important; /* subtract toolbar height */
 }
 
 /* Ensure all dynamic column spans are available */

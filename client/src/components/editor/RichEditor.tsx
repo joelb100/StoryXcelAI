@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
+import { useEffect, useRef } from "react";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
 
 export const OVERVIEW_START =
   '<span class="sx-hidden" data-sx-marker="overview-start"></span>';
@@ -11,10 +11,9 @@ type Props = {
   value: string;
   onChange: (html: string) => void;
   className?: string;
-  onReady?: (quill: Quill) => void;
 };
 
-const RichEditor: React.FC<Props> = ({ value, onChange, className, onReady }) => {
+export default function RichEditor({ value, onChange, className }: Props) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const qRef = useRef<Quill | null>(null);
 
@@ -23,9 +22,7 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className, onReady }) =>
 
     const q = new Quill(hostRef.current, {
       theme: "snow",
-      readOnly: false,
-      placeholder: "Your story begins here...",
-      modules: {
+      modules: { 
         toolbar: [
           [{ size: ['small', false, 'large', 'huge'] }],
           [{ font: [] }],
@@ -33,50 +30,35 @@ const RichEditor: React.FC<Props> = ({ value, onChange, className, onReady }) =>
           [{ align: [] }],
           [{ list: 'ordered' }, { list: 'bullet' }],
           ['clean'],
-        ],
-        clipboard: { matchVisual: true },
+        ], 
+        clipboard: { matchVisual: true } 
       },
-      formats: ["bold","italic","underline","strike","list","align","header"],
     });
-
-    // Make the Quill containers fill + scroll
-    const container = hostRef.current.querySelector(".ql-container") as HTMLElement | null;
-    const editor = hostRef.current.querySelector(".ql-editor") as HTMLElement | null;
-    if (container) container.style.height = "100%";
-    if (editor) {
-      editor.style.height = "100%";
-      editor.style.overflowY = "auto";
-    }
-
-    // Handle content changes
-    q.on('text-change', () => {
-      onChange(q.root.innerHTML);
-    });
-
-    // Set initial value
-    if (value) {
-      q.root.innerHTML = value;
-    }
-
     qRef.current = q;
-    (window as any).__quill = q;
-    (window as any).__quillReady = true;
-    onReady?.(q);
-  }, [onReady]);
 
-  // Update content when value prop changes
+    // resize the Quill container to fill the host
+    const container = hostRef.current.querySelector(".ql-container") as HTMLElement | null;
+    if (container) container.style.height = "calc(100% - 42px)"; // toolbar ≈42px
+    const root = hostRef.current.querySelector(".ql-editor") as HTMLElement | null;
+    if (root) root.style.minHeight = "auto";
+
+    q.on("text-change", () => onChange(q.root.innerHTML));
+  }, [onChange]);
+
+  // keep Quill in sync when value is changed externally
   useEffect(() => {
-    if (qRef.current && value !== qRef.current.root.innerHTML) {
-      qRef.current.root.innerHTML = value;
+    const q = qRef.current;
+    if (!q) return;
+    const current = q.root.innerHTML;
+    if (current !== value) {
+      const delta = q.clipboard.convert({ html: value || "<p><br/></p>" });
+      q.setContents(delta, "silent");
     }
   }, [value]);
 
   return (
-    <div className={className}>
-      {/* Give the host a real height to fill */}
-      <div ref={hostRef} className="h-full rounded-md border border-slate-200" />
+    <div className={["w-full h-full", className].filter(Boolean).join(" ")}>
+      <div ref={hostRef} className="w-full h-full" />
     </div>
   );
-};
-
-export default RichEditor;
+}

@@ -1,3 +1,5 @@
+1) Replace your StoryBuilder.tsx with this
+
 import { useMemo } from "react";
 import RichEditor from "@/components/editor/RichEditor";
 
@@ -49,10 +51,10 @@ export default function StoryBuilder(props: StoryBuilderProps) {
 
   return (
     /**
-     * IMPORTANT: min-h-0 on every flex ancestor prevents the "push down on Enter"
+     * IMPORTANT: min-h-0 on every flex ancestor prevents the “push down on Enter”
      * behavior and keeps scroll inside the intended pane only.
      */
-    <div id="story-frame" className="w-full h-[calc(100vh-120px)] flex flex-col min-h-0">
+    <div className="w-full h-[calc(100vh-120px)] flex flex-col min-h-0">
       {/* OVERVIEW (locked area with its own scrollbar) */}
       <section className="shrink-0 border-b border-slate-200 bg-white">
         <div className="p-3">
@@ -124,7 +126,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
           <h3 className="text-lg font-semibold text-slate-800">Story Beats</h3>
         </div>
 
-        {/* The editor's parent MUST have min-h-0 and overflow-hidden;
+        {/* The editor’s parent MUST have min-h-0 and overflow-hidden;
             the editor itself gets h-full so Quill consumes all space. */}
         <div className="flex-1 min-h-0 overflow-hidden px-3 pb-3">
           <div className="h-full rounded-md border border-slate-200">
@@ -132,6 +134,78 @@ export default function StoryBuilder(props: StoryBuilderProps) {
           </div>
         </div>
       </section>
+
+      {/* AI ASSISTANT (fixed height, never moves) */}
+      <section className="shrink-0 h-56 border-t border-slate-200 bg-[#e9eff5]">
+        {/* Keep your existing AI assistant component/markup here.
+           If it already lives elsewhere (e.g., separate component),
+           just ensure this wrapper keeps a fixed height (h-56). */}
+      </section>
     </div>
   );
 }
+
+2) Make sure your RichEditor actually fills its parent
+
+Your current wrapper creates a div without a guaranteed height for Quill. Give it the full height and let the Quill container fill it.
+
+// client/src/components/editor/RichEditor.tsx
+import { useEffect, useRef } from "react";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
+
+type Props = {
+  value: string;
+  onChange: (html: string) => void;
+  className?: string;
+};
+
+export default function RichEditor({ value, onChange, className }: Props) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const qRef = useRef<Quill | null>(null);
+
+  useEffect(() => {
+    if (!hostRef.current || qRef.current) return;
+
+    const q = new Quill(hostRef.current, {
+      theme: "snow",
+      modules: { toolbar: true, clipboard: { matchVisual: true } },
+    });
+    qRef.current = q;
+
+    // resize the Quill container to fill the host
+    const container = hostRef.current.querySelector(".ql-container") as HTMLElement | null;
+    if (container) container.style.height = "calc(100% - 42px)"; // toolbar ≈42px
+    const root = hostRef.current.querySelector(".ql-editor") as HTMLElement | null;
+    if (root) root.style.minHeight = "auto";
+
+    q.on("text-change", () => onChange(q.root.innerHTML));
+  }, [onChange]);
+
+  // keep Quill in sync when value is changed externally
+  useEffect(() => {
+    const q = qRef.current;
+    if (!q) return;
+    const current = q.root.innerHTML;
+    if (current !== value) {
+      const delta = q.clipboard.convert(value || "<p><br/></p>");
+      q.setContents(delta, "silent");
+    }
+  }, [value]);
+
+  return (
+    <div className={["w-full h-full", className].filter(Boolean).join(" ")}>
+      <div ref={hostRef} className="w-full h-full" />
+    </div>
+  );
+}
+
+3) (Optional) One CSS safety net
+
+If you prefer CSS instead of inline sizing for Quill:
+
+/* e.g., in index.css or global.css */
+.ql-container {
+  height: calc(100% - 42px) !important; /* subtract toolbar height */
+}
+
