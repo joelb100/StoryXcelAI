@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useLocation } from "wouter";
 import { upsertStoryTitleInText } from '@/lib/storyTitleUpsert';
-import { CENTRAL_CONFLICT_BEATS } from '@/lib/centralConflictBeats';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,32 +71,19 @@ import {
   Bell
 } from "lucide-react";
 
-// ----- Story beats templates and DOM manipulation -----
-const BEATS_START = '<!-- STORYXCEL_BEATS_START -->';
-const BEATS_END = '<!-- STORYXCEL_BEATS_END -->';
+// ----- Conflict templates and DOM manipulation -----
+const CONFLICT_START = '<!-- STORYXCEL_CONFLICT_START -->';
+const CONFLICT_END   = '<!-- STORYXCEL_CONFLICT_END -->';
 
-// Helper functions for beats auto-fill
-const renderBeatsHtml = (conflictLabel: string) => {
-  const beats = CENTRAL_CONFLICT_BEATS[conflictLabel];
-  if (!beats) return "";
-
-  const list = (title: string, items: string[]) =>
-    `<p><strong>${title}</strong></p><ul>${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
-
-  return [
-    BEATS_START,
-    `<h3>Story Beats</h3>`,
-    list("Plot A — The high level description of the story's key sequential events of the main story", beats.plotA),
-    list("Sub Plot B — The storyline's Secondary sequential story points that focus on relationships", beats.subplotB),
-    list("Sub Plot C — The storyline's Tertiary sequential story points that focus on background elements", beats.subplotC),
-    list("Plot Twists —", beats.twists),
-    list("Emotional Hook — A powerful narrative element designed to evoke strong feelings", beats.hook),
-    BEATS_END,
-  ].join("");
+type ConflictBlock = {
+  plotA: string[];
+  plotB: string[];
+  plotC: string[];
+  twists: string[];
+  hook: string[];
 };
 
-// Deprecated - kept for backward compatibility but will be removed
-const CONFLICT_TEMPLATES: Record<string, any> = {
+const CONFLICT_TEMPLATES: Record<string, ConflictBlock> = {
   'man-v-man': {
     plotA: [
       'Opposing goals create inevitable confrontation.',
@@ -284,21 +270,50 @@ const CONFLICT_TEMPLATES: Record<string, any> = {
   }
 };
 
-// Helper function for beats upsert (to be used inside component)
-function upsertBeatsHelper(conflictLabel: string, setStoryHtml: (html: string | ((prev: string) => string)) => void) {
-  const html = renderBeatsHtml(conflictLabel);
-  if (!html) return;
+function renderConflictHTML(key: string) {
+  const t = CONFLICT_TEMPLATES[key];
+  if (!t) return '';
 
-  setStoryHtml(prev => {
-    const start = prev.indexOf(BEATS_START);
-    const end = prev.indexOf(BEATS_END);
-    if (start !== -1 && end !== -1) {
-      // replace existing block (prevents repeats)
-      return prev.slice(0, start) + html + prev.slice(end + BEATS_END.length);
-    }
-    // otherwise append to the end of the document
-    return prev + (prev.trim() ? "<hr/>" : "") + html;
-  });
+  const toUL = (items: string[]) =>
+    `<ul style="margin:8px 0 16px 20px; padding:0; list-style-type: disc;">${items.map(li => `<li style="margin:4px 0;">${li}</li>`).join('')}</ul>`;
+
+  return (
+    `${CONFLICT_START}
+<strong>Story Beats</strong><br/><br/>
+<strong>Plot A —</strong> The high level description of the story's key sequential events of the main story
+${toUL(t.plotA)}
+<strong>Sub Plot B —</strong> The storyline's Secondary sequential story points that focus on relationships
+${toUL(t.plotB)}
+<strong>Sub Plot C —</strong> The storyline's Tertiary sequential story points that focus on background elements
+${toUL(t.plotC)}
+<strong>Plot Twists —</strong>
+${toUL(t.twists)}
+<strong>Emotional Hook —</strong> A powerful narrative element designed to evoke strong feelings
+${toUL(t.hook)}
+<p>Your story begins here...</p>
+${CONFLICT_END}`
+  );
+}
+
+function insertOrReplaceConflictBlock(conflictKey: string, currentHtml: string, updateHtml: (html: string) => void) {
+  // Get the current story HTML from parameter
+  let html = currentHtml || '';
+
+  // Strip any existing conflict block (prevents duplicates)
+  const startIdx = html.indexOf(CONFLICT_START);
+  const endIdx   = html.indexOf(CONFLICT_END);
+  if (startIdx !== -1 && endIdx !== -1) {
+    html = html.slice(0, startIdx) + html.slice(endIdx + CONFLICT_END.length);
+  }
+
+  const block = renderConflictHTML(conflictKey);
+  if (!block) return;
+
+  // Always insert at the very top of the editor content
+  html = block + '\n' + html;
+
+  // Update the story HTML via callback
+  updateHtml(html);
 }
 
 // Import logo and components
@@ -1954,11 +1969,24 @@ export default function DashboardLayout() {
     setSubGenre(value);
   };
 
-  // Handle Central Conflict change with beats auto-fill
+  // Handle Central Conflict change with conflict-based story beats insertion
   const handleCentralConflictChange = (value: string) => {
     setCentralConflict(value);
-    // Auto-fill beats using the new system
-    upsertBeatsHelper(value, setStoryHtml);
+
+    // Map dropdown value to template key
+    const templateKey = value; // Keys already match: 'man-v-man', 'man-v-nature', etc.
+    
+    // If there is no template or same conflict already applied, do nothing.
+    if (!CONFLICT_TEMPLATES[templateKey]) return;
+
+    // Check if there is already a conflict block; if present and lastApplied matches, skip
+    const hasBlock = storyHtml?.includes(CONFLICT_START);
+
+    if (hasBlock && lastAppliedConflict === templateKey) return;
+
+    // Insert or replace the block once
+    insertOrReplaceConflictBlock(templateKey, storyHtml, setStoryHtml);
+    setLastAppliedConflict(templateKey);
   };
 
   const handleProjectTypeChange = (val: string) => {
