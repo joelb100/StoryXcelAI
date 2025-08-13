@@ -86,172 +86,186 @@ type ConflictBlock = {
 const CONFLICT_TEMPLATES: Record<string, ConflictBlock> = {
   'man-v-man': {
     plotA: [
-      "Rival's move forces a risky escalation.",
-      "A public confrontation shifts power dynamics.",
-      "Ultimatum sets a ticking clock."
+      'Opposing goals create inevitable confrontation.',
+      'Power dynamics shift, forcing alliance or betrayal.',
+      'Personal history complicates present conflict.'
     ],
     plotB: [
-      "Allies question loyalty under pressure.",
-      "Romance complicates tactics and timing."
+      'Allies question the protagonist\'s methods or motives.',
+      'Collateral damage affects innocent parties.'
     ],
     plotC: [
-      "Rumors & reputation alter who's trusted.",
-      "Local customs create unexpected constraints."
+      'Past relationships resurface at critical moments.',
+      'The opponent\'s perspective reveals uncomfortable truths.'
     ],
     twists: [
-      "Antagonist wants the same 'good' outcome.",
-      "A betrayal was a protective lie."
+      'The antagonist was right about something crucial.',
+      'Victory requires becoming what you fought against.'
     ],
     hook: [
-      "Two equals collide; victory costs identity."
+      'Your enemy knows you better than you know yourself.',
+      'Defeating them means losing who you are.'
     ]
   },
   'man-v-nature': {
     plotA: [
-      "Weather swings force a route change.",
-      "Critical supplies are lost or spoiled.",
-      "Shelter becomes a trap."
+      'Natural forces operate beyond human control or understanding.',
+      'Survival instincts conflict with civilized behavior.',
+      'The environment punishes human arrogance or negligence.'
     ],
     plotB: [
-      "Relationships fray under survival stress.",
-      "Compassion vs. triage: who gets saved?"
+      'Group dynamics fracture under natural pressure.',
+      'Nature reveals hidden aspects of character.'
     ],
     plotC: [
-      "Local terrain myths affect choices.",
-      "Rescue plans clash with reality."
+      'Technology fails when most needed.',
+      'Animals or natural phenomena become active obstacles.'
     ],
     twists: [
-      "The safe path hides a greater threat."
+      'Humans caused the natural disaster they\'re fleeing.',
+      'Civilization\'s comforts have made survival skills obsolete.'
     ],
     hook: [
-      "Endure the world; the world doesn't care."
+      'The land doesn\'t hate you—it doesn\'t care.',
+      'Earn every breath.'
     ]
   },
   'man-v-environment': {
     plotA: [
-      "Systems pressure force adaptation or extinction.",
-      "A breaking point demands radical action despite consequences.",
-      "The environment's 'rules' shift mid‑story, invalidating old strategies."
+      'Systems pressure force adaptation or extinction.',
+      'A breaking point demands radical action despite consequences.',
+      'The environment\'s "rules" shift mid-story, invalidating old strategies.'
     ],
     plotB: [
-      "Personal relationships strain under environmental stress.",
-      "Old loyalties conflict with survival needs."
+      'Personal relationships strain under environmental stress.',
+      'Old loyalties conflict with survival needs.'
     ],
     plotC: [
-      "Infrastructure failures cascade into larger crises.",
-      "Resource scarcity creates new hierarchies of power."
+      'Infrastructure failures cascade into larger crises.',
+      'Resource scarcity creates new hierarchies of power.'
     ],
     twists: [
-      "The environment was shaped by past human choices.",
-      "Adaptation changes the protagonist in unexpected ways."
+      'The environment was shaped by past human choices.',
+      'Adaptation changes the protagonist in unexpected ways.'
     ],
     hook: [
-      "What you built to protect you becomes your prison."
+      'What you built to protect you becomes your prison.',
+      'Adaptation costs identity.'
     ]
   },
   'man-v-tech': {
     plotA: [
-      "Tool becomes gatekeeper; access revoked.",
-      "Automation makes a catastrophic choice.",
-      "System exploits user's blind spot."
+      'Technological dependence reveals fatal vulnerabilities.',
+      'A system malfunction forces manual intervention beyond training.',
+      'The technology "evolves" beyond its original programming.'
     ],
     plotB: [
-      "Convenience erodes consent.",
-      "Old skills suddenly matter again."
+      'Human connections weaken as technology strengthens.',
+      'Old skills become invaluable when systems fail.'
     ],
     plotC: [
-      "Legacy tech reveals a manual override.",
-      "A patch creates a wider vulnerability."
+      'Data privacy breaches expose personal secrets.',
+      'Automation eliminates human agency in critical decisions.'
     ],
     twists: [
-      "The 'bug' was a feature all along."
+      'The technology was designed to fail at this moment.',
+      'Human intuition trumps algorithmic certainty.'
     ],
     hook: [
-      "We taught the machine too well."
+      'Your convenience becomes your cage.',
+      'The tools reshape the user.'
     ]
   },
   'man-v-supernatural': {
     plotA: [
-      "Signs intensify; rules of the haunting surface.",
-      "A protection ritual backfires.",
-      "Sacrifice is demanded—by name."
+      'Supernatural rules operate by alien logic that punishes assumption.',
+      'A bargain or curse escalates beyond the protagonist\'s control.',
+      'The supernatural force demands a sacrifice that defines character.'
     ],
     plotB: [
-      "Skeptic vs. believer fractures the group.",
-      "Past guilt resurfaces as a curse condition."
+      'Loved ones are affected by supernatural consequences.',
+      'Reality becomes unreliable as supernatural influence grows.'
     ],
     plotC: [
-      "Local lore provides a missing step.",
-      "A possessed object changes hands."
+      'Ancient knowledge conflicts with modern understanding.',
+      'The supernatural bleeds into mundane life unpredictably.'
     ],
     twists: [
-      "The entity wants 'justice', not chaos."
+      'The supernatural was always present, just hidden.',
+      'The protagonist has supernatural heritage or connection.'
     ],
     hook: [
-      "What haunts you has a reason—and it's right."
+      'Some doors should never be opened.',
+      'The price of power is paid by others.'
     ]
   },
   'man-v-self': {
     plotA: [
-      "Old coping strategy fails at the worst time.",
-      "An avoided truth becomes public.",
-      "Relapse (or regression) triggers collateral damage."
+      'Internal contradictions create paralysis at crucial moments.',
+      'Past trauma resurfaces to sabotage present progress.',
+      'Core beliefs are challenged by undeniable evidence.'
     ],
     plotB: [
-      "A mentor's tough love forces a choice.",
-      "Romance exposes self‑deception."
+      'External relationships mirror internal conflicts.',
+      'Self-sabotage patterns repeat despite awareness.'
     ],
     plotC: [
-      "A childhood place resurfaces a buried memory.",
-      "Symbolic object must be destroyed or reclaimed."
+      'Identity crises manifest in changing behavior.',
+      'Fear of success competes with fear of failure.'
     ],
     twists: [
-      "The 'flaw' is tied to the protagonist's gift."
+      'The flaw was actually a strength misunderstood.',
+      'Others see the protagonist more clearly than they see themselves.'
     ],
     hook: [
-      "To win, you must stop being you."
+      'Your greatest enemy knows all your moves.',
+      'Freedom requires facing what you\'ve been running from.'
     ]
   },
   'man-v-god': {
     plotA: [
-      "Doctrine and necessity collide.",
-      "A public rite is interrupted.",
-      "Blasphemy or miracle? Records disagree."
+      'Divine command conflicts with human morality or logic.',
+      'Faith is tested by suffering that challenges core beliefs.',
+      'Religious duty demands sacrifice that questions worthiness.'
     ],
     plotB: [
-      "Community splits along belief lines.",
-      "Forbidden kindness shifts a zealot."
+      'Community faith wavers, creating isolation or solidarity.',
+      'Miracles have terrible costs or conditions.'
     ],
     plotC: [
-      "A relic changes meaning in the present.",
-      "Heretical text reframes a prophecy."
+      'Religious hierarchy conflicts with spiritual truth.',
+      'Sacred texts are reinterpreted under pressure.'
     ],
     twists: [
-      "Faith keeps a secret from the faithful."
+      'The divine test was actually human manipulation.',
+      'Doubt becomes a form of deeper faith.'
     ],
     hook: [
-      "Reverence vs. responsibility—choose one."
+      'God\'s silence is not absence.',
+      'True faith questions everything.'
     ]
   },
   'man-v-society': {
     plotA: [
-      "Lawful path forecloses a moral good.",
-      "Public opinion turns on partial truth.",
-      "A protest/strike creates personal stakes."
+      'Social norms criminalize necessary actions.',
+      'Institutional power protects itself through individual sacrifice.',
+      'Cultural change requires personal rebellion with social costs.'
     ],
     plotB: [
-      "Family reputation is weaponized.",
-      "A friend becomes a surveillance risk."
+      'Family loyalties divide over social issues.',
+      'Legal systems fail to deliver justice.'
     ],
     plotC: [
-      "Policy detail hides an escape clause.",
-      "Black‑market help has a price."
+      'Public opinion shifts unpredictably.',
+      'Economic pressure enforces social conformity.'
     ],
     twists: [
-      "The institution was built to prevent this moment."
+      'The system was designed to create this specific problem.',
+      'Individual change influences unexpected social transformation.'
     ],
     hook: [
-      "Break the rules or break yourself."
+      'The majority can be morally wrong.',
+      'Standing alone requires the courage of your convictions.'
     ]
   }
 };
