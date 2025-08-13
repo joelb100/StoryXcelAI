@@ -58,6 +58,9 @@ export default function StoryBuilder({
   };
 
   // Build project type display
+  // Fixed height for Overview section to prevent expansion
+  const OVERVIEW_H = 220;
+
   const projectTypeDisplay = projectType ? (() => {
     const parts: string[] = [projectType];
     if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
@@ -76,86 +79,68 @@ export default function StoryBuilder({
         maxHeight: '100%' 
       }}
     >
-      {/* Story Overview Section - Fixed height, never expandable */}
+      {/* Story Overview Section — fixed height with internal scrolling */}
       {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
-        <div 
-          className="flex-shrink-0 p-3 border-b border-gray-200 overflow-hidden"
-          style={{ 
-            maxHeight: '25%', 
-            minHeight: 'auto'
-          }}
+        <div
+          className="flex-shrink-0 border-b border-gray-200"
+          style={{ height: OVERVIEW_H }}
         >
-          <div className="space-y-1 text-xs">
-            {projectName && (
+          <div className="h-full overflow-y-auto p-3">
+            <div className="space-y-1 text-xs">
+              {projectName && (
+                <div>
+                  <span className="font-semibold">Story Title</span> — {projectName}
+                </div>
+              )}
+
               <div>
-                <span className="font-semibold">Story Title</span> — {projectName}
+                <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
               </div>
-            )}
-            
-            <div>
-              <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+
+              {genre && (
+                <div>
+                  <span className="font-semibold">Genre</span> — {genre}
+                  {genreDef && <div className="ml-3 text-xs text-slate-600">{genreDef}</div>}
+                </div>
+              )}
+
+              {subGenre && (
+                <div>
+                  <span className="font-semibold">Sub Genre</span> — {subGenre}
+                  {subGenreDef && <div className="ml-3 text-xs text-slate-600">{subGenreDef}</div>}
+                </div>
+              )}
+
+              {theme && (
+                <div>
+                  <span className="font-semibold">Theme</span> — {theme}
+                  {themeDef && <div className="ml-3 text-xs text-slate-600">{themeDef}</div>}
+                </div>
+              )}
+
+              {subTheme && (
+                <div>
+                  <span className="font-semibold">Sub Theme</span> — {subTheme}
+                  {subThemeDef && <div className="ml-3 text-xs text-slate-600">{subThemeDef}</div>}
+                </div>
+              )}
+
+              {centralConflict && (
+                <div>
+                  <span className="font-semibold">Central Conflict</span> — {centralConflict}
+                  {centralConflictDef && <div className="ml-3 text-xs text-slate-600">{centralConflictDef}</div>}
+                </div>
+              )}
             </div>
-            
-            {genre && (
-              <div>
-                <span className="font-semibold">Genre</span> — {genre}
-                {genreDef && <div className="ml-3 text-xs text-slate-600 truncate">{genreDef}</div>}
-              </div>
-            )}
-            
-            {subGenre && (
-              <div>
-                <span className="font-semibold">Sub Genre</span> — {subGenre}
-                {subGenreDef && <div className="ml-3 text-xs text-slate-600 truncate">{subGenreDef}</div>}
-              </div>
-            )}
-            
-            {theme && (
-              <div>
-                <span className="font-semibold">Theme</span> — {theme}
-                {themeDef && <div className="ml-3 text-xs text-slate-600 truncate">{themeDef}</div>}
-              </div>
-            )}
-            
-            {subTheme && (
-              <div>
-                <span className="font-semibold">Sub Theme</span> — {subTheme}
-                {subThemeDef && <div className="ml-3 text-xs text-slate-600 truncate">{subThemeDef}</div>}
-              </div>
-            )}
-            
-            {centralConflict && (
-              <div>
-                <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                {centralConflictDef && <div className="ml-3 text-xs text-slate-600 truncate">{centralConflictDef}</div>}
-              </div>
-            )}
           </div>
         </div>
       )}
 
-      {/* Story Beats Section - Fixed height with scrolling only */}
-      <div 
-        className="flex-1 flex flex-col min-h-0 p-3 overflow-hidden"
-        style={{ 
-          minHeight: 0,
-          maxHeight: 'calc(100% - 25%)' 
-        }}
-      >
+      {/* Story Beats Section — fills remaining space */}
+      <div className="flex-1 min-h-0 flex flex-col p-3">
         <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
-        
-        <div 
-          className="flex-1 min-h-0 overflow-auto"
-          style={{ 
-            minHeight: 0,
-            maxHeight: '100%'
-          }}
-        >
-          <RichEditor
-            value={storyHtml}
-            onChange={setStoryHtml}
-            className="w-full h-full"
-          />
+        <div className="flex-1 min-h-0">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full" />
         </div>
       </div>
     </div>

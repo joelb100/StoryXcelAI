@@ -1,0 +1,146 @@
+Two things in that code are fighting your “frozen” (non‑expanding) boxes:
+
+    The Overview block isn’t truly fixed height
+
+    You give it maxHeight: '25%' and minHeight: 'auto', so it will still grow/shrink with content.
+
+    To “freeze” it, give the container a fixed height and scroll inside it.
+
+    The Quill wrapper has its own min height
+
+    Your RichEditor sets minHeight: '200px' on the host. That prevents the Story Beats area from naturally filling the remaining space and can make boxes feel “unfrozen”.
+
+Below is a minimal, surgical fix for both files.
+A. Lock the Overview box height and scroll inside it (StoryBuilder)
+
+// at top of StoryBuilder.tsx
+const OVERVIEW_H = 220; // pick what looks right on your design
+
+Replace your Overview section with this (note the split: fixed-height outer, scrolling inner):
+
+{/* Story Overview Section — fixed height with internal scrolling */}
+{(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
+  <div
+    className="flex-shrink-0 border-b border-gray-200"
+    style={{ height: OVERVIEW_H }}
+  >
+    <div className="h-full overflow-y-auto p-3">
+      <div className="space-y-1 text-xs">
+        {projectName && (
+          <div>
+            <span className="font-semibold">Story Title</span> — {projectName}
+          </div>
+        )}
+
+        <div>
+          <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+        </div>
+
+        {genre && (
+          <div>
+            <span className="font-semibold">Genre</span> — {genre}
+            {genreDef && <div className="ml-3 text-xs text-slate-600">{genreDef}</div>}
+          </div>
+        )}
+
+        {subGenre && (
+          <div>
+            <span className="font-semibold">Sub Genre</span> — {subGenre}
+            {subGenreDef && <div className="ml-3 text-xs text-slate-600">{subGenreDef}</div>}
+          </div>
+        )}
+
+        {theme && (
+          <div>
+            <span className="font-semibold">Theme</span> — {theme}
+            {themeDef && <div className="ml-3 text-xs text-slate-600">{themeDef}</div>}
+          </div>
+        )}
+
+        {subTheme && (
+          <div>
+            <span className="font-semibold">Sub Theme</span> — {subTheme}
+            {subThemeDef && <div className="ml-3 text-xs text-slate-600">{subThemeDef}</div>}
+          </div>
+        )}
+
+        {centralConflict && (
+          <div>
+            <span className="font-semibold">Central Conflict</span> — {centralConflict}
+            {centralConflictDef && <div className="ml-3 text-xs text-slate-600">{centralConflictDef}</div>}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
+Then simplify your Story Beats wrapper so it just fills the rest via flex (no calc math needed):
+
+{/* Story Beats Section — fills remaining space */}
+<div className="flex-1 min-h-0 flex flex-col p-3">
+  <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
+  <div className="flex-1 min-h-0">
+    <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full" />
+  </div>
+</div>
+
+Key bits:
+
+    flex-shrink-0 + fixed height on the Overview container
+
+    Inner div gets overflow-y-auto to scroll the long text
+
+    The Story Beats container uses flex-1 min-h-0 so it always fills the remaining space
+
+B. Make Quill truly stretch and scroll within its box (RichEditor)
+
+Update your RichEditor so the Quill host and editor take full height and scroll internally:
+
+// RichEditor.tsx
+export default function RichEditor({ onReady, className }: Props) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const qRef = useRef<Quill | null>(null);
+
+  useEffect(() => {
+    if (!hostRef.current || qRef.current) return;
+
+    const q = new Quill(hostRef.current, {
+      theme: "snow",
+      readOnly: false,
+      placeholder: "Your story begins here...",
+      modules: {
+        toolbar: [/* your toolbar */],
+        clipboard: { matchVisual: true },
+      },
+      formats: ["bold","italic","underline","strike","list","align","header"],
+    });
+
+    // Make the Quill containers fill + scroll
+    const container = hostRef.current.querySelector(".ql-container") as HTMLElement | null;
+    const editor = hostRef.current.querySelector(".ql-editor") as HTMLElement | null;
+    if (container) container.style.height = "100%";
+    if (editor) {
+      editor.style.height = "100%";
+      editor.style.overflowY = "auto";
+    }
+
+    qRef.current = q;
+    (window as any).__quill = q;
+    (window as any).__quillReady = true;
+    onReady?.(q);
+  }, []);
+
+  return (
+    <div className={className}>
+      {/* Give the host a real height to fill */}
+      <div ref={hostRef} className="h-full rounded-md border border-slate-200" />
+    </div>
+  );
+}
+
+Important changes:
+
+    The host wrapper gets className="h-full" (no minHeight: 200px)
+
+    We explicitly set .ql-container and .ql-editor to height: 100% and give the editor overflowY: auto so it scrolls rather than pushing layout.
