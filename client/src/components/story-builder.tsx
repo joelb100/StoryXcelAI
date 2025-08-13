@@ -1,9 +1,5 @@
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import RichEditor from '@/components/editor/RichEditor';
+import { useMemo, useEffect, useRef } from "react";
+import RichEditor from "@/components/editor/RichEditor";
 
 interface StoryBuilderProps {
   projectName?: string;
@@ -20,142 +16,165 @@ interface StoryBuilderProps {
   subThemeDef?: string;
   centralConflict?: string;
   centralConflictDef?: string;
+
+  // Quill binding
   storyHtml: string;
   setStoryHtml: (html: string) => void;
 }
 
-export default function StoryBuilder({
-  projectName = "",
-  projectType = "",
-  lengthPages,
-  lengthMinutes,
-  genre = "",
-  genreDef = "",
-  subGenre = "",
-  subGenreDef = "",
-  theme = "",
-  themeDef = "",
-  subTheme = "",
-  subThemeDef = "",
-  centralConflict = "",
-  centralConflictDef = "",
-  storyHtml,
-  setStoryHtml
-}: StoryBuilderProps) {
-  const [storyData, setStoryData] = useState({
-    plotA: "",
-    subplotB: "",
-    subplotC: "",
-    plotTwists: "",
-    emotionalHook: ""
-  });
+// Choose a fixed height for the "overview" bar so ALL 7 lines are visible.
+// 152–176px usually fits 7 rows of small text without scrolling.
+const OVERVIEW_BAR_HEIGHT = 176;
 
-  const handleInputChange = (field: string, value: string) => {
-    setStoryData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+// Helper: build beats HTML
+function buildBeatsHTML(conflict: string) {
+  // Customize per-conflict. Example for various conflicts:
+  const lines = [
+    `<h3><strong>Story Beats</strong></h3>`,
+    `<p><strong>Plot A —</strong> Systems pressure force adaptation or extinction.</p>`,
+    `<p>• A breaking point demands radical action despite consequences.</p>`,
+    `<p>• The environment's "rules" shift mid‑story, invalidating old strategies.</p>`,
+    `<p><strong>Sub Plot B —</strong> Relationships strain under environmental stress.</p>`,
+    `<p>• Old loyalties conflict with survival needs.</p>`,
+    `<p><strong>Sub Plot C —</strong> Infrastructure failures cascade into larger crises.</p>`,
+    `<p>• Resource scarcity creates new hierarchies of power.</p>`,
+    `<p><strong>Plot Twists —</strong> The environment was shaped by past human choices.</p>`,
+    `<p>• Adaptation changes the protagonist in unexpected ways.</p>`,
+    `<p><strong>Emotional Hook —</strong> What you built to protect you becomes your prison.</p>`,
+    `<p>• Adaptation costs identity.</p>`
+  ];
+  return lines.join("");
+}
 
-  // Build project type display
-  const projectTypeDisplay = projectType ? (() => {
+export default function StoryBuilder(props: StoryBuilderProps) {
+  const {
+    projectName = "",
+    projectType = "",
+    lengthPages,
+    lengthMinutes,
+    genre = "",
+    genreDef = "",
+    subGenre = "",
+    subGenreDef = "",
+    theme = "",
+    themeDef = "",
+    subTheme = "",
+    subThemeDef = "",
+    centralConflict = "",
+    centralConflictDef = "",
+    storyHtml,
+    setStoryHtml,
+  } = props;
+
+  // Keep a ref to avoid duplicate writes
+  const wroteForConflict = useRef<string | null>(null);
+
+  const projectTypeDisplay = useMemo(() => {
+    if (!projectType) return "Screenplay / 90 pages / 90 mins";
     const parts: string[] = [projectType];
-    if (typeof lengthPages === 'number') parts.push(`${lengthPages} pages`);
-    if (typeof lengthMinutes === 'number') parts.push(`${lengthMinutes} mins`);
-    return parts.join(' / ');
-  })() : 'Screenplay / 90 pages / 90 mins';
+    if (typeof lengthPages === "number") parts.push(`${lengthPages} pages`);
+    if (typeof lengthMinutes === "number") parts.push(`${lengthMinutes} mins`);
+    return parts.join(" / ");
+  }, [projectType, lengthPages, lengthMinutes]);
+
+  // Auto-fill story beats when Central Conflict changes
+  useEffect(() => {
+    if (!centralConflict || wroteForConflict.current === centralConflict) return;
+
+    const start = "<!-- STORYXCEL_BEATS_START -->";
+    const end = "<!-- STORYXCEL_BEATS_END -->";
+    const beats = buildBeatsHTML(centralConflict);
+    const block = `${start}${beats}${end}`;
+
+    // Replace existing beats block, or append it once
+    let newHtml = storyHtml;
+    if (newHtml.includes(start)) {
+      const re = new RegExp(`${start}[\\s\\S]*?${end}`, "m");
+      newHtml = newHtml.replace(re, block);
+    } else {
+      newHtml = newHtml + block;
+    }
+    
+    setStoryHtml(newHtml);
+    wroteForConflict.current = centralConflict;
+  }, [centralConflict, storyHtml, setStoryHtml]);
 
   return (
-    <div 
+    <div
       id="story-frame"
-      className="w-full h-full overflow-hidden flex flex-col"
-      style={{ 
-        minWidth: '100%', 
-        maxWidth: '100%', 
-        minHeight: '100%', 
-        maxHeight: '100%' 
+      // Full height of the page area; two rows:
+      // [Overview fixed] [Editor takes remaining space]
+      className="h-full w-full"
+      style={{
+        display: "grid",
+        gridTemplateRows: `${OVERVIEW_BAR_HEIGHT}px 1fr`,
+        gridTemplateColumns: "1fr",
       }}
     >
-      {/* Story Overview Section - Fixed height, never expandable */}
-      {(projectName || genre || subGenre || theme || subTheme || centralConflict) && (
-        <div 
-          className="flex-shrink-0 p-3 border-b border-gray-200 overflow-hidden"
-          style={{ 
-            maxHeight: '25%', 
-            minHeight: 'auto'
-          }}
-        >
-          <div className="space-y-1 text-xs">
-            {projectName && (
-              <div>
-                <span className="font-semibold">Story Title</span> — {projectName}
-              </div>
-            )}
-            
+      {/* Overview (fixed height, never expands, no scroll bleed) */}
+      <div className="border-b border-slate-200 px-4 py-2 overflow-hidden">
+        <div className="text-xs leading-5 space-y-1">
+          {projectName && (
             <div>
-              <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+              <span className="font-semibold">Story Title</span> — {projectName}
             </div>
-            
-            {genre && (
-              <div>
-                <span className="font-semibold">Genre</span> — {genre}
-                {genreDef && <div className="ml-3 text-xs text-slate-600 truncate">{genreDef}</div>}
-              </div>
-            )}
-            
-            {subGenre && (
-              <div>
-                <span className="font-semibold">Sub Genre</span> — {subGenre}
-                {subGenreDef && <div className="ml-3 text-xs text-slate-600 truncate">{subGenreDef}</div>}
-              </div>
-            )}
-            
-            {theme && (
-              <div>
-                <span className="font-semibold">Theme</span> — {theme}
-                {themeDef && <div className="ml-3 text-xs text-slate-600 truncate">{themeDef}</div>}
-              </div>
-            )}
-            
-            {subTheme && (
-              <div>
-                <span className="font-semibold">Sub Theme</span> — {subTheme}
-                {subThemeDef && <div className="ml-3 text-xs text-slate-600 truncate">{subThemeDef}</div>}
-              </div>
-            )}
-            
-            {centralConflict && (
-              <div>
-                <span className="font-semibold">Central Conflict</span> — {centralConflict}
-                {centralConflictDef && <div className="ml-3 text-xs text-slate-600 truncate">{centralConflictDef}</div>}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Story Beats Section - Fixed height with scrolling only */}
-      <div 
-        className="flex-1 flex flex-col min-h-0 p-3 overflow-hidden"
-        style={{ 
-          minHeight: 0,
-          maxHeight: 'calc(100% - 25%)' 
-        }}
-      >
-        <h3 className="text-lg font-semibold text-slate-800 mb-3 flex-shrink-0">Story Beats</h3>
-        
-        <div 
-          className="flex-1 min-h-0 overflow-auto"
-          style={{ 
-            minHeight: 0,
-            maxHeight: '100%'
-          }}
-        >
-          <RichEditor
-            value={storyHtml}
-            onChange={setStoryHtml}
-            className="w-full h-full"
-          />
+          <div>
+            <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+          </div>
+
+          {genre && (
+            <div>
+              <span className="font-semibold">Genre</span> — {genre}
+              {genreDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{genreDef}</div>
+              )}
+            </div>
+          )}
+
+          {subGenre && (
+            <div>
+              <span className="font-semibold">Sub Genre</span> — {subGenre}
+              {subGenreDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{subGenreDef}</div>
+              )}
+            </div>
+          )}
+
+          {theme && (
+            <div>
+              <span className="font-semibold">Theme</span> — {theme}
+              {themeDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{themeDef}</div>
+              )}
+            </div>
+          )}
+
+          {subTheme && (
+            <div>
+              <span className="font-semibold">Sub Theme</span> — {subTheme}
+              {subThemeDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{subThemeDef}</div>
+              )}
+            </div>
+          )}
+
+          {centralConflict && (
+            <div>
+              <span className="font-semibold">Central Conflict</span> — {centralConflict}
+              {centralConflictDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{centralConflictDef}</div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Editor viewport (fills remaining space exactly; Quill gets 100% height) */}
+      <div className="min-h-0 h-full overflow-hidden px-4 pb-3">
+        <div className="h-full w-full">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full w-full" />
         </div>
       </div>
     </div>

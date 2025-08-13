@@ -2197,11 +2197,19 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - Same layout as dashboard */}
+                {/* Constrained Content Container - Grid layout with fixed AI panel space */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Story Editor Section - Fixed dimensions, never expandable */}
-                    <div className="flex justify-center items-center" style={{ height: '70.8%', minHeight: '70.8%', maxHeight: '70.8%' }}>
+                  <div 
+                    className="w-full max-w-[15.25in] p-4 h-full" 
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr 200px', // Story editor area, then fixed AI panel
+                      gridTemplateColumns: '1fr',
+                      gap: '16px'
+                    }}
+                  >
+                    {/* Story Editor Section - Takes remaining space, never expandable */}
+                    <div className="flex justify-center items-center min-h-0">
                       <div 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
@@ -2236,9 +2244,8 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* Bottom section - 29.2% height (increased 1% from 28.9%) */}
-                    <div className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
-                      {/* AI Chat Window - takes remaining space */}
+                    {/* AI Panel - Fixed 200px height, never moves */}
+                    <div className="flex flex-col justify-start min-h-0">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}

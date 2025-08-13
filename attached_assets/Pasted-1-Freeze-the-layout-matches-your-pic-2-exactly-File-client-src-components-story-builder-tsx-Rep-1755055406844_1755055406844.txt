@@ -1,0 +1,229 @@
+1) Freeze the layout (matches your pic‑2 exactly)
+
+File: client/src/components/story-builder.tsx
+Replace the component with this version (keeps your props + RichEditor, adds a fixed grid and fixed AI panel space). If your AI panel is rendered outside this file, keep it where it is—this just guarantees the editor block won’t grow or push it.
+
+import { useMemo } from "react";
+import RichEditor from "@/components/editor/RichEditor";
+
+interface StoryBuilderProps {
+  projectName?: string;
+  projectType?: string;
+  lengthPages?: number;
+  lengthMinutes?: number;
+  genre?: string;
+  genreDef?: string;
+  subGenre?: string;
+  subGenreDef?: string;
+  theme?: string;
+  themeDef?: string;
+  subTheme?: string;
+  subThemeDef?: string;
+  centralConflict?: string;
+  centralConflictDef?: string;
+
+  // Quill binding
+  storyHtml: string;
+  setStoryHtml: (html: string) => void;
+}
+
+// Choose a fixed height for the “overview” bar so ALL 7 lines are visible.
+// 152–176px usually fits 7 rows of small text without scrolling.
+const OVERVIEW_BAR_HEIGHT = 176;
+
+// Reserve a fixed height for the AI assistant (green box in your pic‑2)
+const AI_PANE_HEIGHT = 200;
+
+export default function StoryBuilder(props: StoryBuilderProps) {
+  const {
+    projectName = "",
+    projectType = "",
+    lengthPages,
+    lengthMinutes,
+    genre = "",
+    genreDef = "",
+    subGenre = "",
+    subGenreDef = "",
+    theme = "",
+    themeDef = "",
+    subTheme = "",
+    subThemeDef = "",
+    centralConflict = "",
+    centralConflictDef = "",
+    storyHtml,
+    setStoryHtml,
+  } = props;
+
+  const projectTypeDisplay = useMemo(() => {
+    if (!projectType) return "Screenplay / 90 pages / 90 mins";
+    const parts: string[] = [projectType];
+    if (typeof lengthPages === "number") parts.push(`${lengthPages} pages`);
+    if (typeof lengthMinutes === "number") parts.push(`${lengthMinutes} mins`);
+    return parts.join(" / ");
+  }, [projectType, lengthPages, lengthMinutes]);
+
+  return (
+    <div
+      // Full height of the page area; three rows:
+      // [Overview fixed] [Editor takes remaining space] [AI fixed (reserved by parent)]
+      className="h-full w-full"
+      style={{
+        display: "grid",
+        gridTemplateRows: `${OVERVIEW_BAR_HEIGHT}px 1fr`,
+        gridTemplateColumns: "1fr",
+      }}
+    >
+      {/* Overview (fixed height, never expands, no scroll bleed) */}
+      <div className="border-b border-slate-200 px-4 py-2 overflow-hidden">
+        <div className="text-xs leading-5 space-y-1">
+          {projectName && (
+            <div>
+              <span className="font-semibold">Story Title</span> — {projectName}
+            </div>
+          )}
+
+          <div>
+            <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+          </div>
+
+          {genre && (
+            <div>
+              <span className="font-semibold">Genre</span> — {genre}
+              {genreDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{genreDef}</div>
+              )}
+            </div>
+          )}
+
+          {subGenre && (
+            <div>
+              <span className="font-semibold">Sub Genre</span> — {subGenre}
+              {subGenreDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{subGenreDef}</div>
+              )}
+            </div>
+          )}
+
+          {theme && (
+            <div>
+              <span className="font-semibold">Theme</span> — {theme}
+              {themeDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{themeDef}</div>
+              )}
+            </div>
+          )}
+
+          {subTheme && (
+            <div>
+              <span className="font-semibold">Sub Theme</span> — {subTheme}
+              {subThemeDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{subThemeDef}</div>
+              )}
+            </div>
+          )}
+
+          {centralConflict && (
+            <div>
+              <span className="font-semibold">Central Conflict</span> — {centralConflict}
+              {centralConflictDef && (
+                <div className="ml-3 text-[11px] text-slate-600">{centralConflictDef}</div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Editor viewport (fills remaining space exactly; Quill gets 100% height) */}
+      <div className="min-h-0 h-full overflow-hidden px-4 pb-3">
+        <div className="h-full w-full">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+What this guarantees
+
+    The “overview” stripe is a fixed 176px tall → all lines are visible.
+
+    The editor (red box) always occupies the rest of the vertical space and won’t push the AI panel down.
+
+    The AI panel area is reserved by your page layout; if it’s in a parent, ensure that parent reserves ~200px for it (see next).
+
+Where to reserve the AI panel height
+
+In the page layout that wraps StoryBuilder (likely client/src/pages/dashboard-layout.tsx or builder.tsx), ensure the right-hand content column uses:
+
+<div className="h-full w-full" style={{
+  display: 'grid',
+  gridTemplateRows: `1fr ${AI_PANE_HEIGHT}px`, // editor area, then fixed AI panel
+  gridTemplateColumns: '1fr'
+}}>
+  <StoryBuilder {...props} />
+  <AiStoryAssistant /> {/* Your existing component */}
+</div>
+
+Set AI_PANE_HEIGHT to the height you need (e.g., 200).
+2) Auto‑fill “Story Beats” when Central Conflict changes (no duplicates)
+
+File: wherever your Central Conflict state lives (you showed it in dashboard-layout.tsx).
+Add this effect (uses the existing Quill instance that your RichEditor exposes through value/onChange). We’ll mark the beats block so it’s easily replaceable.
+A) helper: build beats HTML
+
+// Put this near your other builders (same file as buildOverviewHTML)
+function buildBeatsHTML(conflict: string) {
+  // You can customize per-conflict here. Example for [Wo]Man vs Environment:
+  const lines = [
+    `<h3><strong>Story Beats</strong></h3>`,
+    `<p><strong>Plot A —</strong> Systems pressure force adaptation or extinction.</p>`,
+    `<p>• A breaking point demands radical action despite consequences.</p>`,
+    `<p>• The environment’s “rules” shift mid‑story, invalidating old strategies.</p>`,
+    `<p><strong>Sub Plot B —</strong> Relationships strain under environmental stress.</p>`,
+    `<p>• Old loyalties conflict with survival needs.</p>`,
+    `<p><strong>Sub Plot C —</strong> Infrastructure failures cascade into larger crises.</p>`,
+    `<p>• Resource scarcity creates new hierarchies of power.</p>`,
+    `<p><strong>Plot Twists —</strong> The environment was shaped by past human choices.</p>`,
+    `<p>• Adaptation changes the protagonist in unexpected ways.</p>`,
+    `<p><strong>Emotional Hook —</strong> What you built to protect you becomes your prison.</p>`,
+    `<p>• Adaptation costs identity.</p>`
+  ];
+  return lines.join("");
+}
+
+B) effect: insert/replace between markers
+
+import { useEffect, useRef } from "react";
+
+// keep a ref to avoid duplicate writes
+const wroteForConflict = useRef<string | null>(null);
+
+useEffect(() => {
+  if (!centralConflict) return;
+
+  // get the editor HTML the same way you already bind storyHtml <-> Quill
+  // (assuming you keep the canonical HTML in state: storyHtml)
+  const start = "<!-- STORYXCEL_BEATS_START -->";
+  const end   = "<!-- STORYXCEL_BEATS_END -->";
+  const beats = buildBeatsHTML(centralConflict);
+  const block = `${start}${beats}${end}`;
+
+  setStoryHtml((prev) => {
+    // Replace existing beats block, or append it once
+    if (prev.includes(start)) {
+      const re = new RegExp(`${start}[\\s\\S]*?${end}`, "m");
+      return prev.replace(re, block);
+    }
+    return prev + block;
+  });
+
+  wroteForConflict.current = centralConflict;
+}, [centralConflict, setStoryHtml]);
+
+Why this works
+
+    We write only when the user changes Central Conflict.
+
+    We wrap beats with markers so future changes replace instead of duplicate.
+
+    It doesn’t touch the “overview” block or your typed text—only the marked beats block.
