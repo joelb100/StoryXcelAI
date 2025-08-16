@@ -505,7 +505,7 @@ const IconSidebar = ({
             <img 
               src={assetOverviewIcon} 
               alt="Asset Overview"
-              className="w-5 h-5 object-contain filter brightness-0 invert"
+              className="w-6 h-6 object-contain filter brightness-0 invert"
             />
           </Button>
         </TooltipTrigger>
