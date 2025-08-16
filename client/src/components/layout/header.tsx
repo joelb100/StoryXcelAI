@@ -2,8 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
-import { Settings } from "lucide-react";
-import formatIcon from "@assets/format_1755385375777.png";
+import { Layers, Settings } from "lucide-react";
 
 const builderTabs = [
   { name: "Dashboard", path: "/" },
@@ -39,7 +38,7 @@ export default function Header() {
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <img src={formatIcon} alt="StoryXcel Logo" className="w-5 h-5" />
+              <Layers className="text-white text-sm" />
             </div>
             <h1 className="text-xl font-bold text-charcoal">StoryXcel</h1>
           </div>

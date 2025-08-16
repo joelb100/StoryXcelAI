@@ -330,7 +330,7 @@ import deckBuilderIcon from "@assets/deckBuilder1_1754280635988.png";
 
 // Import sidebar icons
 import storyOverviewIcon from "@assets/story_1754371104469.png";
-import formatOverviewIcon from "@assets/format_1754371161796.png";
+import formatOverviewIcon from "@assets/format_1755385375777.png";
 import assetOverviewIcon from "@assets/Asset_1754371169859.png";
 import pitchIcon from "@assets/pitch_1754371175274.png";
 
