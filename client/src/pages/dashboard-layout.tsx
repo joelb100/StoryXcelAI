@@ -71,58 +71,67 @@ import {
   Bell
 } from "lucide-react";
 
-// EXACT DASHBOARD AI ASSISTANT - Copied directly from Dashboard
-const ExactDashboardAI = ({ 
+// FLOATING AI ASSISTANT - Same component on every page
+const FloatingAIAssistant = ({ 
+  isVisible = true,
   chatMessages, 
   chatMessage, 
   setChatMessage, 
   handleSendMessage, 
-  handleKeyPress,
-  showProjectCards = true // Option to hide project cards on Story Builder
+  handleKeyPress 
 }: {
+  isVisible?: boolean;
   chatMessages: any[];
   chatMessage: string;
   setChatMessage: (value: string) => void;
   handleSendMessage: () => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
-  showProjectCards?: boolean;
-}) => (
-  // EXACT COPY FROM DASHBOARD - lines 1377-1408
-  <div className="flex-1 flex flex-col justify-start pt-4">
-    {/* Project Name Section - EXACT Dashboard copy */}
-    {showProjectCards && (
-      <div className="flex justify-center mb-4">
-        <div className="w-full max-w-[14.5in]">
-          {/* Project Name label */}
+}) => {
+  if (!isVisible) return null;
+
+  return (
+    <div 
+      id="floating-ai-assistant"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
+      style={{
+        width: 'min(90vw, 14.5in)', // Responsive but max 14.5 inches
+        height: '300px',             // Fixed height
+        maxWidth: '14.5in'
+      }}
+    >
+      {/* Floating container with shadow and rounded corners */}
+      <div 
+        className="w-full h-full rounded-lg shadow-2xl border border-gray-300"
+        style={{ backgroundColor: '#d4dee7' }} // Same color as Dashboard
+      >
+        {/* Project Name Section - exactly like Dashboard */}
+        <div className="px-4 pt-3 pb-2">
           <div className="mb-2">
             <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
           </div>
           
-          {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
-          <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-            {/* First project card */}
+          {/* Three project cards - exactly like Dashboard */}
+          <div className="flex gap-2" style={{ height: '50px' }}>
             <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-            
-            {/* Second project card */}
             <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-            
-            {/* Third project card */}
             <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
           </div>
         </div>
-      </div>
-    )}
 
-    {/* AI Chat Window - takes remaining space */}
-    <AIStoryAssistant 
-      chatMessages={chatMessages}
-      chatMessage={chatMessage}
-      setChatMessage={setChatMessage}
-      handleSendMessage={handleSendMessage}
-      handleKeyPress={handleKeyPress}
-    />
-  </div>
-);
+        {/* AI Assistant - exactly like Dashboard */}
+        <div className="px-4 pb-3" style={{ height: 'calc(100% - 120px)' }}>
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ----- Conflict templates and DOM manipulation -----
 const CONFLICT_START = '<!-- STORYXCEL_CONFLICT_START -->';
@@ -1372,46 +1381,14 @@ const DashboardContent = ({
     {/* Constrained Content Container - 15.25 inches max width */}
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Main Dashboard Section - Red Box takes up upper portion */}
-        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+        {/* Main Dashboard Section - Full height now with floating AI */}
+        <div className="flex-1 flex justify-center items-center">
           <Card className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
             {/* Main dashboard content area */}
           </Card>
         </div>
 
-        {/* Bottom section - scales to remaining 40% of screen */}
-        <div className="flex-1 flex flex-col justify-start pt-4">
-          {/* Project Name Section */}
-          <div className="flex justify-center mb-4">
-            <div className="w-full max-w-[14.5in]">
-              {/* Project Name label */}
-              <div className="mb-2">
-                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-              </div>
-              
-              {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
-              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-                {/* First project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                
-                {/* Second project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                
-                {/* Third project card */}
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              </div>
-            </div>
-          </div>
-
-          {/* AI Chat Window - takes remaining space */}
-          <AIStoryAssistant 
-            chatMessages={chatMessages}
-            chatMessage={chatMessage}
-            setChatMessage={setChatMessage}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-          />
-        </div>
+        {/* Bottom section removed - Now using Floating AI Assistant */}
       </div>
     </div>
   </div>
@@ -1447,22 +1424,14 @@ const SharedMainContentLayout = ({
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         
-        {/* Main Content Section - 60% height (same as Dashboard red box) */}
-        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+        {/* Main Content Section - Full height now with floating AI */}
+        <div className="flex-1 flex justify-center items-center">
           <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
             {children}
           </div>
         </div>
 
-        {/* Bottom section - 40% height (EXACT Dashboard layout) */}
-        <ExactDashboardAI 
-          chatMessages={chatMessages}
-          chatMessage={chatMessage}
-          setChatMessage={setChatMessage}
-          handleSendMessage={handleSendMessage}
-          handleKeyPress={handleKeyPress}
-          showProjectCards={true} // Show project cards on all builder pages
-        />
+        {/* Bottom section removed - Now using Floating AI Assistant */}
       </div>
     </div>
   </div>
@@ -1485,6 +1454,8 @@ export default function DashboardLayout() {
   const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(true);
   // Project name state for live-sync with Story Builder
   const [projectName, setProjectName] = useState('');
+  // Floating AI state
+  const [isAIVisible, setIsAIVisible] = useState(true);
   
   // --- StoryXcel Overview block control ---
   const SX_START = '// STORYXCEL_OVERVIEW_START';
@@ -2305,8 +2276,8 @@ export default function DashboardLayout() {
                 <div className="flex-1 flex justify-center overflow-hidden">
                   <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
                     
-                    {/* Story Editor Section - 60% height (same as Dashboard red box) */}
-                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
+                    {/* Story Editor Section - Full height now with floating AI */}
+                    <div className="flex-1 flex justify-center items-center">
                       <Card 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
@@ -2336,15 +2307,7 @@ export default function DashboardLayout() {
                       </Card>
                     </div>
 
-                    {/* Bottom section - 40% height (EXACT DASHBOARD COPY WITHOUT project cards) */}
-                    <ExactDashboardAI 
-                      chatMessages={chatMessages}
-                      chatMessage={chatMessage}
-                      setChatMessage={setChatMessage}
-                      handleSendMessage={handleSendMessage}
-                      handleKeyPress={handleKeyPress}
-                      showProjectCards={false} // NO project cards in Story Builder
-                    />
+                    {/* Bottom section removed - Now using Floating AI Assistant */}
                   </div>
                 </div>
               </div>
@@ -2645,6 +2608,16 @@ export default function DashboardLayout() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* FLOATING AI ASSISTANT - Same on every page */}
+        <FloatingAIAssistant 
+          isVisible={isAIVisible}
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+        />
       </div>
     </div>
   );
