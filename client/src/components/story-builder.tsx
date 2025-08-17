@@ -23,8 +23,8 @@ interface StoryBuilderProps {
 }
 
 // Choose a fixed height for the "overview" bar so ALL 7 lines are visible.
-// Generous 280px for overview with readable fonts and all definitions.
-const OVERVIEW_BAR_HEIGHT = 280;
+// Increased to 320px to ensure all content fits without scrolling.
+const OVERVIEW_BAR_HEIGHT = 320;
 
 // Helper: build beats HTML
 function buildBeatsHTML(conflict: string) {
@@ -115,7 +115,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
       <div 
         className="border-b-2 border-slate-300 bg-slate-50 px-4 py-4"
         style={{
-          height: '280px',
+          height: '320px',
           overflow: 'hidden' // No scrolling needed
         }}
       >
