@@ -2271,54 +2271,55 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - IDENTICAL to Dashboard */}
+                {/* Constrained Content Container - Story Builder specific layout */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    
-                    {/* Main Story Section - 60% height (same as Dashboard red box) */}
-                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
-                      <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full overflow-hidden">
-                        {/* Story Builder Content */}
-                        <StoryBuilder 
-                          projectName={projectName}
-                          projectType={projectType}
-                          lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                          lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                          genre={genreLabel || undefined}
-                          genreDef={genreDef || undefined}
-                          subGenre={subGenreLabel || undefined}
-                          subGenreDef={subGenreDef || undefined}
-                          theme={themeLabel || undefined}
-                          themeDef={themeDef || undefined}
-                          subTheme={subThemeLabel || undefined}
-                          subThemeDef={subThemeDef || undefined}
-                          centralConflict={centralConflictLabel || undefined}
-                          centralConflictDef={centralConflictDef || undefined}
-                          storyHtml={storyHtml}
-                          setStoryHtml={setStoryHtml}
-                        />
+                  <div 
+                    className="w-full max-w-[15.25in] p-4 h-full" 
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr 200px', // Story editor takes most space, AI gets fixed 200px
+                      gridTemplateColumns: '1fr',
+                      gap: '16px'
+                    }}
+                  >
+                    {/* Story Editor Section - Takes remaining space */}
+                    <div className="flex justify-center items-center min-h-0">
+                      <div 
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        style={{ 
+                          width: '100%', 
+                          maxWidth: '14.5in', 
+                          height: '100%',
+                          minHeight: '100%',
+                          maxHeight: '100%'
+                        }}
+                      >
+                        {/* Story Builder Content - Strictly contained */}
+                        <div className="w-full h-full overflow-hidden">
+                          <StoryBuilder 
+                            projectName={projectName}
+                            projectType={projectType}
+                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                            genre={genreLabel || undefined}
+                            genreDef={genreDef || undefined}
+                            subGenre={subGenreLabel || undefined}
+                            subGenreDef={subGenreDef || undefined}
+                            theme={themeLabel || undefined}
+                            themeDef={themeDef || undefined}
+                            subTheme={subThemeLabel || undefined}
+                            subThemeDef={subThemeDef || undefined}
+                            centralConflict={centralConflictLabel || undefined}
+                            centralConflictDef={centralConflictDef || undefined}
+                            storyHtml={storyHtml}
+                            setStoryHtml={setStoryHtml}
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    {/* Bottom section - 40% height (IDENTICAL to Dashboard) */}
-                    <div className="flex-1 flex flex-col justify-start pt-4">
-                      {/* Project Name Section */}
-                      <div className="flex justify-center mb-4">
-                        <div className="w-full max-w-[14.5in]">
-                          <div className="mb-2">
-                            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-                          </div>
-                          
-                          {/* Three equal project cards */}
-                          <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-                            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* AI Chat Window - EXACT Dashboard styling */}
+                    {/* AI Assistant Panel - Fixed 200px height, NO project cards */}
+                    <div className="flex flex-col justify-start min-h-0">
                       <AIStoryAssistant 
                         chatMessages={chatMessages}
                         chatMessage={chatMessage}

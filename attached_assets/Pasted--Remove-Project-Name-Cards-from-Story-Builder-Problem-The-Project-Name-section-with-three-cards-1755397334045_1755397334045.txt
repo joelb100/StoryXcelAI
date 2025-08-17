@@ -1,0 +1,93 @@
+# Remove Project Name Cards from Story Builder
+
+## Problem
+The Project Name section with three cards is appearing in the Story Builder, but it should only be in the Dashboard and other builder pages (World, Production, Asset, Script, Deck).
+
+## Solution
+Update the Story Builder layout to remove the Project Name cards section and give the AI Assistant the full bottom area.
+
+### Replace the Story Builder section with this:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Constrained Content Container - Story Builder specific layout */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div 
+        className="w-full max-w-[15.25in] p-4 h-full" 
+        style={{
+          display: 'grid',
+          gridTemplateRows: '1fr 200px', // Story editor takes most space, AI gets fixed 200px
+          gridTemplateColumns: '1fr',
+          gap: '16px'
+        }}
+      >
+        {/* Story Editor Section - Takes remaining space */}
+        <div className="flex justify-center items-center min-h-0">
+          <div 
+            className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '14.5in', 
+              height: '100%',
+              minHeight: '100%',
+              maxHeight: '100%'
+            }}
+          >
+            {/* Story Builder Content - Strictly contained */}
+            <div className="w-full h-full overflow-hidden">
+              <StoryBuilder 
+                projectName={projectName}
+                projectType={projectType}
+                lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                genre={genreLabel || undefined}
+                genreDef={genreDef || undefined}
+                subGenre={subGenreLabel || undefined}
+                subGenreDef={subGenreDef || undefined}
+                theme={themeLabel || undefined}
+                themeDef={themeDef || undefined}
+                subTheme={subThemeLabel || undefined}
+                subThemeDef={subThemeDef || undefined}
+                centralConflict={centralConflictLabel || undefined}
+                centralConflictDef={centralConflictDef || undefined}
+                storyHtml={storyHtml}
+                setStoryHtml={setStoryHtml}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Assistant Panel - Fixed 200px height, NO project cards */}
+        <div className="flex flex-col justify-start min-h-0">
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+```
+
+## Key Changes:
+
+1. **Removed Project Name section** - No more three project cards in Story Builder
+2. **Clean AI Assistant** - AI Assistant gets the full bottom area without project cards above it
+3. **Proper proportions** - Story editor gets most of the space, AI gets a clean fixed 200px at bottom
+4. **Story-specific layout** - Different from other builder pages which will keep the project cards
+
+## Result:
+- ✅ Story Builder: Clean layout with just Story Editor + AI Assistant (no project cards)
+- ✅ Other builders (World, Production, Asset, Script, Deck): Keep project cards + AI Assistant  
+- ✅ Dashboard: Keeps its unique layout with project cards
+
+The red box section will be completely removed from the Story Builder, giving you a clean interface with just the story editor and AI assistant.
