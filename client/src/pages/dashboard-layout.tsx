@@ -373,40 +373,6 @@ function insertOrReplaceConflictBlock(conflictKey: string, currentHtml: string, 
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 import AIStoryAssistant from "@/components/ai-story-assistant";
 
-// FIXED AI ASSISTANT - Always visible, never pushed off-screen
-const FixedAI = ({ 
-  chatMessages, 
-  chatMessage, 
-  setChatMessage, 
-  handleSendMessage, 
-  handleKeyPress 
-}: {
-  chatMessages: any[];
-  chatMessage: string;
-  setChatMessage: (value: string) => void;
-  handleSendMessage: () => void;
-  handleKeyPress: (e: React.KeyboardEvent) => void;
-}) => (
-  <div 
-    className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
-    style={{
-      width: 'min(90vw, 14.5in)',
-      height: '200px',
-      maxWidth: '14.5in'
-    }}
-  >
-    <div className="w-full h-full bg-white border border-gray-300 shadow-xl rounded-lg">
-      <AIStoryAssistant 
-        chatMessages={chatMessages}
-        chatMessage={chatMessage}
-        setChatMessage={setChatMessage}
-        handleSendMessage={handleSendMessage}
-        handleKeyPress={handleKeyPress}
-      />
-    </div>
-  </div>
-);
-
 // Import tab icons
 import worldBuilderIcon from "@assets/worldBuilder_1754280588370.png";
 import productionBuilderIcon from "@assets/productionBuilder_1754280596376.png";
@@ -2353,31 +2319,62 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Story Content - UNCHANGED, just removed AI from bottom */}
+                {/* Constrained Content Container - EXACTLY like pic 2 */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 h-full">
-                    <div className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden w-full h-full">
-                      {/* StoryBuilder component - UNCHANGED */}
-                      <StoryBuilder 
-                        projectName={projectName}
-                        projectType={projectType}
-                        lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                        lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                        genre={genreLabel || undefined}
-                        genreDef={genreDef || undefined}
-                        subGenre={subGenreLabel || undefined}
-                        subGenreDef={subGenreDef || undefined}
-                        theme={themeLabel || undefined}
-                        themeDef={themeDef || undefined}
-                        subTheme={subThemeLabel || undefined}
-                        subThemeDef={subThemeDef || undefined}
-                        centralConflict={centralConflictLabel || undefined}
-                        centralConflictDef={centralConflictDef || undefined}
-                        storyHtml={storyHtml}
-                        setStoryHtml={setStoryHtml}
+                  <div 
+                    className="w-full max-w-[15.25in] p-4 h-full" 
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr 200px', // Story editor, then AI (EXACTLY like pic 2)
+                      gridTemplateColumns: '1fr',
+                      gap: '16px'
+                    }}
+                  >
+                    {/* Story Editor Section - Takes remaining space */}
+                    <div className="flex justify-center items-center min-h-0">
+                      <div 
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        style={{ 
+                          width: '100%', 
+                          maxWidth: '14.5in', 
+                          height: '100%'
+                        }}
+                      >
+                        {/* Story Builder Content */}
+                        <div className="w-full h-full overflow-hidden">
+                          <StoryBuilder 
+                            projectName={projectName}
+                            projectType={projectType}
+                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                            genre={genreLabel || undefined}
+                            genreDef={genreDef || undefined}
+                            subGenre={subGenreLabel || undefined}
+                            subGenreDef={subGenreDef || undefined}
+                            theme={themeLabel || undefined}
+                            themeDef={themeDef || undefined}
+                            subTheme={subThemeLabel || undefined}
+                            subThemeDef={subThemeDef || undefined}
+                            centralConflict={centralConflictLabel || undefined}
+                            centralConflictDef={centralConflictDef || undefined}
+                            storyHtml={storyHtml}
+                            setStoryHtml={setStoryHtml}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* AI Assistant Panel - Fixed 200px height (EXACTLY like pic 2) */}
+                    <div className="flex flex-col justify-start min-h-0">
+                      {/* SAME COMPONENT as Dashboard */}
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
                       />
                     </div>
-                    {/* REMOVED: AI Assistant from here - it's now fixed position */}
                   </div>
                 </div>
               </div>
@@ -2678,15 +2675,6 @@ export default function DashboardLayout() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-
-        {/* NEW: FIXED AI ASSISTANT - Only addition */}
-        <FixedAI 
-          chatMessages={chatMessages}
-          chatMessage={chatMessage}
-          setChatMessage={setChatMessage}
-          handleSendMessage={handleSendMessage}
-          handleKeyPress={handleKeyPress}
-        />
       </div>
     </div>
   );
