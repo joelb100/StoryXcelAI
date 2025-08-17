@@ -71,15 +71,14 @@ import {
   Bell
 } from "lucide-react";
 
-// UNIVERSAL DASHBOARD-STYLE AI ASSISTANT
-// This recreates the exact Dashboard bottom section for all pages
-const UniversalDashboardAI = ({ 
+// EXACT DASHBOARD AI ASSISTANT - Copied directly from Dashboard
+const ExactDashboardAI = ({ 
   chatMessages, 
   chatMessage, 
   setChatMessage, 
   handleSendMessage, 
   handleKeyPress,
-  showProjectCards = true // Option to hide project cards on some pages
+  showProjectCards = true // Option to hide project cards on Story Builder
 }: {
   chatMessages: any[];
   chatMessage: string;
@@ -88,26 +87,33 @@ const UniversalDashboardAI = ({
   handleKeyPress: (e: React.KeyboardEvent) => void;
   showProjectCards?: boolean;
 }) => (
+  // EXACT COPY FROM DASHBOARD - lines 1377-1408
   <div className="flex-1 flex flex-col justify-start pt-4">
-    {/* Project Name Section - EXACTLY like Dashboard */}
+    {/* Project Name Section - EXACT Dashboard copy */}
     {showProjectCards && (
       <div className="flex justify-center mb-4">
         <div className="w-full max-w-[14.5in]">
+          {/* Project Name label */}
           <div className="mb-2">
             <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
           </div>
           
-          {/* Three equal project cards - IDENTICAL to Dashboard */}
+          {/* Three equal pink bars with 0.25 inch spacing - scale horizontally only */}
           <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+            {/* First project card */}
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+            
+            {/* Second project card */}
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+            
+            {/* Third project card */}
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
           </div>
         </div>
       </div>
     )}
 
-    {/* AI Chat Window - EXACT Dashboard styling */}
+    {/* AI Chat Window - takes remaining space */}
     <AIStoryAssistant 
       chatMessages={chatMessages}
       chatMessage={chatMessage}
@@ -1449,7 +1455,7 @@ const SharedMainContentLayout = ({
         </div>
 
         {/* Bottom section - 40% height (EXACT Dashboard layout) */}
-        <UniversalDashboardAI 
+        <ExactDashboardAI 
           chatMessages={chatMessages}
           chatMessage={chatMessage}
           setChatMessage={setChatMessage}
@@ -2301,7 +2307,7 @@ export default function DashboardLayout() {
                     
                     {/* Story Editor Section - 60% height (same as Dashboard red box) */}
                     <div className="flex justify-center items-center" style={{ height: '60%' }}>
-                      <div 
+                      <Card 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
                           width: '100%', 
@@ -2327,11 +2333,11 @@ export default function DashboardLayout() {
                           storyHtml={storyHtml}
                           setStoryHtml={setStoryHtml}
                         />
-                      </div>
+                      </Card>
                     </div>
 
-                    {/* Bottom section - 40% height (Dashboard AI WITHOUT project cards) */}
-                    <UniversalDashboardAI 
+                    {/* Bottom section - 40% height (EXACT DASHBOARD COPY WITHOUT project cards) */}
+                    <ExactDashboardAI 
                       chatMessages={chatMessages}
                       chatMessage={chatMessage}
                       setChatMessage={setChatMessage}
