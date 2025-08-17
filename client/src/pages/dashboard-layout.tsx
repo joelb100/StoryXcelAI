@@ -1364,6 +1364,80 @@ const DashboardContent = ({
   </div>
 );
 
+// Shared Main Content Layout Component - Ensures consistent positioning
+const SharedMainContentLayout = ({ 
+  children, 
+  pageTitle, 
+  activeTab,
+  chatMessages,
+  chatMessage,
+  setChatMessage,
+  handleSendMessage,
+  handleKeyPress
+}: { 
+  children: React.ReactNode; 
+  pageTitle: string; 
+  activeTab: string;
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+}) => (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Consistent Header across all pages */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">{pageTitle}</h2>
+    </div>
+
+    {/* Constrained Content Container - IDENTICAL positioning for all pages */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        
+        {/* RED BOX AREA - Main Content Section - CONSISTENT 70.8% height */}
+        <div className="flex justify-center items-center" style={{ height: '70.8%' }}>
+          <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
+            {/* This is where page-specific content goes */}
+            {children}
+          </div>
+        </div>
+
+        {/* Bottom section - CONSISTENT 29.2% height for all pages */}
+        <div className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
+          {/* Project Name Section - only show for non-dashboard pages */}
+          {activeTab !== 'dashboard' && (
+            <div className="flex justify-center mb-4">
+              <div className="w-full max-w-[14.5in]">
+                <div className="mb-2">
+                  <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+                </div>
+                
+                {/* Three equal project cards - IDENTICAL spacing for all pages */}
+                <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* AI Chat Window - IDENTICAL for all pages */}
+          <div className="flex-1">
+            <AIStoryAssistant 
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 // Main Dashboard Layout
 export default function DashboardLayout() {
   const [location, navigate] = useLocation();
@@ -2171,13 +2245,13 @@ export default function DashboardLayout() {
             />
           </div>
           
-          {/* Main Content - Dashboard fixed, Story tab dynamic, other tabs static */}
+          {/* Main Content - CONSISTENT layout for all pages */}
           <div className={`transition-all duration-300 ${
             activeTab === 'dashboard' 
               ? 'col-span-19' 
               : activeTab === 'story'
                 ? (isFriendsListOpen || isSiteLinksOpen ? 'col-span-19' : 'col-span-22')
-                : 'col-span-22' // Other builder tabs without panels
+                : 'col-span-22'
           }`}>
             {activeTab === 'dashboard' ? (
               <DashboardContent 
@@ -2191,110 +2265,89 @@ export default function DashboardLayout() {
                 navigate={navigate}
               />
             ) : activeTab === 'story' ? (
-              <div className="bg-gray-100 flex flex-col h-full">
-                {/* Story Builder Header */}
-                <div className="bg-white border-b border-gray-200 px-4 pb-4">
-                  <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
-                </div>
-                
-                {/* Constrained Content Container - Grid layout with fixed AI panel space */}
-                <div className="flex-1 flex justify-center overflow-hidden">
-                  <div 
-                    className="w-full max-w-[15.25in] p-4 h-full" 
-                    style={{
-                      display: 'grid',
-                      gridTemplateRows: '1fr 200px', // Story editor area, then fixed AI panel
-                      gridTemplateColumns: '1fr',
-                      gap: '16px'
-                    }}
-                  >
-                    {/* Story Editor Section - Takes remaining space, never expandable */}
-                    <div className="flex justify-center items-center min-h-0">
-                      <div 
-                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
-                        style={{ 
-                          width: '100%', 
-                          maxWidth: '14.5in', 
-                          height: '100%',
-                          minHeight: '100%',
-                          maxHeight: '100%'
-                        }}
-                      >
-                        {/* Story Builder Content - Strictly contained */}
-                        <div className="w-full h-full overflow-hidden">
-                          <StoryBuilder 
-                            projectName={projectName}
-                            projectType={projectType}
-                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                            genre={genreLabel || undefined}
-                            genreDef={genreDef || undefined}
-                            subGenre={subGenreLabel || undefined}
-                            subGenreDef={subGenreDef || undefined}
-                            theme={themeLabel || undefined}
-                            themeDef={themeDef || undefined}
-                            subTheme={subThemeLabel || undefined}
-                            subThemeDef={subThemeDef || undefined}
-                            centralConflict={centralConflictLabel || undefined}
-                            centralConflictDef={centralConflictDef || undefined}
-                            storyHtml={storyHtml}
-                            setStoryHtml={setStoryHtml}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* AI Panel - Fixed 200px height, never moves */}
-                    <div className="flex flex-col justify-start min-h-0">
-                      <AIStoryAssistant 
-                        chatMessages={chatMessages}
-                        chatMessage={chatMessage}
-                        setChatMessage={setChatMessage}
-                        handleSendMessage={handleSendMessage}
-                        handleKeyPress={handleKeyPress}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SharedMainContentLayout 
+                pageTitle="Story Builder" 
+                activeTab={activeTab}
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+              >
+                {/* Story-specific content goes in the red box area */}
+                <StoryBuilder 
+                  projectName={projectName}
+                  projectType={projectType}
+                  lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                  lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                  genre={genreLabel || undefined}
+                  genreDef={genreDef || undefined}
+                  subGenre={subGenreLabel || undefined}
+                  subGenreDef={subGenreDef || undefined}
+                  theme={themeLabel || undefined}
+                  themeDef={themeDef || undefined}
+                  subTheme={subThemeLabel || undefined}
+                  subThemeDef={subThemeDef || undefined}
+                  centralConflict={centralConflictLabel || undefined}
+                  centralConflictDef={centralConflictDef || undefined}
+                  storyHtml={storyHtml}
+                  setStoryHtml={setStoryHtml}
+                />
+              </SharedMainContentLayout>
             ) : (
-              // All other builder tabs (world, production, asset, script, deck)
-              <div className="bg-gray-100 flex flex-col h-full">
-                {/* Builder Header */}
-                <div className="bg-white border-b border-gray-200 px-4 pb-4">
-                  <h2 className="text-lg font-semibold text-slate-800">
-                    {activeTab === 'world' && 'World Builder'}
-                    {activeTab === 'production' && 'Production Builder'}
-                    {activeTab === 'asset' && 'Asset Builder'}
-                    {activeTab === 'script' && 'Script Builder'}
-                    {activeTab === 'deck' && 'Deck Builder'}
-                  </h2>
-                </div>
-                
-                {/* Constrained Content Container - Same layout as dashboard */}
-                <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    {/* Main Builder Section - 70.8% height (decreased from 71.1%) */}
-                    <div className="flex justify-center items-center" style={{ height: '70.8%' }}>
-                      <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
-                        {/* Builder content area - placeholder for now */}
-                      </div>
-                    </div>
-
-                    {/* Bottom section - 29.2% height (increased 1% from 28.9%) */}
-                    <div className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
-                      {/* AI Chat Window - takes remaining space, exactly like dashboard */}
-                      <AIStoryAssistant 
-                        chatMessages={chatMessages}
-                        chatMessage={chatMessage}
-                        setChatMessage={setChatMessage}
-                        handleSendMessage={handleSendMessage}
-                        handleKeyPress={handleKeyPress}
-                      />
-                    </div>
+              // All other builder tabs use the SAME layout structure
+              <SharedMainContentLayout 
+                pageTitle={
+                  activeTab === 'world' ? 'World Builder' :
+                  activeTab === 'production' ? 'Production Builder' :
+                  activeTab === 'asset' ? 'Asset Builder' :
+                  activeTab === 'script' ? 'Script Builder' :
+                  activeTab === 'deck' ? 'Deck Builder' :
+                  'Builder'
+                }
+                activeTab={activeTab}
+                chatMessages={chatMessages}
+                chatMessage={chatMessage}
+                setChatMessage={setChatMessage}
+                handleSendMessage={handleSendMessage}
+                handleKeyPress={handleKeyPress}
+              >
+                {/* Page-specific content goes here - same positioning for all */}
+                {activeTab === 'world' && (
+                  <div className="w-full h-full p-4 text-white">
+                    <h3 className="text-lg mb-4">World Builder Content</h3>
+                    {/* Add your world builder components here */}
                   </div>
-                </div>
-              </div>
+                )}
+                
+                {activeTab === 'production' && (
+                  <div className="w-full h-full p-4 text-white">
+                    <h3 className="text-lg mb-4">Production Builder Content</h3>
+                    {/* Add your production builder components here */}
+                  </div>
+                )}
+                
+                {activeTab === 'asset' && (
+                  <div className="w-full h-full p-4 text-white">
+                    <h3 className="text-lg mb-4">Asset Builder Content</h3>
+                    {/* Add your asset builder components here */}
+                  </div>
+                )}
+                
+                {activeTab === 'script' && (
+                  <div className="w-full h-full p-4 text-white">
+                    <h3 className="text-lg mb-4">Script Builder Content</h3>
+                    {/* Add your script builder components here */}
+                  </div>
+                )}
+                
+                {activeTab === 'deck' && (
+                  <div className="w-full h-full p-4 text-white">
+                    <h3 className="text-lg mb-4">Deck Builder Content</h3>
+                    {/* Add your deck builder components here */}
+                  </div>
+                )}
+              </SharedMainContentLayout>
             )}
           </div>
           
