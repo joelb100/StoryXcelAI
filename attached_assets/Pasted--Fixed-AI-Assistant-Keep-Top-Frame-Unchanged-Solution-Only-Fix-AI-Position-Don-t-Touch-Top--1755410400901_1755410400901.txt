@@ -1,0 +1,134 @@
+# Fixed AI Assistant - Keep Top Frame Unchanged
+
+## Solution: Only Fix AI Position, Don't Touch Top Frame
+
+Keep your current Story Builder exactly as it is, just add a fixed position AI Assistant that never moves.
+
+### Step 1: Add Fixed AI Component
+
+Add this to your `dashboard-layout.tsx`:
+
+```typescript
+// FIXED AI ASSISTANT - Always visible, never pushed off-screen
+const FixedAI = ({ 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress 
+}: {
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+}) => (
+  <div 
+    className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
+    style={{
+      width: 'min(90vw, 14.5in)',
+      height: '200px',
+      maxWidth: '14.5in'
+    }}
+  >
+    <div className="w-full h-full bg-white border border-gray-300 shadow-xl rounded-lg">
+      <AIStoryAssistant 
+        chatMessages={chatMessages}
+        chatMessage={chatMessage}
+        setChatMessage={setChatMessage}
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+      />
+    </div>
+  </div>
+);
+```
+
+### Step 2: Remove AI from Story Builder Only
+
+In your Story Builder section, remove the AI Assistant but keep everything else:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header - UNCHANGED */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Story Content - UNCHANGED, just remove AI from bottom */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 h-full">
+        <div className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden w-full h-full">
+          {/* StoryBuilder component - UNCHANGED */}
+          <StoryBuilder 
+            projectName={projectName}
+            projectType={projectType}
+            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+            genre={genreLabel || undefined}
+            genreDef={genreDef || undefined}
+            subGenre={subGenreLabel || undefined}
+            subGenreDef={subGenreDef || undefined}
+            theme={themeLabel || undefined}
+            themeDef={themeDef || undefined}
+            subTheme={subThemeLabel || undefined}
+            subThemeDef={subThemeDef || undefined}
+            centralConflict={centralConflictLabel || undefined}
+            centralConflictDef={centralConflictDef || undefined}
+            storyHtml={storyHtml}
+            setStoryHtml={setStoryHtml}
+          />
+        </div>
+        {/* REMOVED: AI Assistant from here - it's now fixed position */}
+      </div>
+    </div>
+  </div>
+```
+
+### Step 3: Add Fixed AI to Main Layout
+
+Add the fixed AI at the very end of your main layout:
+
+```typescript
+return (
+  <div className="h-screen bg-slate-800 flex flex-col overflow-hidden">
+    {/* All existing header and content - UNCHANGED */}
+    
+    {/* Main Content Area - UNCHANGED */}
+    <div className="flex-1 grid grid-cols-28 overflow-hidden">
+      {/* All your existing content - UNCHANGED */}
+    </div>
+
+    {/* NEW: FIXED AI ASSISTANT - Only addition */}
+    <FixedAI 
+      chatMessages={chatMessages}
+      chatMessage={chatMessage}
+      setChatMessage={setChatMessage}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+    />
+  </div>
+);
+```
+
+### Step 4: Keep Dashboard and Other Pages Unchanged
+
+All other pages (Dashboard, World, Production, Asset, Script, Deck) stay exactly as they are. The fixed AI will appear over them.
+
+## What This Does:
+
+✅ **Top frame stays exactly the same** - No changes to Story Overview
+✅ **Story Beats can expand freely** - Content won't push AI off-screen  
+✅ **AI always visible** - Fixed at bottom center of screen
+✅ **Same AI everywhere** - Appears consistently on all pages
+✅ **No layout disruption** - Other pages remain unchanged
+
+## What You Get:
+
+- **Story Overview** - Unchanged, exactly as it is now
+- **Story Beats** - Can expand with unlimited content
+- **AI Assistant** - Always accessible, never disappears
+- **All other pages** - Work exactly as before
+
+The AI Assistant will float over the bottom of the screen and be accessible even when the Story Beats section is completely filled with content. The top frame with your Story Overview remains untouched.
