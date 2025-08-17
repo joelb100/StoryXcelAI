@@ -2271,30 +2271,27 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - Story Builder specific layout */}
+                {/* Constrained Content Container - Fixed AI height */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div 
-                    className="w-full max-w-[15.25in] p-4 h-full" 
-                    style={{
-                      display: 'grid',
-                      gridTemplateRows: '60% 40%', // Match Dashboard: 60% story editor, 40% AI section
-                      gridTemplateColumns: '1fr',
-                      gap: '16px'
-                    }}
-                  >
-                    {/* Story Editor Section - Takes remaining space */}
-                    <div className="flex justify-center items-center min-h-0">
+                  <div className="w-full max-w-[15.25in] p-4 h-full flex flex-col">
+                    
+                    {/* Story Editor Section - Takes remaining space after AI */}
+                    <div 
+                      className="flex justify-center items-center mb-4"
+                      style={{ 
+                        height: 'calc(100% - 300px)', // Total height minus AI height
+                        minHeight: '400px'            // Minimum editor height
+                      }}
+                    >
                       <div 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
                           width: '100%', 
                           maxWidth: '14.5in', 
-                          height: '100%',
-                          minHeight: '100%',
-                          maxHeight: '100%'
+                          height: '100%'
                         }}
                       >
-                        {/* Story Builder Content - Strictly contained */}
+                        {/* Story Builder Content */}
                         <div className="w-full h-full overflow-hidden">
                           <StoryBuilder 
                             projectName={projectName}
@@ -2318,9 +2315,19 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Assistant Panel - 40% height (same as Dashboard bottom section) */}
-                    <div className="flex flex-col justify-start min-h-0">
-                      <div className="flex-1">
+                    {/* AI Assistant Section - LOCKED HEIGHT - NEVER CHANGES */}
+                    <div 
+                      className="bg-white border-t border-gray-200"
+                      style={{ 
+                        height: '300px',           // FIXED HEIGHT - change this number to resize
+                        minHeight: '300px',        // Prevents shrinking
+                        maxHeight: '300px',        // Prevents growing
+                        flexShrink: 0,             // Never compress
+                        flexGrow: 0,               // Never expand
+                        overflow: 'hidden'         // Contain content
+                      }}
+                    >
+                      <div className="h-full">
                         <AIStoryAssistant 
                           chatMessages={chatMessages}
                           chatMessage={chatMessage}

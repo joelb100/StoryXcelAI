@@ -1,0 +1,167 @@
+# Lock AI Assistant to Exact Size - Simple Fix
+
+## Problem
+The AI Story Assistant keeps changing size. We need to lock it to a specific height that never changes.
+
+## Simple Solution
+Replace the AI Assistant section in your Story Builder with this exact code:
+
+### In your `dashboard-layout.tsx`, find the Story Builder section and replace the bottom part:
+
+**Replace the entire bottom section (AI Assistant area) with:**
+
+```typescript
+{/* AI Assistant Section - LOCKED HEIGHT - NEVER CHANGES */}
+<div 
+  className="bg-white border-t border-gray-200"
+  style={{ 
+    height: '300px',           // FIXED HEIGHT - change this number to resize
+    minHeight: '300px',        // Prevents shrinking
+    maxHeight: '300px',        // Prevents growing
+    flexShrink: 0,             // Never compress
+    flexGrow: 0,               // Never expand
+    overflow: 'hidden'         // Contain content
+  }}
+>
+  <div className="h-full">
+    <AIStoryAssistant 
+      chatMessages={chatMessages}
+      chatMessage={chatMessage}
+      setChatMessage={setChatMessage}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+    />
+  </div>
+</div>
+```
+
+### Update the Story Builder container to use calc():
+
+**Replace the Story Builder grid container with:**
+
+```typescript
+{/* Constrained Content Container - Fixed AI height */}
+<div className="flex-1 flex justify-center overflow-hidden">
+  <div className="w-full max-w-[15.25in] p-4 h-full flex flex-col">
+    
+    {/* Story Editor Section - Takes remaining space after AI */}
+    <div 
+      className="flex justify-center items-center mb-4"
+      style={{ 
+        height: 'calc(100% - 300px)', // Total height minus AI height
+        minHeight: '400px'            // Minimum editor height
+      }}
+    >
+      <div 
+        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+        style={{ 
+          width: '100%', 
+          maxWidth: '14.5in', 
+          height: '100%'
+        }}
+      >
+        {/* Story Builder Content */}
+        <div className="w-full h-full overflow-hidden">
+          <StoryBuilder 
+            projectName={projectName}
+            projectType={projectType}
+            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+            genre={genreLabel || undefined}
+            genreDef={genreDef || undefined}
+            subGenre={subGenreLabel || undefined}
+            subGenreDef={subGenreDef || undefined}
+            theme={themeLabel || undefined}
+            themeDef={themeDef || undefined}
+            subTheme={subThemeLabel || undefined}
+            subThemeDef={subThemeDef || undefined}
+            centralConflict={centralConflictLabel || undefined}
+            centralConflictDef={centralConflictDef || undefined}
+            storyHtml={storyHtml}
+            setStoryHtml={setStoryHtml}
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* AI Assistant Section - LOCKED HEIGHT */}
+    <div 
+      className="bg-white border-t border-gray-200"
+      style={{ 
+        height: '300px',
+        minHeight: '300px',
+        maxHeight: '300px',
+        flexShrink: 0,
+        flexGrow: 0,
+        overflow: 'hidden'
+      }}
+    >
+      <div className="h-full">
+        <AIStoryAssistant 
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+## Alternative: Even Simpler Flex Method
+
+If the above doesn't work, use this simpler approach:
+
+```typescript
+{/* Story Builder Container - Simple Flex */}
+<div className="flex-1 flex justify-center overflow-hidden">
+  <div className="w-full max-w-[15.25in] p-4 h-full flex flex-col">
+    
+    {/* Story Editor - Flex Grow */}
+    <div className="flex-1 flex justify-center items-center mb-4 min-h-0">
+      <div className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden w-full max-w-[14.5in] h-full">
+        <StoryBuilder 
+          {/* ...all your props... */}
+        />
+      </div>
+    </div>
+
+    {/* AI Assistant - ABSOLUTE FIXED SIZE */}
+    <div 
+      style={{ 
+        height: '300px',
+        minHeight: '300px',
+        maxHeight: '300px',
+        flexShrink: 0,
+        flexGrow: 0
+      }}
+    >
+      <AIStoryAssistant 
+        chatMessages={chatMessages}
+        chatMessage={chatMessage}
+        setChatMessage={setChatMessage}
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+      />
+    </div>
+  </div>
+</div>
+```
+
+## Key Points:
+
+1. **`height: '300px'`** - Set this to whatever size you want
+2. **`minHeight: '300px'`** - Prevents shrinking below this
+3. **`maxHeight: '300px'`** - Prevents growing above this  
+4. **`flexShrink: 0`** - Never compress
+5. **`flexGrow: 0`** - Never expand
+
+## To Change Size:
+Just change all three `300px` values to the same number:
+- `250px` for smaller
+- `350px` for larger
+- `280px` to match your original preference
+
+The AI Assistant will now be **locked** at exactly that height and will never change again!
