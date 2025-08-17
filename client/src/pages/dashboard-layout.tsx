@@ -71,138 +71,63 @@ import {
   Bell
 } from "lucide-react";
 
-// POSITION-AWARE FLOATING AI ASSISTANT
-const PositionalFloatingAI = ({ 
-  activeTab,
+// FLOATING AI ASSISTANT - Same component on every page
+const FloatingAIAssistant = ({ 
+  isVisible = true,
   chatMessages, 
   chatMessage, 
   setChatMessage, 
   handleSendMessage, 
   handleKeyPress 
 }: {
-  activeTab: string;
+  isVisible?: boolean;
   chatMessages: any[];
   chatMessage: string;
   setChatMessage: (value: string) => void;
   handleSendMessage: () => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
 }) => {
-  // Calculate position based on active tab
-  const getPosition = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return {
-          bottom: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'min(90vw, 14.5in)',
-          maxWidth: '14.5in',
-          height: '280px', // Dashboard AI height
-          marginRight: '280px' // Account for right sidebar
-        };
-      
-      case 'story':
-        return {
-          bottom: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'min(90vw, 14.5in)',
-          maxWidth: '14.5in', 
-          height: '200px', // Story Builder AI height (smaller)
-          marginRight: '280px' // Account for right sidebar
-        };
-      
-      default: // All other builder pages
-        return {
-          bottom: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'min(90vw, 14.5in)',
-          maxWidth: '14.5in',
-          height: '280px', // Standard builder AI height
-          marginRight: '280px' // Account for right sidebar
-        };
-    }
-  };
-
-  const position = getPosition();
+  if (!isVisible) return null;
 
   return (
     <div 
-      id="positional-floating-ai"
-      className="fixed z-40" // Lower z-index so sidebars can go over it
-      style={position}
+      id="floating-ai-assistant"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
+      style={{
+        width: 'min(90vw, 14.5in)', // Responsive but max 14.5 inches
+        height: '300px',             // Fixed height
+        maxWidth: '14.5in'
+      }}
     >
-      {/* AI Container - matches Dashboard styling exactly */}
-      <div className="w-full h-full">
-        {activeTab === 'dashboard' ? (
-          // Dashboard version - with project cards
-          <div className="w-full h-full flex flex-col">
-            {/* Project Name Section - exactly like Dashboard */}
-            <div className="mb-4">
-              <div className="mb-2">
-                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-              </div>
-              
-              {/* Three project cards - exact Dashboard styling */}
-              <div className="flex gap-[0.25in]" style={{ height: '80px' }}>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              </div>
-            </div>
+      {/* Floating container with shadow and rounded corners */}
+      <div 
+        className="w-full h-full rounded-lg shadow-2xl border border-gray-300"
+        style={{ backgroundColor: '#d4dee7' }} // Same color as Dashboard
+      >
+        {/* Project Name Section - exactly like Dashboard */}
+        <div className="px-4 pt-3 pb-2">
+          <div className="mb-2">
+            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+          </div>
+          
+          {/* Three project cards - exactly like Dashboard */}
+          <div className="flex gap-2" style={{ height: '50px' }}>
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+            <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+          </div>
+        </div>
 
-            {/* AI Assistant - Dashboard styling */}
-            <div className="flex-1">
-              <AIStoryAssistant 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-              />
-            </div>
-          </div>
-        ) : activeTab === 'story' ? (
-          // Story Builder version - no project cards, compact
-          <div className="w-full h-full">
-            <AIStoryAssistant 
-              chatMessages={chatMessages}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyPress}
-            />
-          </div>
-        ) : (
-          // All other builders - with project cards
-          <div className="w-full h-full flex flex-col">
-            {/* Project Name Section */}
-            <div className="mb-4">
-              <div className="mb-2">
-                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-              </div>
-              
-              {/* Three project cards */}
-              <div className="flex gap-[0.25in]" style={{ height: '80px' }}>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              </div>
-            </div>
-
-            {/* AI Assistant */}
-            <div className="flex-1">
-              <AIStoryAssistant 
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-              />
-            </div>
-          </div>
-        )}
+        {/* AI Assistant - exactly like Dashboard */}
+        <div className="px-4 pb-3" style={{ height: 'calc(100% - 120px)' }}>
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
       </div>
     </div>
   );
@@ -1456,13 +1381,14 @@ const DashboardContent = ({
     {/* Constrained Content Container - 15.25 inches max width */}
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-        {/* Main Dashboard Section - 100% height now */}
+        {/* Main Dashboard Section - Full height now with floating AI */}
         <div className="flex-1 flex justify-center items-center">
           <Card className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
             {/* Main dashboard content area */}
           </Card>
         </div>
-        {/* NO AI ASSISTANT HERE - It's floating */}
+
+        {/* Bottom section removed - Now using Floating AI Assistant */}
       </div>
     </div>
   </div>
@@ -1498,13 +1424,14 @@ const SharedMainContentLayout = ({
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         
-        {/* Builder content - 100% height now */}
+        {/* Main Content Section - Full height now with floating AI */}
         <div className="flex-1 flex justify-center items-center">
           <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
             {children}
           </div>
         </div>
-        {/* NO AI ASSISTANT HERE - It's floating */}
+
+        {/* Bottom section removed - Now using Floating AI Assistant */}
       </div>
     </div>
   </div>
@@ -1527,6 +1454,8 @@ export default function DashboardLayout() {
   const [isSiteLinksOpen, setIsSiteLinksOpen] = useState(true);
   // Project name state for live-sync with Story Builder
   const [projectName, setProjectName] = useState('');
+  // Floating AI state
+  const [isAIVisible, setIsAIVisible] = useState(true);
   
   // --- StoryXcel Overview block control ---
   const SX_START = '// STORYXCEL_OVERVIEW_START';
@@ -2345,11 +2274,17 @@ export default function DashboardLayout() {
                 
                 {/* Constrained Content Container - Dashboard proportions */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 h-full">
-                    {/* Story Editor - 100% height now */}
-                    <div className="flex justify-center items-center h-full">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+                    
+                    {/* Story Editor Section - Full height now with floating AI */}
+                    <div className="flex-1 flex justify-center items-center">
                       <Card 
-                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden w-full max-w-[14.5in] h-full"
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        style={{ 
+                          width: '100%', 
+                          maxWidth: '14.5in', 
+                          height: '100%'
+                        }}
                       >
                         <StoryBuilder 
                           projectName={projectName}
@@ -2371,7 +2306,8 @@ export default function DashboardLayout() {
                         />
                       </Card>
                     </div>
-                    {/* NO AI ASSISTANT HERE - It's floating */}
+
+                    {/* Bottom section removed - Now using Floating AI Assistant */}
                   </div>
                 </div>
               </div>
@@ -2673,9 +2609,9 @@ export default function DashboardLayout() {
           </DialogContent>
         </Dialog>
 
-        {/* POSITIONAL FLOATING AI - Appears in natural position for each page */}
-        <PositionalFloatingAI 
-          activeTab={activeTab}
+        {/* FLOATING AI ASSISTANT - Same on every page */}
+        <FloatingAIAssistant 
+          isVisible={isAIVisible}
           chatMessages={chatMessages}
           chatMessage={chatMessage}
           setChatMessage={setChatMessage}
