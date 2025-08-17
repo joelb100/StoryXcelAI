@@ -1,0 +1,196 @@
+# Fix AI Assistant Size - Component Level Solution
+
+## Problem Identified
+The `AIStoryAssistant` component has `flex-1` and `h-full` classes that are fighting with our container sizing. We need to override these internal styles.
+
+## Solution 1: Override AI Assistant Internal Styles
+
+In your `dashboard-layout.tsx`, wrap the AI Assistant with a fixed container that overrides its internal flex properties:
+
+### Replace the AI Assistant section in Story Builder with:
+
+```typescript
+{/* AI Assistant Section - LOCKED HEIGHT with style override */}
+<div 
+  style={{ 
+    height: '280px',           // Your desired height
+    minHeight: '280px',        
+    maxHeight: '280px',        
+    flexShrink: 0,             
+    flexGrow: 0,               
+    overflow: 'hidden',
+    position: 'relative'       // Ensure contained positioning
+  }}
+>
+  {/* Override wrapper to neutralize AIStoryAssistant's flex-1 */}
+  <div 
+    style={{
+      height: '280px',         // Match parent exactly
+      width: '100%',
+      overflow: 'hidden'
+    }}
+  >
+    <AIStoryAssistant 
+      chatMessages={chatMessages}
+      chatMessage={chatMessage}
+      setChatMessage={setChatMessage}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+    />
+  </div>
+</div>
+```
+
+## Solution 2: Create Fixed Height AI Component Wrapper
+
+Create a wrapper component that forces the AI Assistant to a fixed size:
+
+### Add this component to your `dashboard-layout.tsx`:
+
+```typescript
+// Add this component before your main export
+const FixedHeightAIAssistant = ({ 
+  height = 280, 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress 
+}: {
+  height?: number;
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+}) => (
+  <div 
+    style={{
+      height: `${height}px`,
+      minHeight: `${height}px`,
+      maxHeight: `${height}px`,
+      width: '100%',
+      overflow: 'hidden',
+      flexShrink: 0,
+      flexGrow: 0,
+      display: 'flex',
+      flexDirection: 'column'
+    }}
+  >
+    {/* Override AI Assistant's internal flex behavior */}
+    <div style={{ height: '100%', overflow: 'hidden' }}>
+      <AIStoryAssistant 
+        chatMessages={chatMessages}
+        chatMessage={chatMessage}
+        setChatMessage={setChatMessage}
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+      />
+    </div>
+  </div>
+);
+```
+
+### Then use it in your Story Builder:
+
+```typescript
+{/* AI Assistant Section - Use Fixed Height Wrapper */}
+<FixedHeightAIAssistant 
+  height={280}  // Change this number to resize
+  chatMessages={chatMessages}
+  chatMessage={chatMessage}
+  setChatMessage={setChatMessage}
+  handleSendMessage={handleSendMessage}
+  handleKeyPress={handleKeyPress}
+/>
+```
+
+## Solution 3: Complete Story Builder Layout Fix
+
+Replace your entire Story Builder section with this corrected version:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Main Content - Simple Flex Layout */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 h-full flex flex-col">
+        
+        {/* Story Editor - Takes available space */}
+        <div className="flex-1 flex justify-center items-center mb-4 min-h-0">
+          <div 
+            className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '14.5in', 
+              height: '100%'
+            }}
+          >
+            <StoryBuilder 
+              projectName={projectName}
+              projectType={projectType}
+              lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+              lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+              genre={genreLabel || undefined}
+              genreDef={genreDef || undefined}
+              subGenre={subGenreLabel || undefined}
+              subGenreDef={subGenreDef || undefined}
+              theme={themeLabel || undefined}
+              themeDef={themeDef || undefined}
+              subTheme={subThemeLabel || undefined}
+              subThemeDef={subThemeDef || undefined}
+              centralConflict={centralConflictLabel || undefined}
+              centralConflictDef={centralConflictDef || undefined}
+              storyHtml={storyHtml}
+              setStoryHtml={setStoryHtml}
+            />
+          </div>
+        </div>
+
+        {/* AI Assistant - ABSOLUTELY FIXED HEIGHT */}
+        <div 
+          style={{ 
+            height: '280px',           // CHANGE THIS NUMBER TO RESIZE
+            minHeight: '280px',        
+            maxHeight: '280px',        
+            width: '100%',
+            flexShrink: 0,             
+            flexGrow: 0,               
+            overflow: 'hidden'
+          }}
+        >
+          {/* Neutralize AI Assistant's internal flex */}
+          <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
+            <AIStoryAssistant 
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+```
+
+## Why This Works:
+
+1. **Double Container**: The inner container neutralizes the AI Assistant's `flex-1` behavior
+2. **Explicit Height Override**: Forces exact pixel height regardless of component's internal styles
+3. **`overflow: hidden`**: Prevents content from breaking the container
+4. **`flexShrink: 0`**: Absolutely prevents compression
+
+## To Change Size:
+Just change the `280px` values to whatever you want:
+- `320px` for taller
+- `240px` for shorter
+- `300px` for medium
+
+The AI Assistant will now be **absolutely locked** at that height and cannot change!

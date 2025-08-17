@@ -2279,7 +2279,7 @@ export default function DashboardLayout() {
                     <div 
                       className="flex justify-center items-center mb-4"
                       style={{ 
-                        height: 'calc(100% - 300px)', // Total height minus AI height
+                        height: 'calc(100% - 280px)', // Total height minus AI height
                         minHeight: '400px'            // Minimum editor height
                       }}
                     >
@@ -2315,19 +2315,20 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Assistant Section - LOCKED HEIGHT - NEVER CHANGES */}
+                    {/* AI Assistant Section - ABSOLUTELY FIXED HEIGHT */}
                     <div 
-                      className="bg-white border-t border-gray-200"
                       style={{ 
-                        height: '300px',           // FIXED HEIGHT - change this number to resize
-                        minHeight: '300px',        // Prevents shrinking
-                        maxHeight: '300px',        // Prevents growing
-                        flexShrink: 0,             // Never compress
-                        flexGrow: 0,               // Never expand
-                        overflow: 'hidden'         // Contain content
+                        height: '280px',           // CHANGE THIS NUMBER TO RESIZE
+                        minHeight: '280px',        
+                        maxHeight: '280px',        
+                        width: '100%',
+                        flexShrink: 0,             
+                        flexGrow: 0,               
+                        overflow: 'hidden'
                       }}
                     >
-                      <div className="h-full">
+                      {/* Neutralize AI Assistant's internal flex */}
+                      <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
                         <AIStoryAssistant 
                           chatMessages={chatMessages}
                           chatMessage={chatMessage}
