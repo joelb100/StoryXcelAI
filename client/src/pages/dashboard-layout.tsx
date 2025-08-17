@@ -2277,7 +2277,7 @@ export default function DashboardLayout() {
                     className="w-full max-w-[15.25in] p-4 h-full" 
                     style={{
                       display: 'grid',
-                      gridTemplateRows: '1fr 200px', // Story editor takes most space, AI gets fixed 200px
+                      gridTemplateRows: '60% 40%', // Match Dashboard: 60% story editor, 40% AI section
                       gridTemplateColumns: '1fr',
                       gap: '16px'
                     }}
@@ -2318,15 +2318,17 @@ export default function DashboardLayout() {
                       </div>
                     </div>
 
-                    {/* AI Assistant Panel - Fixed 200px height, NO project cards */}
+                    {/* AI Assistant Panel - 40% height (same as Dashboard bottom section) */}
                     <div className="flex flex-col justify-start min-h-0">
-                      <AIStoryAssistant 
-                        chatMessages={chatMessages}
-                        chatMessage={chatMessage}
-                        setChatMessage={setChatMessage}
-                        handleSendMessage={handleSendMessage}
-                        handleKeyPress={handleKeyPress}
-                      />
+                      <div className="flex-1">
+                        <AIStoryAssistant 
+                          chatMessages={chatMessages}
+                          chatMessage={chatMessage}
+                          setChatMessage={setChatMessage}
+                          handleSendMessage={handleSendMessage}
+                          handleKeyPress={handleKeyPress}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

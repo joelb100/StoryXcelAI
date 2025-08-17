@@ -1,0 +1,115 @@
+# Fix AI Assistant Height in Story Builder
+
+## Problem
+The AI Story Assistant in Story Builder is vertically compressed and needs to match the same height as the Dashboard version.
+
+## Solution
+Adjust the grid layout proportions to give the AI Assistant more vertical space, matching the Dashboard layout.
+
+### Update the Story Builder Layout
+
+In your `dashboard-layout.tsx`, find the Story Builder section and update the grid proportions:
+
+**Replace this:**
+```typescript
+style={{
+  display: 'grid',
+  gridTemplateRows: '1fr 200px', // Story editor takes most space, AI gets fixed 200px
+  gridTemplateColumns: '1fr',
+  gap: '16px'
+}}
+```
+
+**With this (Dashboard proportions):**
+```typescript
+style={{
+  display: 'grid',
+  gridTemplateRows: '60% 40%', // Match Dashboard: 60% story editor, 40% AI section
+  gridTemplateColumns: '1fr',
+  gap: '16px'
+}}
+```
+
+### Complete Story Builder Section Update
+
+Replace your entire Story Builder section with this corrected version:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Constrained Content Container - Match Dashboard proportions */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        
+        {/* Story Editor Section - 60% height (same as Dashboard red box) */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <div 
+            className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '14.5in', 
+              height: '100%',
+              minHeight: '100%',
+              maxHeight: '100%'
+            }}
+          >
+            {/* Story Builder Content */}
+            <div className="w-full h-full overflow-hidden">
+              <StoryBuilder 
+                projectName={projectName}
+                projectType={projectType}
+                lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                genre={genreLabel || undefined}
+                genreDef={genreDef || undefined}
+                subGenre={subGenreLabel || undefined}
+                subGenreDef={subGenreDef || undefined}
+                theme={themeLabel || undefined}
+                themeDef={themeDef || undefined}
+                subTheme={subThemeLabel || undefined}
+                subThemeDef={subThemeDef || undefined}
+                centralConflict={centralConflictLabel || undefined}
+                centralConflictDef={centralConflictDef || undefined}
+                storyHtml={storyHtml}
+                setStoryHtml={setStoryHtml}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Assistant Section - 40% height (same as Dashboard bottom section) */}
+        <div className="flex flex-col justify-start pt-4" style={{ height: '40%' }}>
+          <div className="flex-1">
+            <AIStoryAssistant 
+              chatMessages={chatMessages}
+              chatMessage={chatMessage}
+              setChatMessage={setChatMessage}
+              handleSendMessage={handleSendMessage}
+              handleKeyPress={handleKeyPress}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+```
+
+## Key Changes:
+
+1. **Changed from fixed 200px to 40% height** - This gives the AI Assistant much more vertical space
+2. **Story Editor gets 60%** - Matches the Dashboard red box proportion  
+3. **AI Assistant gets 40%** - Matches the Dashboard bottom section proportion
+4. **Added `flex-1` to AI container** - Ensures it uses all available space in its 40% section
+
+## Result:
+- ✅ AI Story Assistant will have the same height as the Dashboard version
+- ✅ Story Editor maintains good proportions (60% of screen)
+- ✅ Clean layout without project cards cluttering the Story Builder
+- ✅ Proper vertical space distribution matching Dashboard
+
+The AI Assistant will now have much more vertical space and match the Dashboard appearance while keeping the Story Builder clean and focused on writing.
