@@ -1,0 +1,249 @@
+# Universal Dashboard-Style AI Assistant
+
+## Create the Exact Dashboard AI Layout for All Pages
+
+Add this component to your `dashboard-layout.tsx` (after imports):
+
+```typescript
+// UNIVERSAL DASHBOARD-STYLE AI ASSISTANT
+// This recreates the exact Dashboard bottom section for all pages
+const UniversalDashboardAI = ({ 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress,
+  showProjectCards = true // Option to hide project cards on some pages
+}: {
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  showProjectCards?: boolean;
+}) => (
+  <div className="flex-1 flex flex-col justify-start pt-4">
+    {/* Project Name Section - EXACTLY like Dashboard */}
+    {showProjectCards && (
+      <div className="flex justify-center mb-4">
+        <div className="w-full max-w-[14.5in]">
+          <div className="mb-2">
+            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+          </div>
+          
+          {/* Three equal project cards - IDENTICAL to Dashboard */}
+          <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* AI Chat Window - EXACT Dashboard styling */}
+    <AIStoryAssistant 
+      chatMessages={chatMessages}
+      chatMessage={chatMessage}
+      setChatMessage={setChatMessage}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+    />
+  </div>
+);
+```
+
+## Update SharedMainContentLayout
+
+Replace your `SharedMainContentLayout` to use the Dashboard-style AI:
+
+```typescript
+const SharedMainContentLayout = ({ 
+  children, 
+  pageTitle, 
+  activeTab,
+  chatMessages,
+  chatMessage,
+  setChatMessage,
+  handleSendMessage,
+  handleKeyPress
+}: { 
+  children: React.ReactNode; 
+  pageTitle: string; 
+  activeTab: string;
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+}) => (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Consistent Header across all pages */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">{pageTitle}</h2>
+    </div>
+
+    {/* Constrained Content Container - IDENTICAL to Dashboard proportions */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        
+        {/* Main Content Section - 60% height (same as Dashboard red box) */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
+            {children}
+          </div>
+        </div>
+
+        {/* Bottom section - 40% height (EXACT Dashboard layout) */}
+        <UniversalDashboardAI 
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+          showProjectCards={true} // Show project cards on all builder pages
+        />
+      </div>
+    </div>
+  </div>
+);
+```
+
+## Update Story Builder (No Project Cards)
+
+For Story Builder, use the Dashboard AI but without project cards:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Constrained Content Container - Dashboard proportions */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        
+        {/* Story Editor Section - 60% height (same as Dashboard red box) */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <div 
+            className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '14.5in', 
+              height: '100%'
+            }}
+          >
+            <StoryBuilder 
+              projectName={projectName}
+              projectType={projectType}
+              lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+              lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+              genre={genreLabel || undefined}
+              genreDef={genreDef || undefined}
+              subGenre={subGenreLabel || undefined}
+              subGenreDef={subGenreDef || undefined}
+              theme={themeLabel || undefined}
+              themeDef={themeDef || undefined}
+              subTheme={subThemeLabel || undefined}
+              subThemeDef={subThemeDef || undefined}
+              centralConflict={centralConflictLabel || undefined}
+              centralConflictDef={centralConflictDef || undefined}
+              storyHtml={storyHtml}
+              setStoryHtml={setStoryHtml}
+            />
+          </div>
+        </div>
+
+        {/* Bottom section - 40% height (Dashboard AI WITHOUT project cards) */}
+        <UniversalDashboardAI 
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+          showProjectCards={false} // NO project cards in Story Builder
+        />
+      </div>
+    </div>
+  </div>
+```
+
+## Keep Dashboard Unchanged
+
+Your Dashboard already has the perfect layout, so keep using `DashboardContent` as-is. No changes needed there.
+
+## Update All Other Builder Pages
+
+Make sure all builder pages use the updated `SharedMainContentLayout`:
+
+```typescript
+{/* All other builder tabs - World, Production, Asset, Script, Deck */}
+<SharedMainContentLayout 
+  pageTitle={
+    activeTab === 'world' ? 'World Builder' :
+    activeTab === 'production' ? 'Production Builder' :
+    activeTab === 'asset' ? 'Asset Builder' :
+    activeTab === 'script' ? 'Script Builder' :
+    activeTab === 'deck' ? 'Deck Builder' :
+    'Builder'
+  }
+  activeTab={activeTab}
+  chatMessages={chatMessages}
+  chatMessage={chatMessage}
+  setChatMessage={setChatMessage}
+  handleSendMessage={handleSendMessage}
+  handleKeyPress={handleKeyPress}
+>
+  {/* Page-specific content goes here */}
+  {activeTab === 'world' && (
+    <div className="w-full h-full p-4 text-white">
+      <h3 className="text-lg mb-4">World Builder Content</h3>
+    </div>
+  )}
+  
+  {activeTab === 'production' && (
+    <div className="w-full h-full p-4 text-white">
+      <h3 className="text-lg mb-4">Production Builder Content</h3>
+    </div>
+  )}
+  
+  {activeTab === 'asset' && (
+    <div className="w-full h-full p-4 text-white">
+      <h3 className="text-lg mb-4">Asset Builder Content</h3>
+    </div>
+  )}
+  
+  {activeTab === 'script' && (
+    <div className="w-full h-full p-4 text-white">
+      <h3 className="text-lg mb-4">Script Builder Content</h3>
+    </div>
+  )}
+  
+  {activeTab === 'deck' && (
+    <div className="w-full h-full p-4 text-white">
+      <h3 className="text-lg mb-4">Deck Builder Content</h3>
+    </div>
+  )}
+</SharedMainContentLayout>
+```
+
+## Result:
+
+### ✅ Dashboard AI Layout Everywhere:
+- **Dashboard**: Original layout (unchanged)
+- **Story Builder**: Dashboard AI layout WITHOUT project cards
+- **World Builder**: Dashboard AI layout WITH project cards
+- **Production Builder**: Dashboard AI layout WITH project cards  
+- **Asset Builder**: Dashboard AI layout WITH project cards
+- **Script Builder**: Dashboard AI layout WITH project cards
+- **Deck Builder**: Dashboard AI layout WITH project cards
+
+### ✅ Consistent Proportions:
+- **60% main content area** (same as Dashboard red box)
+- **40% bottom section** (same as Dashboard bottom)
+- **Exact same AI Assistant** styling and behavior
+- **Same project cards** positioning and spacing
+
+Now every page will have the exact same AI Story Assistant as your Dashboard!

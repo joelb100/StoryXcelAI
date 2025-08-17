@@ -71,6 +71,53 @@ import {
   Bell
 } from "lucide-react";
 
+// UNIVERSAL DASHBOARD-STYLE AI ASSISTANT
+// This recreates the exact Dashboard bottom section for all pages
+const UniversalDashboardAI = ({ 
+  chatMessages, 
+  chatMessage, 
+  setChatMessage, 
+  handleSendMessage, 
+  handleKeyPress,
+  showProjectCards = true // Option to hide project cards on some pages
+}: {
+  chatMessages: any[];
+  chatMessage: string;
+  setChatMessage: (value: string) => void;
+  handleSendMessage: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  showProjectCards?: boolean;
+}) => (
+  <div className="flex-1 flex flex-col justify-start pt-4">
+    {/* Project Name Section - EXACTLY like Dashboard */}
+    {showProjectCards && (
+      <div className="flex justify-center mb-4">
+        <div className="w-full max-w-[14.5in]">
+          <div className="mb-2">
+            <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+          </div>
+          
+          {/* Three equal project cards - IDENTICAL to Dashboard */}
+          <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+            <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* AI Chat Window - EXACT Dashboard styling */}
+    <AIStoryAssistant 
+      chatMessages={chatMessages}
+      chatMessage={chatMessage}
+      setChatMessage={setChatMessage}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+    />
+  </div>
+);
+
 // ----- Conflict templates and DOM manipulation -----
 const CONFLICT_START = '<!-- STORYXCEL_CONFLICT_START -->';
 const CONFLICT_END   = '<!-- STORYXCEL_CONFLICT_END -->';
@@ -1394,45 +1441,22 @@ const SharedMainContentLayout = ({
     <div className="flex-1 flex justify-center overflow-hidden">
       <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
         
-        {/* RED BOX AREA - Main Content Section - CONSISTENT 70.8% height */}
-        <div className="flex justify-center items-center" style={{ height: '70.8%' }}>
+        {/* Main Content Section - 60% height (same as Dashboard red box) */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
           <div className="rounded-lg border-0 w-full max-w-[14.5in] h-full" style={{ backgroundColor: '#3f4c5f' }}>
-            {/* This is where page-specific content goes */}
             {children}
           </div>
         </div>
 
-        {/* Bottom section - CONSISTENT 29.2% height for all pages */}
-        <div className="flex flex-col justify-start pt-4" style={{ height: '29.2%' }}>
-          {/* Project Name Section - only show for non-dashboard pages */}
-          {activeTab !== 'dashboard' && (
-            <div className="flex justify-center mb-4">
-              <div className="w-full max-w-[14.5in]">
-                <div className="mb-2">
-                  <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-                </div>
-                
-                {/* Three equal project cards - IDENTICAL spacing for all pages */}
-                <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                  <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* AI Chat Window - IDENTICAL for all pages */}
-          <div className="flex-1">
-            <AIStoryAssistant 
-              chatMessages={chatMessages}
-              chatMessage={chatMessage}
-              setChatMessage={setChatMessage}
-              handleSendMessage={handleSendMessage}
-              handleKeyPress={handleKeyPress}
-            />
-          </div>
-        </div>
+        {/* Bottom section - 40% height (EXACT Dashboard layout) */}
+        <UniversalDashboardAI 
+          chatMessages={chatMessages}
+          chatMessage={chatMessage}
+          setChatMessage={setChatMessage}
+          handleSendMessage={handleSendMessage}
+          handleKeyPress={handleKeyPress}
+          showProjectCards={true} // Show project cards on all builder pages
+        />
       </div>
     </div>
   </div>
@@ -2271,18 +2295,12 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - Fixed AI height */}
+                {/* Constrained Content Container - Dashboard proportions */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 h-full flex flex-col">
+                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
                     
-                    {/* Story Editor Section - Takes remaining space after AI */}
-                    <div 
-                      className="flex justify-center items-center mb-4"
-                      style={{ 
-                        height: 'calc(100% - 280px)', // Total height minus AI height
-                        minHeight: '400px'            // Minimum editor height
-                      }}
-                    >
+                    {/* Story Editor Section - 60% height (same as Dashboard red box) */}
+                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
                       <div 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
@@ -2291,53 +2309,36 @@ export default function DashboardLayout() {
                           height: '100%'
                         }}
                       >
-                        {/* Story Builder Content */}
-                        <div className="w-full h-full overflow-hidden">
-                          <StoryBuilder 
-                            projectName={projectName}
-                            projectType={projectType}
-                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                            genre={genreLabel || undefined}
-                            genreDef={genreDef || undefined}
-                            subGenre={subGenreLabel || undefined}
-                            subGenreDef={subGenreDef || undefined}
-                            theme={themeLabel || undefined}
-                            themeDef={themeDef || undefined}
-                            subTheme={subThemeLabel || undefined}
-                            subThemeDef={subThemeDef || undefined}
-                            centralConflict={centralConflictLabel || undefined}
-                            centralConflictDef={centralConflictDef || undefined}
-                            storyHtml={storyHtml}
-                            setStoryHtml={setStoryHtml}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* AI Assistant Section - ABSOLUTELY FIXED HEIGHT */}
-                    <div 
-                      style={{ 
-                        height: '280px',           // CHANGE THIS NUMBER TO RESIZE
-                        minHeight: '280px',        
-                        maxHeight: '280px',        
-                        width: '100%',
-                        flexShrink: 0,             
-                        flexGrow: 0,               
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {/* Neutralize AI Assistant's internal flex */}
-                      <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
-                        <AIStoryAssistant 
-                          chatMessages={chatMessages}
-                          chatMessage={chatMessage}
-                          setChatMessage={setChatMessage}
-                          handleSendMessage={handleSendMessage}
-                          handleKeyPress={handleKeyPress}
+                        <StoryBuilder 
+                          projectName={projectName}
+                          projectType={projectType}
+                          lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                          lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                          genre={genreLabel || undefined}
+                          genreDef={genreDef || undefined}
+                          subGenre={subGenreLabel || undefined}
+                          subGenreDef={subGenreDef || undefined}
+                          theme={themeLabel || undefined}
+                          themeDef={themeDef || undefined}
+                          subTheme={subThemeLabel || undefined}
+                          subThemeDef={subThemeDef || undefined}
+                          centralConflict={centralConflictLabel || undefined}
+                          centralConflictDef={centralConflictDef || undefined}
+                          storyHtml={storyHtml}
+                          setStoryHtml={setStoryHtml}
                         />
                       </div>
                     </div>
+
+                    {/* Bottom section - 40% height (Dashboard AI WITHOUT project cards) */}
+                    <UniversalDashboardAI 
+                      chatMessages={chatMessages}
+                      chatMessage={chatMessage}
+                      setChatMessage={setChatMessage}
+                      handleSendMessage={handleSendMessage}
+                      handleKeyPress={handleKeyPress}
+                      showProjectCards={false} // NO project cards in Story Builder
+                    />
                   </div>
                 </div>
               </div>
