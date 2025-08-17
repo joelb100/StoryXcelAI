@@ -1,113 +1,26 @@
-import { useMemo, useEffect, useRef } from "react";
-import RichEditor from "@/components/editor/RichEditor";
+# Fix Story Overview to Fit in Top Frame
 
-interface StoryBuilderProps {
-  projectName?: string;
-  projectType?: string;
-  lengthPages?: number;
-  lengthMinutes?: number;
-  genre?: string;
-  genreDef?: string;
-  subGenre?: string;
-  subGenreDef?: string;
-  theme?: string;
-  themeDef?: string;
-  subTheme?: string;
-  subThemeDef?: string;
-  centralConflict?: string;
-  centralConflictDef?: string;
+## Problem
+The Story Overview section (Project Name through Central Conflict) is overflowing and needs to fit within the top frame area.
 
-  // Quill binding
-  storyHtml: string;
-  setStoryHtml: (html: string) => void;
-}
+## Solution
+Update the `StoryBuilder` component to create a proper fixed frame for the overview section.
 
-// Choose a fixed height for the "overview" bar so ALL 7 lines are visible.
-// Fixed to 160px for proper containment within the frame.
-const OVERVIEW_BAR_HEIGHT = 160;
+### Update story-builder.tsx
 
-// Helper: build beats HTML
-function buildBeatsHTML(conflict: string) {
-  // Customize per-conflict. Example for various conflicts:
-  const lines = [
-    `<h3><strong>Story Beats</strong></h3>`,
-    `<p><strong>Plot A —</strong> Systems pressure force adaptation or extinction.</p>`,
-    `<p>• A breaking point demands radical action despite consequences.</p>`,
-    `<p>• The environment's "rules" shift mid‑story, invalidating old strategies.</p>`,
-    `<p><strong>Sub Plot B —</strong> Relationships strain under environmental stress.</p>`,
-    `<p>• Old loyalties conflict with survival needs.</p>`,
-    `<p><strong>Sub Plot C —</strong> Infrastructure failures cascade into larger crises.</p>`,
-    `<p>• Resource scarcity creates new hierarchies of power.</p>`,
-    `<p><strong>Plot Twists —</strong> The environment was shaped by past human choices.</p>`,
-    `<p>• Adaptation changes the protagonist in unexpected ways.</p>`,
-    `<p><strong>Emotional Hook —</strong> What you built to protect you becomes your prison.</p>`,
-    `<p>• Adaptation costs identity.</p>`
-  ];
-  return lines.join("");
-}
+Replace the overview section in your `story-builder.tsx` file:
 
+```typescript
 export default function StoryBuilder(props: StoryBuilderProps) {
-  const {
-    projectName = "",
-    projectType = "",
-    lengthPages,
-    lengthMinutes,
-    genre = "",
-    genreDef = "",
-    subGenre = "",
-    subGenreDef = "",
-    theme = "",
-    themeDef = "",
-    subTheme = "",
-    subThemeDef = "",
-    centralConflict = "",
-    centralConflictDef = "",
-    storyHtml,
-    setStoryHtml,
-  } = props;
-
-  // Keep a ref to avoid duplicate writes
-  const wroteForConflict = useRef<string | null>(null);
-
-  const projectTypeDisplay = useMemo(() => {
-    if (!projectType) return "Screenplay / 90 pages / 90 mins";
-    const parts: string[] = [projectType];
-    if (typeof lengthPages === "number") parts.push(`${lengthPages} pages`);
-    if (typeof lengthMinutes === "number") parts.push(`${lengthMinutes} mins`);
-    return parts.join(" / ");
-  }, [projectType, lengthPages, lengthMinutes]);
-
-  // Auto-fill story beats when Central Conflict changes
-  useEffect(() => {
-    if (!centralConflict || wroteForConflict.current === centralConflict) return;
-
-    const start = "<!-- STORYXCEL_BEATS_START -->";
-    const end = "<!-- STORYXCEL_BEATS_END -->";
-    const beats = buildBeatsHTML(centralConflict);
-    const block = `${start}${beats}${end}`;
-
-    // Replace existing beats block, or append it once
-    let newHtml = storyHtml;
-    if (newHtml.includes(start)) {
-      const re = new RegExp(`${start}[\\s\\S]*?${end}`, "m");
-      newHtml = newHtml.replace(re, block);
-    } else {
-      newHtml = newHtml + block;
-    }
-    
-    setStoryHtml(newHtml);
-    wroteForConflict.current = centralConflict;
-  }, [centralConflict, storyHtml, setStoryHtml]);
+  // ... existing code ...
 
   return (
     <div
       id="story-frame"
-      // Full height of the page area; two rows:
-      // [Overview fixed] [Editor takes remaining space]
       className="h-full w-full"
       style={{
         display: "grid",
-        gridTemplateRows: `${OVERVIEW_BAR_HEIGHT}px 1fr`,
+        gridTemplateRows: `160px 1fr`, // Fixed 160px for overview, rest for editor
         gridTemplateColumns: "1fr",
       }}
     >
@@ -235,7 +148,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
         </div>
       </div>
 
-      {/* Editor viewport (fills remaining space exactly; Quill gets 100% height) */}
+      {/* Editor viewport - takes all remaining space */}
       <div className="min-h-0 h-full overflow-hidden px-4 pb-3">
         <div className="h-full w-full">
           <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full w-full" />
@@ -244,3 +157,164 @@ export default function StoryBuilder(props: StoryBuilderProps) {
     </div>
   );
 }
+```
+
+### Alternative: More Compact Version
+
+If you want to fit everything without scrolling:
+
+```typescript
+{/* Compact Overview Frame - No scrolling needed */}
+<div 
+  className="border-b-2 border-slate-300 bg-slate-50 px-4 py-2"
+  style={{
+    height: '160px',
+    overflow: 'hidden'
+  }}
+>
+  <div 
+    className="h-full"
+    style={{ 
+      fontSize: '10px',
+      lineHeight: '1.2',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-evenly'
+    }}
+  >
+    {projectName && (
+      <div>
+        <span className="font-semibold">Story Title</span> — {projectName}
+      </div>
+    )}
+
+    <div>
+      <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+    </div>
+
+    {genre && (
+      <div>
+        <span className="font-semibold">Genre</span> — {genre}
+        {genreDef && <span className="text-slate-600 text-xs ml-1">({genreDef.substring(0, 50)}...)</span>}
+      </div>
+    )}
+
+    {subGenre && (
+      <div>
+        <span className="font-semibold">Sub Genre</span> — {subGenre}
+      </div>
+    )}
+
+    {theme && (
+      <div>
+        <span className="font-semibold">Theme</span> — {theme}
+      </div>
+    )}
+
+    {subTheme && (
+      <div>
+        <span className="font-semibold">Sub Theme</span> — {subTheme}
+      </div>
+    )}
+
+    {centralConflict && (
+      <div>
+        <span className="font-semibold">Central Conflict</span> — {centralConflict}
+      </div>
+    )}
+  </div>
+</div>
+```
+
+### Alternative: Two-Column Layout
+
+To fit more content in the same space:
+
+```typescript
+{/* Two-Column Overview Frame */}
+<div 
+  className="border-b-2 border-slate-300 bg-slate-50 px-4 py-2"
+  style={{
+    height: '160px',
+    overflow: 'hidden'
+  }}
+>
+  <div 
+    className="h-full grid grid-cols-2 gap-4"
+    style={{ 
+      fontSize: '10px',
+      lineHeight: '1.3'
+    }}
+  >
+    {/* Left Column */}
+    <div className="space-y-1">
+      {projectName && (
+        <div>
+          <span className="font-semibold">Story Title</span><br/>
+          <span className="text-slate-700">{projectName}</span>
+        </div>
+      )}
+
+      <div>
+        <span className="font-semibold">Project Type</span><br/>
+        <span className="text-slate-700">{projectTypeDisplay}</span>
+      </div>
+
+      {genre && (
+        <div>
+          <span className="font-semibold">Genre</span><br/>
+          <span className="text-slate-700">{genre}</span>
+        </div>
+      )}
+
+      {subGenre && (
+        <div>
+          <span className="font-semibold">Sub Genre</span><br/>
+          <span className="text-slate-700">{subGenre}</span>
+        </div>
+      )}
+    </div>
+
+    {/* Right Column */}
+    <div className="space-y-1">
+      {theme && (
+        <div>
+          <span className="font-semibold">Theme</span><br/>
+          <span className="text-slate-700">{theme}</span>
+        </div>
+      )}
+
+      {subTheme && (
+        <div>
+          <span className="font-semibold">Sub Theme</span><br/>
+          <span className="text-slate-700">{subTheme}</span>
+        </div>
+      )}
+
+      {centralConflict && (
+        <div>
+          <span className="font-semibold">Central Conflict</span><br/>
+          <span className="text-slate-700">{centralConflict}</span>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+```
+
+## Key Changes:
+
+1. **Fixed 160px height** for the overview frame
+2. **Proper containment** - content can't overflow into Story Beats area
+3. **Scrollable content** if needed (Option 1)
+4. **Compact layout** that fits without scrolling (Option 2)
+5. **Two-column layout** for better space utilization (Option 3)
+
+## Recommended:
+Use **Option 1** (scrollable) because it:
+- ✅ Shows all content fully
+- ✅ Maintains readability
+- ✅ Provides clean separation from Story Beats
+- ✅ Has professional scrolling when needed
+
+This will ensure all the overview information fits properly in the top frame without interfering with the Story Beats section below.
