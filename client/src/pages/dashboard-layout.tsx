@@ -1454,15 +1454,33 @@ const SharedMainContentLayout = ({
           </div>
         </div>
 
-        {/* Bottom section - 40% height (EXACT Dashboard layout) */}
-        <ExactDashboardAI 
-          chatMessages={chatMessages}
-          chatMessage={chatMessage}
-          setChatMessage={setChatMessage}
-          handleSendMessage={handleSendMessage}
-          handleKeyPress={handleKeyPress}
-          showProjectCards={true} // Show project cards on all builder pages
-        />
+        {/* Bottom section - 40% height (SAME AS DASHBOARD) */}
+        <div className="flex-1 flex flex-col justify-start pt-4">
+          {/* Project Name Section */}
+          <div className="flex justify-center mb-4">
+            <div className="w-full max-w-[14.5in]">
+              <div className="mb-2">
+                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+              </div>
+              
+              {/* Three project cards */}
+              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+                <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Chat Window - SAME COMPONENT everywhere */}
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -2301,13 +2319,20 @@ export default function DashboardLayout() {
                   <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
                 </div>
                 
-                {/* Constrained Content Container - Dashboard proportions */}
+                {/* Constrained Content Container - EXACTLY like pic 2 */}
                 <div className="flex-1 flex justify-center overflow-hidden">
-                  <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
-                    
-                    {/* Story Editor Section - 60% height (same as Dashboard red box) */}
-                    <div className="flex justify-center items-center" style={{ height: '60%' }}>
-                      <Card 
+                  <div 
+                    className="w-full max-w-[15.25in] p-4 h-full" 
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr 200px', // Story editor, then AI (EXACTLY like pic 2)
+                      gridTemplateColumns: '1fr',
+                      gap: '16px'
+                    }}
+                  >
+                    {/* Story Editor Section - Takes remaining space */}
+                    <div className="flex justify-center items-center min-h-0">
+                      <div 
                         className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
                         style={{ 
                           width: '100%', 
@@ -2315,36 +2340,41 @@ export default function DashboardLayout() {
                           height: '100%'
                         }}
                       >
-                        <StoryBuilder 
-                          projectName={projectName}
-                          projectType={projectType}
-                          lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                          lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                          genre={genreLabel || undefined}
-                          genreDef={genreDef || undefined}
-                          subGenre={subGenreLabel || undefined}
-                          subGenreDef={subGenreDef || undefined}
-                          theme={themeLabel || undefined}
-                          themeDef={themeDef || undefined}
-                          subTheme={subThemeLabel || undefined}
-                          subThemeDef={subThemeDef || undefined}
-                          centralConflict={centralConflictLabel || undefined}
-                          centralConflictDef={centralConflictDef || undefined}
-                          storyHtml={storyHtml}
-                          setStoryHtml={setStoryHtml}
-                        />
-                      </Card>
+                        {/* Story Builder Content */}
+                        <div className="w-full h-full overflow-hidden">
+                          <StoryBuilder 
+                            projectName={projectName}
+                            projectType={projectType}
+                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                            genre={genreLabel || undefined}
+                            genreDef={genreDef || undefined}
+                            subGenre={subGenreLabel || undefined}
+                            subGenreDef={subGenreDef || undefined}
+                            theme={themeLabel || undefined}
+                            themeDef={themeDef || undefined}
+                            subTheme={subThemeLabel || undefined}
+                            subThemeDef={subThemeDef || undefined}
+                            centralConflict={centralConflictLabel || undefined}
+                            centralConflictDef={centralConflictDef || undefined}
+                            storyHtml={storyHtml}
+                            setStoryHtml={setStoryHtml}
+                          />
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Bottom section - 40% height (EXACT DASHBOARD COPY WITHOUT project cards) */}
-                    <ExactDashboardAI 
-                      chatMessages={chatMessages}
-                      chatMessage={chatMessage}
-                      setChatMessage={setChatMessage}
-                      handleSendMessage={handleSendMessage}
-                      handleKeyPress={handleKeyPress}
-                      showProjectCards={false} // NO project cards in Story Builder
-                    />
+                    {/* AI Assistant Panel - Fixed 200px height (EXACTLY like pic 2) */}
+                    <div className="flex flex-col justify-start min-h-0">
+                      {/* SAME COMPONENT as Dashboard */}
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
