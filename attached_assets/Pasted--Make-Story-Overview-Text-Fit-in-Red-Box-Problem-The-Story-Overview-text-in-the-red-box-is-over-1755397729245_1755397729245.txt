@@ -1,0 +1,164 @@
+# Make Story Overview Text Fit in Red Box
+
+## Problem
+The Story Overview text in the red box is overflowing and not fully visible. The content needs to fit within the allocated space.
+
+## Solution
+Adjust the StoryBuilder component to make the overview section scrollable and properly contained within the red box area.
+
+### Option 1: Make Overview Section Scrollable (Recommended)
+
+Find your `StoryBuilder` component and update the overview section styling:
+
+```typescript
+// In your StoryBuilder component, find the overview section and update it:
+
+{/* Story Overview Section - Make it scrollable */}
+<div 
+  className="bg-slate-600 text-white p-4 border-b border-slate-500"
+  style={{ 
+    maxHeight: '140px', // Limit height to fit in red box
+    overflowY: 'auto',  // Enable vertical scrolling
+    fontSize: '12px',   // Slightly smaller text for better fit
+    lineHeight: '1.4'   // Tighter line spacing
+  }}
+>
+  <div className="space-y-1">
+    {projectName && (
+      <div><strong>Story Title</strong> — {projectName}</div>
+    )}
+    {projectType && (
+      <div>
+        <strong>Project Type</strong> — {projectType}
+        {lengthPages && ` / ${lengthPages} pages`}
+        {lengthMinutes && ` / ${lengthMinutes} mins`}
+      </div>
+    )}
+    {genre && (
+      <>
+        <div><strong>Genre</strong> — {genre}</div>
+        {genreDef && (
+          <div className="text-xs text-slate-300 ml-2">{genreDef}</div>
+        )}
+      </>
+    )}
+    {subGenre && (
+      <>
+        <div><strong>Sub Genre</strong> — {subGenre}</div>
+        {subGenreDef && (
+          <div className="text-xs text-slate-300 ml-2">{subGenreDef}</div>
+        )}
+      </>
+    )}
+    {theme && (
+      <>
+        <div><strong>Theme</strong> — {theme}</div>
+        {themeDef && (
+          <div className="text-xs text-slate-300 ml-2">{themeDef}</div>
+        )}
+      </>
+    )}
+    {subTheme && (
+      <>
+        <div><strong>Sub Theme</strong> — {subTheme}</div>
+        {subThemeDef && (
+          <div className="text-xs text-slate-300 ml-2">{subThemeDef}</div>
+        )}
+      </>
+    )}
+    {centralConflict && (
+      <>
+        <div><strong>Central Conflict</strong> — {centralConflict}</div>
+        {centralConflictDef && (
+          <div className="text-xs text-slate-300 ml-2">{centralConflictDef}</div>
+        )}
+      </>
+    )}
+  </div>
+</div>
+```
+
+### Option 2: Reduce Content Density
+
+If you prefer to keep everything visible without scrolling, you can make the text more compact:
+
+```typescript
+{/* Story Overview Section - Compact version */}
+<div 
+  className="bg-slate-600 text-white p-3 border-b border-slate-500"
+  style={{ 
+    maxHeight: '140px',
+    fontSize: '11px',    // Smaller text
+    lineHeight: '1.3'    // Tighter line spacing
+  }}
+>
+  <div className="space-y-0.5"> {/* Reduced spacing between lines */}
+    {projectName && (
+      <div className="truncate"><strong>Story Title</strong> — {projectName}</div>
+    )}
+    {projectType && (
+      <div className="truncate">
+        <strong>Project Type</strong> — {projectType}
+        {lengthPages && ` / ${lengthPages}p`}
+        {lengthMinutes && ` / ${lengthMinutes}m`}
+      </div>
+    )}
+    {genre && (
+      <div className="truncate"><strong>Genre</strong> — {genre}</div>
+    )}
+    {subGenre && (
+      <div className="truncate"><strong>Sub Genre</strong> — {subGenre}</div>
+    )}
+    {theme && (
+      <div className="truncate"><strong>Theme</strong> — {theme}</div>
+    )}
+    {subTheme && (
+      <div className="truncate"><strong>Sub Theme</strong> — {subTheme}</div>
+    )}
+    {centralConflict && (
+      <div className="truncate"><strong>Central Conflict</strong> — {centralConflict}</div>
+    )}
+  </div>
+</div>
+```
+
+### Option 3: Adjust Container Heights
+
+You can also adjust the proportions to give more space to the overview:
+
+```typescript
+// In your StoryBuilder layout, adjust the container structure:
+
+<div className="w-full h-full flex flex-col">
+  {/* Story Overview - Slightly larger */}
+  <div style={{ height: '160px' }}> {/* Increased from default */}
+    {/* Overview content here */}
+  </div>
+  
+  {/* Toolbar */}
+  <div style={{ height: '40px' }}>
+    {/* Toolbar content */}
+  </div>
+  
+  {/* Editor - Takes remaining space */}
+  <div className="flex-1">
+    {/* Editor content */}
+  </div>
+</div>
+```
+
+## Recommended Approach
+
+**Option 1 (Scrollable)** is recommended because:
+- ✅ Preserves all content visibility
+- ✅ Keeps the red box size consistent
+- ✅ Allows for future expansion of overview content
+- ✅ Clean, professional appearance
+- ✅ User can scroll to see all details when needed
+
+## Files to Modify
+- Find your `StoryBuilder` component file
+- Look for the overview/header section rendering
+- Apply the scrollable styling changes
+
+This will make all the story overview text fit properly within the red box area while maintaining readability and functionality.
