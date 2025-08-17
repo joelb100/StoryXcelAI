@@ -2265,35 +2265,72 @@ export default function DashboardLayout() {
                 navigate={navigate}
               />
             ) : activeTab === 'story' ? (
-              <SharedMainContentLayout 
-                pageTitle="Story Builder" 
-                activeTab={activeTab}
-                chatMessages={chatMessages}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                handleSendMessage={handleSendMessage}
-                handleKeyPress={handleKeyPress}
-              >
-                {/* Story-specific content goes in the red box area */}
-                <StoryBuilder 
-                  projectName={projectName}
-                  projectType={projectType}
-                  lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
-                  lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
-                  genre={genreLabel || undefined}
-                  genreDef={genreDef || undefined}
-                  subGenre={subGenreLabel || undefined}
-                  subGenreDef={subGenreDef || undefined}
-                  theme={themeLabel || undefined}
-                  themeDef={themeDef || undefined}
-                  subTheme={subThemeLabel || undefined}
-                  subThemeDef={subThemeDef || undefined}
-                  centralConflict={centralConflictLabel || undefined}
-                  centralConflictDef={centralConflictDef || undefined}
-                  storyHtml={storyHtml}
-                  setStoryHtml={setStoryHtml}
-                />
-              </SharedMainContentLayout>
+              <div className="bg-gray-100 flex flex-col h-full">
+                {/* Story Builder Header */}
+                <div className="bg-white border-b border-gray-200 px-4 pb-4">
+                  <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+                </div>
+                
+                {/* Constrained Content Container - Grid layout with fixed AI panel space */}
+                <div className="flex-1 flex justify-center overflow-hidden">
+                  <div 
+                    className="w-full max-w-[15.25in] p-4 h-full" 
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: '1fr 200px', // Story editor area, then fixed AI panel
+                      gridTemplateColumns: '1fr',
+                      gap: '16px'
+                    }}
+                  >
+                    {/* Story Editor Section - Takes remaining space, never expandable */}
+                    <div className="flex justify-center items-center min-h-0">
+                      <div 
+                        className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden" 
+                        style={{ 
+                          width: '100%', 
+                          maxWidth: '14.5in', 
+                          height: '100%',
+                          minHeight: '100%',
+                          maxHeight: '100%'
+                        }}
+                      >
+                        {/* Story Builder Content - Strictly contained */}
+                        <div className="w-full h-full overflow-hidden">
+                          <StoryBuilder 
+                            projectName={projectName}
+                            projectType={projectType}
+                            lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+                            lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+                            genre={genreLabel || undefined}
+                            genreDef={genreDef || undefined}
+                            subGenre={subGenreLabel || undefined}
+                            subGenreDef={subGenreDef || undefined}
+                            theme={themeLabel || undefined}
+                            themeDef={themeDef || undefined}
+                            subTheme={subThemeLabel || undefined}
+                            subThemeDef={subThemeDef || undefined}
+                            centralConflict={centralConflictLabel || undefined}
+                            centralConflictDef={centralConflictDef || undefined}
+                            storyHtml={storyHtml}
+                            setStoryHtml={setStoryHtml}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* AI Panel - Fixed 200px height, never moves */}
+                    <div className="flex flex-col justify-start min-h-0">
+                      <AIStoryAssistant 
+                        chatMessages={chatMessages}
+                        chatMessage={chatMessage}
+                        setChatMessage={setChatMessage}
+                        handleSendMessage={handleSendMessage}
+                        handleKeyPress={handleKeyPress}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             ) : (
               // All other builder tabs use the SAME layout structure
               <SharedMainContentLayout 
