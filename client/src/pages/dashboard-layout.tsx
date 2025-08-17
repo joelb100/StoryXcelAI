@@ -373,63 +373,39 @@ function insertOrReplaceConflictBlock(conflictKey: string, currentHtml: string, 
 import storyXcelLogo from "@assets/StoryXcel_Secondary_Logo_1753649730340.png";
 import AIStoryAssistant from "@/components/ai-story-assistant";
 
-// FIXED AI THAT MATCHES DASHBOARD EXACTLY
-const MatchingFixedAI = ({ 
-  activeTab,
+// FIXED AI ASSISTANT - Always visible, never pushed off-screen
+const FixedAI = ({ 
   chatMessages, 
   chatMessage, 
   setChatMessage, 
   handleSendMessage, 
   handleKeyPress 
 }: {
-  activeTab: string;
   chatMessages: any[];
   chatMessage: string;
   setChatMessage: (value: string) => void;
   handleSendMessage: () => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
-}) => {
-  // Only show on Story Builder page
-  if (activeTab !== 'story') return null;
-
-  return (
-    <div 
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
-      style={{
-        width: 'min(90vw, 14.5in)',
-        maxWidth: '14.5in'
-      }}
-    >
-      {/* Use EXACT same container structure as Dashboard */}
-      <div className="flex-1 flex flex-col justify-start pt-4">
-        {/* Project Name Section - COPIED from Dashboard */}
-        <div className="flex justify-center mb-4">
-          <div className="w-full max-w-[14.5in]">
-            <div className="mb-2">
-              <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
-            </div>
-            
-            {/* Three equal project cards - COPIED from Dashboard */}
-            <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
-              <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-              <Card className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></Card>
-            </div>
-          </div>
-        </div>
-
-        {/* AI Chat Window - EXACT same component as Dashboard */}
-        <AIStoryAssistant 
-          chatMessages={chatMessages}
-          chatMessage={chatMessage}
-          setChatMessage={setChatMessage}
-          handleSendMessage={handleSendMessage}
-          handleKeyPress={handleKeyPress}
-        />
-      </div>
+}) => (
+  <div 
+    className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
+    style={{
+      width: 'min(90vw, 14.5in)',
+      height: '200px',
+      maxWidth: '14.5in'
+    }}
+  >
+    <div className="w-full h-full bg-white border border-gray-300 shadow-xl rounded-lg">
+      <AIStoryAssistant 
+        chatMessages={chatMessages}
+        chatMessage={chatMessage}
+        setChatMessage={setChatMessage}
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+      />
     </div>
-  );
-};
+  </div>
+);
 
 // Import tab icons
 import worldBuilderIcon from "@assets/worldBuilder_1754280588370.png";
@@ -2704,8 +2680,7 @@ export default function DashboardLayout() {
         </Dialog>
 
         {/* NEW: FIXED AI ASSISTANT - Only addition */}
-        <MatchingFixedAI 
-          activeTab={activeTab}
+        <FixedAI 
           chatMessages={chatMessages}
           chatMessage={chatMessage}
           setChatMessage={setChatMessage}

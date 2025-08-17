@@ -10,7 +10,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import BuilderWorkspace from "@/pages/builder-workspace";
-import DashboardLayout from "@/pages/dashboard-layout-new";
+import DashboardLayout from "@/pages/dashboard-layout";
 
 function AuthenticatedRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated, isLoading } = useAuth();
