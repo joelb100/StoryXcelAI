@@ -23,8 +23,8 @@ interface StoryBuilderProps {
 }
 
 // Choose a fixed height for the "overview" bar so ALL 7 lines are visible.
-// Fixed to 160px for proper containment within the frame.
-const OVERVIEW_BAR_HEIGHT = 160;
+// Compact 140px for no-scroll two-column layout.
+const OVERVIEW_BAR_HEIGHT = 140;
 
 // Helper: build beats HTML
 function buildBeatsHTML(conflict: string) {
@@ -111,126 +111,78 @@ export default function StoryBuilder(props: StoryBuilderProps) {
         gridTemplateColumns: "1fr",
       }}
     >
-      {/* Story Overview Frame - Fixed height, scrollable content */}
+      {/* Story Overview Frame - Compact, no scrolling */}
       <div 
-        className="border-b-2 border-slate-300 bg-slate-50"
+        className="border-b-2 border-slate-300 bg-slate-50 px-3 py-2"
         style={{
-          height: '160px',
-          overflow: 'hidden', // Container doesn't scroll
+          height: '140px',
+          overflow: 'hidden', // No scrolling
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          justifyContent: 'space-between'
         }}
       >
-        {/* Scrollable content area */}
         <div 
-          className="flex-1 px-4 py-2 overflow-y-auto"
-          style={{
-            scrollbarWidth: 'thin' // For Firefox
+          className="grid grid-cols-2 gap-x-4 h-full"
+          style={{ 
+            fontSize: '9px',
+            lineHeight: '1.1'
           }}
         >
-          <div 
-            className="space-y-1" 
-            style={{ 
-              fontSize: '11px',
-              lineHeight: '1.3'
-            }}
-          >
+          {/* Left Column */}
+          <div className="space-y-1 flex flex-col justify-between">
             {projectName && (
-              <div className="flex flex-wrap">
-                <span className="font-semibold text-slate-800 mr-1">Story Title</span>
-                <span className="text-slate-700">— {projectName}</span>
+              <div>
+                <span className="font-bold text-slate-800">Story Title</span>
+                <div className="text-slate-700 truncate">{projectName}</div>
               </div>
             )}
 
-            <div className="flex flex-wrap">
-              <span className="font-semibold text-slate-800 mr-1">Project Type</span>
-              <span className="text-slate-700">— {projectTypeDisplay}</span>
+            <div>
+              <span className="font-bold text-slate-800">Project Type</span>
+              <div className="text-slate-700 truncate">{projectTypeDisplay}</div>
             </div>
 
             {genre && (
               <div>
-                <div className="flex flex-wrap">
-                  <span className="font-semibold text-slate-800 mr-1">Genre</span>
-                  <span className="text-slate-700">— {genre}</span>
-                </div>
-                {genreDef && (
-                  <div 
-                    className="ml-3 text-slate-600 italic"
-                    style={{ fontSize: '10px', lineHeight: '1.2' }}
-                  >
-                    {genreDef}
-                  </div>
-                )}
+                <span className="font-bold text-slate-800">Genre</span>
+                <div className="text-slate-700 truncate">{genre}</div>
               </div>
             )}
 
             {subGenre && (
               <div>
-                <div className="flex flex-wrap">
-                  <span className="font-semibold text-slate-800 mr-1">Sub Genre</span>
-                  <span className="text-slate-700">— {subGenre}</span>
-                </div>
-                {subGenreDef && (
-                  <div 
-                    className="ml-3 text-slate-600 italic"
-                    style={{ fontSize: '10px', lineHeight: '1.2' }}
-                  >
-                    {subGenreDef}
-                  </div>
-                )}
+                <span className="font-bold text-slate-800">Sub Genre</span>
+                <div className="text-slate-700 truncate">{subGenre}</div>
               </div>
             )}
+          </div>
 
+          {/* Right Column */}
+          <div className="space-y-1 flex flex-col justify-between">
             {theme && (
               <div>
-                <div className="flex flex-wrap">
-                  <span className="font-semibold text-slate-800 mr-1">Theme</span>
-                  <span className="text-slate-700">— {theme}</span>
-                </div>
-                {themeDef && (
-                  <div 
-                    className="ml-3 text-slate-600 italic"
-                    style={{ fontSize: '10px', lineHeight: '1.2' }}
-                  >
-                    {themeDef}
-                  </div>
-                )}
+                <span className="font-bold text-slate-800">Theme</span>
+                <div className="text-slate-700 truncate">{theme}</div>
               </div>
             )}
 
             {subTheme && (
               <div>
-                <div className="flex flex-wrap">
-                  <span className="font-semibold text-slate-800 mr-1">Sub Theme</span>
-                  <span className="text-slate-700">— {subTheme}</span>
-                </div>
-                {subThemeDef && (
-                  <div 
-                    className="ml-3 text-slate-600 italic"
-                    style={{ fontSize: '10px', lineHeight: '1.2' }}
-                  >
-                    {subThemeDef}
-                  </div>
-                )}
+                <span className="font-bold text-slate-800">Sub Theme</span>
+                <div className="text-slate-700 truncate">{subTheme}</div>
               </div>
             )}
 
             {centralConflict && (
               <div>
-                <div className="flex flex-wrap">
-                  <span className="font-semibold text-slate-800 mr-1">Central Conflict</span>
-                  <span className="text-slate-700">— {centralConflict}</span>
-                </div>
-                {centralConflictDef && (
-                  <div 
-                    className="ml-3 text-slate-600 italic"
-                    style={{ fontSize: '10px', lineHeight: '1.2' }}
-                  >
-                    {centralConflictDef}
-                  </div>
-                )}
+                <span className="font-bold text-slate-800">Central Conflict</span>
+                <div className="text-slate-700 truncate">{centralConflict}</div>
               </div>
             )}
+
+            {/* Spacer if needed */}
+            {!theme && !subTheme && !centralConflict && <div></div>}
           </div>
         </div>
       </div>

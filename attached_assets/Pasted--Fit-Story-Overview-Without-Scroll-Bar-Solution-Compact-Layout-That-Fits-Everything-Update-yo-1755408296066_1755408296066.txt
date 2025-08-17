@@ -1,0 +1,270 @@
+# Fit Story Overview Without Scroll Bar
+
+## Solution: Compact Layout That Fits Everything
+
+Update your `story-builder.tsx` to fit all overview content without scrolling:
+
+```typescript
+export default function StoryBuilder(props: StoryBuilderProps) {
+  // ... existing code ...
+
+  return (
+    <div
+      id="story-frame"
+      className="h-full w-full"
+      style={{
+        display: "grid",
+        gridTemplateRows: `140px 1fr`, // Compact 140px for overview
+        gridTemplateColumns: "1fr",
+      }}
+    >
+      {/* Story Overview Frame - Compact, no scrolling */}
+      <div 
+        className="border-b-2 border-slate-300 bg-slate-50 px-3 py-2"
+        style={{
+          height: '140px',
+          overflow: 'hidden', // No scrolling
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between'
+        }}
+      >
+        <div 
+          className="grid grid-cols-2 gap-x-4 h-full"
+          style={{ 
+            fontSize: '9px',
+            lineHeight: '1.1'
+          }}
+        >
+          {/* Left Column */}
+          <div className="space-y-1 flex flex-col justify-between">
+            {projectName && (
+              <div>
+                <span className="font-bold text-slate-800">Story Title</span>
+                <div className="text-slate-700 truncate">{projectName}</div>
+              </div>
+            )}
+
+            <div>
+              <span className="font-bold text-slate-800">Project Type</span>
+              <div className="text-slate-700 truncate">{projectTypeDisplay}</div>
+            </div>
+
+            {genre && (
+              <div>
+                <span className="font-bold text-slate-800">Genre</span>
+                <div className="text-slate-700 truncate">{genre}</div>
+              </div>
+            )}
+
+            {subGenre && (
+              <div>
+                <span className="font-bold text-slate-800">Sub Genre</span>
+                <div className="text-slate-700 truncate">{subGenre}</div>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-1 flex flex-col justify-between">
+            {theme && (
+              <div>
+                <span className="font-bold text-slate-800">Theme</span>
+                <div className="text-slate-700 truncate">{theme}</div>
+              </div>
+            )}
+
+            {subTheme && (
+              <div>
+                <span className="font-bold text-slate-800">Sub Theme</span>
+                <div className="text-slate-700 truncate">{subTheme}</div>
+              </div>
+            )}
+
+            {centralConflict && (
+              <div>
+                <span className="font-bold text-slate-800">Central Conflict</span>
+                <div className="text-slate-700 truncate">{centralConflict}</div>
+              </div>
+            )}
+
+            {/* Spacer if needed */}
+            {!theme && !subTheme && !centralConflict && <div></div>}
+          </div>
+        </div>
+      </div>
+
+      {/* Editor viewport - takes all remaining space */}
+      <div className="min-h-0 h-full overflow-hidden px-4 pb-3">
+        <div className="h-full w-full">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+## Alternative: Single Column Compact
+
+If you prefer a single column layout:
+
+```typescript
+{/* Single Column Overview Frame - Ultra Compact */}
+<div 
+  className="border-b-2 border-slate-300 bg-slate-50 px-3 py-2"
+  style={{
+    height: '140px',
+    overflow: 'hidden'
+  }}
+>
+  <div 
+    className="flex flex-col justify-between h-full"
+    style={{ 
+      fontSize: '9px',
+      lineHeight: '1.1'
+    }}
+  >
+    {projectName && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Story Title</span>
+        <span className="text-slate-700 truncate">— {projectName}</span>
+      </div>
+    )}
+
+    <div className="flex">
+      <span className="font-bold text-slate-800 w-20 flex-shrink-0">Project Type</span>
+      <span className="text-slate-700 truncate">— {projectTypeDisplay}</span>
+    </div>
+
+    {genre && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Genre</span>
+        <span className="text-slate-700 truncate">— {genre}</span>
+      </div>
+    )}
+
+    {subGenre && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Sub Genre</span>
+        <span className="text-slate-700 truncate">— {subGenre}</span>
+      </div>
+    )}
+
+    {theme && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Theme</span>
+        <span className="text-slate-700 truncate">— {theme}</span>
+      </div>
+    )}
+
+    {subTheme && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Sub Theme</span>
+        <span className="text-slate-700 truncate">— {subTheme}</span>
+      </div>
+    )}
+
+    {centralConflict && (
+      <div className="flex">
+        <span className="font-bold text-slate-800 w-20 flex-shrink-0">Central Conflict</span>
+        <span className="text-slate-700 truncate">— {centralConflict}</span>
+      </div>
+    )}
+  </div>
+</div>
+```
+
+## Alternative: Horizontal Layout
+
+For maximum space efficiency:
+
+```typescript
+{/* Horizontal Overview Frame */}
+<div 
+  className="border-b-2 border-slate-300 bg-slate-50 px-3 py-2"
+  style={{
+    height: '140px',
+    overflow: 'hidden'
+  }}
+>
+  <div 
+    className="grid grid-rows-7 h-full gap-y-0"
+    style={{ 
+      fontSize: '8px',
+      lineHeight: '1.1'
+    }}
+  >
+    {projectName && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Story Title:</span>
+        <span className="text-slate-700 ml-2 truncate">{projectName}</span>
+      </div>
+    )}
+
+    <div className="flex items-center">
+      <span className="font-bold text-slate-800 min-w-[80px]">Project Type:</span>
+      <span className="text-slate-700 ml-2 truncate">{projectTypeDisplay}</span>
+    </div>
+
+    {genre && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Genre:</span>
+        <span className="text-slate-700 ml-2 truncate">{genre}</span>
+      </div>
+    )}
+
+    {subGenre && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Sub Genre:</span>
+        <span className="text-slate-700 ml-2 truncate">{subGenre}</span>
+      </div>
+    )}
+
+    {theme && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Theme:</span>
+        <span className="text-slate-700 ml-2 truncate">{theme}</span>
+      </div>
+    )}
+
+    {subTheme && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Sub Theme:</span>
+        <span className="text-slate-700 ml-2 truncate">{subTheme}</span>
+      </div>
+    )}
+
+    {centralConflict && (
+      <div className="flex items-center">
+        <span className="font-bold text-slate-800 min-w-[80px]">Central Conflict:</span>
+        <span className="text-slate-700 ml-2 truncate">{centralConflict}</span>
+      </div>
+    )}
+  </div>
+</div>
+```
+
+## Key Features:
+
+### ✅ No Scroll Bar
+- Fixed 140px height
+- `overflow: hidden` prevents scrolling
+- Content is sized to fit exactly
+
+### ✅ All Content Visible
+- Two-column layout maximizes space
+- `truncate` class handles long text gracefully
+- `justify-between` distributes content evenly
+
+### ✅ Clean Design
+- 9px font size for compact display
+- Bold labels for easy scanning
+- Proper spacing and alignment
+
+### ✅ Responsive
+- Handles missing fields gracefully
+- Adapts layout based on available content
+- Maintains structure with empty fields
+
+**Recommended: Use the two-column version** - it fits the most content clearly without scrolling while maintaining readability.
