@@ -23,8 +23,8 @@ interface StoryBuilderProps {
 }
 
 // Choose a fixed height for the "overview" bar so ALL 7 lines are visible.
-// 152–176px usually fits 7 rows of small text without scrolling.
-const OVERVIEW_BAR_HEIGHT = 176;
+// Increased to 200px for better visibility and scrolling comfort.
+const OVERVIEW_BAR_HEIGHT = 200;
 
 // Helper: build beats HTML
 function buildBeatsHTML(conflict: string) {
@@ -112,8 +112,20 @@ export default function StoryBuilder(props: StoryBuilderProps) {
       }}
     >
       {/* Overview (fixed height, scrollable if content overflows) */}
-      <div className="border-b border-slate-200 px-4 py-2 overflow-y-auto">
-        <div className="text-xs leading-tight space-y-1" style={{ lineHeight: '1.4' }}>
+      <div 
+        className="border-b border-slate-200 px-4 py-3 overflow-y-auto"
+        style={{
+          backgroundColor: '#f8f9fa', // Light background to distinguish the section
+          maxHeight: '200px'          // Ensure it doesn't exceed the grid row height
+        }}
+      >
+        <div 
+          className="text-xs leading-relaxed space-y-2" 
+          style={{ 
+            lineHeight: '1.3',
+            fontSize: '11px'  // Slightly smaller font for better fit
+          }}
+        >
           {projectName && (
             <div>
               <span className="font-semibold">Story Title</span> — {projectName}
@@ -128,7 +140,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
             <div>
               <span className="font-semibold">Genre</span> — {genre}
               {genreDef && (
-                <div className="ml-3 text-[10px] text-slate-600 leading-tight">{genreDef}</div>
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{genreDef}</div>
               )}
             </div>
           )}
@@ -137,7 +149,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
             <div>
               <span className="font-semibold">Sub Genre</span> — {subGenre}
               {subGenreDef && (
-                <div className="ml-3 text-[10px] text-slate-600 leading-tight">{subGenreDef}</div>
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{subGenreDef}</div>
               )}
             </div>
           )}
@@ -146,7 +158,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
             <div>
               <span className="font-semibold">Theme</span> — {theme}
               {themeDef && (
-                <div className="ml-3 text-[10px] text-slate-600 leading-tight">{themeDef}</div>
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{themeDef}</div>
               )}
             </div>
           )}
@@ -155,7 +167,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
             <div>
               <span className="font-semibold">Sub Theme</span> — {subTheme}
               {subThemeDef && (
-                <div className="ml-3 text-[10px] text-slate-600 leading-tight">{subThemeDef}</div>
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{subThemeDef}</div>
               )}
             </div>
           )}
@@ -164,7 +176,7 @@ export default function StoryBuilder(props: StoryBuilderProps) {
             <div>
               <span className="font-semibold">Central Conflict</span> — {centralConflict}
               {centralConflictDef && (
-                <div className="ml-3 text-[10px] text-slate-600 leading-tight">{centralConflictDef}</div>
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{centralConflictDef}</div>
               )}
             </div>
           )}

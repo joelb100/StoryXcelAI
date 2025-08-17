@@ -1,0 +1,266 @@
+# Fix Story Overview Section to Be Fully Visible
+
+## Problem
+The Story Overview section (Story Title → Central Conflict) in the red box is overflowing and not fully visible within the header area.
+
+## Solution
+Adjust the `StoryBuilder` component to make the overview section properly sized and scrollable if needed.
+
+### Update the StoryBuilder Component
+
+In your `story-builder.tsx` file, find the overview section and update it:
+
+```typescript
+export default function StoryBuilder(props: StoryBuilderProps) {
+  // ... existing code ...
+
+  return (
+    <div
+      id="story-frame"
+      className="h-full w-full"
+      style={{
+        display: "grid",
+        gridTemplateRows: `200px 1fr`, // Increased from 176px to 200px for more space
+        gridTemplateColumns: "1fr",
+      }}
+    >
+      {/* Overview - Fixed height with proper scrolling */}
+      <div 
+        className="border-b border-slate-200 px-4 py-3 overflow-y-auto"
+        style={{
+          backgroundColor: '#f8f9fa', // Light background to distinguish the section
+          maxHeight: '200px'          // Ensure it doesn't exceed the grid row height
+        }}
+      >
+        <div 
+          className="text-xs leading-relaxed space-y-2" 
+          style={{ 
+            lineHeight: '1.3',
+            fontSize: '11px'  // Slightly smaller font for better fit
+          }}
+        >
+          {projectName && (
+            <div>
+              <span className="font-semibold text-slate-800">Story Title</span> — {projectName}
+            </div>
+          )}
+
+          <div>
+            <span className="font-semibold text-slate-800">Project Type</span> — {projectTypeDisplay}
+          </div>
+
+          {genre && (
+            <div>
+              <span className="font-semibold text-slate-800">Genre</span> — {genre}
+              {genreDef && (
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{genreDef}</div>
+              )}
+            </div>
+          )}
+
+          {subGenre && (
+            <div>
+              <span className="font-semibold text-slate-800">Sub Genre</span> — {subGenre}
+              {subGenreDef && (
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{subGenreDef}</div>
+              )}
+            </div>
+          )}
+
+          {theme && (
+            <div>
+              <span className="font-semibold text-slate-800">Theme</span> — {theme}
+              {themeDef && (
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{themeDef}</div>
+              )}
+            </div>
+          )}
+
+          {subTheme && (
+            <div>
+              <span className="font-semibold text-slate-800">Sub Theme</span> — {subTheme}
+              {subThemeDef && (
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{subThemeDef}</div>
+              )}
+            </div>
+          )}
+
+          {centralConflict && (
+            <div>
+              <span className="font-semibold text-slate-800">Central Conflict</span> — {centralConflict}
+              {centralConflictDef && (
+                <div className="ml-3 text-[10px] text-slate-600 leading-tight mt-1">{centralConflictDef}</div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Editor viewport - takes remaining space */}
+      <div className="min-h-0 h-full overflow-hidden px-4 pb-3">
+        <div className="h-full w-full">
+          <RichEditor value={storyHtml} onChange={setStoryHtml} className="h-full w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Alternative: Compact Overview Version
+
+If you prefer a more compact version that fits without scrolling:
+
+```typescript
+{/* Compact Overview - No scrolling needed */}
+<div 
+  className="border-b border-slate-200 px-4 py-2"
+  style={{
+    backgroundColor: '#f8f9fa',
+    height: '200px' // Fixed height
+  }}
+>
+  <div 
+    className="text-xs space-y-1" 
+    style={{ 
+      lineHeight: '1.2',
+      fontSize: '10px'
+    }}
+  >
+    {projectName && (
+      <div className="truncate">
+        <span className="font-semibold">Story Title</span> — {projectName}
+      </div>
+    )}
+
+    <div className="truncate">
+      <span className="font-semibold">Project Type</span> — {projectTypeDisplay}
+    </div>
+
+    {genre && (
+      <div>
+        <div className="truncate">
+          <span className="font-semibold">Genre</span> — {genre}
+        </div>
+        {genreDef && (
+          <div className="text-[9px] text-slate-600 truncate ml-2">{genreDef}</div>
+        )}
+      </div>
+    )}
+
+    {subGenre && (
+      <div>
+        <div className="truncate">
+          <span className="font-semibold">Sub Genre</span> — {subGenre}
+        </div>
+        {subGenreDef && (
+          <div className="text-[9px] text-slate-600 truncate ml-2">{subGenreDef}</div>
+        )}
+      </div>
+    )}
+
+    {theme && (
+      <div>
+        <div className="truncate">
+          <span className="font-semibold">Theme</span> — {theme}
+        </div>
+        {themeDef && (
+          <div className="text-[9px] text-slate-600 truncate ml-2">{themeDef}</div>
+        )}
+      </div>
+    )}
+
+    {subTheme && (
+      <div>
+        <div className="truncate">
+          <span className="font-semibold">Sub Theme</span> — {subTheme}
+        </div>
+        {subThemeDef && (
+          <div className="text-[9px] text-slate-600 truncate ml-2">{subThemeDef}</div>
+        )}
+      </div>
+    )}
+
+    {centralConflict && (
+      <div>
+        <div className="truncate">
+          <span className="font-semibold">Central Conflict</span> — {centralConflict}
+        </div>
+        {centralConflictDef && (
+          <div className="text-[9px] text-slate-600 truncate ml-2">{centralConflictDef}</div>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+```
+
+### Option 3: Collapsible Sections
+
+If you want to show all content but save space:
+
+```typescript
+{/* Collapsible Overview */}
+<div 
+  className="border-b border-slate-200 px-4 py-2 overflow-y-auto"
+  style={{
+    backgroundColor: '#f8f9fa',
+    maxHeight: '200px'
+  }}
+>
+  <div className="text-xs space-y-1" style={{ fontSize: '11px' }}>
+    {/* Main info - always visible */}
+    {projectName && (
+      <div><span className="font-semibold">Story Title</span> — {projectName}</div>
+    )}
+    <div><span className="font-semibold">Project Type</span> — {projectTypeDisplay}</div>
+    
+    {/* Condensed info - definitions only on hover/click */}
+    {genre && (
+      <div>
+        <span className="font-semibold">Genre</span> — {genre}
+        <span className="text-slate-500 ml-1" title={genreDef}>ⓘ</span>
+      </div>
+    )}
+    
+    {subGenre && (
+      <div>
+        <span className="font-semibold">Sub Genre</span> — {subGenre}
+        <span className="text-slate-500 ml-1" title={subGenreDef}>ⓘ</span>
+      </div>
+    )}
+    
+    {theme && (
+      <div>
+        <span className="font-semibold">Theme</span> — {theme}
+        <span className="text-slate-500 ml-1" title={themeDef}>ⓘ</span>
+      </div>
+    )}
+    
+    {subTheme && (
+      <div>
+        <span className="font-semibold">Sub Theme</span> — {subTheme}
+        <span className="text-slate-500 ml-1" title={subThemeDef}>ⓘ</span>
+      </div>
+    )}
+    
+    {centralConflict && (
+      <div>
+        <span className="font-semibold">Central Conflict</span> — {centralConflict}
+        <span className="text-slate-500 ml-1" title={centralConflictDef}>ⓘ</span>
+      </div>
+    )}
+  </div>
+</div>
+```
+
+## Recommended Solution:
+
+Use **Option 1** (scrollable version) because:
+- ✅ All content remains fully visible
+- ✅ Definitions are readable
+- ✅ Professional scrollbar for overflow
+- ✅ Easy to scan and read
+- ✅ Doesn't require truncation
+
+This will make all the Story Overview content (Story Title → Central Conflict) properly visible within the red box area.
