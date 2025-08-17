@@ -1,0 +1,164 @@
+# Copy AI Assistant Layout from Dashboard to Story Builder
+
+## Problem
+The AI Story Assistant looks different in the Dashboard vs Story Builder. You want to copy the exact shape, size, and position from the Dashboard to the Story Builder.
+
+## Solution
+
+### Step 1: Find the Dashboard AI Assistant Layout
+In your `dashboard-layout.tsx`, look for the `DashboardContent` component where the AI Assistant is rendered. The Dashboard version likely has specific styling that makes it look more compact.
+
+### Step 2: Copy Dashboard AI Assistant Styling
+In the Story Builder section, replace the current AI Assistant rendering with the exact same styling as the Dashboard.
+
+**Find this section in your Story Builder layout:**
+
+```typescript
+{/* AI Panel - Fixed 200px height, never moves */}
+<div className="flex flex-col justify-start min-h-0">
+  <AIStoryAssistant 
+    chatMessages={chatMessages}
+    chatMessage={chatMessage}
+    setChatMessage={setChatMessage}
+    handleSendMessage={handleSendMessage}
+    handleKeyPress={handleKeyPress}
+  />
+</div>
+```
+
+**Replace it with the Dashboard version:**
+
+```typescript
+{/* AI Story Assistant - Dashboard Style */}
+<div className="flex-1 flex flex-col justify-start pt-4">
+  {/* Project Name Section */}
+  <div className="flex justify-center mb-4">
+    <div className="w-full max-w-[14.5in]">
+      <div className="mb-2">
+        <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+      </div>
+      
+      {/* Three equal project cards - IDENTICAL spacing */}
+      <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+        <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+        <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+        <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+      </div>
+    </div>
+  </div>
+
+  {/* AI Chat Window - Dashboard Style */}
+  <AIStoryAssistant 
+    chatMessages={chatMessages}
+    chatMessage={chatMessage}
+    setChatMessage={setChatMessage}
+    handleSendMessage={handleSendMessage}
+    handleKeyPress={handleKeyPress}
+  />
+</div>
+```
+
+### Step 3: Adjust Grid Layout
+Update the Story Builder grid layout to match the Dashboard proportions:
+
+**Change this:**
+```typescript
+style={{
+  display: 'grid',
+  gridTemplateRows: '1fr 200px', // Story editor area, then fixed AI panel
+  gridTemplateColumns: '1fr',
+  gap: '16px'
+}}
+```
+
+**To this (Dashboard proportions):**
+```typescript
+style={{
+  display: 'grid',
+  gridTemplateRows: '60% 40%', // Match Dashboard: 60% main content, 40% bottom section
+  gridTemplateColumns: '1fr',
+  gap: '16px'
+}}
+```
+
+### Step 4: Complete Story Builder Layout Update
+
+Replace the entire Story Builder layout section with:
+
+```typescript
+) : activeTab === 'story' ? (
+  <div className="bg-gray-100 flex flex-col h-full">
+    {/* Story Builder Header */}
+    <div className="bg-white border-b border-gray-200 px-4 pb-4">
+      <h2 className="text-lg font-semibold text-slate-800">Story Builder</h2>
+    </div>
+    
+    {/* Constrained Content Container - IDENTICAL to Dashboard */}
+    <div className="flex-1 flex justify-center overflow-hidden">
+      <div className="w-full max-w-[15.25in] p-4 flex flex-col h-full">
+        
+        {/* Main Story Section - 60% height (same as Dashboard red box) */}
+        <div className="flex justify-center items-center" style={{ height: '60%' }}>
+          <div className="bg-white border border-gray-200 shadow-sm rounded-lg w-full max-w-[14.5in] h-full overflow-hidden">
+            {/* Story Builder Content */}
+            <StoryBuilder 
+              projectName={projectName}
+              projectType={projectType}
+              lengthPages={typeof lengthPages === 'number' ? lengthPages : undefined}
+              lengthMinutes={typeof lengthMinutes === 'number' ? lengthMinutes : undefined}
+              genre={genreLabel || undefined}
+              genreDef={genreDef || undefined}
+              subGenre={subGenreLabel || undefined}
+              subGenreDef={subGenreDef || undefined}
+              theme={themeLabel || undefined}
+              themeDef={themeDef || undefined}
+              subTheme={subThemeLabel || undefined}
+              subThemeDef={subThemeDef || undefined}
+              centralConflict={centralConflictLabel || undefined}
+              centralConflictDef={centralConflictDef || undefined}
+              storyHtml={storyHtml}
+              setStoryHtml={setStoryHtml}
+            />
+          </div>
+        </div>
+
+        {/* Bottom section - 40% height (IDENTICAL to Dashboard) */}
+        <div className="flex-1 flex flex-col justify-start pt-4">
+          {/* Project Name Section */}
+          <div className="flex justify-center mb-4">
+            <div className="w-full max-w-[14.5in]">
+              <div className="mb-2">
+                <h3 className="text-sm font-medium text-slate-700">Project Name</h3>
+              </div>
+              
+              {/* Three equal project cards */}
+              <div className="flex gap-[0.25in]" style={{ height: '25%', minHeight: '80px' }}>
+                <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+                <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+                <div className="rounded-lg border-0 h-full flex-1" style={{ backgroundColor: '#3f4c5f' }}></div>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Chat Window - EXACT Dashboard styling */}
+          <AIStoryAssistant 
+            chatMessages={chatMessages}
+            chatMessage={chatMessage}
+            setChatMessage={setChatMessage}
+            handleSendMessage={handleSendMessage}
+            handleKeyPress={handleKeyPress}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+```
+
+## Result
+After these changes:
+- ✅ AI Story Assistant will have the exact same shape, size, and position as in the Dashboard
+- ✅ Project cards will be positioned identically to Dashboard
+- ✅ Overall proportions will match Dashboard layout (60% main content, 40% bottom section)
+- ✅ Story Builder keeps its rich text editor but with Dashboard-style bottom section
+
+The Story Builder AI Assistant will now look exactly like the Dashboard version!
